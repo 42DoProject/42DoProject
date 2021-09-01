@@ -17,6 +17,6 @@ services:
     env_file:
       - ./back/.env
     volumes:
-      - storage:/var/lib/db
+      - ./db/:/var/lib/db
     ports:
       - 5000:5000

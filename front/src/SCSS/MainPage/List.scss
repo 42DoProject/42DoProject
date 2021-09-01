@@ -3,11 +3,11 @@
 .cardlist {
   display: flex;
   position: relative;
-  left: 1rem;
+  // left: 1rem;
   justify-content: flex-start;
   //   background-color: pink;
   border-radius: $round;
-  padding-right: 2rem;
+  padding: 0 1rem;
   &:hover {
     .cardbutton {
       visibility: visible;

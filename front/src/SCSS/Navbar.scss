@@ -1,0 +1,157 @@
+@import "./Base.scss";
+
+.Nav {
+  display: flex;
+  background-color: $bodyColor;
+  height: 4rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.Nav-column1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Nav-column2 {
+  display: flex;
+  align-items: center;
+}
+
+.Nav__title {
+  margin: 0 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .title-text {
+    letter-spacing: -0.1rem;
+    color: $mainColor;
+    font-size: $fontXl;
+    font-weight: 900;
+  }
+  .title-icon {
+    position: relative;
+    bottom: -0.18rem;
+    font-size: 3.2rem;
+    color: $black;
+  }
+}
+.Nav__input {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .input-icon {
+    font-size: 1.8rem;
+    position: absolute;
+    bottom: -1.2rem;
+    left: 0.1rem;
+  }
+  input {
+    position: absolute;
+    padding: 0.4rem;
+    bottom: -1.3rem;
+    left: 2.5rem;
+    font-size: $fontSm;
+    width: 20rem;
+    border: none;
+    background-color: $bodyColor;
+  }
+  ::placeholder {
+    color: $lightestGrey;
+    font-weight: $bold;
+  }
+}
+.Nav__project,
+.Nav__cadet,
+.Nav__lounge {
+  position: relative;
+  bottom: -0.3rem;
+  margin-right: 2rem;
+  font-size: $fontMd;
+  font-weight: $bold;
+  color: $black;
+}
+
+.Nav__lounge {
+  margin-right: 5rem;
+}
+.Nav__notification {
+  position: relative;
+  font-size: $fontLg;
+  margin-right: 2rem;
+  .icon {
+    position: relative;
+    top: 0.2rem;
+  }
+  span {
+    z-index: 1;
+    position: absolute;
+    // span은 width, heigth값을 못가지므로 inline-block으로 변환
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    padding: 0.2rem;
+    width: 1.2rem;
+    height: 1.2rem;
+    border-radius: 50%;
+    font-weight: 600;
+    background-color: $pointRed;
+    color: white;
+    left: 0.9rem;
+    top: -0.2rem;
+  }
+}
+
+.Nav__user {
+  display: flex;
+  align-items: center;
+  .name {
+    font-size: $fontMd;
+    margin-right: 1rem;
+  }
+  .image {
+    font-size: $fontMd;
+    margin-right: 1rem;
+  }
+}
+.Nav__menu {
+  display: none;
+}
+
+@media (max-width: 78rem) {
+  .Nav {
+    display: flex;
+  }
+  .Nav__input {
+    input {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: 63rem) {
+  .Nav__project,
+  .Nav__cadet,
+  .Nav__lounge {
+    display: none;
+  }
+  .Nav__menu {
+    display: flex;
+    font-size: $fontLg;
+  }
+}
+@media (max-width: 48rem) {
+  .Nav__notification,
+  .Nav__user .image {
+    display: none;
+  }
+}
+
+@media (max-width: $iphone5Width) {
+  .Nav__input {
+    display: none;
+  }
+}

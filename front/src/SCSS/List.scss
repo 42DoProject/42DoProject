@@ -1,0 +1,59 @@
+@import "./Base.scss";
+
+.cardlist {
+  display: flex;
+  position: relative;
+  justify-content: flex-start;
+//   background-color: pink;
+  border-radius: $round;
+  padding-right: 2rem;
+  &:hover {
+    .cardbutton {
+      visibility: visible;
+    }
+  }
+  .cardpadding {
+    // background-color: yellow;
+    padding: 1.5rem;
+    display: flex;
+    overflow-x: scroll;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+	// position: relative;
+    .cards-row {
+      display: flex;
+    }
+  }
+  .cardbutton {
+    position: absolute;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    background-color: rgba(144, 144, 144, 0.3);
+    border: none;
+    top: 7rem;
+    visibility: hidden;
+  }
+  .prev {
+    z-index: 2;
+    left: 4rem;
+    .prev__icon {
+      font-size: 2rem;
+      color: white;
+      position: relative;
+      right: 0.1rem;
+    }
+  }
+  .next {
+    z-index: 2;
+    right: 4rem;
+
+    .next__icon {
+      font-size: 2rem;
+      color: white;
+      position: relative;
+      left: 0.1rem;
+    }
+  }
+}

@@ -1,7 +1,7 @@
 import React from "react";
-import { Icon } from "@iconify/react";
+// import { Icon } from "@iconify/react";
 import "../../SCSS/MainPage/Recruit.scss";
-import Cards from "./Cards";
+// import Cards from "./Cards";
 import RecruitList from "./RecruitList";
 import PubilcList from "./PubilcList";
 

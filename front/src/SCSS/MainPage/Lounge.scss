@@ -1,11 +1,66 @@
 @import "../Base.scss";
 .lounge {
   position: relative;
-  left: -30rem;
+  width: 50%;
+  padding: 0 4rem;
+  // padding-right: 2rem;
   .lounge__title {
     font-weight: $bold;
     font-size: $fontMl;
     color: $black;
-    margin: 0rem 4rem;
+  }
+  .lounge__list {
+    padding-top: 2rem;
+    .lounge__card {
+      background-color: white;
+      padding: 2rem;
+      box-shadow: $shadow;
+      border-radius: $round;
+      margin-bottom: 2rem;
+      position: relative;
+      &:hover {
+        transform: scale(1.05);
+        z-index: 1;
+      }
+      .card__row1 {
+        display: flex;
+        align-items: center;
+        .row1__image {
+          border-radius: 50%;
+          width: 3rem;
+          height: 3rem;
+          object-fit: cover;
+          // margin-bottom: 0.5rem;
+          margin-right: 1rem;
+        }
+        .row1__name {
+          position: relative;
+          top: -0.5rem;
+        }
+      }
+      .card__row2 {
+        padding-left: 4rem;
+        margin-bottom: 1rem;
+      }
+      .card__row3 {
+        position: absolute;
+        right: 1rem;
+        bottom: 1rem;
+        .like-num {
+          margin-right: 1rem;
+        }
+      }
+    }
+  }
+}
+@media (max-width: 63rem) {
+  .lounge {
+    margin-top: 4rem;
+    width: 100%;
+  }
+  .lounge__list {
+    position: relative;
+    left: -1.1rem;
+    width: 104%;
   }
 }

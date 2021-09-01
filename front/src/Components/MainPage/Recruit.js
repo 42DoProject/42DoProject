@@ -7,7 +7,7 @@ import PubilcList from "./PubilcList";
 
 export default function Recruit() {
   return (
-    <div>
+    <div className="recruit__wrap">
       <div className="recruit">
         <div className="recruit__title">모집중인 프로젝트</div>
         <RecruitList />

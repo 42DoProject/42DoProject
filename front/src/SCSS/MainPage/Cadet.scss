@@ -1,23 +1,24 @@
 @import "../Base.scss";
 
 .cadet {
+  box-sizing: border-box;
+  width: 50%;
   .cadet__title {
     font-weight: $bold;
     font-size: $fontMl;
     color: $black;
-    margin: 0rem 4rem;
+    padding-left: 4rem;
   }
   .cadet__list {
-    padding-top: 2rem;
-    padding-left: 2rem;
-    width: 50%;
+    margin-top: 2rem;
+    padding: 0 2rem;
     .list__row1,
     .list__row2 {
       margin-bottom: 1.5rem;
       display: flex;
       .cadet-card {
         width: 33%;
-        margin-right: 2.5rem;
+        margin: 0 1rem;
         background-color: white;
         box-shadow: $shadow;
         border-radius: $round;
@@ -54,5 +55,11 @@
         }
       }
     }
+  }
+}
+
+@media (max-width: 63rem) {
+  .cadet {
+    width: 100%;
   }
 }

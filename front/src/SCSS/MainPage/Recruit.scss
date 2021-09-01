@@ -1,5 +1,9 @@
 @import "../Base.scss";
 
+.recruit__wrap {
+  max-width: 1440px;
+  margin: 0 auto;
+}
 .recruit {
   margin-bottom: 3rem;
   // padding: 0;
@@ -20,11 +24,5 @@
     font-size: $fontMl;
     color: $black;
     margin-left: 4rem;
-  }
-}
-// 카드깨짐방지
-@media (max-width: 28rem) {
-  .recruit {
-    min-width: 25rem;
   }
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import { Icon } from "@iconify/react";
-import "../SCSS/Navbar.scss";
+import "../../SCSS/Navbar.scss";
 export default function Navbar() {
   return (
     <div className="Nav">

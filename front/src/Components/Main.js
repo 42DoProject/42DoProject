@@ -1,16 +1,15 @@
 import React from "react";
-import "../SCSS/Main.scss";
-import Navbar from "./Navbar";
-import Dashboard from "./Dashboard";
-import Recruit from "./Recruit";
-import Footer from "./Footer";
+import Navbar from "../Components/CommonComponent/Navbar";
+import Dashboard from "../Components/MainPage/Dashboard";
+import Recruit from "../Components/MainPage/Recruit";
+import Bottom from "../Components/MainPage/Bottom";
 export default function Main() {
   return (
     <>
       <Navbar />
       <Dashboard />
       <Recruit />
-      <Footer />
+      <Bottom />
     </>
   );
 }

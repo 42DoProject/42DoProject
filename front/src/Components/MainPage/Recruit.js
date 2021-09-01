@@ -1,6 +1,6 @@
 import React from "react";
 import { Icon } from "@iconify/react";
-import "../SCSS/Recruit.scss";
+import "../../SCSS/MainPage/Recruit.scss";
 import Cards from "./Cards";
 import RecruitList from "./RecruitList";
 import PubilcList from "./PubilcList";

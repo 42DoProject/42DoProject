@@ -1,10 +1,10 @@
-@import "./Base.scss";
+@import "../Base.scss";
 
 .cardlist {
   display: flex;
   position: relative;
   justify-content: flex-start;
-//   background-color: pink;
+  //   background-color: pink;
   border-radius: $round;
   padding-right: 2rem;
   &:hover {
@@ -20,7 +20,7 @@
     &::-webkit-scrollbar {
       display: none;
     }
-	// position: relative;
+    // position: relative;
     .cards-row {
       display: flex;
     }

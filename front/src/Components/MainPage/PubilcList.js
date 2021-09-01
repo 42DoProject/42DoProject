@@ -1,5 +1,5 @@
 import Cards from "./Cards";
-import "../SCSS/List.scss";
+import "../../SCSS/MainPage/List.scss";
 import { Icon } from "@iconify/react";
 import { useState } from "react";
 

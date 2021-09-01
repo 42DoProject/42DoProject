@@ -1,5 +1,5 @@
 import React from "react";
-import "../SCSS/Lounge.scss";
+import "../../SCSS/MainPage/Lounge.scss";
 import { Icon } from "@iconify/react";
 export default function Lounge() {
   return (

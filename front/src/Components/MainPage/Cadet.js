@@ -1,5 +1,5 @@
 import React from "react";
-import "../SCSS/Cadet.scss";
+import "../../SCSS/MainPage/Cadet.scss";
 export default function Cadet() {
   return (
     <div className="cadet">

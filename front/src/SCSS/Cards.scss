@@ -1,0 +1,59 @@
+@import "./Base.scss";
+
+.cards {
+  margin-right: 2.5rem;
+  background-color: white;
+  box-shadow: $shadow;
+  border-radius: $round;
+  padding: 1rem;
+  &:hover {
+    transform: scale(1.1);
+	  z-index: 1;
+  }
+  transition: transform .2s;
+  // min-width: 22rem;
+  .card__image {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    img {
+      border-radius: $round;
+      object-fit: cover; // 이미지 안찌그러지면서 꽉차게
+      width: 100%;
+      width: 18rem;
+      height: 11.5rem;
+      filter: brightness(50%)
+    }
+    .image__title {
+      position: absolute;
+      color: $lightestGrey;
+      font-weight: $bold;
+      // font-size: $fontMs;
+      bottom: 2rem;
+    }
+  }
+  .card__info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 0.4rem;
+    .info__left {
+      display: flex;
+      .info__interest,
+      .info__chat {
+        margin-right: 0.5rem;
+      }
+    }
+    .info__right {
+      .member__icon {
+        font-size: $fontMd;
+        position: relative;
+        // bottom: 0.rem;
+        // z-index: 2;
+      
+      }
+    }
+  }
+}

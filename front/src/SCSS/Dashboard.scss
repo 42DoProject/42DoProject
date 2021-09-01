@@ -1,0 +1,191 @@
+@import "./Base.scss";
+
+.dashboard {
+  // background-color: $mainColor;
+  //부모에 상관없이 width채우는 법
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  border-radius: $round;
+  margin-bottom: 3rem;
+  // background-image: url(https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/109852763/original/cf07bcfb468b2823d537812be8f1640754794433/create-trendy-abstract-geometric-pattern-on-light-background.jpg);
+  // background-image: url(https://cdn.pixabay.com/photo/2018/04/04/14/34/design-3289964_960_720.png);
+  // background-size: cover;
+  background:linear-gradient(0deg, rgba(167, 188, 91, 1), rgba(167, 188, 91, 0.9)), url(https://cdn.pixabay.com/photo/2018/04/04/14/34/design-3289964_960_720.png);
+  // box-shadow:inset 0 0 0 2000px rgba(167, 188 ,91, 0.95);
+  box-shadow: 0rem 0.5rem 0.5rem 0rem rgba(0, 0, 0, 0.1);
+}
+
+.row1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2.5rem;
+  .row1__user {
+    display: flex;
+    align-items: center;
+    color: white;
+    .user__image {
+      font-size: $fontXXl;
+      margin-right: 1rem;
+    }
+    .user__name {
+      font-size: $fontLg;
+      font-weight: 800;
+      margin-right: 0.5rem;
+    }
+    .user__level {
+      position: relative;
+      font-size: $fontSm;
+      bottom: -0.5rem;
+    }
+  }
+  .row1__button {
+    position: relative;
+    left: 1.8rem;
+    bottom: 1rem;
+    color: $lightestGrey;
+    font-size: $fontMd;
+    padding: 0.3rem 0.7rem;
+    border-radius: $round;
+    background-color: rgba(0, 0, 0, 0.53);
+  }
+}
+
+.row2 {
+  display: flex;
+  padding: 0 2.5rem;
+  // justify-content: space-around;
+  .row2__box1 {
+    display: flex;
+    background-color: rgba(0, 0, 0, 0.53);
+    padding: 3rem;
+    border-radius: $round;
+    flex-grow: 0;
+    .box1__column1 {
+      color: $mainColor;
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin-right: 1.5rem;
+
+      .column1__job,
+      .column1__level {
+        margin-bottom: 2rem;
+      }
+    }
+    .box1__column2 {
+      left: 10rem;
+      color: $lightestGrey;
+      font-size: 1.3rem;
+      font-weight: 800;
+      .column2__job,
+      .column2__level {
+        margin-bottom: 2rem;
+      }
+      .column2__skill {
+        display: flex;
+        flex-wrap: wrap;
+        img {
+          display: inline-block;
+          font-size: 5px;
+          margin-right: 0.6rem;
+        }
+      }
+    }
+  }
+  .row2__box2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    flex-grow: 1;
+    background-color: rgba(0, 0, 0, 0.53);
+    padding: 2rem;
+    border-radius: $round;
+    color: $lightestGrey;
+    font-size: 1.3rem;
+    font-weight: 800;
+    margin-left: 1.7rem;
+    position: relative;
+    .box2__title {
+      position: absolute;
+      left: 1.5rem;
+      top: 1.5rem;
+    }
+    .box2__slides {
+      position: absolute;
+      top: 6rem;
+      font-size: $fontLg;
+    }
+  }
+  .row2__box3 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    flex-grow: 1;
+    background-color: rgba(0, 0, 0, 0.53);
+    margin-left: 1.7rem;
+    padding: 2rem;
+    border-radius: $round;
+    color: $lightestGrey;
+    font-size: 1.3rem;
+    font-weight: 800;
+    .box3__title {
+      position: absolute;
+      left: 1.5rem;
+      top: 1.5rem;
+    }
+    .box3__slides {
+      position: absolute;
+      top: 6rem;
+      font-size: $fontLg;
+    }
+  }
+}
+
+.row3 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .row3__reportbox {
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $round;
+    width: 35rem;
+    height: 3rem;
+    box-shadow: 0rem 0.3rem 0.3rem 0rem rgba(0, 0, 0, 0.25);
+    position: relative;
+    top: 1.5rem;
+    padding: 0.6rem;
+  }
+
+  .reportbox__report {
+    font-weight: $bold;
+  }
+}
+@media (max-width: 55rem) {
+  .row2 .row2__box3 {
+    display: none;
+  }
+}
+@media (max-width: 42rem) {
+  .row2 .row2__box1 {
+    flex-grow: 1;
+    .box1__column1 {
+      margin: 0 2rem;
+    }
+  }
+  .row2 .row2__box2 {
+    display: none;
+  }
+}
+
+// 화면이 뭉게지기 시작한 시점
+@media (max-width: 28rem) {
+  .dashboard {
+    min-width: 28rem;
+  }
+}

@@ -1,0 +1,30 @@
+@import "./Base.scss";
+
+.recruit {
+  margin-bottom: 3rem;
+  // padding: 0;
+  .recruit__title {
+    font-weight: $bold;
+    font-size: $fontMl;
+    color: $black;
+    margin-left: 4rem;
+    .innerHtml:hover {
+      color: $mainColor;
+    }
+  }
+}
+.public {
+  margin-bottom: 3rem;
+  .public__title {
+    font-weight: $bold;
+    font-size: $fontMl;
+    color: $black;
+    margin-left: 4rem;
+  }
+}
+// 카드깨짐방지
+@media (max-width: 28rem) {
+  .recruit {
+    min-width: 25rem;
+  }
+}

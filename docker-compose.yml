@@ -1,0 +1,22 @@
+version: "3"
+services:
+  front:
+    container_name: frontend
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    env_file:
+      - ./front/.env
+    ports:
+      - 3000:3000
+  back:
+    container_name: backend
+    build:
+      context: ./back
+      dockerfile: Dockerfile
+    env_file:
+      - ./back/.env
+    volumes:
+      - storage:/var/lib/db
+    ports:
+      - 5000:5000

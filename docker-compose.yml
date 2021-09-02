@@ -9,6 +9,7 @@ services:
       - ./front/.env
     ports:
       - 3000:3000
+    restart: always
   back:
     container_name: backend
     build:
@@ -16,7 +17,6 @@ services:
       dockerfile: Dockerfile
     env_file:
       - ./back/.env
-    volumes:
-      - ./db/:/var/lib/db
     ports:
       - 5000:5000
+    restart: always

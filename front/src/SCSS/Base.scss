@@ -1,6 +1,6 @@
 // 모든 페이지 배경 색
 $bodyColor: #f9f9f9;
-// 
+//
 $mainColor: #a7bc5b;
 $black: #2c2c34;
 $darkGrey: #565656;
@@ -8,7 +8,7 @@ $lightestGrey: #e5e5e5;
 $lightGrey: #c4c4c4;
 $pointRed: #ff6864;
 //font-weight
-$bold: 900;
+$bold: 800;
 $normal: 700;
 //페이지 전체 margin 기준
 $fontXXl: 3rem; //36px
@@ -30,6 +30,7 @@ body {
   margin: 0.5rem 1rem;
   background-color: $bodyColor;
   color: $darkGrey;
+  font-weight: $normal;
 }
 
 @media (max-width: 78rem) {

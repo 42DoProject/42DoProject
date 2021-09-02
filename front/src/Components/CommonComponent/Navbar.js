@@ -1,7 +1,16 @@
 import React from "react";
 import { Icon } from "@iconify/react";
 import "../../SCSS/Navbar.scss";
+import { useSelector } from "react-redux";
+
 export default function Navbar() {
+  let store = useSelector((store) => {
+    return store;
+  });
+  let userState = store.userReducer;
+  let projectState = store.projectReducer;
+  console.log(userState);
+  console.log(projectState);
   return (
     <div className="Nav">
       <div className="Nav-column1">

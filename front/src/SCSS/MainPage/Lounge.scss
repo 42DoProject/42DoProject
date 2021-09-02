@@ -1,7 +1,7 @@
 @import "../Base.scss";
 .lounge {
   position: relative;
-  width: 50%;
+  width: 40%;
   padding: 0 4rem;
   // padding-right: 2rem;
   .lounge__title {
@@ -21,6 +21,7 @@
       &:hover {
         transform: scale(1.05);
         z-index: 1;
+        transition: transform 0.2s;
       }
       .card__row1 {
         display: flex;

@@ -1,14 +1,12 @@
 import express, { Request, Response } from "express";
+import dotenv from "dotenv";
 
-const app: express.Application = express();
+dotenv.config();
 
-app.use("*", (request: Request, response: Response) => {
-  response.json({
-    idx: 1,
-    message: "hello world",
-  });
-});
+async function bootstrap() {
+  const app: express.Application = express();
 
-app.listen(5000, () => {
-  console.log("http://localhost:5000 ~");
-});
+  await app.listen(process.env.PORT);
+  console.log(`Server running on http://localhost:${process.env.PORT}`);
+}
+bootstrap();

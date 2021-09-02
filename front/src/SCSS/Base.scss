@@ -39,6 +39,13 @@ body {
   }
 }
 
+a {
+  text-decoration: none;
+  &:hover {
+    color: $mainColor;
+  }
+}
+
 $minWidth: 28rem;
 // iphon 5
 $iphone5Width: 27rem;

@@ -1,0 +1,41 @@
+@import "../Base.scss";
+
+.project-bar {
+	display: flex;
+	background-color: $bodyColor;
+	height: 4rem;
+	align-items: center;
+	justify-content: space-between;
+	padding-left: 1rem;
+	padding-right: 1rem;
+}
+
+.project-bar-column1 {
+	display: flex;
+	align-items: center;
+}
+
+.project-bar-column2 {
+	display: flex;
+	align-items: center;
+	// padding-right: 1rem;
+}
+
+.recruit-project {
+	font-weight: $bold;
+    font-size: $fontMd;
+    color: $black;
+    // margin-left: 2rem;
+	.innerHtml:hover {
+	  color: $mainColor;
+	}
+}
+
+.public-project {
+    font-weight: $bold;
+    font-size: $fontMd;
+    color: $black;
+    margin-left: 2rem;
+}
+
+

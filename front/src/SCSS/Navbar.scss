@@ -130,6 +130,7 @@
     right: -0.5rem;
     width: 20rem;
     z-index: 3;
+    overflow: hidden;
     .notiText__header {
       padding: 0.5rem;
       font-size: $fontSm;

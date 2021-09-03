@@ -71,6 +71,8 @@
   margin-right: 2rem;
   font-size: $fontMd;
   font-weight: $bold;
+}
+.a-color {
   color: $black;
 }
 
@@ -84,18 +86,19 @@
   .icon {
     position: relative;
     top: 0.2rem;
+    &:hover {
+      color: $mainColor;
+      cursor: pointer;
+    }
   }
-  span {
+  .haveNotification {
     z-index: 1;
     position: absolute;
-    // span은 width, heigth값을 못가지므로 inline-block으로 변환
-    display: flex;
-    justify-content: center;
-    align-items: center;
     font-size: 1rem;
     padding: 0.2rem;
-    width: 1.2rem;
-    height: 1.2rem;
+    display: flex;
+    justify-content: center;
+    height: 1.3rem;
     border-radius: 50%;
     font-weight: 600;
     background-color: $pointRed;
@@ -103,18 +106,82 @@
     left: 0.9rem;
     top: -0.2rem;
   }
+  .notNotification {
+    z-index: 1;
+    position: absolute;
+    font-size: 1rem;
+    padding: 0.2rem;
+    display: flex;
+    justify-content: center;
+    height: 1.3rem;
+    border-radius: 50%;
+    font-weight: 600;
+    background-color: $lightestGrey;
+    color: white;
+    left: 0.9rem;
+    top: -0.2rem;
+  }
+  .notiText__wrap {
+    position: absolute;
+    border-bottom-left-radius: $round;
+    background-color: white;
+    top: 3.05rem;
+    right: -0.5rem;
+    width: 20rem;
+    z-index: 3;
+    .notiText__header {
+      padding: 0.5rem;
+      font-size: $fontSm;
+      font-weight: $bold;
+      border-bottom: 1px solid $lightestGrey;
+    }
+    .notiText__body {
+      max-height: 19rem;
+      overflow-y: scroll;
+      .body__card {
+        border-bottom: 1px solid $lightestGrey;
+        padding: 0 0.5rem;
+        .card__row1 {
+          padding-top: 0.5rem;
+          display: flex;
+          font-size: $fontSm;
+          justify-content: space-between;
+          .card__title {
+            color: $mainColor;
+            margin-bottom: 1rem;
+          }
+        }
+        .card__text {
+          padding-bottom: 0.5rem;
+          font-size: $fontSm;
+        }
+      }
+    }
+  }
 }
 
 .Nav__user {
   display: flex;
   align-items: center;
+  &:hover {
+    .name {
+      color: $mainColor;
+    }
+  }
   .name {
     font-size: $fontMd;
     margin-right: 1rem;
+    color: $darkGrey;
   }
   .image {
     font-size: $fontMd;
     margin-right: 1rem;
+    .IntraImage {
+      border-radius: 50%;
+      width: 3rem;
+      height: 3rem;
+      object-fit: cover;
+    }
   }
 }
 .Nav__menu {

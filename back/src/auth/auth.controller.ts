@@ -3,8 +3,11 @@ import * as authService from "./auth.service";
 
 const router: express.Router = express.Router();
 
-router.get("/", (request: Request, response: Response) => {
-  authService.getTest(request, response);
-});
+router.get(
+  "/signin",
+  /*jwtGuards,*/ (request: Request, response: Response) => {
+    authService.signIn(request, response);
+  }
+);
 
 export default router;

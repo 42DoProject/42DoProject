@@ -2,6 +2,13 @@ import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import auth from "./auth/auth.controller";
 
+const { sequelize } = require('../models');
+
+sequelize.sync({ force: false })
+.then(() => {
+    console.log('데이터베이스 연결 성공');
+});
+
 dotenv.config();
 
 async function bootstrap() {

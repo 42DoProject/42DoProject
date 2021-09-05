@@ -1,16 +1,12 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import dotenv from "dotenv";
 import auth from "./auth/auth.controller";
-import sequelize from "../models";
-
-sequelize.sync({ force: false })
-.then(() => {
-    console.log('데이터베이스 연결 성공');
-});
+import { sequelize } from "./models";
 
 dotenv.config();
 
 async function bootstrap() {
+  await sequelize.sync();
   const app: express.Application = express();
 
   app.use("/auth", auth);

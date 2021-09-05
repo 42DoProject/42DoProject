@@ -1,8 +1,7 @@
 import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import auth from "./auth/auth.controller";
-
-const { sequelize } = require('../models');
+import sequelize from "../models";
 
 sequelize.sync({ force: false })
 .then(() => {

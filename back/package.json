@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "prestart": "tsc",
+    "prestart-window": "del /S /Q dist\\* && tsc",
+    "prestart": "rm -rf dist/* && tsc",
     "start": "node dist/main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,11 +16,14 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "mysql2": "^2.3.0",
-    "sequelize": "^6.6.5"
+    "reflect-metadata": "^0.1.13",
+    "sequelize": "^6.6.5",
+    "sequelize-typescript": "^2.1.0"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
     "@types/express": "^4.17.13",
-    "@types/node": "^16.7.10"
+    "@types/node": "^16.7.10",
+    "@types/validator": "^13.6.3"
   }
 }

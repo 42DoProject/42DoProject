@@ -8,7 +8,8 @@
     "esModuleInterop": true,
     "removeComments": true,
     "skipLibCheck": true,
-    "typeRoots": ["./node_modules/@types", "./src/interface/@types"]
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "exclude": [
     "node_modules"

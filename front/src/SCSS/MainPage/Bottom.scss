@@ -1,0 +1,12 @@
+.bottom {
+  display: flex;
+  justify-content: center;
+  max-width: 1440px;
+  margin: 0 auto;
+  // flex-wrap: wrap;
+}
+@media (max-width: 63rem) {
+  .bottom {
+    flex-wrap: wrap;
+  }
+}

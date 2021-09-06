@@ -1,5 +1,5 @@
 import Cards from "./Cards";
-import "../SCSS/List.scss";
+import "../../SCSS/MainPage/List.scss";
 import { Icon } from "@iconify/react";
 import { useState } from "react";
 
@@ -44,7 +44,7 @@ function nextUtil(slideFlag, setSlideFlag) {
   $cardsrow.style.transition = "transform .7s ease-out";
   if (slideFlag[1] !== 3) slideFlag[1]++;
   $cardsrow.style.transform = `translateX(${
-    (716 / 16) * slideFlag[0] + (-716 / 16) * slideFlag[1]
+    (696 / 16) * slideFlag[0] + (-696 / 16) * slideFlag[1]
   }rem)`;
   let newSlideFlag = [slideFlag[0], slideFlag[1]];
   setSlideFlag(newSlideFlag);
@@ -55,7 +55,7 @@ function prevUtil(slideFlag, setSlideFlag) {
   $cardsrow.style.transition = "transform .7s ease-out";
   if (slideFlag[1] !== 0) slideFlag[1]--;
   $cardsrow.style.transform = `translateX(${
-    (716 / 16) * slideFlag[0] + (-716 / 16) * slideFlag[1]
+    (696 / 16) * slideFlag[0] + (-696 / 16) * slideFlag[1]
   }rem)`;
   let newSlideFlag = [slideFlag[0], slideFlag[1]];
   setSlideFlag(newSlideFlag);

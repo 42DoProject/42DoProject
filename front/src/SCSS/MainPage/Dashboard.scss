@@ -1,4 +1,4 @@
-@import "./Base.scss";
+@import "../Base.scss";
 
 .dashboard {
   // background-color: $mainColor;
@@ -10,9 +10,18 @@
   // background-image: url(https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/109852763/original/cf07bcfb468b2823d537812be8f1640754794433/create-trendy-abstract-geometric-pattern-on-light-background.jpg);
   // background-image: url(https://cdn.pixabay.com/photo/2018/04/04/14/34/design-3289964_960_720.png);
   // background-size: cover;
-  background:linear-gradient(0deg, rgba(167, 188, 91, 1), rgba(167, 188, 91, 0.9)), url(https://cdn.pixabay.com/photo/2018/04/04/14/34/design-3289964_960_720.png);
+  background: linear-gradient(
+      0deg,
+      rgba(167, 188, 91, 0.95),
+      rgba(167, 188, 91, 0.95)
+    ),
+    url(https://cdn.pixabay.com/photo/2018/04/04/14/34/design-3289964_960_720.png);
   // box-shadow:inset 0 0 0 2000px rgba(167, 188 ,91, 0.95);
   box-shadow: 0rem 0.5rem 0.5rem 0rem rgba(0, 0, 0, 0.1);
+  .dashboard__wrap {
+    max-width: 1440px;
+    margin: 0 auto;
+  }
 }
 
 .row1 {

@@ -1,5 +1,5 @@
 import React from "react";
-import "../SCSS/Lounge.scss";
+import "../../SCSS/MainPage/Lounge.scss";
 import { Icon } from "@iconify/react";
 export default function Lounge() {
   return (
@@ -16,7 +16,9 @@ export default function Lounge() {
             <div className="row1__name">seojeong</div>
           </div>
           <div className="card__row2">
-            <div className="row2__chat">가나다라마바사아자차카타파화</div>
+            <div className="row2__chat">
+              가나다라마바사아자차카타파화가나다라마바사아자차카타파화가나다라마바사아자차카타파화가나다라마바사아자차카타파화
+            </div>
           </div>
           <div className="card__row3">
             <Icon className="row3-icon" icon="ant-design:like-outlined" />

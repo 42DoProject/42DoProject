@@ -1,16 +1,17 @@
-@import "./Base.scss";
+@import "../Base.scss";
 
 .cards {
-  margin-right: 2.5rem;
+  margin-right: 1.7rem;
   background-color: white;
+  // background-color: pink;
   box-shadow: $shadow;
   border-radius: $round;
   padding: 1rem;
   &:hover {
     transform: scale(1.1);
-	  z-index: 1;
+    z-index: 1;
   }
-  transition: transform .2s;
+  transition: transform 0.2s;
   // min-width: 22rem;
   .card__image {
     position: relative;
@@ -24,7 +25,7 @@
       width: 100%;
       width: 18rem;
       height: 11.5rem;
-      filter: brightness(50%)
+      filter: brightness(50%);
     }
     .image__title {
       position: absolute;
@@ -52,7 +53,6 @@
         position: relative;
         // bottom: 0.rem;
         // z-index: 2;
-      
       }
     }
   }

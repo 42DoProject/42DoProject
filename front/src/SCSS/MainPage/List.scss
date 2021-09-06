@@ -1,12 +1,13 @@
-@import "./Base.scss";
+@import "../Base.scss";
 
 .cardlist {
   display: flex;
   position: relative;
+  // left: 1rem;
   justify-content: flex-start;
-//   background-color: pink;
+  //   background-color: pink;
   border-radius: $round;
-  padding-right: 2rem;
+  padding: 0 1rem;
   &:hover {
     .cardbutton {
       visibility: visible;
@@ -20,7 +21,7 @@
     &::-webkit-scrollbar {
       display: none;
     }
-	// position: relative;
+    // position: relative;
     .cards-row {
       display: flex;
     }

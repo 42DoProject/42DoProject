@@ -4,8 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "prestart-window": "del /S /Q dist\\* && tsc",
-    "prestart": "rm -rf dist/* && tsc",
+    "prestart": "del /S /Q dist\\* && tsc",
+    "prestart-window": "rm -rf dist/* && tsc",
     "start": "node dist/main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

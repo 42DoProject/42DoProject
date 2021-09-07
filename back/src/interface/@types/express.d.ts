@@ -1,5 +1,9 @@
-declare module Express {
-  export interface Request {
-    user?: string; // -> change model User, not string;;
+import { User } from "../../models/user/user.model";
+
+declare global {
+  namespace Express {
+    interface Request {
+      user?: User | null;
+    }
   }
 }

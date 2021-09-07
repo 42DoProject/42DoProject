@@ -4,8 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "prestart": "del /S /Q dist\\* && tsc",
-    "prestart-window": "rm -rf dist/* && tsc",
+    "prestart-window": "del /S /Q dist\\* && tsc",
+    "prestart": "rm -rf dist/* && tsc",
     "start": "node dist/main.js",
     "test": "nodemon --exec ts-node -r tsconfig-paths/register src/main.ts"
   },

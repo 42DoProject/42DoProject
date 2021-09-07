@@ -6,6 +6,8 @@ Readme.md
 
 DB model을 작성/추가할 때는 반드시 `src/models/` 안에 카테고리가 될 수 있는 폴더를 만들고, 그 안에 Model 하나 당 하나의 소스 파일을 사용해야합니다. 또한 파일 이름은 `(작성할 해당 Model).model.ts`의 형태여야 합니다.
 
+파일명과 해당 파일 안에서 선언된 클래스명은 일치되어야 합니다. (ex. `user.model.ts`, `export class User extends Model {}`)
+
 또한 테이블의 모든 메타데이터들은 모두 데코레이터로 작성되어야 합니다. (기존의 js sequelize 형식 X)
 
 **다른 테이블을 포함하는 테이블은 모두 관계성을 가지고 있어야 합니다**

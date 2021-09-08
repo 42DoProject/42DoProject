@@ -1,10 +1,16 @@
 import express from "express";
 import auth from "./auth/auth.controller";
+import { jwtGuards } from "./auth/oauth";
 
 const router: express.Router = express.Router();
 
-//  app.use(authorization); // <- jwt 체크, 상태 request.auth 같은 곳에 저장, request.user 에 유저 받기
-//guards();를 라우트 함수 내부 첫줄에서 호출하면 request.auth 체크하고 인증 실패 경우 httpException 반환
 router.use("/auth", auth);
+
+/* back에서 intra api를 받기 위한 router, 임시용, 원래는 index에는 라우터만 추가해야 합니다 */
+router.get("/success", (request, response) => {
+  response.redirect(
+    `http://localhost:5000/auth/signin?code=${request.query.code}`
+  );
+});
 
 export default router;

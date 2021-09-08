@@ -1,6 +1,6 @@
 import { Table, Column, Model, DataType } from "sequelize-typescript";
 
-@Table
+@Table({ timestamps: false })
 export class BlackList extends Model {
   @Column(DataType.STRING(200))
   token!: string;

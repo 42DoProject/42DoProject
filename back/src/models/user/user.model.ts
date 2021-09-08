@@ -1,5 +1,6 @@
 import { Table, Column, Model, DataType, HasOne } from "sequelize-typescript";
 import { OToken } from "./otoken.model";
+import { Profile } from "./profile.model";
 import { Token } from "./token.model";
 
 @Table
@@ -24,4 +25,7 @@ export class User extends Model {
 
   @HasOne(() => Token)
   token?: Token;
+
+  @HasOne(() => Profile)
+  profile?: Profile;
 }

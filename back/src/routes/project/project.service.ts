@@ -6,3 +6,7 @@ import { Content } from "../../models/project/content.model";
 
 const app = express();
 app.set('query parser', 'extended');
+
+export const getList = async (request: Request, response: Response) => {
+    
+}

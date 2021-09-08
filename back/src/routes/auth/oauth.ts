@@ -4,6 +4,7 @@ import { IJwtSet, IOToken } from "../../interface/token.interface";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { User } from "../../models/user/user.model";
 import { BlackList } from "../../models/user/blacklist.model";
+import { Op } from "sequelize";
 
 export const accessToken = async (code: string): Promise<boolean | IOToken> => {
   try {
@@ -109,4 +110,17 @@ export const jwtGuards = (
 ) => {
   if (request.user) next();
   else response.status(401).json({ error: "unauthenticated" });
+};
+
+export const expiredTokenCollector = () => {
+  const collector = setInterval(async () => {
+    const now = Math.floor(Date.now() / 1000);
+    await BlackList.destroy({
+      where: {
+        expiryDate: {
+          [Op.lt]: now,
+        },
+      },
+    });
+  }, 1000 * 60 * 60 * 24);
 };

@@ -11,11 +11,11 @@ export class List extends Model {
   @Column(DataType.INTEGER)
   curMember!: number;
 
-  @Column(DataType.BOOLEAN)
-  recruit!: number;
+  @Column(DataType.STRING(20))
+  state!: string;
 
   @Column(DataType.INTEGER)
-  heart!: number;
+  like!: number;
 
   // @AllowNull
   // @Column(DataType.ENUM('null'))

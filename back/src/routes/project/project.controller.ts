@@ -4,11 +4,7 @@ import * as projectService from "./project.service";
 const router: express.Router = express.Router();
 
 router.get("/list", (request: Request, response: Response) => {
-    projectService.getList(request, response);
-  });
-
-// router.get("/signout", jwtGuards, (request: Request, response: Response) => {
-//   authService.signOut(request, response);
-// });
+  projectService.getList(request, response);
+});
 
 export default router;

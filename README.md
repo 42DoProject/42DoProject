@@ -22,7 +22,7 @@ $> ./docker-compose-down.sh
 6. `show tables;` 명령어로 projects 테이블이 생성되었는지 확인합니다.
 7. 아래 명령어로 projects 테이블에 값을 저장할 수 있습니다.
 ```
-INSERT INTO projects (\`title\`, \`totalMember\`, \`currentMember\`, \`state\`, \`like\`, \`createdAt\`, \`updatedAt\`) VALUE('42DoProject', 5, 5, 'proceeding', 42, NOW(), NOW());
+INSERT INTO projects (`title`, `totalMember`, `currentMember`, `state`, `like`, `createdAt`, `updatedAt`) VALUE('42DoProject', 5, 5, 'proceeding', 42, NOW(), NOW());
 ```
 
 - 참고사항 : db container가 초기화될 동안에는 back container에서 접근이 안되어 오류가 발생할 수 있고, login이 안될 수도 있습니다. 30초 정도 초기화 작업이 끝나면 정상화 됩니다.

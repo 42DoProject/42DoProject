@@ -42,3 +42,16 @@ router.get("/test", jwtGuards, (request: Request, response: Response) => {
 
 여러 파일에서 사용될 유틸적인 기능들은 module/ 폴더 내부에 (해당 기능 카테고리).ts 파일로 작성해주세요.
 ex) ISO 시간을 반환하는 기능을 module/time.ts에 넣어놨습니다. 추후 time 관련 기능은 module/time.ts에 추가해주시면 됩니다.
+
+## project API 명세
+- url : `http://localhost:5000/project/list`
+- request
+1. state : string, 프로젝트의 상태(`recruiting`, `proceeding`, `completed`)
+2. page : number, 페이지
+3. pageSize : number, 페이지당 카드 갯수
+
+- 요청은 querystring으로 보내주시면 됩니다.
+(Ex : `http://localhost:5000/project/list?state=completed&page=1&pageSize=3`)
+
+- post 기능이 추가되기 전까진 db 컨테이너에서 임의로 `projects` 테이블에 값을 넣으신 후, 테스트해주시면 됩니다.
+(Ex : `INSERT INTO projects (title, totalMember, currentMember, state, like, createdAt, updatedAt) VALUE('42DoProject', 5, 5, 'proceeding', 200, NOW(), NOW());`)

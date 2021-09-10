@@ -39,6 +39,8 @@ const userModelCheck = async (user: any): Promise<number> => {
     statusMessage: "",
     introduction: "",
     history: [],
+    following: [],
+    follower: [],
     userId: row.id,
   });
   return row.id;
@@ -76,7 +78,10 @@ export const signIn = async (request: Request, response: Response) => {
       },
       { where: { userId: idx } }
     );
-    response.status(200).json(jwt);
+    const meta = await User.findOne({ where: { id: idx } });
+    response
+      .status(200)
+      .json({ user: { username: meta?.username }, token: jwt });
     return;
   }
   if (refresh_token) {

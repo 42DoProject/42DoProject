@@ -26,6 +26,12 @@ export class Profile extends Model {
   @Column(DataType.JSON)
   history!: IHistory[];
 
+  @Column(DataType.JSON)
+  following!: number[];
+
+  @Column(DataType.JSON)
+  follower!: number[];
+
   @ForeignKey(() => User)
   @Column
   userId?: number;

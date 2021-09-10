@@ -10,10 +10,7 @@ export default function ProfileHeader() {
       <div className="profileImage">
         <img alt="profileImage1" />
         <div className="profileImage__icons">
-          <Icon
-            className="profile__icon1"
-            icon="ant-design:user-add-outlined"
-          />
+          <Icon className="profile__icon1" icon="ion:chatbox-ellipses" />
           <Icon
             className="profile__icon2"
             icon="ant-design:user-add-outlined"

@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { List } from "../../models/project/list.model";
+import { Project } from "../../models/project/project.model";
 
 const app = express();
 app.set('query parser', 'extended');
@@ -7,20 +7,20 @@ app.set('query parser', 'extended');
 export const getList = async (request: Request, response: Response) => {
     let offset: number;
     let limit: number;
-    let list;
+    let project;
     if (request.query === null)
-        list = await List.findAll();
+        project = await Project.findAll();
     else if (request.query.state === 'recruiting') {
         if (request.query.page !== undefined && request.query.pageSize !== undefined) {
             limit = Number( request.query.pageSize );
             offset = ( Number( request.query.page ) - 1 ) * limit;
-            list = await List.findAll({
+            project = await Project.findAll({
                 where: { state: 'recruiting' },
                 offset: offset,
                 limit: limit
             });
         } else if (request.query.page === undefined && request.query.pageSize === undefined) {
-            list = await List.findAll({ where: { state: 'recruiting' } });
+            project = await Project.findAll({ where: { state: 'recruiting' } });
         } else {
             response.status(400).json({ error: "invalid query" });
             return;
@@ -30,13 +30,13 @@ export const getList = async (request: Request, response: Response) => {
         if (request.query.page !== undefined && request.query.pageSize !== undefined) {
             limit = Number( request.query.pageSize );
             offset = ( Number( request.query.page ) - 1 ) * limit;
-            list = await List.findAll({
+            project = await Project.findAll({
                 where: { state: 'proceeding' },
                 offset: offset,
                 limit: limit
             })
         } else if (request.query.page === undefined && request.query.pageSize === undefined) {
-            list = await List.findAll({ where: { state: 'proceeding' } });
+            project = await Project.findAll({ where: { state: 'proceeding' } });
         } else {
             response.status(400).json({ error: "invalid query" });
             return;
@@ -46,13 +46,13 @@ export const getList = async (request: Request, response: Response) => {
         if (request.query.page !== undefined && request.query.pageSize !== undefined) {
             limit = Number( request.query.pageSize );
             offset = ( Number( request.query.page ) - 1 ) * limit;
-            list = await List.findAll({
+            project = await Project.findAll({
                 where: { state: 'completed' },
                 offset: offset,
                 limit: limit
             })
         } else if (request.query.page === undefined && request.query.pageSize === undefined) {
-            list = await List.findAll({ where: { state: 'completed' } });
+            project = await Project.findAll({ where: { state: 'completed' } });
         } else {
             response.status(400).json({ error: "invalid query" });
             return;
@@ -62,9 +62,9 @@ export const getList = async (request: Request, response: Response) => {
         response.status(400).json({ error: "invalid query" });
         return;
     }
-    if (!list) {
+    if (!project) {
         response.status(400).json({ error: "empty" });
         return;
     }
-    response.status(200).json({ list });
+    response.status(200).json({ project });
 }

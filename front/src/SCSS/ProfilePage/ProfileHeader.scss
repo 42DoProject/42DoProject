@@ -57,12 +57,12 @@
       text-align: center;
       margin: 0.7rem 0;
       border-radius: 1.8rem;
-      font-weight: 700;
+      // font-weight: $normal;
       box-shadow: $shadow;
     }
     .profile__last-access {
       color: $lightestGrey;
-      font-weight: $bold;
+      font-weight: $normal;
     }
   }
 }

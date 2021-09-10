@@ -36,3 +36,9 @@ router.get("/test", jwtGuards, (request: Request, response: Response) => {
     ...
 ```
 위와 같은 형태로 jwtGuards를 추가해줄 수 있습니다.
+
+
+### Utils
+
+여러 파일에서 사용될 유틸적인 기능들은 module/ 폴더 내부에 (해당 기능 카테고리).ts 파일로 작성해주세요.
+ex) ISO 시간을 반환하는 기능을 module/time.ts에 넣어놨습니다. 추후 time 관련 기능은 module/time.ts에 추가해주시면 됩니다.

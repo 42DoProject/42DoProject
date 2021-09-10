@@ -3,8 +3,10 @@ import { JwtPayload } from "jsonwebtoken";
 import { IOToken } from "../../interface/token.interface";
 import { BlackList } from "../../models/user/blacklist.model";
 import { OToken } from "../../models/user/otoken.model";
+import { Profile } from "../../models/user/profile.model";
 import { Token } from "../../models/user/token.model";
 import { User } from "../../models/user/user.model";
+import { getIsoString } from "../../module/time";
 import { accessToken, issueJwt, jwtToObject, tokenToUser } from "./oauth";
 
 const userModelCheck = async (user: any): Promise<number> => {
@@ -29,6 +31,14 @@ const userModelCheck = async (user: any): Promise<number> => {
     accessExpiry: null,
     refreshToken: null,
     refreshExpiry: null,
+    userId: row.id,
+  });
+  await Profile.create({
+    level: 1,
+    lastAccess: getIsoString(),
+    statusMessage: "",
+    introduction: "",
+    history: [],
     userId: row.id,
   });
   return row.id;

@@ -9,7 +9,7 @@ import {
 } from "sequelize-typescript";
 import { User } from "./user.model";
 
-@Table
+@Table({ timestamps: false })
 export class OToken extends Model {
   @AllowNull
   @Column(DataType.STRING(100))

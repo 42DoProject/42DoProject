@@ -1,7 +1,7 @@
 import { Table, Column, AllowNull, Model, DataType, HasMany } from "sequelize-typescript";
 
 @Table
-export class List extends Model {
+export class Project extends Model {
   @Column(DataType.STRING(200))
   title!: string;
 
@@ -9,13 +9,13 @@ export class List extends Model {
   totalMember!: number;
 
   @Column(DataType.INTEGER)
-  curMember!: number;
+  currentMember!: number;
 
-  @Column(DataType.BOOLEAN)
-  recruit!: number;
+  @Column(DataType.STRING(20))
+  state!: string;
 
   @Column(DataType.INTEGER)
-  heart!: number;
+  like!: number;
 
   // @AllowNull
   // @Column(DataType.ENUM('null'))

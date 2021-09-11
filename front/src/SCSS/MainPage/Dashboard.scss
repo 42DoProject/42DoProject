@@ -57,13 +57,18 @@
     padding: 0.3rem 0.7rem;
     border-radius: $round;
     background-color: rgba(0, 0, 0, 0.53);
+    .icon__link {
+      color: $lightestGrey;
+      &:hover {
+        color: $mainColor;
+      }
+    }
   }
 }
 
 .row2 {
   display: flex;
   padding: 0 2.5rem;
-  // justify-content: space-around;
   .row2__box1 {
     display: flex;
     background-color: rgba(0, 0, 0, 0.53);
@@ -105,7 +110,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     flex-grow: 1;
     background-color: rgba(0, 0, 0, 0.53);
     padding: 2rem;
@@ -115,22 +120,27 @@
     font-weight: 800;
     margin-left: 1.7rem;
     position: relative;
+    width: 8rem;
+    &:hover {
+      .cardbutton {
+        visibility: visible;
+      }
+    }
     .box2__title {
       position: absolute;
       left: 1.5rem;
       top: 1.5rem;
     }
     .box2__slides {
-      position: absolute;
-      top: 6rem;
-      font-size: $fontLg;
+      position: relative;
+      top: 1rem;
     }
   }
   .row2__box3 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     position: relative;
     flex-grow: 1;
     background-color: rgba(0, 0, 0, 0.53);
@@ -140,15 +150,20 @@
     color: $lightestGrey;
     font-size: 1.3rem;
     font-weight: 800;
+    width: 8rem;
+    &:hover {
+      .cardbutton {
+        visibility: visible;
+      }
+    }
     .box3__title {
       position: absolute;
       left: 1.5rem;
       top: 1.5rem;
     }
     .box3__slides {
-      position: absolute;
-      top: 6rem;
-      font-size: $fontLg;
+      position: relative;
+      top: 1rem;
     }
   }
 }
@@ -169,6 +184,10 @@
     position: relative;
     top: 1.5rem;
     padding: 0.6rem;
+    .dashboard__project__link1,
+    .dashboard__project__link2 {
+      color: $mainColor;
+    }
   }
 
   .reportbox__report {

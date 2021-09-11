@@ -1,0 +1,53 @@
+@import "../Base.scss";
+
+.dashSlide {
+  display: flex;
+  position: relative;
+  .cardbutton {
+    position: absolute;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background-color: rgba(144, 144, 144, 0.3);
+    border: none;
+    visibility: hidden;
+  }
+  .prev {
+    z-index: 2;
+    left: -3rem;
+    top: 3rem;
+    .prev__icon {
+      font-size: 2rem;
+      color: white;
+      position: relative;
+      right: 0.1rem;
+    }
+  }
+  .dashCardslist {
+    width: 15rem;
+    overflow: hidden;
+    height: 10rem;
+    overflow-x: scroll;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    .dashCards-wrap {
+      width: 1000%;
+      display: flex;
+      justify-content: start;
+      flex-wrap: wrap;
+    }
+  }
+  .next {
+    position: absolute;
+    z-index: 2;
+    top: 3rem;
+    right: -3.5rem;
+    .next__icon {
+      font-size: 2rem;
+      color: white;
+      position: relative;
+      left: 0.1rem;
+    }
+  }
+}

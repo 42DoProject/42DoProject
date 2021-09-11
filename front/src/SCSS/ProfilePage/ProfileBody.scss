@@ -2,60 +2,107 @@
 
 .profileBody {
   border-radius: $round;
+  padding: 2rem;
   box-shadow: $shadow;
   min-height: 35rem;
   background-color: white;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
   .profileBody__row1 {
     display: flex;
+    width: 90%;
     justify-content: center;
     align-items: center;
-    min-height: 15rem;
+    min-height: 13rem;
     // background-color: pink;
     .row1__profile-card1,
     .row1__profile-card2 {
-      width: 35%;
-      min-height: 80%;
+      font-weight: $normal;
+      width: 40%;
+      min-height: 100%;
       margin: 0 1rem;
       padding: 2rem;
       border-radius: $round;
       box-shadow: $shadow;
       display: flex;
-      //   justify-content: center;
-      //   align-items: center;
-      //   background-color: yellow;
     }
   }
 }
 
 .card1__column1 {
   display: flex;
-  //   width: 50%;
+  // width: 50%;
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-around;
-  //   background-color: pink;
+  // background-color: pink;
   .column1__job,
   .column1__level,
   .column1__skill {
     color: $mainColor;
-    text-align: center;
-    // margin: 0.5rem;
+    // text-align: center;
+    margin: 0.5rem;
   }
 }
 
 .card1__column2 {
   display: flex;
-  width: 50%;
-  justify-content: space-between;
+  // width: 50%;
+  justify-content: space-around;
   flex-direction: column;
   align-items: flex-start;
-  //   background-color: green;
-  .column2__job,
-  .column2__level,
+
   .column2__skill {
-    padding: 0.5rem 1.5rem;
-    margin: 0.5rem;
+    img {
+      margin: 0 0.2rem;
+    }
+  }
+}
+
+.row1__profile-card2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  font-weight: $normal;
+  span {
+    margin-left: 1rem;
+  }
+  .email-span,
+  .github-span {
+    color: $mainColor;
+  }
+}
+
+.profileBody__row2 {
+  // background-color: beige;
+  border-radius: $round;
+  // font-weight: $normal;
+  box-shadow: $shadow;
+  margin-top: 2rem;
+  padding: 1rem 2rem;
+  width: 76%;
+  span {
+    margin-right: 1rem;
+  }
+  hr {
+    color: $lightGrey;
+    height: 2px;
+  }
+  .row2__introduction {
+    margin: 2rem 0;
+  }
+  .row2__ongoing-projects,
+  .row2__done-projects {
+    margin: 2rem 0;
+    span {
+      color: $lightGrey;
+      font-weight: $normal;
+    }
+    .row2__subject-span {
+      color: $black;
+      font-weight: 700;
+    }
   }
 }

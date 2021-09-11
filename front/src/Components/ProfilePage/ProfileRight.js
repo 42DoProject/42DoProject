@@ -1,15 +1,15 @@
 import React from "react";
 import "../../SCSS/ProfilePage/ProfileRight.scss";
 // import { Icon } from "@iconify/react";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 
 export default function ProfileRight() {
-  let userState = store.userReducer;
+  // let userState = store.userReducer;
   return (
     <div>
       <div className="column-right__following">
         <span>피드</span>
-        <div>
+        {/* <div>
           {userState.notification.list.map((e) => {
             return (
               <div className="body__card">
@@ -21,7 +21,7 @@ export default function ProfileRight() {
               </div>
             );
           })}
-        </div>
+        </div> */}
       </div>
       <div className="column-right__follower">
         <span>나를 팔로우한 카뎃</span>

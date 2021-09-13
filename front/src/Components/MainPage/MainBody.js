@@ -1,11 +1,9 @@
 import React from "react";
-// import { Icon } from "@iconify/react";
-import "../../SCSS/MainPage/Recruit.scss";
-// import Cards from "./Cards";
+import "../../SCSS/MainPage/MainBody.scss";
 import RecruitList from "./RecruitList";
 import PubilcList from "./PubilcList";
 
-export default function Recruit() {
+export default function MainBody() {
   return (
     <div className="recruit__wrap">
       <div className="recruit">

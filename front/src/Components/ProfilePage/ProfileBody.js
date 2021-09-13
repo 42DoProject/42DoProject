@@ -1,5 +1,5 @@
 import React from "react";
-// import { Icon } from "@iconify/react";
+import { Icon } from "@iconify/react";
 import "../../SCSS/ProfilePage/ProfileBody.scss";
 
 export default function ProfileBody() {
@@ -31,7 +31,36 @@ export default function ProfileBody() {
             </div>
           </div>
         </div>
-        <div className="row1__profile-card2"></div>
+        <div className="row1__profile-card2">
+          <div className="card2__location">
+            <Icon icon="carbon:location-filled" height="25px" />
+            <span>Seoul</span>
+          </div>
+          <div className="card2__email">
+            <Icon icon="fluent:mail-48-filled" height="25px" />
+            <span className="email-span">jiylee@student.42seoul.kr</span>
+          </div>
+          <div className="card3__github">
+            <Icon icon="akar-icons:github-fill" height="22px" />
+            <span className="github-span">Jiyong95</span>
+          </div>
+        </div>
+      </div>
+      <div className="profileBody__row2">
+        <div className="row2__introduction">
+          풀스택 개발자 지망생 jiylee입니다! 포트폴리오 겸 프론트엔드 쪽으로
+          프로젝트 구하고 있습니다. 채팅 주세요~
+        </div>
+        <hr />
+        <div className="row2__ongoing-projects">
+          <span className="row2__subject-span">진행중인 프로젝트</span>
+          <span>없음</span>
+        </div>
+        <hr />
+        <div className="row2__done-projects">
+          <span className="row2__subject-span">완료한 프로젝트</span>
+          <span>없음</span>
+        </div>
       </div>
     </div>
   );

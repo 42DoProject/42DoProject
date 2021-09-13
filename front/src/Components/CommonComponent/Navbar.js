@@ -69,9 +69,9 @@ export default function Navbar() {
                 <div className="header__text">알림</div>
               </div>
               <div className="notiText__body">
-                {userState.notification.list.map((e) => {
+                {userState.notification.list.map((e, idx) => {
                   return (
-                    <div className="body__card">
+                    <div key={idx} className="body__card">
                       <div className="card__row1">
                         <div className="card__title">{e.title}</div>
                         <div className="card__date">{e.date}</div>

@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { getUserSocket } from "../../socket/bridge";
+import { getUserSocket, io as sockets } from "../../socket/bridge";
 import { jwtGuards } from "../auth/oauth";
 import * as chatService from "./chat.service";
 

@@ -1,4 +1,5 @@
-import { Table, Column, AllowNull, Model, DataType, HasMany } from "sequelize-typescript";
+import { Table, Column, Model, DataType, ForeignKey, HasMany } from "sequelize-typescript";
+import { Projecttag } from "./projecttag.model";
 
 @Table
 export class Project extends Model {
@@ -17,7 +18,6 @@ export class Project extends Model {
   @Column(DataType.INTEGER)
   like!: number;
 
-  // @AllowNull
-  // @Column(DataType.ENUM('null'))
-  // tag!: string[];
+  @HasMany(() => Projecttag)
+  projecttag!: Projecttag[];
 }

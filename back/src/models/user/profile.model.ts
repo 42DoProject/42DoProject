@@ -32,6 +32,9 @@ export class Profile extends Model {
   @Column(DataType.JSON)
   follower!: number[];
 
+  @Column(DataType.JSON)
+  chat!: string[];
+
   @ForeignKey(() => User)
   @Column
   userId?: number;

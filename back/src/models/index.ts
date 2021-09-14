@@ -1,5 +1,6 @@
-import { Sequelize } from "sequelize-typescript";
 import dotenv from "dotenv";
+import mongo from "mongoose";
+import { Sequelize } from "sequelize-typescript";
 
 dotenv.config();
 
@@ -16,3 +17,13 @@ export const sequelize: Sequelize = new Sequelize({
     );
   },
 });
+
+export const mongoose = async () => {
+  const db = mongo.connection;
+  db.once("open", () => {
+    console.log("[MongoDB] connected");
+  });
+  await mongo.connect(
+    `mongodb://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_HOST}:27017`
+  );
+};

@@ -32,7 +32,7 @@ export default function Navbar() {
         </div>
 
         <div className="Nav__cadet">
-          <Link className="a-color" to="/cadet">
+          <Link className="a-color" to="/cadet/recruit">
             카뎃
           </Link>
         </div>

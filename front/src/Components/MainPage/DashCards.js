@@ -1,6 +1,5 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Icon } from "@iconify/react";
 import "../../SCSS/MainPage/DashCards.scss";
 export default function DashCards() {
   let store = useSelector((store) => {

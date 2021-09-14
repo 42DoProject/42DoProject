@@ -186,7 +186,15 @@
     padding: 0.6rem;
     .dashboard__project__link1,
     .dashboard__project__link2 {
+      color: $pointRed;
+    }
+    .dashboard__project__link3,
+    .dashboard__project__link4 {
       color: $mainColor;
+    }
+    .dashboard__project__link1,
+    .dashboard__project__link3 {
+      font-size: $fontMd;
     }
   }
 

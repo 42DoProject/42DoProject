@@ -12,6 +12,9 @@ services:
     restart: always
   back:
     container_name: backend
+    depends_on:
+      - db
+      - mongo
     build:
       context: ./back
       dockerfile: Dockerfile
@@ -21,7 +24,7 @@ services:
       - 5000:5000
     restart: always
   db:
-    container_name: database
+    container_name: mysql
     image: mysql:latest
     env_file:
       - ./db/.env
@@ -29,4 +32,14 @@ services:
       - ./db/data:/var/lib/mysql
     ports:
       - 3306:3306
+    restart: always
+  mongo:
+    container_name: mongo
+    image: mongo
+    env_file:
+      - ./db/.env
+    volumes:
+      - ./db/mongo:/data/db
+    ports:
+      - 27017-27019:27017-27019
     restart: always

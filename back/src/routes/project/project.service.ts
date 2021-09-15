@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import { Project } from "../../models/project/project.model";
 import { Tag } from "../../models/project/tag.model";
 import { Projecttag } from "../../models/project/projecttag.model";
+import { getIsoString } from "../../module/time";
 
 const app = express();
 app.set('query parser', 'extended');
@@ -24,12 +25,18 @@ const pagination = async (request: Request, response: Response, state: string) =
                 where: { state: state },
                 offset: offset,
                 limit: limit
+            })
+            .catch(err => {
+                response.status(400).json({ message: String(err) });
             });
         } else {
             project = await Project.findAll({
                 where: { state: state },
                 offset: offset,
                 limit: limit
+            })
+            .catch(err => {
+                response.status(400).json({ message: String(err) });
             });
         }
     } else if (page === undefined && pageSize === undefined) {
@@ -40,12 +47,21 @@ const pagination = async (request: Request, response: Response, state: string) =
                     include: [{ model: Tag, where: { tagTitle: tag }, required: true }],
                     required: true
                 },
-                where: { state: state } });
+                where: { state: state }
+            })
+            .catch(err => {
+                response.status(400).json({ message: String(err) });
+            });
         } else {
-            project = await Project.findAll({ where: { state: state } });
+            project = await Project.findAll({
+                where: { state: state }
+            })
+            .catch(err => {
+                response.status(400).json({ message: String(err) });
+            });
         }
     } else {
-        response.status(400).json({ error: "invalid query" });
+        response.status(400).json({ error: "missing page or pageSize query" });
         return;
     }
     return project;
@@ -68,11 +84,11 @@ export const getList = async (request: Request, response: Response) => {
         if (!project)
             return;
     } else {
-        response.status(400).json({ error: "invalid query" });
+        response.status(400).json({ error: "invalid state value" });
         return;
     }
     if (!project) {
-        response.status(400).json({ error: "empty" });
+        response.status(200).json({ error: "empty" });
         return;
     }
     response.status(200).json({ project });
@@ -88,8 +104,8 @@ export const postList = async (request: Request, response: Response) => {
         currentMember: currentMember,
         state: state,
         like: 0,
-        createdAt: date,
-        updatedAt: date
+        createdAt: getIsoString(),
+        updatedAt: getIsoString()
     })
     .then(async project => {
         if (tag !== undefined) {

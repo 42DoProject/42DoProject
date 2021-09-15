@@ -10,6 +10,7 @@ export default function Navbar() {
     return store;
   });
   let userState = store.userReducer;
+  let loginState = store.loginReducer;
   return (
     <div className="Nav">
       <div className="Nav-column1">
@@ -41,65 +42,78 @@ export default function Navbar() {
             라운지
           </Link>
         </div>
-        <div className="Nav__notification">
-          {parseInt(userState.notification.num) ? (
-            <span className="haveNotification">
-              {userState.notification.num}
-            </span>
-          ) : (
-            <span className="notNotification">{0}</span>
-          )}
-          <Icon
-            className="icon"
-            icon="carbon:notification"
-            onClick={() => {
-              let iconEl = document.querySelector(".icon");
-              if (clickFlag === 0) {
-                setClickFlag(1);
-                iconEl.style.color = "#a7bc5b";
-              } else {
-                setClickFlag(0);
-                iconEl.style.color = "#565656";
-              }
-            }}
-          />
-          {clickFlag === 1 && (
-            <div className="notiText__wrap">
-              <div className="notiText__header">
-                <div className="header__text">알림</div>
-              </div>
-              <div className="notiText__body">
-                {userState.notification.list.map((e, idx) => {
-                  return (
-                    <div key={idx} className="body__card">
-                      <div className="card__row1">
-                        <div className="card__title">{e.title}</div>
-                        <div className="card__date">{e.date}</div>
+        {loginState.name === "guest" ? null : (
+          <div className="Nav__notification">
+            {parseInt(userState.notification.num) ? (
+              <span className="haveNotification">
+                {userState.notification.num}
+              </span>
+            ) : (
+              <span className="notNotification">{0}</span>
+            )}
+            <Icon
+              className="icon"
+              icon="carbon:notification"
+              onClick={() => {
+                let iconEl = document.querySelector(".icon");
+                if (clickFlag === 0) {
+                  setClickFlag(1);
+                  iconEl.style.color = "#a7bc5b";
+                } else {
+                  setClickFlag(0);
+                  iconEl.style.color = "#565656";
+                }
+              }}
+            />
+            {clickFlag === 1 && (
+              <div className="notiText__wrap">
+                <div className="notiText__header">
+                  <div className="header__text">알림</div>
+                </div>
+                <div className="notiText__body">
+                  {userState.notification.list.map((e, idx) => {
+                    return (
+                      <div key={idx} className="body__card">
+                        <div className="card__row1">
+                          <div className="card__title">{e.title}</div>
+                          <div className="card__date">{e.date}</div>
+                        </div>
+                        <div className="card__text">{e.text}</div>
                       </div>
-                      <div className="card__text">{e.text}</div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+        {loginState.name === "guest" ? (
+          <button className="Nav__user login">
+            <a
+              className="login__link"
+              href="https://api.intra.42.fr/oauth/authorize?client_id=2d6ee50437c3f7d433bd852f75d69ffbed52da6117b7a513de39d18b98cd8f95&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth&response_type=code"
+            >
+              SIGN IN
+            </a>
+          </button>
+        ) : (
+          <Link to="/profile">
+            <div className="Nav__user">
+              <div className="Nav__user name">{userState.intraName}</div>
+              <div className="Nav__user image">
+                {userState.intraImage ? (
+                  <img
+                    className="IntraImage"
+                    src={userState.intraImage}
+                    alt="intraImage"
+                  />
+                ) : (
+                  <Icon icon="bi:person-fill" />
+                )}
               </div>
             </div>
-          )}
-        </div>
-        <Link to="/profile">
-          <div className="Nav__user">
-            <div className="Nav__user name">{userState.intraName}</div>
-            <div className="Nav__user image">
-              {userState.intraImage ? (
-                <img
-                  className="IntraImage"
-                  src={userState.intraImage}
-                  alt="intraImage"
-                />
-              ) : (
-                <Icon icon="bi:person-fill" />
-              )}
-            </div>
-          </div>
-        </Link>
+          </Link>
+        )}
         <div className="Nav__menu">
           <Icon icon="heroicons-outline:menu-alt-4" />
         </div>

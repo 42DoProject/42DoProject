@@ -7,9 +7,9 @@ import { Provider } from "react-redux";
 import { combineReducers, createStore } from "redux";
 import userReducer from "./reducer/UserReducer";
 import projectReducer from "./reducer/ProjectReducer";
+import loginReducer from "./reducer/LoginReducer";
 
-let store = createStore(combineReducers({ userReducer, projectReducer }));
-
+let store = createStore(combineReducers({ userReducer, loginReducer }));
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>

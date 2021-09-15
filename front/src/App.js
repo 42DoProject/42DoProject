@@ -4,6 +4,7 @@ import Main from "./Components/MainPage/Main";
 import ProfilePage from "./Components/ProfilePage/ProfilePage";
 import AllProjectPage from "./Components/AllProjectPage/AllProjectPage";
 import RecruitCadet from "./Components/CadetPage/RecruitCadet";
+import AuthMain from "./Components/AuthMain/AuthMain";
 
 function App(props) {
   return (
@@ -22,7 +23,7 @@ function App(props) {
           <RecruitCadet />
         </Route>
         <Route path="/auth">
-          <RecruitCadet />
+          <AuthMain />
         </Route>
       </Switch>
     </div>

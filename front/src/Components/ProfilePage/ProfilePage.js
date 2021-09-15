@@ -3,6 +3,7 @@ import Navbar from "../CommonComponent/Navbar";
 import ProfileHeader from "./ProfileHeader";
 import ProfileBody from "./ProfileBody";
 import ProfileRight from "./ProfileRight";
+import Chat from "../CommonComponent/Chat";
 import "../../SCSS/ProfilePage/ProfilePage.scss";
 
 export default function ProfilePage() {
@@ -18,6 +19,7 @@ export default function ProfilePage() {
           <ProfileRight />
         </div>
       </div>
+      <Chat />
     </>
   );
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import Navbar from "../CommonComponent/Navbar";
 import Bottom from "../MainPage/Bottom";
 import Dashboard from "../MainPage/Dashboard";
@@ -13,28 +13,23 @@ export default function AuthMain() {
   const code = new URLSearchParams(location).get("code");
   let loginState = useSelector((state) => state.loginReducer);
   let dispatch = useDispatch();
+  let history = useHistory();
+  const getData = async () => {
+    try {
+      const { data: Data } = await axios.get(
+        `http://localhost:5000/auth/signin?code=${code}`
+      );
+      console.log("Data", Data);
+      dispatch({ type: "LOGIN", payload: Data });
+      history.push("/");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  getData();
+  // console.log("loginState", loginState);
 
-  axios
-    .get(`http://localhost:5000/auth/signin?code=${code}`)
-    .then((res) => {
-      dispatch({ type: "LOGIN", payload: res.data });
-    })
-    .catch((err) => console.log(err));
-  console.log("loginState", loginState);
-  /*
-  login = {
-    token:{accessToken:},
-    user:{username:}
-  }
-*/
-  return loginState.name === "guest" ? (
-    <ReactLoading type="spin" color="grey" />
-  ) : (
-    <>
-      <Navbar />
-      <Dashboard />
-      <MainBody />
-      <Bottom />
-    </>
+  return (
+    loginState.name === "guest" && <ReactLoading type="spin" color="grey" />
   );
 }

@@ -6,11 +6,8 @@ import { Link } from "react-router-dom";
 
 export default function Navbar() {
   let [clickFlag, setClickFlag] = useState(0);
-  let store = useSelector((store) => {
-    return store;
-  });
-  let userState = store.userReducer;
-  let loginState = store.loginReducer;
+  let userState = useSelector((state) => state.userReducer);
+  let loginState = useSelector((state) => state.loginReducer);
   return (
     <div className="Nav">
       <div className="Nav-column1">
@@ -88,7 +85,7 @@ export default function Navbar() {
           </div>
         )}
         {loginState.name === "guest" ? (
-          <button className="Nav__user login">
+          <button className="Nav__user__login">
             <a
               className="login__link"
               href="https://api.intra.42.fr/oauth/authorize?client_id=2d6ee50437c3f7d433bd852f75d69ffbed52da6117b7a513de39d18b98cd8f95&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth&response_type=code">
@@ -98,7 +95,7 @@ export default function Navbar() {
         ) : (
           <Link to="/profile">
             <div className="Nav__user">
-              <div className="Nav__user name">{userState.intraName}</div>
+              <div className="Nav__user name">{loginState.name}</div>
               <div className="Nav__user image">
                 {userState.intraImage ? (
                   <img

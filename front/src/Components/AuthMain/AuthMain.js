@@ -5,23 +5,31 @@ import Bottom from "../MainPage/Bottom";
 import Dashboard from "../MainPage/Dashboard";
 import MainBody from "../MainPage/MainBody";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import ReactLoading from "../CommonComponent/Loading";
 
-async function getApi(code) {
-  try {
-    let data = await axios.get(
-      `http://localhost:5000/auth/signin?code=${code}`
-    );
-    console.log(data);
-  } catch (e) {
-    console.log(e);
-  }
-}
 export default function AuthMain() {
   const location = useLocation().search;
   const code = new URLSearchParams(location).get("code");
-  console.log(code, code);
-  getApi(code);
-  return (
+  let loginState = useSelector((state) => state.loginReducer);
+  let dispatch = useDispatch();
+
+  axios
+    .get(`http://localhost:5000/auth/signin?code=${code}`)
+    .then((res) => {
+      dispatch({ type: "LOGIN", payload: res.data });
+    })
+    .catch((err) => console.log(err));
+  console.log("loginState", loginState);
+  /*
+  login = {
+    token:{accessToken:},
+    user:{username:}
+  }
+*/
+  return loginState.name === "guest" ? (
+    <ReactLoading type="spin" color="grey" />
+  ) : (
     <>
       <Navbar />
       <Dashboard />

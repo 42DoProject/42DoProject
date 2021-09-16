@@ -13,6 +13,9 @@ function App(props) {
         <Route exact path="/">
           <Main />
         </Route>
+        <Route path="/auth">
+          <AuthMain />
+        </Route>
         <Route exact path="/profile">
           <ProfilePage />
         </Route>
@@ -21,9 +24,6 @@ function App(props) {
         </Route>
         <Route path="/cadet/recruit">
           <RecruitCadet />
-        </Route>
-        <Route path="/auth">
-          <AuthMain />
         </Route>
       </Switch>
     </div>

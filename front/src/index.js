@@ -6,18 +6,15 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { combineReducers, createStore } from "redux";
 import userReducer from "./reducer/UserReducer";
-import projectReducer from "./reducer/ProjectReducer";
 import loginReducer from "./reducer/LoginReducer";
 
 let store = createStore(combineReducers({ userReducer, loginReducer }));
 ReactDOM.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </BrowserRouter>
-  </React.StrictMode>,
+  <BrowserRouter>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </BrowserRouter>,
   document.getElementById("root")
 );
 

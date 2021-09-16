@@ -206,22 +206,65 @@
     font-size: $fontMs;
   }
 }
+
 .Nav__user {
+  position: relative;
   display: flex;
   align-items: center;
-  &:hover {
-    .name {
-      color: $mainColor;
-    }
-  }
   .name {
     font-size: $fontMd;
     margin-right: 1rem;
     color: $darkGrey;
+    font-weight: $bold;
+    cursor: pointer;
+    &:hover {
+      color: $mainColor;
+    }
+  }
+  .name__list {
+    z-index: 3;
+    position: absolute;
+    right: 2rem;
+    top: 3.5rem;
+    width: 6.5rem;
+    // padding: 1rem;
+    background-color: white;
+    padding: 1rem 0;
+    border-bottom-left-radius: $round;
+    border-bottom-right-radius: $round;
+    .name__list__wrap {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      .list__profile {
+        &:hover {
+          color: $mainColor;
+        }
+        color: $darkGrey;
+        font-size: $fontSm;
+        font-weight: $bold;
+        margin-bottom: 1rem;
+        border-bottom: 1px solid $lightestGrey;
+        padding-bottom: 1rem;
+      }
+      .list__signOut {
+        &:hover {
+          color: $mainColor;
+        }
+        cursor: pointer;
+        color: $darkGrey;
+        font-size: $fontSm;
+        font-weight: $bold;
+      }
+    }
   }
   .image {
     font-size: $fontMd;
     margin-right: 1rem;
+    &:hover {
+      cursor: pointer;
+    }
     .IntraImage {
       border-radius: 50%;
       width: 3rem;

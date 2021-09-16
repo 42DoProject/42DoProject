@@ -3,7 +3,7 @@ import ReactLoading from "react-loading";
 import "../../SCSS/Loading.scss";
 const Example = ({ type, color }) => (
   <div className="loading-wrap">
-    <ReactLoading type={type} color={color} height={"10%"} width={"10%"} />
+    <ReactLoading type={type} color={color} height={"5%"} width={"5%"} />
   </div>
 );
 

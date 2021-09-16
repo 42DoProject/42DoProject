@@ -1,9 +1,5 @@
 import React from "react";
 import { useHistory, useLocation } from "react-router";
-import Navbar from "../CommonComponent/Navbar";
-import Bottom from "../MainPage/Bottom";
-import Dashboard from "../MainPage/Dashboard";
-import MainBody from "../MainPage/MainBody";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import ReactLoading from "../CommonComponent/Loading";
@@ -19,17 +15,23 @@ export default function AuthMain() {
       const { data: Data } = await axios.get(
         `http://localhost:5000/auth/signin?code=${code}`
       );
-      console.log("Data", Data);
-      dispatch({ type: "LOGIN", payload: Data });
+      const {
+        user: { username: userName },
+      } = Data;
+      const {
+        token: { accessToken, refreshToken },
+      } = Data;
+      console.log(Data);
+      dispatch({ type: "LOGIN", payload: userName });
+      localStorage.setItem("accessToken", accessToken);
       history.push("/");
     } catch (err) {
       console.log(err);
     }
   };
   getData();
-  // console.log("loginState", loginState);
 
   return (
-    loginState.name === "guest" && <ReactLoading type="spin" color="grey" />
+    loginState.name === "guest" && <ReactLoading type="spin" color="#a7bc5b" />
   );
 }

@@ -4,12 +4,19 @@
   // background-color: beige;
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
   .lounge-left {
-    width: 72%;
+    width: max-content;
     margin-right: 2rem;
+    min-width: 25rem;
+    width: 70%;
+    // flex-grow: 1;
+    // flex-shrink: 1;
   }
   .lounge-right {
+    min-width: 20rem;
     width: 23%;
+    // flex-grow: 1;
   }
 }
 
@@ -59,7 +66,7 @@
   color: $black;
 }
 .right__connected {
-  height: 30rem;
+  height: 20rem;
   background-color: white;
   border-radius: $round;
   box-shadow: $shadow;

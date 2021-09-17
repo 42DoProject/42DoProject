@@ -13,10 +13,12 @@ export default function LoungeWrite() {
 
         <span className="profile__name">seojeong</span>
       </div>
-      <div className="lounge-write__space">
+      <form className="lounge-write__space">
         <input className="lounge-write__box"></input>
-        <button className="lounge-write__submit">등록</button>
-      </div>
+        <button type="submit" className="lounge-write__submit">
+          등록
+        </button>
+      </form>
     </div>
   );
 }

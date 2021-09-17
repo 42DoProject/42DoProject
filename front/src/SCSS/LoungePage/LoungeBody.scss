@@ -1,0 +1,66 @@
+@import "../Base.scss";
+
+.lounge-body {
+  // background-color: beige;
+  display: flex;
+  justify-content: center;
+  .lounge-left {
+    width: 72%;
+    margin-right: 2rem;
+  }
+  .lounge-right {
+    width: 23%;
+  }
+}
+
+.left-bar {
+  margin-left: 1rem;
+  margin-top: 1rem;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  // background-color: yellow;
+  .left-bar__lounge {
+    font-weight: $bold;
+    font-size: $fontMd;
+    color: $black;
+    margin-left: 2rem;
+    .innerHtml:hover {
+      color: $mainColor;
+    }
+  }
+  .left-bar__best {
+    font-weight: $bold;
+    font-size: $fontMd;
+    color: $black;
+    margin-left: 2rem;
+    opacity: 0.5;
+    a {
+      color: $black;
+    }
+    &:hover {
+      opacity: 1;
+      a {
+        color: $mainColor;
+      }
+    }
+  }
+}
+
+.right-bar {
+  margin-left: 1rem;
+  margin-top: 1rem;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  // background-color: green;
+  font-weight: $bold;
+  font-size: $fontMd;
+  color: $black;
+}
+.right__connected {
+  height: 30rem;
+  background-color: white;
+  border-radius: $round;
+  box-shadow: $shadow;
+}

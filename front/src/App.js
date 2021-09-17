@@ -4,6 +4,7 @@ import Main from "./Components/MainPage/Main";
 import ProfilePage from "./Components/ProfilePage/ProfilePage";
 import AllProjectPage from "./Components/AllProjectPage/AllProjectPage";
 import RecruitCadet from "./Components/CadetPage/RecruitCadet";
+import LoungePage from "./Components/LoungePage/LoungePage";
 import AuthMain from "./Components/AuthMain/AuthMain";
 
 function App(props) {
@@ -24,6 +25,9 @@ function App(props) {
         </Route>
         <Route path="/cadet/recruit">
           <RecruitCadet />
+        </Route>
+        <Route exact path="/lounge">
+          <LoungePage />
         </Route>
       </Switch>
     </div>

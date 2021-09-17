@@ -30,9 +30,12 @@
 .lounge-write__space {
   //   display: flex;
   //   justify-content: center;
-  padding: 0 4rem 1rem 4rem;
-  position: relative;
-  //   background-color: pink;
+  padding: 0 1rem 1rem 4rem;
+  // position: relative;
+  display: flex;
+  align-items: flex-end;
+  // position: relative;
+  // background-color: pink;
 }
 
 .lounge-write__box {
@@ -40,21 +43,23 @@
   border-radius: $round;
   border: 1px solid $lightestGrey;
   height: 8rem;
-  width: 95%;
-  //   width: auto;
+  width: 90%;
   &:focus {
     outline: none;
   }
 }
 
 .lounge-write__submit {
-  position: absolute;
+  // position: relative;
+  // bottom: -2rem;
   background-color: $mainColor;
   color: white;
   border: none;
   border-radius: 0.7rem;
   z-index: 1;
-  right: 0.5rem;
-  bottom: 1rem;
+  margin-left: 1.5rem;
   padding: 0.5rem 1.5rem;
+  min-width: 2rem;
+  height: 1rem;
+  box-sizing: content-box;
 }

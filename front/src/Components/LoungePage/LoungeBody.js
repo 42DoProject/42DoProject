@@ -26,7 +26,7 @@ export default function LoungeBody() {
         </div>
         <div className="lounge-right">
           <div className="right-bar">접속중인 카뎃</div>
-          <div className="right__connected">connected</div>
+          <div className="right__connected"></div>
         </div>
       </div>
     </>

@@ -5,9 +5,12 @@ import {
   DataType,
   ForeignKey,
   BelongsTo,
+  HasMany
 } from "sequelize-typescript";
 import { IHistory } from "../../interface/profile.interface";
 import { User } from "./user.model";
+import { Projectprofile } from "../project/projectprofile.model";
+import { Commentsprofile } from "../project/commentsprofile.model";
 
 @Table({ timestamps: false })
 export class Profile extends Model {
@@ -44,4 +47,10 @@ export class Profile extends Model {
     onDelete: "CASCADE",
   })
   user?: User;
+
+  @HasMany(() => Projectprofile)
+  projectprofile!: Projectprofile[];
+
+  @HasMany(() => Commentsprofile)
+  commentsprofile!: Commentsprofile[];
 }

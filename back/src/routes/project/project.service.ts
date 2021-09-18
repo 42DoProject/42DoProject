@@ -9,60 +9,40 @@ app.set('query parser', 'extended');
 
 const pagination = async (request: Request, response: Response, state: string) => {
     const { page, pageSize, tag } = request.query;
-    let offset: number;
-    let limit: number;
+    let offset;
+    let limit;
     let project;
-    if (page !== undefined && pageSize !== undefined) {
-        limit = Number(pageSize);
-        offset = (Number(page) - 1) * limit;
-        if (tag !== undefined) {
-            project = await Project.findAll({
-                include: {
-                    model: Projecttag,
-                    include: [{ model: Tag, where: { tagTitle: tag }, required: true }],
-                    required: true
-                },
-                where: { state: state },
-                offset: offset,
-                limit: limit
-            })
-            .catch(err => {
-                response.status(400).json({ message: String(err) });
-            });
-        } else {
-            project = await Project.findAll({
-                where: { state: state },
-                offset: offset,
-                limit: limit
-            })
-            .catch(err => {
-                response.status(400).json({ message: String(err) });
-            });
-        }
-    } else if (page === undefined && pageSize === undefined) {
-        if (tag !== undefined) {
-            project = await Project.findAll({ 
-                include: {
-                    model: Projecttag,
-                    include: [{ model: Tag, where: { tagTitle: tag }, required: true }],
-                    required: true
-                },
-                where: { state: state }
-            })
-            .catch(err => {
-                response.status(400).json({ message: String(err) });
-            });
-        } else {
-            project = await Project.findAll({
-                where: { state: state }
-            })
-            .catch(err => {
-                response.status(400).json({ message: String(err) });
-            });
-        }
-    } else {
+    let include;
+    if ((page !== undefined && pageSize === undefined) ||
+        (page === undefined && pageSize !== undefined)) {
         response.status(400).json({ error: "missing page or pageSize query" });
         return;
+    } else {
+        if (page !== undefined) {
+            limit = Number(pageSize);
+            offset = (Number(page) - 1) * limit;
+        } else {
+            limit = undefined;
+            offset = undefined;
+        }
+        if (tag !== undefined) {
+            include = {
+                separate: true,
+                model: Projecttag,
+                include: [{ model: Tag, where: { tagTitle: tag }, required: true }],
+                required: true
+            };
+        } else {
+            include = undefined;
+        }
+        project = await Project.findAll({
+            include: include,
+            where: { state: state },
+            offset: offset,
+            limit: limit
+        }).catch(err => {
+            response.status(400).json({ message: String(err) });
+        });
     }
     return project;
 }
@@ -71,16 +51,9 @@ export const getList = async (request: Request, response: Response) => {
     let project;
     if (request.query.state === undefined)
         project = await Project.findAll();
-    else if (request.query.state === 'recruiting') {
-        project = await pagination(request, response, 'recruiting');
-        if (!project)
-            return;
-    } else if (request.query.state === 'proceeding') {
-        project = await pagination(request, response, 'proceeding');
-        if (!project)
-            return;
-    } else if (request.query.state === 'completed') {
-        project = await pagination(request, response, 'completed');
+    else if (request.query.state === 'recruiting' || request.query.state === 'proceeding'
+        || request.query.state === 'completed') {
+        project = await pagination(request, response, request.query.state);
         if (!project)
             return;
     } else {
@@ -100,6 +73,8 @@ export const postList = async (request: Request, response: Response) => {
     let tagTable;
     await Project.create({
     	title: title,
+        // fileName: (request.file === undefined ? null : request.file.filename),
+        // filePath: (request.file === undefined ? null : request.file.path),
         totalMember: totalMember,
         currentMember: currentMember,
         state: state,

@@ -4,13 +4,12 @@ import "../../SCSS/Navbar.scss";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-export default function Navbar() {
+export default function Navbar(props) {
   let [clickFlag, setClickFlag] = useState(0);
-  let store = useSelector((store) => {
-    return store;
-  });
-  let userState = store.userReducer;
-  let loginState = store.loginReducer;
+  let [nameFlag, setNameFlag] = useState(0);
+  let userState = useSelector((state) => state.userReducer);
+  // let loginState = useSelector((state) => state.loginReducer);
+  let loginData = JSON.parse(localStorage.getItem("user"));
   return (
     <div className="Nav">
       <div className="Nav-column1">
@@ -42,7 +41,7 @@ export default function Navbar() {
             라운지
           </Link>
         </div>
-        {loginState.name === "guest" ? null : (
+        {loginData === null ? null : (
           <div className="Nav__notification">
             {parseInt(userState.notification.num) ? (
               <span className="haveNotification">
@@ -87,31 +86,53 @@ export default function Navbar() {
             )}
           </div>
         )}
-        {loginState.name === "guest" ? (
-          <button className="Nav__user login">
+        {loginData === null ? (
+          <button className="Nav__user__login">
             <a
               className="login__link"
-              href="https://api.intra.42.fr/oauth/authorize?client_id=2d6ee50437c3f7d433bd852f75d69ffbed52da6117b7a513de39d18b98cd8f95&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth&response_type=code">
+              href="https://api.intra.42.fr/oauth/authorize?client_id=2d6ee50437c3f7d433bd852f75d69ffbed52da6117b7a513de39d18b98cd8f95&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth&response_type=code"
+            >
               SIGN IN
             </a>
           </button>
         ) : (
-          <Link to="/profile">
-            <div className="Nav__user">
-              <div className="Nav__user name">{userState.intraName}</div>
-              <div className="Nav__user image">
-                {userState.intraImage ? (
-                  <img
-                    className="IntraImage"
-                    src={userState.intraImage}
-                    alt="intraImage"
-                  />
-                ) : (
-                  <Icon icon="bi:person-fill" />
-                )}
+          <div
+            className="Nav__user"
+            onClick={() => {
+              nameFlag ? setNameFlag(0) : setNameFlag(1);
+            }}
+          >
+            <div className="Nav__user name">{loginData.username}</div>
+            {nameFlag ? (
+              <div className="name__list">
+                <div className="name__list__wrap">
+                  <Link to="/profile">
+                    <div className="list__profile">Profile</div>
+                  </Link>
+                  <div
+                    className="list__signOut"
+                    onClick={() => {
+                      localStorage.removeItem("user");
+                      props.setRestart(1);
+                    }}
+                  >
+                    Sign Out
+                  </div>
+                </div>
               </div>
+            ) : null}
+            <div className="Nav__user image">
+              {userState.intraImage ? (
+                <img
+                  className="IntraImage"
+                  src={userState.intraImage}
+                  alt="intraImage"
+                />
+              ) : (
+                <Icon icon="bi:person-fill" />
+              )}
             </div>
-          </Link>
+          </div>
         )}
         <div className="Nav__menu">
           <Icon icon="heroicons-outline:menu-alt-4" />

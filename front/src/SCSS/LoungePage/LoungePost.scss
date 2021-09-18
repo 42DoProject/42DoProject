@@ -1,0 +1,74 @@
+@import "../Base.scss";
+
+.lounge-post {
+  background-color: white;
+  width: 100%;
+  //   height: 14rem;
+  border-radius: $round;
+  margin-bottom: 2rem;
+  box-shadow: $shadow;
+  padding: 1.5rem 2rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.lounge-post__row1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .lounge-post__profile {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.profile__img {
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
+  object-fit: cover;
+  // margin-bottom: 0.5rem;
+  margin-right: 1rem;
+}
+.profile__name {
+  font-size: $fontMs;
+}
+
+.lounge-post__time {
+  color: $lightGrey;
+}
+
+.lounge-post__space {
+  //   background-color: beige;
+  width: 80%;
+  margin: 2rem 4rem;
+}
+
+.lounge-post__bottom {
+  bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  .bottom__open-comments {
+    margin-left: 4rem;
+    color: $lightGrey;
+    border: none;
+    background-color: white;
+    .bottom__comment-icon {
+      position: relative;
+      bottom: 0.1rem;
+    }
+  }
+  .bottom__comment-icon {
+    margin-left: 0.5rem;
+  }
+}
+
+.bottom__like-icon {
+  margin-right: 0.5rem;
+  position: relative;
+  bottom: 0.2rem;
+  font-size: $fontMd;
+  color: $grey;
+}

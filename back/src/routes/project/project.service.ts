@@ -27,6 +27,7 @@ const pagination = async (request: Request, response: Response, state: string) =
         }
         if (tag !== undefined) {
             include = {
+                separate: true,
                 model: Projecttag,
                 include: [{ model: Tag, where: { tagTitle: tag }, required: true }],
                 required: true
@@ -40,61 +41,9 @@ const pagination = async (request: Request, response: Response, state: string) =
             offset: offset,
             limit: limit
         }).catch(err => {
-            response.status(400).json({ messagehi: String(err) });
+            response.status(400).json({ message: String(err) });
         });
     }
-    // if (page !== undefined && pageSize !== undefined) {
-    //     limit = Number(pageSize);
-    //     offset = (Number(page) - 1) * limit;
-    //     if (tag !== undefined) {
-    //         project = await Project.findAll({
-    //             include: {
-    //                 model: Projecttag,
-    //                 include: [{ model: Tag, where: { tagTitle: tag }, required: true }],
-    //                 required: true
-    //             },
-    //             where: { state: state },
-    //             offset: offset,
-    //             limit: limit
-    //         })
-    //         .catch(err => {
-    //             response.status(400).json({ message: String(err) });
-    //         });
-    //     } else {
-    //         project = await Project.findAll({
-    //             where: { state: state },
-    //             offset: offset,
-    //             limit: limit
-    //         })
-    //         .catch(err => {
-    //             response.status(400).json({ message: String(err) });
-    //         });
-    //     }
-    // } else if (page === undefined && pageSize === undefined) {
-    //     if (tag !== undefined) {
-    //         project = await Project.findAll({ 
-    //             include: {
-    //                 model: Projecttag,
-    //                 include: [{ model: Tag, where: { tagTitle: tag }, required: true }],
-    //                 required: true
-    //             },
-    //             where: { state: state }
-    //         })
-    //         .catch(err => {
-    //             response.status(400).json({ message: String(err) });
-    //         });
-    //     } else {
-    //         project = await Project.findAll({
-    //             where: { state: state }
-    //         })
-    //         .catch(err => {
-    //             response.status(400).json({ message: String(err) });
-    //         });
-    //     }
-    // } else {
-    //     response.status(400).json({ error: "missing page or pageSize query" });
-    //     return;
-    // }
     return project;
 }
 
@@ -124,8 +73,8 @@ export const postList = async (request: Request, response: Response) => {
     let tagTable;
     await Project.create({
     	title: title,
-        fileName: (request.file === undefined ? null : request.file.filename),
-        filePath: (request.file === undefined ? null : request.file.path),
+        // fileName: (request.file === undefined ? null : request.file.filename),
+        // filePath: (request.file === undefined ? null : request.file.path),
         totalMember: totalMember,
         currentMember: currentMember,
         state: state,

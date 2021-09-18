@@ -30,7 +30,7 @@ export const mongoose = async () => {
 };
 
 export const initModel = async () => {
-  if (process.env.TAG_LIST === undefined) {
+  if (process.env.TAG_LIST === undefined || Tag === null) {
     return;
   }
   let tagList = process.env.TAG_LIST.split(';');

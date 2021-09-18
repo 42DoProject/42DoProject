@@ -10,7 +10,7 @@ import {
 import { IHistory } from "../../interface/profile.interface";
 import { User } from "./user.model";
 import { Projectprofile } from "../project/projectprofile.model";
-import { Commentsprofile } from "../project/commentsprofile.model";
+import { Comments } from "../project/comments.model";
 
 @Table({ timestamps: false })
 export class Profile extends Model {
@@ -51,6 +51,6 @@ export class Profile extends Model {
   @HasMany(() => Projectprofile)
   projectprofile!: Projectprofile[];
 
-  @HasMany(() => Commentsprofile)
-  commentsprofile!: Commentsprofile[];
+  @HasMany(() => Comments)
+  commentsprofile!: Comments[];
 }

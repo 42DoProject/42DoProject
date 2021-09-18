@@ -10,7 +10,7 @@ export class Projectprofile extends Model {
 
     @ForeignKey(() => Profile)
     @Column
-    userId!: number
+    profileId!: number
 
     @BelongsTo(() => Project)
     project!: Project;

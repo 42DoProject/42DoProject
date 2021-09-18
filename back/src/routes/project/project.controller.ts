@@ -32,4 +32,12 @@ router.delete("/", (request: Request, response: Response) => {
   projectService.deleteList(request, response);
 });
 
+router.get("/content", (request: Request, response: Response) => {
+  projectService.getContent(request, response);
+});
+
+router.get("/comments", (request: Request, response: Response) => {
+  projectService.getComments(request, response);
+});
+
 export default router;

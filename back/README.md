@@ -45,6 +45,7 @@ ex) ISO 시간을 반환하는 기능을 module/time.ts에 넣어놨습니다. �
 
 ## project API 명세
 ### GET
+#### 프로젝트 list 
 - url : `http://localhost:5000/project`
 - request (query)
 1. state : string, 프로젝트의 상태(`recruiting`, `proceeding`, `completed`)
@@ -61,7 +62,26 @@ ex) ISO 시간을 반환하는 기능을 module/time.ts에 넣어놨습니다. �
 - post 기능이 추가되기 전까진 db 컨테이너에서 임의로 `projects` 테이블에 값을 넣으신 후, 테스트해주시면 됩니다.
 (Ex : `INSERT INTO projects (title, totalMember, currentMember, state, like, createdAt, updatedAt) VALUE('42DoProject', 5, 5, 'proceeding', 200, NOW(), NOW());`)
 
+#### 프로젝트 본문(content)과 프로젝트 팀원(profile) 조회
+- url : `http://localhost:5000/project/content`
+- method : `GET`
+- request (query)
+1. projectId : number, 프로젝트 id
+- response
+`{project: {content}, {projectprofile: {profile}}}`
+
+#### 프로젝트 본문의 댓글(comments)과 댓글 작성자(profile) 조회
+- url : `http://localhost:5000/project/comments`
+- method : `GET`
+- request (query)
+1. projectId : number, 프로젝트 id
+2. page : number, 페이지
+3. pageSize : number, 페이지당 카드 갯수
+- response
+`{comments: {content}, {profile}}`
+
 ### POST
+#### post 프로젝트 list
 - url : `http://localhost:5000/project`
 - request (body)
 1. title : string, 프로젝트 제목
@@ -76,6 +96,7 @@ ex) ISO 시간을 반환하는 기능을 module/time.ts에 넣어놨습니다. �
 - 위 예시의 요청은 project table에 알맞게 요청 값을 넣고, tag 테이블과의 관계를 설정하는 요청입니다. (tag 요청은 optional)
 
 ### DELETE
+#### delete 프로젝트 list
 - url : `http://localhost:5000/project`
 - request (query)
 1. id : number, project table의 id 값

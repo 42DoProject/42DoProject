@@ -99,9 +99,9 @@ ex) ISO 시간을 반환하는 기능을 module/time.ts에 넣어놨습니다. �
 #### delete 프로젝트 list
 - url : `http://localhost:5000/project`
 - request (query)
-1. id : number, project table의 id 값
+1. projectId : number, project table의 id 값
 
 - 요청은 querystring으로 보내주시면 됩니다.
-(Ex : `http://localhost:5000/project?id=1`)
+(Ex : `http://localhost:5000/project?projectId=1`)
 
 - 위 예시의 요청은 1번 id의 프로젝트 list를 삭제하는 요청입니다.

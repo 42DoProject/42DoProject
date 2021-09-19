@@ -63,8 +63,7 @@ export const getList = async (request: Request, response: Response) => {
 }
 
 export const postList = async (request: Request, response: Response) => {
-    const { title, totalMember, currentMember, state, tag } = request.body;
-    const date = new Date();
+    const { title, totalMember, currentMember, state, tag, content } = request.body;
     let tagTable;
     await Project.create({
     	title: title,
@@ -78,6 +77,13 @@ export const postList = async (request: Request, response: Response) => {
         updatedAt: getIsoString()
     })
     .then(async project => {
+        Content.create({
+            content: content,
+            projectId: project.id
+        })
+        .then(content => {
+            Project.create({ contentId: content.id });
+        });
         if (tag !== undefined) {
             tagTable = await Tag.findAll({ attributes: ['id'], where: { tagTitle: tag } });
             tagTable.forEach( async (element) => {
@@ -98,15 +104,21 @@ export const postList = async (request: Request, response: Response) => {
 }
 
 export const deleteList = async (request: Request, response: Response) => {
-    const { id } = request.query;
+    const { projectId } = request.query;
     await Projecttag.destroy({
-        where: { projectId: id }
+        where: { projectId: projectId }
+    })
+    .catch(err => {
+        response.status(400).json({ message: String(err) });
+    });
+    await Content.destroy({
+        where: { projectId: projectId }
     })
     .catch(err => {
         response.status(400).json({ message: String(err) });
     });
     await Project.destroy({
-        where: { id: id }
+        where: { id: projectId }
     })
     .then(() => {
         response.status(200).json({ message: 'deleted successfully.' });

@@ -1,18 +1,27 @@
 import express, { Request, Response } from "express";
-import { getUserSocket, io as sockets } from "../../socket/bridge";
 import { jwtGuards } from "../auth/oauth";
 import * as chatService from "./chat.service";
 
 const router: express.Router = express.Router();
 
-router.get("/join", jwtGuards, (request: Request, response: Response) => {
-  chatService.join(request, response);
+router.get("/", jwtGuards, (request: Request, response: Response) => {
+  chatService.getAllChats(request, response);
 });
 
-router.get("/test", jwtGuards, (request: Request, response: Response) => {
-  const a = getUserSocket(1);
-  console.log(a);
-  a?.emit("chat:on", { message: "notification test" });
+router.post("/", jwtGuards, (request: Request, response: Response) => {
+  chatService.makeChatRoom(request, response);
+});
+
+router.get("/:uuid", jwtGuards, (request: Request, response: Response) => {
+  chatService.getChats(request, response);
+});
+
+router.post("/:uuid", jwtGuards, (request: Request, response: Response) => {
+  chatService.inviteUser(request, response);
+});
+
+router.delete("/:uuid", jwtGuards, (request: Request, response: Response) => {
+  chatService.leave(request, response);
 });
 
 export default router;

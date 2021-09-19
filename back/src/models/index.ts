@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import mongo from "mongoose";
 import { Sequelize } from "sequelize-typescript";
+import { ChatRow } from "./chat/row.mongo";
 
 dotenv.config();
 

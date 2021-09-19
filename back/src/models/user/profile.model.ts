@@ -5,8 +5,10 @@ import {
   DataType,
   ForeignKey,
   BelongsTo,
+  HasMany,
 } from "sequelize-typescript";
 import { IHistory } from "../../interface/profile.interface";
+import { ProfileChat } from "../chat/profilechat.model";
 import { User } from "./user.model";
 
 @Table({ timestamps: false })
@@ -32,16 +34,16 @@ export class Profile extends Model {
   @Column(DataType.JSON)
   follower!: number[];
 
-  @Column(DataType.JSON)
-  chat!: string[];
+  @HasMany(() => ProfileChat)
+  userchat!: ProfileChat[];
 
   @ForeignKey(() => User)
   @Column
-  userId?: number;
+  userId!: number;
 
   @BelongsTo(() => User, {
     onUpdate: "CASCADE",
     onDelete: "CASCADE",
   })
-  user?: User;
+  user!: User;
 }

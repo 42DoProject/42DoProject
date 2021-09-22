@@ -9,7 +9,7 @@ import { Comments } from "../../models/project/comments.model";
 import { Profile } from "../../models/user/profile.model";
 
 const app = express();
-app.set('query parser', 'extended');
+app.set("query parser", "extended");
 
 const pagination = async (request: Request, response: Response, state: string) => {
     const { page, pageSize, tag } = request.query;

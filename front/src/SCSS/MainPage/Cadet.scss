@@ -14,48 +14,7 @@
     padding: 0 2rem;
     .list__row1,
     .list__row2 {
-      margin-bottom: 1.5rem;
       display: flex;
-      .cadet-card {
-        width: 33%;
-        margin: 0 1rem;
-        background-color: white;
-        box-shadow: $shadow;
-        border-radius: $round;
-        padding: 1rem;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        .cadet__image {
-          border-radius: 50%;
-          width: 5rem;
-          height: 5rem;
-          object-fit: cover;
-          margin-bottom: 1rem;
-        }
-        &:hover {
-          transform: scale(1.1);
-          z-index: 1;
-          transition: transform 0.2s;
-        }
-        .cadet__name {
-          margin-bottom: 0.5rem;
-          font-size: $fontMd;
-        }
-        .cadet__work {
-          margin-bottom: 1rem;
-          color: $mainColor;
-          font-size: $fontSm;
-          font-weight: $bold;
-        }
-        .cadet__word {
-          border: 1px solid $lightestGrey;
-          box-shadow: $shadow;
-          border-radius: $round;
-          padding: 1rem;
-          text-align: center;
-        }
-      }
     }
   }
 }

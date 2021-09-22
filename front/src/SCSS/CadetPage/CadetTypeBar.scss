@@ -1,0 +1,50 @@
+@import "../Base.scss";
+
+.cadet-bar {
+  display: flex;
+  background-color: $bodyColor;
+  height: 4rem;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin-top: 1rem;
+}
+
+.cadet-bar-column1 {
+  display: flex;
+  align-items: center;
+}
+
+.cadet-bar-column2 {
+  display: flex;
+  align-items: center;
+  // padding-right: 1rem;
+}
+
+.recruit-cadet {
+  font-weight: $bold;
+  font-size: $fontMd;
+  color: $black;
+  margin-left: 2rem;
+  .innerHtml:hover {
+    color: $mainColor;
+  }
+}
+
+.public-cadet {
+  font-weight: $bold;
+  font-size: $fontMd;
+  color: $black;
+  margin-left: 2rem;
+  opacity: 0.5;
+  a {
+    color: $black;
+  }
+  &:hover {
+    opacity: 1;
+    a {
+      color: $mainColor;
+    }
+  }
+}

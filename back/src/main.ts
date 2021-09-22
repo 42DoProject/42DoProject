@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { mongoose, sequelize } from "./models";
+import { mongoose, sequelize, initModel } from "./models";
 import http from "http";
 import express from "express";
 import socket from "socket.io";
@@ -15,6 +15,7 @@ dotenv.config();
 async function bootstrap() {
   await sequelize.sync();
   await mongoose();
+  await initModel();
 
   const app: express.Application = express();
   const server: http.Server = http.createServer(app);

@@ -10,6 +10,8 @@ import {
 import { IHistory } from "../../interface/profile.interface";
 import { ProfileChat } from "../chat/profilechat.model";
 import { User } from "./user.model";
+import { Projectprofile } from "../project/projectprofile.model";
+import { Comments } from "../project/comments.model";
 
 @Table({ timestamps: false })
 export class Profile extends Model {
@@ -46,4 +48,10 @@ export class Profile extends Model {
     onDelete: "CASCADE",
   })
   user!: User;
+
+  @HasMany(() => Projectprofile)
+  projectprofile!: Projectprofile[];
+
+  @HasMany(() => Comments)
+  commentsprofile!: Comments[];
 }

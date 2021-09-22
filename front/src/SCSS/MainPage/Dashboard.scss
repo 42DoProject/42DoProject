@@ -50,12 +50,12 @@
   }
   .row1__button {
     position: relative;
-    left: 1.8rem;
+    left: 0rem;
     bottom: 1rem;
     color: $lightestGrey;
     font-size: $fontMd;
     padding: 0.3rem 0.7rem;
-    border-radius: $round;
+    border-radius: 0.7rem;
     background-color: rgba(0, 0, 0, 0.53);
     .icon__link {
       color: $lightestGrey;
@@ -180,18 +180,26 @@
     border-radius: $round;
     width: 35rem;
     height: 3rem;
-    box-shadow: 0rem 0.3rem 0.3rem 0rem rgba(0, 0, 0, 0.25);
+    box-shadow: 0rem 0.3rem 0.3rem 0rem rgba(0, 0, 0, 0.15);
     position: relative;
     top: 1.5rem;
     padding: 0.6rem;
     .dashboard__project__link1,
     .dashboard__project__link2 {
+      color: $pointRed;
+    }
+    .dashboard__project__link3,
+    .dashboard__project__link4 {
       color: $mainColor;
+    }
+    .dashboard__project__link1,
+    .dashboard__project__link3 {
+      font-size: $fontMd;
     }
   }
 
   .reportbox__report {
-    font-weight: $bold;
+    font-weight: 700;
   }
 }
 @media (max-width: 55rem) {

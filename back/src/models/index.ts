@@ -30,10 +30,14 @@ export const mongoose = async () => {
 };
 
 export const initModel = async () => {
-  if (process.env.TAG_LIST === undefined || Tag !== null) {
+  const tagModel = await Tag.findAll();
+  if (process.env.TAG_LIST === undefined) {
     return;
   }
-  let tagList = process.env.TAG_LIST.split(';');
+  if (tagModel.length !== 0) {
+    return;
+  }
+  const tagList = process.env.TAG_LIST.split(';');
   tagList.forEach(async (element) => {
     await Tag.create({
       tagTitle: element

@@ -16,28 +16,59 @@ const pagination = async (request: Request, response: Response, state: string) =
     let offset;
     let limit;
     let project;
-    let include;
+    let filteredProject;
+    let projectId: number[] = [];
     if ((page !== undefined && pageSize === undefined) ||
         (page === undefined && pageSize !== undefined)) {
         response.status(400).json({ error: "missing page or pageSize query" });
         return;
     } else {
-        limit = (page !== undefined && pageSize !== undefined) ? undefined : Number(pageSize);
-        offset = (limit === undefined) ? undefined : (Number(page) - 1) * limit;
-        include = (tag === undefined) ? undefined : {
-            separate: true,
-            model: Projecttag,
-            include: [{ model: Tag, where: { tagTitle: tag }, required: true }],
-            required: true
-        };
-        project = await Project.findAll({
-            include: include,
-            where: { state: state },
-            offset: offset,
-            limit: limit
-        }).catch(err => {
-            response.status(400).json({ message: String(err) });
-        });
+        limit = (page !== undefined && pageSize !== undefined) ? Number(pageSize) : undefined;
+        offset = (limit !== undefined) ? (Number(page) - 1) * limit : undefined;
+        if (tag === undefined) {
+            if (state === 'all') {
+                project = await Project.findAll({
+                    offset: offset,
+                    limit: limit
+                }).catch(err => {
+                    response.status(400).json({ message: String(err) });
+                });
+            } else {
+                project = await Project.findAll({
+                    where: { state: state },
+                    offset: offset,
+                    limit: limit
+                }).catch(err => {
+                    response.status(400).json({ message: String(err) });
+                });
+            }
+        } else {
+            let where;
+            if (state === 'all') {
+                where = { id: projectId };
+            } else {
+                where = { state: state, id: projectId };
+            }
+            filteredProject = await Projecttag.findAll({
+                attributes: ['projectId'],
+                include: {
+                    model: Tag,
+                    where: { tagTitle: tag }
+                }
+            })
+            filteredProject.forEach( async (element) => {
+                if (element.projectId !== undefined) {
+                    projectId.push(element.projectId);
+                }
+            })
+            project = await Project.findAll({
+                where: where,
+                offset: offset,
+                limit: limit
+            }).catch(err => {
+                response.status(400).json({ message: String(err) });
+            });
+        }
     }
     return project;
 }
@@ -45,7 +76,7 @@ const pagination = async (request: Request, response: Response, state: string) =
 export const getList = async (request: Request, response: Response) => {
     let project;
     if (request.query.state === undefined)
-        project = await Project.findAll();
+        project = await pagination(request, response, 'all');
     else if (request.query.state === 'recruiting' || request.query.state === 'proceeding'
         || request.query.state === 'completed') {
         project = await pagination(request, response, request.query.state);
@@ -79,10 +110,12 @@ export const postList = async (request: Request, response: Response) => {
     .then(async project => {
         Content.create({
             content: content,
-            projectId: project.id
+            projectId: project.id,
+            createdAt: getIsoString(),
+            updatedAt: getIsoString()
         })
         .then(content => {
-            Project.create({ contentId: content.id });
+            Project.update({ contentId: content.id }, { where: { id: project.id }});
         });
         if (tag !== undefined) {
             tagTable = await Tag.findAll({ attributes: ['id'], where: { tagTitle: tag } });
@@ -101,6 +134,90 @@ export const postList = async (request: Request, response: Response) => {
     .catch(err => {
     	response.status(400).json({ message: String(err) });
     })
+}
+
+export const updateList = async (request: Request, response: Response) => {
+    const { projectId } = request.query;
+    const { title, totalMember, currentMember, state, content } = request.body;
+    await Project.update({
+        title: title,
+        totalMember: totalMember,
+        currentMember: currentMember,
+        state: state,
+        updatedAt: getIsoString(),
+    }, { where: { id: projectId } })
+    .then(async () => {
+        await Content.update({
+            content: content,
+            updatedAt: getIsoString()
+        }, { where: { projectId: projectId }})
+        .catch(err => {
+            response.status(400).json({ message: String(err) });
+        })
+        response.status(200).json({ message: 'updated successfully.' });
+    })
+    .catch(err => {
+    	response.status(400).json({ message: String(err) });
+    })
+}
+
+export const updateTag = async (request: Request, response: Response) => {
+    const { projectId } = request.query;
+    const { tag } = request.body;
+    if (projectId === undefined) {
+        response.status(400).json({ message: 'please input projectId value' });
+    }
+    const project = await Project.findOne({
+        include: {
+            model: Projecttag,
+            attributes: ['tagId']
+        },
+        where: { id: projectId }
+    })
+    .catch(err => {
+    	response.status(400).json({ message: String(err) });
+    })
+    const projectTag = project?.projecttag;
+    const reqTag = await Tag.findAll({ attributes: ['id'], where: { tagTitle: tag } });
+    if (projectTag !== undefined && projectTag?.length > reqTag.length) {
+        let flag: number;
+        projectTag.forEach( async (element1) => {
+            flag = 0;
+            reqTag.forEach( async (element2) => {
+                if (element1.tagId === element2.id) {
+                    flag = 1;
+                }
+            })
+            if (flag === 0) {
+                await Projecttag.destroy({
+                    where: { tagId: element1.tagId }
+                })
+                .catch(err => {
+                    response.status(400).json({ message: String(err) });
+                });
+            }
+        })
+    } else if (projectTag !== undefined && projectTag?.length < reqTag.length) {
+        let flag: number;
+        reqTag.forEach( async (element1) => {
+            flag = 0;
+            projectTag.forEach( async (element2) => {
+                if (element1.id === element2.tagId) {
+                    flag = 1;
+                }
+            })
+            if (flag === 0) {
+                await Projecttag.create({
+                    projectId: projectId,
+                    tagId: element1.id
+                })
+                .catch(err => {
+                    response.status(400).json({ message: String(err) });
+                });
+            }
+        })
+    }
+    response.status(200).json({ message: 'updated successfully.' });
 }
 
 export const deleteList = async (request: Request, response: Response) => {
@@ -173,6 +290,51 @@ export const getComments = async (request: Request, response: Response) => {
     })
     .then(comments => {
         response.status(200).json({ comments });
+    })
+    .catch(err => {
+        response.status(400).json({ message: String(err) });
+    });
+}
+
+export const postComments = async (request: Request, response: Response) => {
+    const { comment, contentId, profileId } = request.body;
+    await Comments.create({
+        comment: comment,
+        contentId: contentId,
+        profileId: profileId,
+        createdAt: getIsoString(),
+        updatedAt: getIsoString()
+    })
+    .then(comment=> {
+        response.status(200).json({ message: 'added successfully.', comment });
+    })
+    .catch(err => {
+    	response.status(400).json({ message: String(err) });
+    })
+}
+
+export const updateComments = async (request: Request, response: Response) => {
+    const { commentId } = request.query;
+    const { comment } = request.body;
+    await Comments.update({
+        comment: comment,
+        updatedAt: getIsoString()
+    }, { where: { id: commentId } })
+    .then(async () => {
+        response.status(200).json({ message: 'updated successfully.' });
+    })
+    .catch(err => {
+    	response.status(400).json({ message: String(err) });
+    })
+}
+
+export const deleteComments = async (request: Request, response: Response) => {
+    const { commentId } = request.query;
+    await Comments.destroy({
+        where: { id: commentId }
+    })
+    .then(() => {
+        response.status(200).json({ message: 'deleted successfully.' });
     })
     .catch(err => {
         response.status(400).json({ message: String(err) });

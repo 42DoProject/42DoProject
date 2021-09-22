@@ -28,6 +28,14 @@ router.post("/", (request: Request, response: Response) => {
   projectService.postList(request, response);
 });
 
+router.put("/", (request: Request, response: Response) => {
+  projectService.updateList(request, response);
+});
+
+router.put("/tag", (request: Request, response: Response) => {
+  projectService.updateTag(request, response);
+});
+
 router.delete("/", (request: Request, response: Response) => {
   projectService.deleteList(request, response);
 });
@@ -38,6 +46,18 @@ router.get("/content", (request: Request, response: Response) => {
 
 router.get("/comments", (request: Request, response: Response) => {
   projectService.getComments(request, response);
+});
+
+router.post("/comments", (request: Request, response: Response) => {
+  projectService.postComments(request, response);
+});
+
+router.put("/comments", (request: Request, response: Response) => {
+  projectService.updateComments(request, response);
+});
+
+router.delete("/comments", (request: Request, response: Response) => {
+  projectService.deleteComments(request, response);
 });
 
 export default router;

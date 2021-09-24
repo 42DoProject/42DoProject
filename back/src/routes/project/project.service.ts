@@ -13,21 +13,23 @@ app.set("query parser", "extended");
 
 const pagination = async (request: Request, response: Response, state: string) => {
     const { page, pageSize, tag } = request.query;
-    let offset;
-    let limit;
     let project;
-    let filteredProject;
-    let projectId: number[] = [];
     if ((page !== undefined && pageSize === undefined) ||
         (page === undefined && pageSize !== undefined)) {
         response.status(400).json({ error: "missing page or pageSize query" });
         return;
     } else {
-        limit = (page !== undefined && pageSize !== undefined) ? Number(pageSize) : undefined;
-        offset = (limit !== undefined) ? (Number(page) - 1) * limit : undefined;
+        const limit = (page !== undefined && pageSize !== undefined) ? Number(pageSize) : undefined;
+        const offset = (limit !== undefined) ? (Number(page) - 1) * limit : undefined;
         if (tag === undefined) {
             if (state === 'all') {
                 project = await Project.findAll({
+                    attributes: ['id', 'title', 'totalMember', 'currentMember', 'state', 'like', 'createdAt', 'updatedAt'],
+                    include: {
+                        model: Projecttag,
+                        attributes: ['id'],
+                        include: [{ model: Tag, attributes: ['tagTitle']}]
+                    },
                     offset: offset,
                     limit: limit
                 }).catch(err => {
@@ -35,6 +37,12 @@ const pagination = async (request: Request, response: Response, state: string) =
                 });
             } else {
                 project = await Project.findAll({
+                    attributes: ['id', 'title', 'totalMember', 'currentMember', 'state', 'like', 'createdAt', 'updatedAt'],
+                    include: {
+                        model: Projecttag,
+                        attributes: ['id'],
+                        include: [{ model: Tag, attributes: ['tagTitle']}]
+                    },
                     where: { state: state },
                     offset: offset,
                     limit: limit
@@ -44,12 +52,13 @@ const pagination = async (request: Request, response: Response, state: string) =
             }
         } else {
             let where;
+            let projectId: number[] = [];
             if (state === 'all') {
                 where = { id: projectId };
             } else {
                 where = { state: state, id: projectId };
             }
-            filteredProject = await Projecttag.findAll({
+            const filteredProject = await Projecttag.findAll({
                 attributes: ['projectId'],
                 include: {
                     model: Tag,
@@ -62,6 +71,12 @@ const pagination = async (request: Request, response: Response, state: string) =
                 }
             })
             project = await Project.findAll({
+                attributes: ['id', 'title', 'totalMember', 'currentMember', 'state', 'like', 'createdAt', 'updatedAt'],
+                include: {
+                    model: Projecttag,
+                    attributes: ['id'],
+                    include: [{ model: Tag, attributes: ['tagTitle'] }]
+                },
                 where: where,
                 offset: offset,
                 limit: limit
@@ -251,9 +266,12 @@ export const getContent = async (request: Request, response: Response) => {
         response.status(400).json({ message: 'please input projectId value' });
     }
     await Project.findOne({
+        attributes: ['id', 'title', 'totalMember', 'currentMember', 'state', 'like'],
         include: [{
-            model: Content,
+            attributes: ['id', 'content', 'createdAt', 'updatedAt'],
+            model: Content
         }, {
+            attributes: ['id'],
             model: Projectprofile,
             include: [{
                 model: Profile
@@ -278,7 +296,9 @@ export const getComments = async (request: Request, response: Response) => {
         response.status(400).json({ message: 'please input projectId value' });
     }
     await Comments.findAll({
+        attributes: ['id', 'comment', 'createdAt', 'updatedAt'],
         include: [{
+            attributes: ['id'],
             model: Content,
             where: { projectId: projectId },
             required: true

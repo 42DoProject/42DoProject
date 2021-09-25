@@ -1,4 +1,11 @@
-import { Table, Column, Model, DataType, HasOne, HasMany } from "sequelize-typescript";
+import {
+  Table,
+  Column,
+  Model,
+  DataType,
+  HasOne,
+  HasMany,
+} from "sequelize-typescript";
 import { OToken } from "./otoken.model";
 import { Profile } from "./profile.model";
 import { Token } from "./token.model";
@@ -16,6 +23,9 @@ export class User extends Model {
 
   @Column(DataType.STRING(80))
   email!: string;
+
+  @Column(DataType.STRING(80))
+  location!: string;
 
   @Column(DataType.STRING(80))
   profileImage!: string;

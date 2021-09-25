@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import mongo from "mongoose";
 import { Sequelize } from "sequelize-typescript";
 import { Tag } from "./project/tag.model";
+import { Position } from "./project/position.model";
 
 dotenv.config();
 
@@ -31,16 +32,21 @@ export const mongoose = async () => {
 
 export const initModel = async () => {
   const tagModel = await Tag.findAll();
-  if (process.env.TAG_LIST === undefined) {
-    return;
+  const positionModel = await Position.findAll();
+  if (process.env.TAG_LIST !== undefined && tagModel.length === 0) {
+    const tagList = process.env.TAG_LIST.split(';');
+    tagList.forEach(async (element) => {
+      await Tag.create({
+        tagTitle: element
+      })
+    });
   }
-  if (tagModel.length !== 0) {
-    return;
+  if (process.env.POSITION_LIST !== undefined && positionModel.length === 0) {
+    const positionList = process.env.POSITION_LIST.split(';');
+    positionList.forEach(async (element) => {
+      await Position.create({
+        positionName: element
+      })
+    });
   }
-  const tagList = process.env.TAG_LIST.split(';');
-  tagList.forEach(async (element) => {
-    await Tag.create({
-      tagTitle: element
-    })
-  })
 };

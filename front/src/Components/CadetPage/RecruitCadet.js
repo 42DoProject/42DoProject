@@ -12,7 +12,6 @@ export default function RecruitCadet() {
         <CardsList />
         <CardsList />
         <CardsList />
-        <CardsList />
         <ProjectPaginate />
       </div>
     </>

@@ -1,4 +1,4 @@
-import { Table, Column, HasMany, Model, DataType, ForeignKey } from "sequelize-typescript";
+import { Table, Column, HasMany, Model, DataType } from "sequelize-typescript";
 import { Projecttag } from "./projecttag.model";
 
 @Table

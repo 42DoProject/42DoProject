@@ -109,7 +109,7 @@ export const getList = async (request: Request, response: Response) => {
 }
 
 export const postList = async (request: Request, response: Response) => {
-    const { title, totalMember, currentMember, state, tag, content } = request.body;
+    const { title, totalMember, currentMember, state, period, tag, content } = request.body;
     let tagTable;
     await Project.create({
     	title: title,
@@ -118,6 +118,7 @@ export const postList = async (request: Request, response: Response) => {
         totalMember: totalMember,
         currentMember: currentMember,
         state: state,
+        period: period,
         like: 0,
         createdAt: getIsoString(),
         updatedAt: getIsoString()
@@ -153,12 +154,13 @@ export const postList = async (request: Request, response: Response) => {
 
 export const updateList = async (request: Request, response: Response) => {
     const { projectId } = request.query;
-    const { title, totalMember, currentMember, state, content } = request.body;
+    const { title, totalMember, currentMember, state, period, content } = request.body;
     await Project.update({
         title: title,
         totalMember: totalMember,
         currentMember: currentMember,
         state: state,
+        period: period,
         updatedAt: getIsoString(),
     }, { where: { id: projectId } })
     .then(async () => {
@@ -266,7 +268,7 @@ export const getContent = async (request: Request, response: Response) => {
         response.status(400).json({ message: 'please input projectId value' });
     }
     await Project.findOne({
-        attributes: ['id', 'title', 'totalMember', 'currentMember', 'state', 'like'],
+        attributes: ['id', 'title', 'totalMember', 'currentMember', 'state', 'period', 'like'],
         include: [{
             attributes: ['id', 'content', 'createdAt', 'updatedAt'],
             model: Content

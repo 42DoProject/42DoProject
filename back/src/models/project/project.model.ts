@@ -1,5 +1,6 @@
 import { Table, Column, Model, DataType, HasOne, HasMany, ForeignKey } from "sequelize-typescript";
 import { Projecttag } from "./projecttag.model";
+import { Projectposition } from "./projectposition.model";
 import { Projectprofile } from "./projectprofile.model";
 import { Content } from "./content.model";
 
@@ -23,6 +24,9 @@ export class Project extends Model {
   @Column(DataType.STRING(20))
   state!: string;
 
+  @Column(DataType.STRING(30))
+  period!: string;
+
   @Column(DataType.INTEGER)
   like!: number;
 
@@ -35,6 +39,9 @@ export class Project extends Model {
 
   @HasMany(() => Projecttag)
   projecttag!: Projecttag[];
+
+  @HasMany(() => Projectposition)
+  projectposition!: Projectposition[];
 
   @HasMany(() => Projectprofile)
   projectprofile!: Projectprofile[];

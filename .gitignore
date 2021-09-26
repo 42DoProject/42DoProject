@@ -162,4 +162,4 @@ dist
 .env
 docker-compose.yml
 data
-db/mongo/*
+mongo

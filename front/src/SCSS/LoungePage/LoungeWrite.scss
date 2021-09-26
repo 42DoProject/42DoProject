@@ -1,0 +1,65 @@
+@import "../Base.scss";
+
+.lounge-write {
+  background-color: white;
+  box-shadow: $shadow;
+  width: 100%;
+  height: 16rem;
+  border-radius: $round;
+  margin-bottom: 2rem;
+  padding: 2rem;
+
+  display: flex;
+  flex-direction: column;
+  .lounge-write__profile {
+    display: flex;
+    align-items: center;
+    .profile__img {
+      border-radius: 50%;
+      width: 3rem;
+      height: 3rem;
+      object-fit: cover;
+      // margin-bottom: 0.5rem;
+      margin-right: 1rem;
+    }
+    .profile__name {
+      font-size: $fontMs;
+    }
+  }
+}
+.lounge-write__space {
+  //   display: flex;
+  //   justify-content: center;
+  padding: 0 1rem 1rem 4rem;
+  // position: relative;
+  display: flex;
+  align-items: flex-end;
+  // position: relative;
+  // background-color: pink;
+}
+
+.lounge-write__box {
+  background-color: $bodyColor;
+  border-radius: $round;
+  border: 1px solid $lightestGrey;
+  height: 8rem;
+  width: 90%;
+  &:focus {
+    outline: none;
+  }
+}
+
+.lounge-write__submit {
+  // position: relative;
+  // bottom: -2rem;
+  background-color: $mainColor;
+  color: white;
+  border: none;
+  border-radius: 0.7rem;
+  z-index: 1;
+  margin-left: 1.5rem;
+  padding: 0.5rem 1.5rem;
+  min-width: 2rem;
+  height: 1rem;
+  box-sizing: content-box;
+}

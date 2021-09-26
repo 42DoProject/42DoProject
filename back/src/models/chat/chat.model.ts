@@ -4,7 +4,9 @@ import {
   Column,
   DataType,
   PrimaryKey,
+  HasMany,
 } from "sequelize-typescript";
+import { ProfileChat } from "./profilechat.model";
 
 @Table
 export class Chat extends Model {
@@ -12,6 +14,9 @@ export class Chat extends Model {
   @Column(DataType.STRING)
   id!: string;
 
-  @Column(DataType.JSON)
-  users!: number[];
+  @Column(DataType.INTEGER)
+  type!: number;
+
+  @HasMany(() => ProfileChat)
+  userchat!: ProfileChat[];
 }

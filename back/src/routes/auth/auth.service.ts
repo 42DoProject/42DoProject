@@ -18,6 +18,7 @@ const userModelCheck = async (user: any): Promise<number> => {
     username: user.login,
     name: user.displayname,
     email: user.email,
+    location: user.campus[0].name,
     profileImage: user.image_url,
   });
   await OToken.create({
@@ -68,6 +69,20 @@ export const signIn = async (request: Request, response: Response) => {
       },
       { where: { userId: idx } }
     );
+    var expiringToken: Token | null;
+    if (
+      (expiringToken = await Token.findOne({ where: { userId: idx } }))
+        ?.accessToken !== null
+    ) {
+      await BlackList.create({
+        token: expiringToken?.accessToken,
+        expiryDate: expiringToken?.accessExpiry,
+      });
+      await BlackList.create({
+        token: expiringToken?.refreshToken,
+        expiryDate: expiringToken?.refreshExpiry,
+      });
+    }
     const jwt = issueJwt(idx);
     await Token.update(
       {
@@ -79,9 +94,15 @@ export const signIn = async (request: Request, response: Response) => {
       { where: { userId: idx } }
     );
     const meta = await User.findOne({ where: { id: idx } });
-    response
-      .status(200)
-      .json({ user: { username: meta?.username }, token: jwt });
+    response.status(200).json({
+      user: {
+        username: meta!.username,
+        profileImage: meta!.profileImage,
+        location: meta!.location,
+        email: meta!.email,
+      },
+      token: jwt,
+    });
     return;
   }
   if (refresh_token) {
@@ -144,5 +165,14 @@ export const signOut = async (request: Request, response: Response) => {
     token: expiredToken?.refreshToken,
     expiryDate: expiredToken?.refreshExpiry,
   });
+  await Token.update(
+    {
+      accessToken: null,
+      accessExpiry: null,
+      refreshToken: null,
+      refreshExpiry: null,
+    },
+    { where: { userId: request.user?.id } }
+  );
   response.status(200).json({ message: "successfully signed out" });
 };

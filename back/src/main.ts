@@ -36,7 +36,6 @@ async function bootstrap() {
   app.use(auth.authorization);
   app.use(routes);
 
-  io.use(ws.authorization);
   io.on("connection", ws.handlersFactory(io));
 
   bridge.set(io);

@@ -3,6 +3,7 @@ import Main from "./Components/MainPage/Main";
 import ProfilePage from "./Components/ProfilePage/ProfilePage";
 import AllProjectPage from "./Components/AllProjectPage/AllProjectPage";
 import RecruitCadet from "./Components/CadetPage/RecruitCadet";
+import LoungePage from "./Components/LoungePage/LoungePage";
 import AuthMain from "./Components/AuthMain/AuthMain";
 import Layout from "./Components/CommonComponent/Layout";
 
@@ -15,6 +16,7 @@ function App(props) {
         <Route exact path="/profile" component={ProfilePage} />
         <Route path="/allproject" component={AllProjectPage} />
         <Route path="/cadet/recruit" component={RecruitCadet} />
+        <Route exact path="/lounge" component={LoungePage} />
       </Switch>
     </Layout>
   );

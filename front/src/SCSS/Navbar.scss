@@ -211,14 +211,17 @@
   position: relative;
   display: flex;
   align-items: center;
-  .name {
-    font-size: $fontMd;
-    margin-right: 1rem;
-    color: $darkGrey;
-    font-weight: $bold;
-    cursor: pointer;
-    &:hover {
+  &:hover {
+    .name {
       color: $mainColor;
+    }
+  }
+  .name {
+    .btn {
+      font-size: $fontMd;
+      margin-right: 1rem;
+      color: $darkGrey;
+      font-weight: $bold;
     }
   }
   .name__list {
@@ -262,9 +265,6 @@
   .image {
     font-size: $fontMd;
     margin-right: 1rem;
-    &:hover {
-      cursor: pointer;
-    }
     .IntraImage {
       border-radius: 50%;
       width: 3rem;

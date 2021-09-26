@@ -1,22 +1,25 @@
 import dotenv from "dotenv";
-import { sequelize } from "./models";
+import { mongoose, sequelize, initModel } from "./models";
 import http from "http";
 import express from "express";
-import io from "socket.io";
+import socket from "socket.io";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import routes from "./routes";
 import * as auth from "./routes/auth/oauth";
+import * as bridge from "./socket/bridge";
 import * as ws from "./socket";
 
 dotenv.config();
 
 async function bootstrap() {
   await sequelize.sync();
+  await mongoose();
+  await initModel();
 
   const app: express.Application = express();
   const server: http.Server = http.createServer(app);
-  const socket: io.Server = new io.Server(server, {
+  const io: socket.Server = new socket.Server(server, {
     cors: {
       origin: "*",
     },
@@ -33,8 +36,9 @@ async function bootstrap() {
   app.use(auth.authorization);
   app.use(routes);
 
-  socket.use(ws.authorization);
-  socket.on("connection", ws.handlers);
+  io.on("connection", ws.handlersFactory(io));
+
+  bridge.set(io);
 
   auth.expiredTokenCollector();
 

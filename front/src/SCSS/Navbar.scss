@@ -54,9 +54,13 @@
     bottom: -1.3rem;
     left: 2.5rem;
     font-size: $fontSm;
-    width: 20rem;
+    width: 18rem;
     border: none;
     background-color: $bodyColor;
+    &:focus {
+      outline: none;
+      border-bottom: 2px solid $mainColor;
+    }
   }
   ::placeholder {
     color: $lightestGrey;
@@ -162,8 +166,49 @@
     }
   }
 }
+.Nav__user__login {
+  position: relative;
+  left: -2rem;
+  bottom: -0.2rem;
+  background-color: $mainColor;
+  border-radius: 0.7rem;
+  padding: 0.4rem 1.1rem;
+  border: none;
+  font-weight: 700;
+  // transition: box-shadow 0.9s;
+
+  overflow: hidden;
+  &:after {
+    content: "";
+    height: 8rem;
+    left: -3rem;
+    opacity: 0.2;
+    position: absolute;
+    top: -3rem;
+    background: #fff;
+    -webkit-transform: rotate(35deg);
+    transform: rotate(35deg);
+    -webkit-transition: all 0.55s cubic-bezier(0.19, 1, 0.22, 1);
+    transition: all 0.55s cubic-bezier(0.19, 1, 0.22, 1);
+    width: 2rem;
+  }
+  &:hover:after {
+    // transform: scale(1.05);
+    // background-color: #66aaff;
+    // box-shadow: 10rem 0 0 0  inset;
+    left: 120%;
+  }
+  &:active {
+    transform: scale(0.95);
+  }
+  .login__link {
+    color: white;
+    font-size: $fontMs;
+  }
+}
 
 .Nav__user {
+  position: relative;
   display: flex;
   align-items: center;
   &:hover {
@@ -172,9 +217,50 @@
     }
   }
   .name {
-    font-size: $fontMd;
-    margin-right: 1rem;
-    color: $darkGrey;
+    .btn {
+      font-size: $fontMd;
+      margin-right: 1rem;
+      color: $darkGrey;
+      font-weight: $bold;
+    }
+  }
+  .name__list {
+    z-index: 3;
+    position: absolute;
+    right: 2rem;
+    top: 3.5rem;
+    width: 6.5rem;
+    // padding: 1rem;
+    background-color: white;
+    padding: 1rem 0;
+    border-bottom-left-radius: $round;
+    border-bottom-right-radius: $round;
+    .name__list__wrap {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      .list__profile {
+        &:hover {
+          color: $mainColor;
+        }
+        color: $darkGrey;
+        font-size: $fontSm;
+        font-weight: $bold;
+        margin-bottom: 1rem;
+        border-bottom: 1px solid $lightestGrey;
+        padding-bottom: 1rem;
+      }
+      .list__signOut {
+        &:hover {
+          color: $mainColor;
+        }
+        cursor: pointer;
+        color: $darkGrey;
+        font-size: $fontSm;
+        font-weight: $bold;
+      }
+    }
   }
   .image {
     font-size: $fontMd;

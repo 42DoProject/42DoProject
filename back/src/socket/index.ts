@@ -1,8 +1,12 @@
-import { Socket } from "socket.io";
+import { Socket, Server } from "socket.io";
 import { JwtPayload } from "jsonwebtoken";
 import { BlackList } from "../models/user/blacklist.model";
 import { jwtToObject } from "../routes/auth/oauth";
-import * as chatHandler from "./chat.handler";
+import * as chatHandler from "./chat/chat.handler";
+import { getUserSocket } from "./bridge";
+import { Chat } from "../models/chat/chat.model";
+import { ProfileChat } from "../models/chat/profilechat.model";
+import { Profile } from "../models/user/profile.model";
 
 const jwtAuth = async (token: string): Promise<number> => {
   var payload: string | boolean | JwtPayload;
@@ -15,45 +19,61 @@ const jwtAuth = async (token: string): Promise<number> => {
   return -1;
 };
 
-export const authorization = async (socket: Socket, next: any) => {
-  socket.data.user = await jwtAuth(socket.handshake.auth.token);
-  if (socket.data.user !== -1) next();
+const roomManage = async (socket: Socket): Promise<void> => {
+  const chats = await Chat.findAll({
+    include: {
+      model: ProfileChat,
+      include: [{ model: Profile, where: { id: socket.data.user } }],
+      required: true,
+    },
+  });
+  for (var chat of chats) socket.join(chat.id);
 };
 
-export const handlers = (socket: Socket) => {
-  const handler = (
-    event: string,
-    callback: (socket: Socket, payload: object) => void
-  ) => {
-    socket.on(event, (payload: object) => {
-      callback(socket, payload);
-    });
-  };
-  socket.use(async ([event, ...args], next: (err?: Error) => void) => {
-    if (args.length == 2) {
-      const u = await jwtAuth(args[1].token);
-      if (socket.data.user != u) {
-        socket.disconnect();
+export const handlersFactory = (io: Server) => {
+  return (socket: Socket) => {
+    socket.data.user = null;
+    const handler = (
+      event: string,
+      callback: (io: Server, socket: Socket, payload: object) => void
+    ) => {
+      socket.on(event, (...payloads) => {
+        callback(io, socket, payloads);
+      });
+    };
+    socket.use(async ([event, ...args], next: (err?: Error) => void) => {
+      if (event === "authorization") {
+        const { token } = args[0];
+        if (token) {
+          const user = await jwtAuth(token);
+          if (user !== -1) {
+            const old = getUserSocket(user);
+            if (old?.id !== socket.id) old?.disconnect();
+            socket.data.user = user;
+            await roomManage(socket);
+          }
+        }
         return;
       }
-      next();
-    }
-  });
-  connect(socket);
-  handler("disconnect", disconnect);
+      if (socket.data.user !== null) next();
+    });
+    connect(io, socket);
+    handler("disconnect", disconnect);
 
-  /*
-   * handler(@event, @function)
-   *  @event: event name
-   *  @function: (socket: Socket, payload: object): void
-   */
-  handler("chat:test", chatHandler.test);
+    /*
+     * handler(@event, @function)
+     *  @event: event name
+     *  @function: (io: Server, socket: Socket, ...payloads): void
+     */
+    handler("chat:send", chatHandler.send);
+    handler("chat:readAt", chatHandler.readAt);
+  };
 };
 
-const connect = (socket: Socket): void => {
+const connect = (io: Server, socket: Socket): void => {
   console.log(`connect: ${socket.id}`);
 };
 
-const disconnect = (socket: Socket): void => {
+const disconnect = (io: Server, socket: Socket): void => {
   console.log(`disconnect: ${socket.id}`);
 };

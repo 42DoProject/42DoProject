@@ -8,6 +8,7 @@
   justify-content: space-between;
   padding-left: 1rem;
   padding-right: 1rem;
+  margin-top: 1rem;
 }
 
 .project-bar-column1 {
@@ -25,7 +26,7 @@
   font-weight: $bold;
   font-size: $fontMd;
   color: $black;
-  // margin-left: 2rem;
+  margin-left: 2rem;
   .innerHtml:hover {
     color: $mainColor;
   }

@@ -3,10 +3,9 @@ import { Icon } from "@iconify/react";
 import "../../SCSS/Navbar.scss";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-
+import { Example as PopUp } from "../MainPage/PopUp";
 export default function Navbar(props) {
   let [clickFlag, setClickFlag] = useState(0);
-  let [nameFlag, setNameFlag] = useState(0);
   let userState = useSelector((state) => state.userReducer);
   // let loginState = useSelector((state) => state.loginReducer);
   let loginData = JSON.parse(localStorage.getItem("user"));
@@ -96,31 +95,10 @@ export default function Navbar(props) {
             </a>
           </button>
         ) : (
-          <div
-            className="Nav__user"
-            onClick={() => {
-              nameFlag ? setNameFlag(0) : setNameFlag(1);
-            }}
-          >
-            <div className="Nav__user name">{loginData.username}</div>
-            {nameFlag ? (
-              <div className="name__list">
-                <div className="name__list__wrap">
-                  <Link to="/profile">
-                    <div className="list__profile">Profile</div>
-                  </Link>
-                  <div
-                    className="list__signOut"
-                    onClick={() => {
-                      localStorage.removeItem("user");
-                      props.setRestart(1);
-                    }}
-                  >
-                    Sign Out
-                  </div>
-                </div>
-              </div>
-            ) : null}
+          <div className="Nav__user">
+            <div className="Nav__user name">
+              <PopUp username={loginData.username} />
+            </div>
             <div className="Nav__user image">
               {userState.intraImage ? (
                 <img

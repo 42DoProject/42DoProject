@@ -2,7 +2,9 @@ import express, { Request, Response } from "express";
 import { getIsoString } from "../../module/time";
 import { Project } from "../../models/project/project.model";
 import { Tag } from "../../models/project/tag.model";
+import { Position } from "../../models/project/position.model";
 import { Projecttag } from "../../models/project/projecttag.model";
+import { Projectposition } from "../../models/project/projectposition.model";
 import { Content } from "../../models/project/content.model";
 import { Projectprofile } from "../../models/project/projectprofile.model";
 import { Comments } from "../../models/project/comments.model";
@@ -109,8 +111,22 @@ export const getList = async (request: Request, response: Response) => {
 }
 
 export const postList = async (request: Request, response: Response) => {
-    const { title, totalMember, currentMember, state, period, tag, content } = request.body;
+    const { title, totalMember, currentMember, startDate, endDate, tag, position, content } = request.body;
+    // const date = new Date();
     let tagTable;
+    let positionTable;
+    // let splitDate: string[] = endDate.split('-');
+    let state: string = (totalMember - currentMember > 0) ? 'recruiting' : 'proceeding';
+    // if (Number(splitDate[0]) < Number(date.getFullYear())) {
+    //     state = 'completed';
+    // } else if (Number(splitDate[0]) === Number(date.getFullYear())) {
+    //     if (Number(splitDate[1]) < (Number(date.getMonth()) + 1)) {
+    //         state = 'completed';
+    //     } else if (Number(splitDate[1]) === (Number(date.getMonth()) + 1)) {
+    //         if (Number(splitDate[2]) < Number(date.getDate())) {
+    //             state = 'completed';
+    //     }
+    // }
     await Project.create({
     	title: title,
         // fileName: (request.file === undefined ? null : request.file.filename),
@@ -118,7 +134,8 @@ export const postList = async (request: Request, response: Response) => {
         totalMember: totalMember,
         currentMember: currentMember,
         state: state,
-        period: period,
+        startDate: startDate,
+        endDate: endDate,
         like: 0,
         createdAt: getIsoString(),
         updatedAt: getIsoString()
@@ -141,11 +158,17 @@ export const postList = async (request: Request, response: Response) => {
                     tagId: element.id
                 })
             })
-            response.status(200).json({ message: 'added successfully with tags.', project });
         }
-        else {
-            response.status(200).json({ message: 'added successfully.', project });
+        if (position !== undefined) {
+            positionTable = await Position.findAll({ attributes: ['id'], where: { positionName: position } });
+            positionTable.forEach( async (element) => {
+                await Projectposition.create({
+                    projectId: project.id,
+                    positionId: element.id
+                })
+            })
         }
+        response.status(200).json({ message: 'added successfully.', project });
     })
     .catch(err => {
     	response.status(400).json({ message: String(err) });
@@ -154,13 +177,15 @@ export const postList = async (request: Request, response: Response) => {
 
 export const updateList = async (request: Request, response: Response) => {
     const { projectId } = request.query;
-    const { title, totalMember, currentMember, state, period, content } = request.body;
+    const { title, totalMember, currentMember, startDate, endDate, content } = request.body;
+    let state: string = (totalMember - currentMember > 0) ? 'recruiting' : 'proceeding';
     await Project.update({
         title: title,
         totalMember: totalMember,
         currentMember: currentMember,
         state: state,
-        period: period,
+        startDate: startDate,
+        endDate: endDate,
         updatedAt: getIsoString(),
     }, { where: { id: projectId } })
     .then(async () => {
@@ -237,6 +262,65 @@ export const updateTag = async (request: Request, response: Response) => {
     response.status(200).json({ message: 'updated successfully.' });
 }
 
+export const updatePosition = async (request: Request, response: Response) => {
+    const { projectId } = request.query;
+    const { position } = request.body;
+    if (projectId === undefined) {
+        response.status(400).json({ message: 'please input projectId value' });
+    }
+    const project = await Project.findOne({
+        include: {
+            model: Projectposition,
+            attributes: ['positionId']
+        },
+        where: { id: projectId }
+    })
+    .catch(err => {
+    	response.status(400).json({ message: String(err) });
+    })
+    const projectPosition = project?.projectposition;
+    const reqPosition = await Position.findAll({ attributes: ['id'], where: { positionName: position } });
+    if (projectPosition !== undefined && projectPosition?.length > reqPosition.length) {
+        let flag: number;
+        projectPosition.forEach( async (element1) => {
+            flag = 0;
+            reqPosition.forEach( async (element2) => {
+                if (element1.positionId === element2.id) {
+                    flag = 1;
+                }
+            })
+            if (flag === 0) {
+                await Projectposition.destroy({
+                    where: { positionId: element1.positionId }
+                })
+                .catch(err => {
+                    response.status(400).json({ message: String(err) });
+                });
+            }
+        })
+    } else if (projectPosition !== undefined && projectPosition?.length < reqPosition.length) {
+        let flag: number;
+        reqPosition.forEach( async (element1) => {
+            flag = 0;
+            projectPosition.forEach( async (element2) => {
+                if (element1.id === element2.positionId) {
+                    flag = 1;
+                }
+            })
+            if (flag === 0) {
+                await Projectposition.create({
+                    projectId: projectId,
+                    positionId: element1.id
+                })
+                .catch(err => {
+                    response.status(400).json({ message: String(err) });
+                });
+            }
+        })
+    }
+    response.status(200).json({ message: 'updated successfully.' });
+}
+
 export const deleteList = async (request: Request, response: Response) => {
     const { projectId } = request.query;
     await Projecttag.destroy({
@@ -268,7 +352,7 @@ export const getContent = async (request: Request, response: Response) => {
         response.status(400).json({ message: 'please input projectId value' });
     }
     await Project.findOne({
-        attributes: ['id', 'title', 'totalMember', 'currentMember', 'state', 'period', 'like'],
+        attributes: ['id', 'title', 'totalMember', 'currentMember', 'state', 'startDate', 'endDate', 'like'],
         include: [{
             attributes: ['id', 'content', 'createdAt', 'updatedAt'],
             model: Content
@@ -277,6 +361,13 @@ export const getContent = async (request: Request, response: Response) => {
             model: Projectprofile,
             include: [{
                 model: Profile
+            }],
+            separate: true
+        }, {
+            attributes: ['id'],
+            model: Projectposition,
+            include: [{
+                model: Position
             }],
             separate: true
         }],

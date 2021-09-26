@@ -24,8 +24,11 @@ export class Project extends Model {
   @Column(DataType.STRING(20))
   state!: string;
 
-  @Column(DataType.STRING(30))
-  period!: string;
+  @Column(DataType.DATE)
+  startDate!: Date;
+
+  @Column(DataType.DATE)
+  endDate!: Date;
 
   @Column(DataType.INTEGER)
   like!: number;

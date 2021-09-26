@@ -9,6 +9,7 @@ export default function CardsList() {
       <CadetCards />
       <CadetCards />
       <CadetCards />
+      <CadetCards />
     </div>
   );
 }

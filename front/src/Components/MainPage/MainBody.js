@@ -11,7 +11,7 @@ export default function MainBody() {
         <RecruitList />
       </div>
       <div className="public">
-        <div className="public__title">프로젝트 홍보</div>
+        <div className="public__title">완료된 프로젝트</div>
         <PubilcList />
       </div>
     </div>

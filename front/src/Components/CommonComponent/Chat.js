@@ -29,7 +29,7 @@ export default function Chat() {
       </div>
       <div className="chatLog">
         <div className="chatLog__nav">
-          <div className="nav__chat-title">채팅</div>
+          <div className="nav__chat-title">대화</div>
           <div className="nav__icons">
             <div className="nav__plus">
               <Icon icon="bx:bx-message-rounded-add" height="2rem" />

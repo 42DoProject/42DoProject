@@ -7,7 +7,7 @@ import { Example as PopUp } from "../MainPage/PopUp";
 export default function Navbar(props) {
   let [clickFlag, setClickFlag] = useState(0);
   let userState = useSelector((state) => state.userReducer);
-  // let loginState = useSelector((state) => state.loginReducer);
+  let loginState = useSelector((state) => state.loginReducer);
   let loginData = JSON.parse(localStorage.getItem("user"));
   return (
     <div className="Nav">

@@ -1,6 +1,5 @@
 import React from "react";
 import { Popover, OverlayTrigger, Button } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import "../../SCSS/MainPage/PopUp.scss";
 

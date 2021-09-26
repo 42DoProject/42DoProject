@@ -10,6 +10,7 @@ export default function AuthMain() {
   let dispatch = useDispatch();
   let history = useHistory();
   let checkLogin = JSON.parse(localStorage.getItem("user"));
+  // 42API에서 User Data 받아오기.
   const getData = async () => {
     try {
       const { data: Data } = await axios.get(
@@ -21,7 +22,9 @@ export default function AuthMain() {
       const {
         token: { accessToken, refreshToken },
       } = Data;
+      // loginReducer state 변경
       dispatch({ type: "LOGIN", payload: userName });
+      // localStorage user이름 저장
       localStorage.setItem("user", JSON.stringify(Data.user));
       checkLogin = JSON.parse(localStorage.getItem("user"));
       // token 저장
@@ -31,6 +34,6 @@ export default function AuthMain() {
       console.log(err);
     }
   };
-  getData();
+  // getData();
   return checkLogin === null && <ReactLoading type="spin" color="#a7bc5b" />;
 }

@@ -2,16 +2,14 @@
 
 .profilePage-wrap {
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   max-width: 1440px;
   margin: 0 auto;
-  .column-left {
-    width: 66%;
-    margin-right: 1rem;
-    display: flex;
-    flex-direction: column;
-  }
-  .column-right {
-    width: 33%;
-    padding: 2rem 0;
+  hr {
+    width: 85%;
+    color: $lightGrey;
+    height: 2px;
+    align-self: center;
   }
 }

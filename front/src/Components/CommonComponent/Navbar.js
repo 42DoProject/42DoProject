@@ -8,7 +8,6 @@ export default function Navbar(props) {
   let [clickFlag, setClickFlag] = useState(0);
   let userState = useSelector((state) => state.userReducer);
   let loginState = useSelector((state) => state.loginReducer);
-  let loginData = JSON.parse(localStorage.getItem("user"));
   return (
     <div className="Nav">
       <div className="Nav-column1">
@@ -40,7 +39,7 @@ export default function Navbar(props) {
             라운지
           </Link>
         </div>
-        {loginData === null ? null : (
+        {loginState === null ? null : (
           <div className="Nav__notification">
             {parseInt(userState.notification.num) ? (
               <span className="haveNotification">
@@ -85,7 +84,7 @@ export default function Navbar(props) {
             )}
           </div>
         )}
-        {loginData === null ? (
+        {loginState === null ? (
           <button className="Nav__user__login">
             <a
               className="login__link"
@@ -97,13 +96,13 @@ export default function Navbar(props) {
         ) : (
           <div className="Nav__user">
             <div className="Nav__user name">
-              <PopUp username={loginData.username} />
+              <PopUp username={loginState.name} />
             </div>
             <div className="Nav__user image">
-              {userState.intraImage ? (
+              {loginState.profileImage !== null ? (
                 <img
                   className="IntraImage"
-                  src={userState.intraImage}
+                  src={loginState.profileImage}
                   alt="intraImage"
                 />
               ) : (

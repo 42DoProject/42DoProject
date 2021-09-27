@@ -71,6 +71,11 @@
   .github-span {
     color: $mainColor;
   }
+  .card2__location,
+  .card2__email,
+  .card2__github {
+    margin: 0.3rem 0;
+  }
 }
 
 .profileBody__col2 {

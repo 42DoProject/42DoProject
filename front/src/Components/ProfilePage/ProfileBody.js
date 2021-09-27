@@ -1,8 +1,12 @@
 import React from "react";
 import { Icon } from "@iconify/react";
 import "../../SCSS/ProfilePage/ProfileBody.scss";
+import { useSelector } from "react-redux";
 // import Cards from "../MainPage/Cards";
 export default function ProfileBody() {
+  // let userState = useSelector((state) => state.userReducer);
+  let loginState = useSelector((state) => state.loginReducer);
+
   return (
     <div className="profileBody">
       <div className="profileBody__col1">
@@ -46,13 +50,13 @@ export default function ProfileBody() {
         <div className="col1__profile-card2">
           <div className="card2__location">
             <Icon icon="carbon:location-filled" height="25px" />
-            <span>Seoul</span>
+            <span>{loginState.location}</span>
           </div>
           <div className="card2__email">
             <Icon icon="fluent:mail-48-filled" height="25px" />
-            <span className="email-span">jiylee@student.42seoul.kr</span>
+            <span className="email-span">{loginState.email}</span>
           </div>
-          <div className="card3__github">
+          <div className="card2__github">
             <Icon icon="akar-icons:github-fill" height="22px" />
             <span className="github-span">Jiyong95</span>
           </div>

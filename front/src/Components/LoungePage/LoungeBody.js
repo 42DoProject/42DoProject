@@ -3,8 +3,10 @@ import "../../SCSS/LoungePage/LoungeBody.scss";
 import { Link } from "react-router-dom";
 import LoungePost from "./LoungePost";
 import LoungeWrite from "./LoungeWrite";
+import { useSelector } from "react-redux";
 
 export default function LoungeBody() {
+  let loginState = useSelector((state) => state.loginReducer);
   return (
     <>
       {/* 모집중인 프로젝트/ 홍보중인 프로젝트(완료) / 필터버튼 */}
@@ -18,7 +20,7 @@ export default function LoungeBody() {
             </div>
           </div>
           <div className="left__posts">
-            <LoungeWrite />
+            {loginState !== null ? <LoungeWrite /> : <LoungePost />}
             <LoungePost />
             <LoungePost />
             <LoungePost />

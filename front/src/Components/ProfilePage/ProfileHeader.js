@@ -1,12 +1,20 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import "../../SCSS/ProfilePage/ProfileHeader.scss";
-import { Icon } from "@iconify/react";
+// import { Icon } from "@iconify/react";
 
 export default function ProfileHeader() {
+  // let userState = useSelector((state) => state.userReducer);
+  let loginState = useSelector((state) => state.loginReducer);
+
   return (
     <div className="profileHeader">
       <div className="header__left">
-        <img className="profileImage" alt="profileImage1" />
+        <img
+          className="profileImage"
+          alt="profileImage"
+          src={loginState.profileImage}
+        />
 
         <div className="profile__bubble">
           리액트를 이용한 웹 프론트엔드 개발을 해보고 싶습니다!
@@ -15,7 +23,7 @@ export default function ProfileHeader() {
       </div>
       <div className="header__right">
         <div className="right__row1">
-          <div className="row1__name">jiylee</div>
+          <div className="row1__name">{loginState.name}</div>
           <button className="row1__send-message">메시지 보내기</button>
           <button className="row1__follow">팔로우</button>
         </div>

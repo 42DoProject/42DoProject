@@ -1,4 +1,4 @@
-export default function loginReducer(state = null, action) {
+export default function loginReducer(state, action) {
   switch (action.type) {
     case "LOGIN":
       let copy = {
@@ -11,6 +11,6 @@ export default function loginReducer(state = null, action) {
     case "LOGOUT":
       return null;
     default:
-      return state;
+      return null;
   }
 }

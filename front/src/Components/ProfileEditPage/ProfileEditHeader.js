@@ -14,17 +14,24 @@ export default function ProfileEditHeader() {
           className="profileImage"
           alt="profileImage"
           // src={loginState.profileImage}
-          
         />
 
-        <input type="text" className="profile__bubble" />
+        <textarea
+          spellcheck="false"
+          className="profile__bubble"
+          maxlength="30"
+        />
         <div className="profile__last-access">마지막 접속: 3일 전</div>
       </div>
       <div className="header__right">
         <div className="right__row1">
           {/* <div className="row1__name">{loginState.name}</div> */}
           <div className="row1__name">seojeong</div>
-          <input type="submit" className="row1__finish-edit" value="프로필 저장"/>
+          <input
+            type="submit"
+            className="row1__finish-edit"
+            value="프로필 저장"
+          />
         </div>
         <div className="right__row2">
           <select className="row2__status">
@@ -34,7 +41,7 @@ export default function ProfileEditHeader() {
           <div className="row2__follower">팔로워 10명</div>
           <div className="row2__following">팔로워 15명</div>
         </div>
-        <textarea className="right__introduction" />
+        <textarea spellcheck="false" className="right__introduction" />
       </div>
     </div>
   );

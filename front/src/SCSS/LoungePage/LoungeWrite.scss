@@ -34,7 +34,7 @@
   // position: relative;
   display: flex;
   align-items: flex-end;
-  
+
   // position: relative;
   // background-color: pink;
 }
@@ -45,9 +45,10 @@
   border: 1px solid $lightestGrey;
   height: 8rem;
   width: 90%;
-  &:focus {
-    outline: none;
-  }
+}
+textarea.lounge-write__box {
+  resize: none;
+  padding: 1rem;
 }
 
 .lounge-write__submit {

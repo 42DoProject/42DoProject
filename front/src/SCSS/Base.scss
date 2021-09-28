@@ -28,26 +28,6 @@ $round: 1rem; //border-radius 통일
 
 //페이지 상단 연두색 box 사이즈 (프로필 배너 등)
 
-body {
-  font-family: "Nunito Sans", sans-serif;
-  margin: 0.5rem 1rem;
-  background-color: $bodyColor;
-  color: $darkGrey;
-}
-
-@media (max-width: 78rem) {
-  html {
-    font-size: 12px;
-  }
-}
-
-a {
-  text-decoration: none;
-  &:hover {
-    color: $mainColor;
-  }
-}
-
 $minWidth: 28rem;
 // iphon 5
 $iphone5Width: 27rem;

@@ -5,8 +5,9 @@ import AllProjectPage from "./Components/AllProjectPage/AllProjectPage";
 import RecruitCadet from "./Components/CadetPage/RecruitCadet";
 import LoungePage from "./Components/LoungePage/LoungePage";
 import AuthMain from "./Components/AuthMain/AuthMain";
-import ProfileEditPage from "./Components/ProfileEditPage/ProfileEditPage"
+import ProfileEditPage from "./Components/ProfileEditPage/ProfileEditPage";
 import Layout from "./Components/CommonComponent/Layout";
+import "./SCSS/init.scss";
 
 function App(props) {
   return (

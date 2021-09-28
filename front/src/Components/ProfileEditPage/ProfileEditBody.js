@@ -18,7 +18,7 @@ export default function ProfileEditBody() {
             <div className="column1__skill">보유 스킬</div>
           </div>
           <div className="card1__column2">
-            <select type="date" className="column2__job">
+            <select className="column2__job">
               <option value="프론트엔드">프론트엔드</option>
               <option value="백엔드">백엔드</option>
               <option value="iOS">iOS</option>
@@ -28,7 +28,15 @@ export default function ProfileEditBody() {
               <option value="중수">중수</option>
               <option value="고수">고수</option>
             </select>
-            <div className="column2__skill">
+            <input className="column2__skill" list="programming-languages" />
+            <datalist id="programming-languages">
+              <option value="HTML" />
+              <option value="CSS" />
+              <option value="Javascript" />
+              <option value="Java" />
+              <option value="Spring" />
+            </datalist>
+            {/* <div className="column2__skill">
               <img
                 alt="badge1"
                 src="https://img.shields.io/badge/HTML-E34F26?style=flat-square&logo=HTML5&logoColor=white"
@@ -53,7 +61,7 @@ export default function ProfileEditBody() {
                 alt="badge3"
                 src="https://img.shields.io/badge/Javascript-F7DF1E?style=flat-square&logo=JavaScript&logoColor=white"
               />
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="col1__profile-card2">
@@ -69,7 +77,12 @@ export default function ProfileEditBody() {
           </div>
           <div className="card2__github">
             <Icon icon="akar-icons:github-fill" height="22px" />
-            <input type="text" className="github-span" />
+            <input
+              spellCheck="false"
+              type="text"
+              className="github-span"
+              maxlength="15"
+            />
           </div>
         </div>
       </div>

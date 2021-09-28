@@ -3,7 +3,10 @@ import { Icon } from "@iconify/react";
 import "../../SCSS/MainPage/Cards.scss";
 
 export default function Cards(props) {
-  useEffect(() => {}, [props.projectData]);
+  console.log("cards");
+  useEffect(() => {
+    console.log("cards-effect", props.projectData);
+  }, [props.projectData]);
   return (
     <>
       {props.projectData === undefined ? null : (

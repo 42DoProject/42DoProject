@@ -5,7 +5,10 @@ import { useEffect, useState } from "react";
 
 export default function Cardlist(props) {
   let [slideFlag, setSlideFlag] = useState([0, 0]);
-  useEffect(() => {}, [props.completedProject]);
+  console.log("publiclist");
+  useEffect(() => {
+    console.log("publiclist-effect", props.completedProject);
+  }, [props.completedProject]);
   return (
     <div className="cardlist">
       <button

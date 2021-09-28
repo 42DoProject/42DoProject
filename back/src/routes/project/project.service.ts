@@ -137,6 +137,7 @@ export const postList = async (request: Request, response: Response) => {
     .then(async project => {
         Content.create({
             content: content,
+            viewCount: 0,
             projectId: project.id,
             createdAt: getIsoString(),
             updatedAt: getIsoString()
@@ -396,11 +397,23 @@ export const getContent = async (request: Request, response: Response) => {
         response.status(400).json({ errMessage: 'please input projectId query' });
     }
 
+    await Content.findOne({
+        attributes: ['viewCount'],
+        where: { projectId: projectId }
+    })
+    .then(async content => {
+        let curViews = content?.viewCount;
+        let newViews: number = Number(curViews) + 1;
+        await Content.update({
+            viewCount: newViews
+        }, { where: { projectId: projectId } });
+    });
+
     await Project.findOne({
         attributes: ['id', 'title', 'totalMember', 'currentMember', 'state', 'startDate', 'endDate', 'like'],
         include: [{
             model: Content,
-            attributes: ['id', 'content', 'createdAt', 'updatedAt']
+            attributes: ['id', 'viewCount', 'content', 'createdAt', 'updatedAt']
         }, {
             model: Projectprofile,
             attributes: ['id'],

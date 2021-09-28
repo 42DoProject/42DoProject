@@ -1,10 +1,15 @@
 import Cards from "./Cards";
 import "../../SCSS/MainPage/List.scss";
 import { Icon } from "@iconify/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function Cardlist() {
+export default function Cardlist(props) {
   let [slideFlag, setSlideFlag] = useState([0, 0]);
+  useEffect(() => {
+    // console.log("pr", props.recruitingProject);
+  }, [props.recruitingProject]);
+  // console.log("recruitlist");
+
   return (
     <div className="cardlist">
       <button
@@ -25,14 +30,9 @@ export default function Cardlist() {
       </button>
       <div className="cardpadding">
         <div className="cards-row">
-          <Cards />
-          <Cards />
-          <Cards />
-          <Cards />
-          <Cards />
-          <Cards />
-          <Cards />
-          <Cards />
+          {props.recruitingProject.map((el, idx) => {
+            return <Cards key={idx} projectData={el} />;
+          })}
         </div>
       </div>
     </div>

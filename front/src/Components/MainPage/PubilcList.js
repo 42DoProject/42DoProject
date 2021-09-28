@@ -3,8 +3,9 @@ import "../../SCSS/MainPage/List.scss";
 import { Icon } from "@iconify/react";
 import { useState } from "react";
 
-export default function Cardlist() {
+export default function Cardlist(props) {
   let [slideFlag, setSlideFlag] = useState([0, 0]);
+  console.log("completed", props.completedProject);
   return (
     <div className="cardlist">
       <button
@@ -25,14 +26,9 @@ export default function Cardlist() {
       </button>
       <div className="cardpadding">
         <div className="cards-row">
-          <Cards />
-          <Cards />
-          <Cards />
-          <Cards />
-          <Cards />
-          <Cards />
-          <Cards />
-          <Cards />
+          {props.completedProject.map((el, idx) => {
+            return <Cards key={idx} projectData={el} />;
+          })}
         </div>
       </div>
     </div>

@@ -34,11 +34,13 @@ export default function Dashboard() {
                 </div>
               )}
             </div>
-            <div className="row1__button">
-              <Link className="icon__link" to="/profile/edit">
-                <Icon icon="akar-icons:edit" />
-              </Link>
-            </div>
+            {loginState && (
+              <div className="row1__button">
+                <Link className="icon__link" to="/profile/edit">
+                  <Icon icon="akar-icons:edit" />
+                </Link>
+              </div>
+            )}
           </div>
           <div className="row2">
             <div className="row2__box1">

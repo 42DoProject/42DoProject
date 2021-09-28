@@ -88,7 +88,7 @@ export default function Navbar(props) {
           <button className="Nav__user__login">
             <a
               className="login__link"
-              href="https://api.intra.42.fr/oauth/authorize?client_id=2d6ee50437c3f7d433bd852f75d69ffbed52da6117b7a513de39d18b98cd8f95&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth&response_type=code"
+              href={`https://api.intra.42.fr/oauth/authorize?client_id=${process.env.REACT_APP_API_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_API_REDIRECT_URI}&response_type=code`}
             >
               SIGN IN
             </a>

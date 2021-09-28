@@ -7,7 +7,6 @@ import ReactLoading from "./MainLoading";
 export default function MainBody() {
   let [recruitingProject, setRecruitingProject] = useState(false);
   let [completedProject, setCompletedProject] = useState(false);
-  // console.log("mainbody");
   const getData = async () => {
     try {
       let {
@@ -28,7 +27,6 @@ export default function MainBody() {
   };
   useEffect(() => {
     getData();
-    // console.log("mainbodyuseEff");
   }, []);
   return (
     <div className="recruit__wrap">

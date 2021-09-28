@@ -1,11 +1,11 @@
 import Cards from "./Cards";
 import "../../SCSS/MainPage/List.scss";
 import { Icon } from "@iconify/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Cardlist(props) {
   let [slideFlag, setSlideFlag] = useState([0, 0]);
-  console.log("completed", props.completedProject);
+  useEffect(() => {}, [props.completedProject]);
   return (
     <div className="cardlist">
       <button

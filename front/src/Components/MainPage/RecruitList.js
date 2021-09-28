@@ -5,10 +5,7 @@ import { useEffect, useState } from "react";
 
 export default function Cardlist(props) {
   let [slideFlag, setSlideFlag] = useState([0, 0]);
-  useEffect(() => {
-    // console.log("pr", props.recruitingProject);
-  }, [props.recruitingProject]);
-  // console.log("recruitlist");
+  useEffect(() => {}, [props.recruitingProject]);
 
   return (
     <div className="cardlist">

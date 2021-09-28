@@ -3,7 +3,8 @@ import { Icon } from "@iconify/react";
 import "../../SCSS/ProfilePage/ProfileBody.scss";
 import { useSelector } from "react-redux";
 // import Cards from "../MainPage/Cards";
-export default function ProfileBody() {
+
+export default function ProfileEditBody() {
   // let userState = useSelector((state) => state.userReducer);
   let loginState = useSelector((state) => state.loginReducer);
 
@@ -17,8 +18,16 @@ export default function ProfileBody() {
             <div className="column1__skill">보유 스킬</div>
           </div>
           <div className="card1__column2">
-            <div className="column2__job">프론트엔드</div>
-            <div className="column2__level">초보</div>
+            <select type="date" className="column2__job">
+              <option value="프론트엔드">프론트엔드</option>
+              <option value="백엔드">백엔드</option>
+              <option value="iOS">iOS</option>
+            </select>
+            <select className="column2__level">
+              <option value="초보">초보</option>
+              <option value="중수">중수</option>
+              <option value="고수">고수</option>
+            </select>
             <div className="column2__skill">
               <img
                 alt="badge1"
@@ -60,7 +69,7 @@ export default function ProfileBody() {
           </div>
           <div className="card2__github">
             <Icon icon="akar-icons:github-fill" height="22px" />
-            <span className="github-span">Jiyong95</span>
+            <input type="text" className="github-span" />
           </div>
         </div>
       </div>

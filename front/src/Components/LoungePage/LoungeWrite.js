@@ -18,7 +18,7 @@ export default function LoungeWrite() {
         </span>
       </div>
       <form className="lounge-write__space">
-        <input className="lounge-write__box"></input>
+        <textarea className="lounge-write__box"></textarea>
         <button type="submit" className="lounge-write__submit">
           등록
         </button>

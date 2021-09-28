@@ -48,6 +48,11 @@
     font-size: $fontSm;
     box-shadow: $shadow;
     position: relative;
+    // border: none;
+  }
+  textarea.profile__bubble {
+    resize: none;
+    border: 2px solid $mainColor;
   }
   .profile__last-access {
     color: $lightGrey;
@@ -73,6 +78,14 @@
     position: relative;
     margin-right: 2rem;
   }
+  .row1__finish-edit {
+    background-color: $mainColor;
+    border: none;
+    border-radius: 0.7rem;
+    padding: 0.7rem 1.2rem;
+    color: white;
+    font-weight: $normal;
+  }
   button {
     border: none;
     background-color: $mainColor;
@@ -97,6 +110,7 @@
     color: white;
     // font-weight: $normal;
     margin-right: 1rem;
+    border: none;
   }
   .row2__follower,
   .row2__following {
@@ -110,4 +124,10 @@
   width: 90%;
   min-height: 10rem;
   max-height: 30rem;
+  border-radius: $round;
+}
+textarea.right__introduction {
+  border: 2px solid $mainColor;
+  padding: 1rem;
+  resize: none;
 }

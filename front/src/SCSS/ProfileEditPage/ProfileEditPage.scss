@@ -1,0 +1,15 @@
+@import "../Base.scss";
+
+.profileEditPage-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 1440px;
+  margin: 0 auto;
+  hr {
+    width: 85%;
+    color: $lightGrey;
+    height: 2px;
+    align-self: center;
+  }
+}

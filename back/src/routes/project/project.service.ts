@@ -14,12 +14,23 @@ const app = express();
 app.set("query parser", "extended");
 
 const pagination = async (request: Request, response: Response, state: string) => {
-    const { page, pageSize, tag } = request.query;
+    const { page, pageSize, tag, order } = request.query;
     let project;
+    let inputOrder: string = "";
+
+    if (order === 'view') {
+        inputOrder = 'viewCount';
+    } else if (order === 'like') {
+        inputOrder = 'like';
+    } else if (order === undefined) {
+        inputOrder = 'createdAt';
+    } else {
+        response.status(400).json({ errMessage: "invalid order query" });
+    }
 
     if ((page !== undefined && pageSize === undefined) ||
         (page === undefined && pageSize !== undefined)) {
-        response.status(400).json({ error: "missing page or pageSize query" });
+        response.status(400).json({ errMessage: "missing page or pageSize query" });
     } else {
         const limit = (page !== undefined && pageSize !== undefined) ? Number(pageSize) : undefined;
         const offset = (limit !== undefined) ? (Number(page) - 1) * limit : undefined;
@@ -27,12 +38,13 @@ const pagination = async (request: Request, response: Response, state: string) =
         if (tag === undefined) {
             if (state === 'all') {
                 project = await Project.findAll({
-                    attributes: ['id', 'title', 'totalMember', 'currentMember', 'state', 'like', 'createdAt', 'updatedAt'],
+                    attributes: ['id', 'title', 'totalMember', 'currentMember', 'state', 'like', 'viewCount', 'createdAt', 'updatedAt'],
                     include: {
                         model: Projecttag,
                         attributes: ['id'],
                         include: [{ model: Tag, attributes: ['tagTitle']}]
                     },
+                    order: [[inputOrder, 'DESC'], ['createdAt', 'DESC']],
                     offset: offset,
                     limit: limit
                 }).catch(err => {
@@ -40,12 +52,13 @@ const pagination = async (request: Request, response: Response, state: string) =
                 });
             } else {
                 project = await Project.findAll({
-                    attributes: ['id', 'title', 'totalMember', 'currentMember', 'state', 'like', 'createdAt', 'updatedAt'],
+                    attributes: ['id', 'title', 'totalMember', 'currentMember', 'state', 'like', 'viewCount', 'createdAt', 'updatedAt'],
                     include: {
                         model: Projecttag,
                         attributes: ['id'],
                         include: [{ model: Tag, attributes: ['tagTitle']}]
                     },
+                    order: [[inputOrder, 'DESC'], ['createdAt', 'DESC']],
                     where: { state: state },
                     offset: offset,
                     limit: limit
@@ -80,12 +93,13 @@ const pagination = async (request: Request, response: Response, state: string) =
             }
 
             project = await Project.findAll({
-                attributes: ['id', 'title', 'totalMember', 'currentMember', 'state', 'like', 'createdAt', 'updatedAt'],
+                attributes: ['id', 'title', 'totalMember', 'currentMember', 'state', 'like', 'viewCount', 'createdAt', 'updatedAt'],
                 include: {
                     model: Projecttag,
                     attributes: ['id'],
                     include: [{ model: Tag, attributes: ['tagTitle'] }]
                 },
+                order: [[inputOrder, 'DESC'], ['createdAt', 'DESC']],
                 where: where,
                 offset: offset,
                 limit: limit
@@ -134,13 +148,13 @@ export const postList = async (request: Request, response: Response) => {
         startDate: startDate,
         endDate: endDate,
         like: 0,
+        viewCount: 0,
         createdAt: getIsoString(),
         updatedAt: getIsoString()
     })
     .then(async project => {
         Content.create({
             content: content,
-            viewCount: 0,
             projectId: project.id,
             createdAt: getIsoString(),
             updatedAt: getIsoString()
@@ -402,23 +416,23 @@ export const getContent = async (request: Request, response: Response) => {
         response.status(400).json({ errMessage: 'please input projectId query' });
     }
 
-    await Content.findOne({
+    await Project.findOne({
         attributes: ['viewCount'],
-        where: { projectId: projectId }
+        where: { id: projectId }
     })
-    .then(async content => {
-        let curViews = content?.viewCount;
+    .then(async project => {
+        let curViews = project?.viewCount;
         let newViews: number = Number(curViews) + 1;
-        await Content.update({
+        await Project.update({
             viewCount: newViews
-        }, { where: { projectId: projectId } });
+        }, { where: { id: projectId } });
     });
 
     await Project.findOne({
-        attributes: ['id', 'title', 'totalMember', 'currentMember', 'state', 'startDate', 'endDate', 'like'],
+        attributes: ['id', 'title', 'totalMember', 'currentMember', 'state', 'startDate', 'endDate', 'like', 'viewCount'],
         include: [{
             model: Content,
-            attributes: ['id', 'viewCount', 'content', 'createdAt', 'updatedAt']
+            attributes: ['id', 'content', 'createdAt', 'updatedAt']
         }, {
             model: Projectprofile,
             attributes: ['id'],
@@ -468,6 +482,7 @@ export const getComments = async (request: Request, response: Response) => {
         }, {
             model: Profile
         }],
+        order: [['createdAt', 'DESC']],
         offset: offset,
         limit: limit
     })

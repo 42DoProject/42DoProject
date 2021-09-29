@@ -5,7 +5,9 @@ import AllProjectPage from "./Components/AllProjectPage/AllProjectPage";
 import RecruitCadet from "./Components/CadetPage/RecruitCadet";
 import LoungePage from "./Components/LoungePage/LoungePage";
 import AuthMain from "./Components/AuthMain/AuthMain";
+import ProfileEditPage from "./Components/ProfileEditPage/ProfileEditPage";
 import Layout from "./Components/CommonComponent/Layout";
+import "./SCSS/init.scss";
 
 function App(props) {
   return (
@@ -17,6 +19,7 @@ function App(props) {
         <Route path="/allproject" component={AllProjectPage} />
         <Route path="/cadet/recruit" component={RecruitCadet} />
         <Route exact path="/lounge" component={LoungePage} />
+        <Route path="/profile/edit" component={ProfileEditPage} />
       </Switch>
     </Layout>
   );

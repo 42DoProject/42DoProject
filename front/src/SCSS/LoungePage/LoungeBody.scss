@@ -77,11 +77,16 @@
   border-radius: $round;
   box-shadow: $shadow;
   padding: 2rem;
-  // overflow-y: scroll;
+  overflow-y: hidden;
+  &:hover {
+    overflow-y: scroll;
+  }
+
   .connected__cadet {
     display: flex;
     align-items: center;
     margin-bottom: 0.5rem;
+
     .connected__img {
       border-radius: 50%;
       width: 2rem;

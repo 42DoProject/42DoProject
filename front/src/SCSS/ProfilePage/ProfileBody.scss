@@ -52,6 +52,12 @@
       margin: 0 0.2rem;
     }
   }
+  input.column2__skill {
+    border: 2px solid $mainColor;
+    border-radius: 0.7rem;
+    padding: 0.1rem 0.5rem;
+  }
+
   .column2__job,
   .column2__level,
   .column2__skill {
@@ -70,6 +76,12 @@
   .email-span,
   .github-span {
     color: $mainColor;
+  }
+  input.github-span {
+    margin-left: 1rem;
+    padding: 0.1rem 0.5rem;
+    width: 10rem;
+    color: $darkGrey;
   }
 }
 
@@ -113,4 +125,16 @@
 
 .interested__cards {
   display: flex;
+}
+
+select {
+  border: 2px solid $mainColor;
+  border-radius: 0.7rem;
+  padding: 0.2rem 0.7rem;
+}
+
+select.column2__job,
+select.column2__level,
+input.column2__skill {
+  margin: 0.15rem 0 !important;
 }

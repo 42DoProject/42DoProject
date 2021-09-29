@@ -1,6 +1,6 @@
 import React from "react";
 import { Popover, OverlayTrigger, Button } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import "../../SCSS/MainPage/PopUp.scss";
 
@@ -14,7 +14,6 @@ export const Example = ({ username }) => {
 
 function Pop() {
   let dispatch = useDispatch();
-  // let loginState = useSelector((state) => state.loginReducer);
   return (
     <Popover id="popover-basic">
       <Link to="/profile">
@@ -24,7 +23,6 @@ function Pop() {
         className="popover__wrap"
         onClick={() => {
           dispatch({ type: "LOGOUT" });
-          // console.log(loginState);
         }}
       >
         <Popover.Body>SIGN OUT</Popover.Body>

@@ -28,6 +28,6 @@ export default function AuthMain() {
     }
   };
   getData();
-  console.log("out", loginState);
+  // console.log("out", loginState);
   return loginState === null && <ReactLoading type="spin" color="#a7bc5b" />;
 }

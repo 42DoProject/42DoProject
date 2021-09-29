@@ -1,10 +1,10 @@
 @import "../Base.scss";
 
 .popover {
-  border: none;
   box-shadow: $shadow;
+  border-radius: $round;
+  border-color: white;
 }
-
 .popover-body {
   &:hover {
     color: $mainColor;
@@ -18,4 +18,8 @@
 .popover__wrap {
   position: relative;
   padding-bottom: 1rem;
+}
+
+.popover-arrow::before {
+  border-bottom-color: white;
 }

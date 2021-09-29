@@ -1,8 +1,8 @@
-@import "./Base.scss";
+@import "../Base.scss";
 
-.loading-wrap {
+.mainLoading-wrap {
   display: flex;
-  height: 80vh;
+  height: 30vh;
   flex-direction: column;
   justify-content: center;
   align-items: center;

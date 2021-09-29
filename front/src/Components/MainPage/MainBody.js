@@ -2,8 +2,8 @@ import React from "react";
 import "../../SCSS/MainPage/MainBody.scss";
 import RecruitList from "./RecruitList";
 import PubilcList from "./PubilcList";
-
 export default function MainBody() {
+  console.log("mainbody");
   return (
     <div className="recruit__wrap">
       <div className="recruit">

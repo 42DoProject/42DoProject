@@ -65,7 +65,7 @@ export default function Cardlist() {
 function nextUtil(slideFlag, setSlideFlag, prCnt) {
   const $cardsrow = document.querySelector(".recruit .cards-row");
   $cardsrow.style.transition = "transform .7s ease-out";
-  if (slideFlag <= (prCnt - 4) / 2) slideFlag++;
+  if (slideFlag <= parseInt((prCnt - 4) / 2)) slideFlag++;
   $cardsrow.style.transform = `translateX(${(-696 / 16) * slideFlag}rem)`;
   setSlideFlag(slideFlag);
 }

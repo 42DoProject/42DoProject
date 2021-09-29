@@ -118,8 +118,11 @@ export const getList = async (request: Request, response: Response) => {
 }
 
 export const postList = async (request: Request, response: Response) => {
-    const { title, totalMember, currentMember, startDate, endDate, content, tag, position } = request.body;
-    let state: string = (totalMember - currentMember > 0) ? 'recruiting' : 'proceeding';
+    const { title, totalMember, currentMember, state, startDate, endDate, content, tag, position } = request.body;
+    let inputState: string = (totalMember - currentMember > 0) ? 'recruiting' : 'proceeding';
+    
+    if (state !== undefined)
+        inputState = state;
 
     await Project.create({
     	title: title,
@@ -127,7 +130,7 @@ export const postList = async (request: Request, response: Response) => {
         // filePath: (request.file === undefined ? null : request.file.path),
         totalMember: totalMember,
         currentMember: currentMember,
-        state: state,
+        state: inputState,
         startDate: startDate,
         endDate: endDate,
         like: 0,
@@ -194,18 +197,20 @@ export const postList = async (request: Request, response: Response) => {
 
 export const updateList = async (request: Request, response: Response) => {
     const { projectId } = request.query;
-    const { title, totalMember, currentMember, startDate, endDate, content } = request.body;
-    let state: string = (totalMember - currentMember > 0) ? 'recruiting' : 'proceeding';
+    const { title, totalMember, currentMember, state, startDate, endDate, content } = request.body;
+    let inputState: string = (totalMember - currentMember > 0) ? 'recruiting' : 'proceeding';
 
     if (projectId === undefined) {
         response.status(400).json({ errMessage: 'please input projectId query' });
     }
+    if (state !== undefined)
+        inputState = state;
 
     await Project.update({
         title: title,
         totalMember: totalMember,
         currentMember: currentMember,
-        state: state,
+        state: inputState,
         startDate: startDate,
         endDate: endDate,
         updatedAt: getIsoString(),

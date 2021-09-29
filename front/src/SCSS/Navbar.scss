@@ -49,6 +49,7 @@
     left: 0.1rem;
   }
   input {
+    border-radius: 0;
     position: absolute;
     padding: 0.4rem;
     bottom: -1.3rem;
@@ -129,7 +130,7 @@
     position: absolute;
     background-color: white;
     // border-bottom-left-radius: 0.3rem;
-    padding: 1rem;
+    padding: 0.7rem;
     border-radius: $round;
     box-shadow: $shadow;
     top: 3.3rem;
@@ -138,7 +139,7 @@
     z-index: 3;
     overflow: hidden;
     .notiText__header {
-      padding: 0 0.5rem 0.7rem 0.5rem;
+      padding: 0.5rem;
       font-size: $fontSm;
       font-weight: $bold;
       border-bottom: 1px solid $lightestGrey;

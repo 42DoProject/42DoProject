@@ -13,7 +13,7 @@ export default function ProfileEditHeader() {
         <img
           className="profileImage"
           alt="profileImage"
-          // src={loginState.profileImage}
+          src={loginState.profileImage}
         />
 
         <textarea
@@ -25,8 +25,7 @@ export default function ProfileEditHeader() {
       </div>
       <div className="header__right">
         <div className="right__row1">
-          {/* <div className="row1__name">{loginState.name}</div> */}
-          <div className="row1__name">seojeong</div>
+          <div className="row1__name">{loginState.name}</div>
           <input
             type="submit"
             className="row1__finish-edit"

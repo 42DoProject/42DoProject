@@ -20,8 +20,7 @@ export default function LoungeBody() {
             </div>
           </div>
           <div className="left__posts">
-            {/* {loginState !== null ? <LoungeWrite /> : <LoungePost />} */}
-            <LoungeWrite />
+            {loginState !== null ? <LoungeWrite /> : <LoungePost />}
             <LoungePost />
             <LoungePost />
             <LoungePost />

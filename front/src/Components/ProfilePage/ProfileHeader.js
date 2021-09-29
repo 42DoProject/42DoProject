@@ -13,8 +13,7 @@ export default function ProfileHeader() {
         <img
           className="profileImage"
           alt="profileImage"
-          // src={loginState.profileImage}
-          
+          src={loginState.profileImage}
         />
 
         <div className="profile__bubble">
@@ -24,8 +23,7 @@ export default function ProfileHeader() {
       </div>
       <div className="header__right">
         <div className="right__row1">
-          {/* <div className="row1__name">{loginState.name}</div> */}
-          <div className="row1__name">seojeong</div>
+          <div className="row1__name">{loginState.name}</div>
           <button className="row1__send-message">메시지 보내기</button>
           <button className="row1__follow">팔로우</button>
         </div>

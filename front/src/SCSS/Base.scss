@@ -8,7 +8,9 @@ $grey: #8e8e93;
 $lightestGrey: #e5e5e5;
 $lightGrey: #c4c4c4;
 $pointRed: #ff6864;
+$pointBlue: #5bbcb6;
 //font-weight
+
 $bold: 800;
 $normal: 600;
 //페이지 전체 margin 기준
@@ -25,26 +27,6 @@ $shadow: 0rem 0.3rem 0.3rem 0rem rgba(0, 0, 0, 0.1);
 $round: 1rem; //border-radius 통일
 
 //페이지 상단 연두색 box 사이즈 (프로필 배너 등)
-
-body {
-  font-family: "Nunito Sans", sans-serif;
-  margin: 0.5rem 1rem;
-  background-color: $bodyColor;
-  color: $darkGrey;
-}
-
-@media (max-width: 78rem) {
-  html {
-    font-size: 12px;
-  }
-}
-
-a {
-  text-decoration: none;
-  &:hover {
-    color: $mainColor;
-  }
-}
 
 $minWidth: 28rem;
 // iphon 5

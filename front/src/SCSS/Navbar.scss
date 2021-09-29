@@ -128,15 +128,17 @@
   .notiText__wrap {
     position: absolute;
     background-color: white;
-    border-bottom-left-radius: 0.3rem;
+    // border-bottom-left-radius: 0.3rem;
+    padding: 1rem;
+    border-radius: $round;
     box-shadow: $shadow;
-    top: 3.05rem;
+    top: 3.3rem;
     right: -0.5rem;
     width: 20rem;
     z-index: 3;
     overflow: hidden;
     .notiText__header {
-      padding: 0.5rem;
+      padding: 0 0.5rem 0.7rem 0.5rem;
       font-size: $fontSm;
       font-weight: $bold;
       border-bottom: 1px solid $lightestGrey;
@@ -211,14 +213,17 @@
   position: relative;
   display: flex;
   align-items: center;
-  .name {
-    font-size: $fontMd;
-    margin-right: 1rem;
-    color: $darkGrey;
-    font-weight: $bold;
-    cursor: pointer;
-    &:hover {
+  &:hover {
+    .name {
       color: $mainColor;
+    }
+  }
+  .name {
+    .btn {
+      font-size: $fontMd;
+      margin-right: 1rem;
+      color: $darkGrey;
+      font-weight: $bold;
     }
   }
   .name__list {
@@ -262,9 +267,6 @@
   .image {
     font-size: $fontMd;
     margin-right: 1rem;
-    &:hover {
-      cursor: pointer;
-    }
     .IntraImage {
       border-radius: 50%;
       width: 3rem;

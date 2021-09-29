@@ -1,0 +1,17 @@
+@import "../Base.scss";
+
+.popover-body {
+  &:hover {
+    color: $mainColor;
+    cursor: pointer;
+  }
+  padding-bottom: 0rem;
+  font-weight: 600;
+  color: $darkGrey;
+}
+
+.popover__wrap {
+  position: relative;
+  //   top: -1rem;
+  padding-bottom: 1rem;
+}

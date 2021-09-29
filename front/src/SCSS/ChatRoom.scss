@@ -1,0 +1,50 @@
+@import "./Base.scss";
+
+.chatRoom {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 1rem;
+  background-color: white;
+  border-radius: $round;
+  border: 1px solid $lightestGrey;
+  margin: 0.5rem 0;
+
+  &:hover {
+    background-color: $bodyColor;
+    cursor: pointer;
+  }
+  .chatRoom__nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    .chatRoom__profile {
+      display: flex;
+      align-items: center;
+      .chatRoom__img {
+        border-radius: 50%;
+        width: 1.5rem;
+        height: 1.5rem;
+        object-fit: cover;
+        margin-right: 0.5rem;
+      }
+      .chatRoom__name {
+        font-weight: 700;
+      }
+    }
+
+    .chatRoom__time-stamp {
+      color: $lightGrey;
+      font-size: 0.8rem;
+    }
+  }
+}
+.chatRoom__bubble {
+  margin-top: 0.5rem;
+}
+.chatRoom__split {
+  margin: 0;
+  color: $grey;
+  //   height: 2px !important;
+}

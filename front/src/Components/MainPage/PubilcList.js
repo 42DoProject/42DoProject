@@ -65,13 +65,13 @@ export default function Cardlist() {
 function nextUtil(slideFlag, setSlideFlag, prCnt) {
   const $cardsrow = document.querySelector(".public .cards-row");
   $cardsrow.style.transition = "transform .7s ease-out";
-  if (slideFlag[1] <= (prCnt - 4) / 2) slideFlag++;
+  if (slideFlag <= parseInt((prCnt - 4) / 2)) slideFlag++;
   $cardsrow.style.transform = `translateX(${+(-696 / 16) * slideFlag}rem)`;
   setSlideFlag(slideFlag);
 }
 
 function prevUtil(slideFlag, setSlideFlag) {
-  const $cardsrow = document.querySelector(".recruit .cards-row");
+  const $cardsrow = document.querySelector(".public .cards-row");
   $cardsrow.style.transition = "transform .7s ease-out";
   if (slideFlag !== 0) slideFlag--;
   $cardsrow.style.transform = `translateX(${(-696 / 16) * slideFlag}rem)`;

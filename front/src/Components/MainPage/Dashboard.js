@@ -28,11 +28,6 @@ export default function Dashboard() {
               <div className="user__name">
                 {loginState === null ? "guest" : loginState.name}
               </div>
-              {loginState === null ? null : (
-                <div className="user__level">
-                  {"Lv." + userState.intraLevel}
-                </div>
-              )}
             </div>
             {loginState && (
               <div className="row1__button">

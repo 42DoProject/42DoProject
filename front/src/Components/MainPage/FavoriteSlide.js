@@ -50,7 +50,7 @@ function nextUtil(slideFlag, setSlideFlag) {
   const $dashCards = document.querySelector(
     ".dashboard .row2__box3 .dashCards-wrap"
   );
-  console.log($dashCards);
+  // console.log($dashCards);
   $dashCards.style.transition = "transform .7s ease-out";
   slideFlag[1]++;
   $dashCards.style.transform = `translateX(${

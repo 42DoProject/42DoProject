@@ -1,71 +1,75 @@
 @import "../Base.scss";
 
 .profileBody {
-  border-radius: $round;
-  padding: 2rem;
-  box-shadow: $shadow;
-  min-height: 35rem;
-  background-color: white;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  .profileBody__row1 {
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
+  .profileBody__col1 {
+    margin-left: 2rem;
+    width: 30%;
+    min-width: min-content;
+    // margin-right: 1rem;
     display: flex;
-    width: 90%;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    min-height: 13rem;
-    // background-color: pink;
-    .row1__profile-card1,
-    .row1__profile-card2 {
+    .col1__profile-card1,
+    .col1__profile-card2 {
+      background-color: white;
       font-weight: $normal;
-      width: 40%;
       min-height: 100%;
-      margin: 0 1rem;
+      margin: 0 1rem 2rem 1rem;
       padding: 2rem;
       border-radius: $round;
       box-shadow: $shadow;
       display: flex;
+      width: 100%;
     }
   }
 }
 
 .card1__column1 {
   display: flex;
-  // width: 50%;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: space-around;
-  // background-color: pink;
+  margin-right: 1rem;
+  min-width: max-content;
   .column1__job,
   .column1__level,
   .column1__skill {
     color: $mainColor;
-    // text-align: center;
     margin: 0.5rem;
   }
 }
 
 .card1__column2 {
   display: flex;
-  // width: 50%;
-  justify-content: space-around;
   flex-direction: column;
   align-items: flex-start;
-
+  min-width: 50%;
   .column2__skill {
     img {
       margin: 0 0.2rem;
     }
   }
+  input.column2__skill {
+    border: 2px solid $mainColor;
+    border-radius: 0.7rem;
+    padding: 0.1rem 0.5rem;
+  }
+
+  .column2__job,
+  .column2__level,
+  .column2__skill {
+    margin: 0.5rem;
+  }
 }
 
-.row1__profile-card2 {
+.col1__profile-card2 {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
   font-weight: $normal;
+  min-width: max-content;
   span {
     margin-left: 1rem;
   }
@@ -73,36 +77,64 @@
   .github-span {
     color: $mainColor;
   }
+  input.github-span {
+    margin-left: 1rem;
+    padding: 0.1rem 0.5rem;
+    width: 10rem;
+    color: $darkGrey;
+  }
 }
 
-.profileBody__row2 {
-  // background-color: beige;
+.profileBody__col2 {
+  display: flex;
+  min-width: max-content;
+  flex-direction: column;
+  background-color: white;
   border-radius: $round;
-  // font-weight: $normal;
   box-shadow: $shadow;
-  margin-top: 2rem;
   padding: 1rem 2rem;
-  width: 76%;
+  width: 50%;
+  // flex-grow: 2;
+  margin-right: 2rem;
+  margin-left: 2rem;
   span {
     margin-right: 1rem;
   }
-  hr {
+  .hr__line {
     color: $lightGrey;
+    width: 100%;
     height: 2px;
   }
-  .row2__introduction {
+  .col2__introduction {
     margin: 2rem 0;
   }
-  .row2__ongoing-projects,
-  .row2__done-projects {
-    margin: 2rem 0;
+  .col2__ongoing-projects,
+  .col2__done-projects,
+  .col2__interested-projects {
+    margin: 1rem 0;
     span {
       color: $lightGrey;
       font-weight: $normal;
     }
-    .row2__subject-span {
+    .col2__subject-span {
       color: $black;
       font-weight: 700;
     }
   }
+}
+
+.interested__cards {
+  display: flex;
+}
+
+select {
+  border: 2px solid $mainColor;
+  border-radius: 0.7rem;
+  padding: 0.2rem 0.7rem;
+}
+
+select.column2__job,
+select.column2__level,
+input.column2__skill {
+  margin: 0.15rem 0 !important;
 }

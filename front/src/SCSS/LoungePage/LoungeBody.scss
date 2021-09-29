@@ -14,9 +14,10 @@
     // flex-shrink: 1;
   }
   .lounge-right {
-    min-width: 20rem;
-    width: 23%;
+    min-width: 15rem;
+    // width: 10%;
     // flex-grow: 1;
+    margin-bottom: 2rem;
   }
 }
 
@@ -64,10 +65,37 @@
   font-weight: $bold;
   font-size: $fontMd;
   color: $black;
+  .right-num {
+    margin-left: 1rem;
+    color: $pointBlue;
+  }
 }
 .right__connected {
-  height: 20rem;
+  height: 15rem;
+  width: 15rem;
   background-color: white;
   border-radius: $round;
   box-shadow: $shadow;
+  padding: 2rem;
+  overflow-y: hidden;
+  &:hover {
+    overflow-y: scroll;
+  }
+
+  .connected__cadet {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+
+    .connected__img {
+      border-radius: 50%;
+      width: 2rem;
+      height: 2rem;
+      object-fit: cover;
+      margin-right: 0.5rem;
+    }
+    .connected__name {
+      font-size: $fontSm;
+    }
+  }
 }

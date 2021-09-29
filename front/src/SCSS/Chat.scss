@@ -56,9 +56,9 @@
   position: fixed;
   right: 1.5rem;
   bottom: 1.5rem;
-  //   background-color: rgba(255, 255, 255, 0.7);
-  //   backdrop-filter: blur(10px);
-  //   -webkit-backdrop-filter: blur(10px);
+  // background-color: rgba(255, 255, 255, 0.7);
+  // backdrop-filter: blur(10px);
+  // -webkit-backdrop-filter: blur(10px);
   background-color: $bodyColor;
   width: 22rem;
   height: 40rem;
@@ -69,7 +69,7 @@
 
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   .chatLog__nav {
     font-weight: $bold;
@@ -77,9 +77,15 @@
     display: flex;
     justify-content: space-between;
     vertical-align: bottom;
+    margin-bottom: 0.5rem;
     width: 100%;
-    // .nav__chat-title {
-    // }
+    .nav__resize-up,
+    .nav__resize-down {
+      cursor: pointer;
+      :hover {
+        color: $mainColor;
+      }
+    }
     .nav__chat-title {
       display: flex;
       align-items: center;
@@ -100,6 +106,36 @@
           color: $mainColor;
         }
       }
+    }
+  }
+
+  .chatLog__addConv {
+    background-color: $lightestGrey;
+    font-weight: $normal;
+    padding: 0.5rem 1rem;
+    border-radius: 0.7rem;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    .addConv__placeholder {
+      min-width: max-content;
+    }
+    .addConv__input {
+      background-color: $lightestGrey;
+      border: none;
+      width: auto;
+      padding-left: 0.5rem;
+      width: 90%;
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+  .chatLog__body {
+    width: 100%;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      display: none;
     }
   }
 }

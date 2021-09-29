@@ -3,13 +3,11 @@ import { Icon } from "@iconify/react";
 import "../../SCSS/Navbar.scss";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-
+import { Example as PopUp } from "../MainPage/PopUp";
 export default function Navbar(props) {
   let [clickFlag, setClickFlag] = useState(0);
-  let [nameFlag, setNameFlag] = useState(0);
   let userState = useSelector((state) => state.userReducer);
-  // let loginState = useSelector((state) => state.loginReducer);
-  let loginData = JSON.parse(localStorage.getItem("user"));
+  let loginState = useSelector((state) => state.loginReducer);
   return (
     <div className="Nav">
       <div className="Nav-column1">
@@ -41,7 +39,7 @@ export default function Navbar(props) {
             라운지
           </Link>
         </div>
-        {loginData === null ? null : (
+        {loginState === null ? null : (
           <div className="Nav__notification">
             {parseInt(userState.notification.num) ? (
               <span className="haveNotification">
@@ -86,46 +84,24 @@ export default function Navbar(props) {
             )}
           </div>
         )}
-        {loginData === null ? (
+        {loginState === null ? (
           <button className="Nav__user__login">
             <a
               className="login__link"
-              href="https://api.intra.42.fr/oauth/authorize?client_id=2d6ee50437c3f7d433bd852f75d69ffbed52da6117b7a513de39d18b98cd8f95&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth&response_type=code"
-            >
+              href={`https://api.intra.42.fr/oauth/authorize?client_id=${process.env.REACT_APP_API_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_API_REDIRECT_URI}&response_type=code`}>
               SIGN IN
             </a>
           </button>
         ) : (
-          <div
-            className="Nav__user"
-            onClick={() => {
-              nameFlag ? setNameFlag(0) : setNameFlag(1);
-            }}
-          >
-            <div className="Nav__user name">{loginData.username}</div>
-            {nameFlag ? (
-              <div className="name__list">
-                <div className="name__list__wrap">
-                  <Link to="/profile">
-                    <div className="list__profile">Profile</div>
-                  </Link>
-                  <div
-                    className="list__signOut"
-                    onClick={() => {
-                      localStorage.removeItem("user");
-                      props.setRestart(1);
-                    }}
-                  >
-                    Sign Out
-                  </div>
-                </div>
-              </div>
-            ) : null}
+          <div className="Nav__user">
+            <div className="Nav__user name">
+              <PopUp username={loginState.name} />
+            </div>
             <div className="Nav__user image">
-              {userState.intraImage ? (
+              {loginState.profileImage !== null ? (
                 <img
                   className="IntraImage"
-                  src={userState.intraImage}
+                  src={loginState.profileImage}
                   alt="intraImage"
                 />
               ) : (

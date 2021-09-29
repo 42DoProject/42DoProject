@@ -1,7 +1,7 @@
 import React from "react";
 import { useHistory, useLocation } from "react-router";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ReactLoading from "../CommonComponent/Loading";
 
 export default function AuthMain() {
@@ -9,22 +9,18 @@ export default function AuthMain() {
   const code = new URLSearchParams(location).get("code");
   let dispatch = useDispatch();
   let history = useHistory();
-  let checkLogin = JSON.parse(localStorage.getItem("user"));
+  let loginState = useSelector((state) => state.loginReducer);
+  // 42API에서 User Data 받아오기.
   const getData = async () => {
     try {
       const { data: Data } = await axios.get(
         `http://localhost:5000/auth/signin?code=${code}`
       );
       const {
-        user: { username: userName },
-      } = Data;
-      const {
         token: { accessToken, refreshToken },
       } = Data;
-      dispatch({ type: "LOGIN", payload: userName });
-      localStorage.setItem("user", JSON.stringify(Data.user));
-      checkLogin = JSON.parse(localStorage.getItem("user"));
-      // token 저장
+      // loginReducer state 변경
+      dispatch({ type: "LOGIN", payload: Data.user });
       // localStorage.setItem("accessToken", accessToken);
       history.push("/");
     } catch (err) {
@@ -32,5 +28,6 @@ export default function AuthMain() {
     }
   };
   getData();
-  return checkLogin === null && <ReactLoading type="spin" color="#a7bc5b" />;
+  console.log("out", loginState);
+  return loginState === null && <ReactLoading type="spin" color="#a7bc5b" />;
 }

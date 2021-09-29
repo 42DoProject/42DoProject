@@ -1,25 +1,22 @@
 import React from "react";
-import Navbar from "../CommonComponent/Navbar";
 import ProfileHeader from "./ProfileHeader";
 import ProfileBody from "./ProfileBody";
-import ProfileRight from "./ProfileRight";
-import Chat from "../CommonComponent/Chat";
 import "../../SCSS/ProfilePage/ProfilePage.scss";
+import { useSelector } from "react-redux";
+import { Redirect } from "react-router-dom";
 
 export default function ProfilePage() {
+  let loginState = useSelector((state) => state.loginReducer);
+  // if (loginState === null) {
+  //   return <Redirect to="/" />;
+  // }
   return (
     <>
-      <Navbar />
       <div className="profilePage-wrap">
-        <div className="column-left">
-          <ProfileHeader />
-          <ProfileBody />
-        </div>
-        <div className="column-right">
-          <ProfileRight />
-        </div>
+        <ProfileHeader />
+        <hr />
+        <ProfileBody />
       </div>
-      <Chat />
     </>
   );
 }

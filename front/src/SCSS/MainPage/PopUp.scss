@@ -1,5 +1,10 @@
 @import "../Base.scss";
 
+.popover {
+  border: none;
+  box-shadow: $shadow;
+}
+
 .popover-body {
   &:hover {
     color: $mainColor;
@@ -12,6 +17,5 @@
 
 .popover__wrap {
   position: relative;
-  //   top: -1rem;
   padding-bottom: 1rem;
 }

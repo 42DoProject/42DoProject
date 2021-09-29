@@ -33,6 +33,9 @@ export class Project extends Model {
   @Column(DataType.INTEGER)
   like!: number;
 
+  @Column(DataType.INTEGER)
+  viewCount!: number;
+
   @ForeignKey(() => Content)
   @Column
   contentId!: number

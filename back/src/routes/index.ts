@@ -3,6 +3,11 @@ import auth from "./auth/auth.controller";
 import user from "./user/user.controller";
 import project from "./project/project.controller";
 import chat from "./chat/chat.controller";
+import { User } from "../models/user/user.model";
+import { OToken } from "../models/user/otoken.model";
+import { Token } from "../models/user/token.model";
+import { Profile } from "../models/user/profile.model";
+import { getIsoString } from "../module/time";
 
 const router: express.Router = express.Router();
 
@@ -11,11 +16,51 @@ router.use("/user", user);
 router.use("/project", project);
 router.use("/chat", chat);
 
-/* back에서 intra api를 받기 위한 router, 임시용, 원래는 index에는 라우터만 추가해야 합니다 */
-router.get("/success", (request, response) => {
-  response.redirect(
-    `http://localhost:5000/auth/signin?code=${request.query.code}`
-  );
+/* dump ! */
+const makeDump = async (
+  username: String,
+  name: String,
+  email: String,
+  profileImage: String
+) => {
+  const row = await User.create({
+    intraId: 19245,
+    username: username,
+    name: name,
+    email: email,
+    profileImage: profileImage,
+  });
+  await OToken.create({
+    accessToken: null,
+    refreshToken: null,
+    expiryDate: null,
+    userId: row.id,
+  });
+  await Token.create({
+    accessToken: null,
+    accessExpiry: null,
+    refreshToken: null,
+    refreshExpiry: null,
+    userId: row.id,
+  });
+  await Profile.create({
+    level: 0,
+    lastAccess: getIsoString(),
+    status: 0,
+    position: 0,
+    skill: [],
+    statusMessage: "",
+    introduction: "",
+    github: null,
+    following: [],
+    follower: [],
+    userId: row.id,
+  });
+};
+
+router.post("/dump", async (request, response) => {
+  const { username, name, email, profileImage } = request.body;
+  await makeDump(username, name, email, profileImage);
 });
 
 export default router;

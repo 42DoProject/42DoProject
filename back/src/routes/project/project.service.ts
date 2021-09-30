@@ -38,7 +38,7 @@ const pagination = async (request: Request, response: Response, state: string) =
         if (tag === undefined) {
             if (state === 'all') {
                 project = await Project.findAll({
-                    attributes: ['id', 'title', 'totalMember', 'currentMember', 'state', 'like', 'viewCount', 'createdAt', 'updatedAt'],
+                    attributes: ['id', 'title', 'totalMember', 'currentMember', 'state', 'like', 'viewCount', 'commentCount', 'createdAt', 'updatedAt'],
                     include: {
                         model: Projecttag,
                         attributes: ['id'],
@@ -52,7 +52,7 @@ const pagination = async (request: Request, response: Response, state: string) =
                 });
             } else {
                 project = await Project.findAll({
-                    attributes: ['id', 'title', 'totalMember', 'currentMember', 'state', 'like', 'viewCount', 'createdAt', 'updatedAt'],
+                    attributes: ['id', 'title', 'totalMember', 'currentMember', 'state', 'like', 'viewCount', 'commentCount', 'createdAt', 'updatedAt'],
                     include: {
                         model: Projecttag,
                         attributes: ['id'],
@@ -93,7 +93,7 @@ const pagination = async (request: Request, response: Response, state: string) =
             }
 
             project = await Project.findAll({
-                attributes: ['id', 'title', 'totalMember', 'currentMember', 'state', 'like', 'viewCount', 'createdAt', 'updatedAt'],
+                attributes: ['id', 'title', 'totalMember', 'currentMember', 'state', 'like', 'viewCount', 'commentCount', 'createdAt', 'updatedAt'],
                 include: {
                     model: Projecttag,
                     attributes: ['id'],
@@ -149,6 +149,7 @@ export const postList = async (request: Request, response: Response) => {
         endDate: endDate,
         like: 0,
         viewCount: 0,
+        commentCount: 0,
         createdAt: getIsoString(),
         updatedAt: getIsoString()
     })
@@ -386,6 +387,12 @@ export const deleteList = async (request: Request, response: Response) => {
         response.status(400).json({ errMessage: 'please input projectId query' });
     }
 
+    await Projectposition.destroy({
+        where: { projectId: projectId }
+    })
+    .catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+    });
     await Projecttag.destroy({
         where: { projectId: projectId }
     })
@@ -429,7 +436,7 @@ export const getContent = async (request: Request, response: Response) => {
     });
 
     await Project.findOne({
-        attributes: ['id', 'title', 'totalMember', 'currentMember', 'state', 'startDate', 'endDate', 'like', 'viewCount'],
+        attributes: ['id', 'title', 'totalMember', 'currentMember', 'state', 'startDate', 'endDate', 'like', 'viewCount', 'commentCount'],
         include: [{
             model: Content,
             attributes: ['id', 'content', 'createdAt', 'updatedAt']
@@ -482,7 +489,7 @@ export const getComments = async (request: Request, response: Response) => {
         }, {
             model: Profile
         }],
-        order: [['createdAt', 'DESC']],
+        order: ['createdAt'],
         offset: offset,
         limit: limit
     })
@@ -496,6 +503,20 @@ export const getComments = async (request: Request, response: Response) => {
 
 export const postComments = async (request: Request, response: Response) => {
     const { comment, contentId, profileId } = request.body;
+
+    await Project.findOne({
+        attributes: ['commentCount'],
+        where: { contentId: contentId }
+    })
+    .then(async project => {
+        const newCount: number = (project?.commentCount === undefined)? 0 : project?.commentCount + 1;
+        await Project.update({
+            commentCount: newCount
+        }, { where: { contentId: contentId } })
+    })
+    .catch(err => {
+    	response.status(405).json({ errMessage: String(err) });
+    })
 
     await Comments.create({
         comment: comment,
@@ -538,6 +559,30 @@ export const deleteComments = async (request: Request, response: Response) => {
     if (commentId === undefined) {
         response.status(400).json({ errMessage: 'please input commentId value' });
     }
+
+    await Comments.findOne({
+        attributes: ['contentId'],
+        where: { id: commentId }
+    })
+    .then(async content => {
+        const contentId = content?.contentId;
+        await Project.findOne({
+            attributes: ['commentCount'],
+            where: { contentId: contentId }
+        })
+        .then(async project => {
+            const newCount: number = (project?.commentCount === undefined)? 0 : project?.commentCount - 1;
+            await Project.update({
+                commentCount: newCount
+            }, { where: { contentId: contentId } })
+        })
+        .catch(err => {
+            response.status(405).json({ errMessage: String(err) });
+        })
+    })
+    .catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+    })
 
     await Comments.destroy({
         where: { id: commentId }

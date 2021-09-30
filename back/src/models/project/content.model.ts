@@ -7,9 +7,6 @@ export class Content extends Model {
   @Column(DataType.TEXT)
   content!: string;
 
-  @Column(DataType.INTEGER)
-  viewCount!: number;
-
   @ForeignKey(() => Project)
   @Column
   projectId!: number

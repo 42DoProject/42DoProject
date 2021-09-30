@@ -35,11 +35,14 @@ const userModelCheck = async (user: any): Promise<number> => {
     userId: row.id,
   });
   await Profile.create({
-    level: 1,
+    level: 0,
     lastAccess: getIsoString(),
+    status: 0,
+    position: [],
+    skill: [],
     statusMessage: "",
     introduction: "",
-    history: [],
+    github: null,
     following: [],
     follower: [],
     userId: row.id,

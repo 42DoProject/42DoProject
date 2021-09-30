@@ -1,7 +1,9 @@
 import { Route, Switch } from "react-router-dom";
 import Main from "./Components/MainPage/Main";
 import ProfilePage from "./Components/ProfilePage/ProfilePage";
-import AllProjectPage from "./Components/AllProjectPage/AllProjectPage";
+import RecruitProjects from "./Components/AllProjectPage/RecruitProjects";
+import ProceedProjects from "./Components/AllProjectPage/ProceedProjects";
+import CompleteProjects from "./Components/AllProjectPage/CompleteProjects";
 import RecruitCadet from "./Components/CadetPage/RecruitCadet";
 import LoungePage from "./Components/LoungePage/LoungePage";
 import AuthMain from "./Components/AuthMain/AuthMain";
@@ -16,7 +18,9 @@ function App(props) {
         <Route exact path="/" component={Main} />
         <Route path="/auth" component={AuthMain} />
         <Route exact path="/profile" component={ProfilePage} />
-        <Route path="/allproject" component={AllProjectPage} />
+        <Route path="/project/recruit" component={RecruitProjects} />
+        <Route path="/project/proceed" component={ProceedProjects} />
+        <Route path="/project/complete" component={CompleteProjects} />
         <Route path="/cadet/recruit" component={RecruitCadet} />
         <Route exact path="/lounge" component={LoungePage} />
         <Route path="/profile/edit" component={ProfileEditPage} />

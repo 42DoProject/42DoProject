@@ -9,42 +9,40 @@
   padding-left: 1rem;
   padding-right: 1rem;
   margin-top: 1rem;
-}
 
-.cadet-bar-column1 {
-  display: flex;
-  align-items: center;
-}
+  .cadet-bar-column1 {
+    display: flex;
+    align-items: center;
+  }
 
-.cadet-bar-column2 {
-  display: flex;
-  align-items: center;
-  // padding-right: 1rem;
-}
+  .cadet-bar-column2 {
+    display: flex;
+    align-items: center;
+    // padding-right: 1rem;
+  }
 
-.recruit-cadet {
-  font-weight: $bold;
-  font-size: $fontMd;
-  color: $black;
-  margin-left: 2rem;
-  .innerHtml:hover {
+  .b-color {
+    font-weight: $bold;
+    font-size: $fontMd;
     color: $mainColor;
-  }
-}
-
-.public-cadet {
-  font-weight: $bold;
-  font-size: $fontMd;
-  color: $black;
-  margin-left: 2rem;
-  opacity: 0.5;
-  a {
-    color: $black;
-  }
-  &:hover {
-    opacity: 1;
-    a {
+    margin-left: 2rem;
+    .innerHtml:hover {
       color: $mainColor;
+    }
+  }
+
+  .a-color {
+    font-weight: $bold;
+    font-size: $fontMd;
+    color: $black;
+    margin-left: 2rem;
+    a {
+      color: $black;
+    }
+    &:hover {
+      a {
+        color: $mainColor;
+      }
     }
   }
 }

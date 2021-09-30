@@ -4,15 +4,15 @@ import CardsList from "./CardsList";
 import ProjectPaginate from "./ProjectPaginate";
 import "../../SCSS/CadetPage/RecruitCadet.scss";
 
-export default function RecruitCadet() {
+export default function AllCadet() {
   return (
     <>
       <div className="recruitCadet-wrap">
-        <CadetTypeBar state="recruit" />
+        <CadetTypeBar state="all" />
         <CardsList />
         <CardsList />
         <CardsList />
-        <ProjectPaginate state="recruit" />
+        <ProjectPaginate state="all" />
       </div>
     </>
   );

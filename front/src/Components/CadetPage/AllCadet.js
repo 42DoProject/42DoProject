@@ -1,7 +1,7 @@
 import React from "react";
 import CadetTypeBar from "./CadetTypeBar";
 import CardsList from "./CardsList";
-import ProjectPaginate from "./ProjectPaginate";
+import CadetPaginate from "./CadetPaginate";
 import "../../SCSS/CadetPage/RecruitCadet.scss";
 
 export default function AllCadet() {
@@ -9,10 +9,7 @@ export default function AllCadet() {
     <>
       <div className="recruitCadet-wrap">
         <CadetTypeBar state="all" />
-        <CardsList />
-        <CardsList />
-        <CardsList />
-        <ProjectPaginate state="all" />
+        <CadetPaginate state="all" />
       </div>
     </>
   );

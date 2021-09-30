@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Pagination from "react-js-pagination";
 import "../../SCSS/AllProjectPage/ProjectPaginate.scss";
 import { Icon } from "@iconify/react";
+import axios from "axios";
 
-export default function ProjectPaginate() {
+export default function CadetPaginate() {
   const [page, setPage] = useState(1);
-
   const handlePageChange = (page) => {
     setPage(page);
     console.log(page);

@@ -4,6 +4,18 @@ import * as userService from "./user.service";
 
 const router: express.Router = express.Router();
 
+router.get("/feed", jwtGuards, (request: Request, response: Response) => {
+  userService.getFeed(request, response);
+});
+
+router.get("/me", jwtGuards, (request: Request, response: Response) => {
+  userService.getMe(request, response);
+});
+
+router.post("/me", jwtGuards, (request: Request, response: Response) => {
+  userService.modifyMe(request, response);
+});
+
 router.get("/profile/:id", (request: Request, response: Response) => {
   userService.profileMain(request, response);
 });
@@ -17,6 +29,22 @@ router.get(
   jwtGuards,
   (request: Request, response: Response) => {
     userService.unfollow(request, response);
+  }
+);
+
+router.get(
+  "/following/:id",
+  jwtGuards,
+  (request: Request, response: Response) => {
+    userService.following(request, response);
+  }
+);
+
+router.get(
+  "/follower/:id",
+  jwtGuards,
+  (request: Request, response: Response) => {
+    userService.follower(request, response);
   }
 );
 

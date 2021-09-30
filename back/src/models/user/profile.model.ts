@@ -7,7 +7,6 @@ import {
   BelongsTo,
   HasMany,
 } from "sequelize-typescript";
-import { IHistory } from "../../interface/profile.interface";
 import { ProfileChat } from "../chat/profilechat.model";
 import { User } from "./user.model";
 import { Projectprofile } from "../project/projectprofile.model";
@@ -16,10 +15,19 @@ import { Comments } from "../project/comments.model";
 @Table({ timestamps: false })
 export class Profile extends Model {
   @Column(DataType.INTEGER)
-  level!: number;
+  level!: Number;
 
   @Column(DataType.STRING(20))
   lastAccess!: string;
+
+  @Column(DataType.INTEGER)
+  status!: Number;
+
+  @Column(DataType.JSON)
+  position!: Number;
+
+  @Column(DataType.JSON)
+  skill!: Number[];
 
   @Column(DataType.STRING(50))
   statusMessage!: string;
@@ -27,8 +35,8 @@ export class Profile extends Model {
   @Column(DataType.TEXT)
   introduction!: string;
 
-  @Column(DataType.JSON)
-  history!: IHistory[];
+  @Column(DataType.STRING(50))
+  github!: string;
 
   @Column(DataType.JSON)
   following!: number[];

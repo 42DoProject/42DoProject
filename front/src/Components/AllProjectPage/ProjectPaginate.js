@@ -6,17 +6,17 @@ import Cards from "../MainPage/Cards";
 import "../../SCSS/AllProjectPage/ProjectPaginate.scss";
 import "../../SCSS/AllProjectPage/ProjectGrid.scss";
 
-export default function ProjectPaginate() {
+export default function ProjectPaginate(props) {
   const [page, setPage] = useState(1);
-  const [recruitingProject, setRecruitingProject] = useState([]);
+  const [Project, setProject] = useState([]);
   const getData = async () => {
     try {
       const {
-        data: { project: recruitingData },
+        data: { project: projectData },
       } = await axios.get(
-        `http://localhost:5000/project?pageSize=12&page=${page}`
+        `http://localhost:5000/project?state=${props.state}&pageSize=12&page=${page}`
       );
-      setRecruitingProject(recruitingData);
+      setProject(projectData);
     } catch (err) {
       console.log(err);
     }
@@ -34,7 +34,7 @@ export default function ProjectPaginate() {
   return (
     <>
       <div className="project-grid">
-        {recruitingProject.map((el, idx) => {
+        {Project.map((el, idx) => {
           return <Cards key={idx} projectData={el} />;
         })}
       </div>

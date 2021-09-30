@@ -24,7 +24,7 @@ export default function Navbar(props) {
       </div>
       <div className="Nav-column2">
         <div className="Nav__project">
-          <Link className="a-color" to="/allproject">
+          <Link className="a-color" to="/project/recruit">
             프로젝트
           </Link>
         </div>

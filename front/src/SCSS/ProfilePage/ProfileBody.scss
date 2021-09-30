@@ -24,64 +24,70 @@
       box-shadow: $shadow;
       display: flex;
       width: 100%;
+      flex-direction: column;
     }
   }
 }
 
-.card1__column1 {
+.card1__job {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-right: 1rem;
+  align-items: center;
   min-width: max-content;
-  .column1__job,
-  .column1__level,
-  .column1__skill {
-    color: $mainColor;
-    margin: 0.5rem;
-  }
+  margin-bottom: 1rem;
 }
 
-.card1__column2 {
+.job__label,
+.skill__label {
+  color: $mainColor;
+  min-width: max-content;
+  margin-right: 1rem;
+}
+
+.job__label {
+  margin-right: 2.2rem;
+}
+
+.card1__skill {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
   min-width: 50%;
-  .column2__skill {
+  display: flex;
+  align-items: flex-start;
+  .skill__content {
     img {
       margin: 0 0.2rem;
     }
   }
-  input.column2__skill {
-    border: 2px solid $mainColor;
-    border-radius: 0.7rem;
-    padding: 0.1rem 0.5rem;
-  }
 
   .column2__job,
-  .column2__level,
   .column2__skill {
     margin: 0.5rem;
   }
+}
+
+input.skill__content {
+  position: relative;
+  bottom: 0.4rem;
+  width: 14rem;
 }
 
 .col1__profile-card2 {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   font-weight: $normal;
   min-width: max-content;
-  span {
+  height: max-content;
+  span,
+  a,
+  input {
     margin-left: 1rem;
   }
   .email-span,
   .github-span {
     color: $mainColor;
   }
-  input.github-span {
-    margin-left: 1rem;
-    padding: 0.1rem 0.5rem;
-    width: 10rem;
-    color: $darkGrey;
+  div {
+    margin: 0.2rem 0;
   }
 }
 
@@ -110,6 +116,7 @@
   }
   .col2__ongoing-projects,
   .col2__done-projects,
+  .col2__registered-projects,
   .col2__interested-projects {
     margin: 1rem 0;
     span {
@@ -127,14 +134,10 @@
   display: flex;
 }
 
-select {
-  border: 2px solid $mainColor;
-  border-radius: 0.7rem;
-  padding: 0.2rem 0.7rem;
+.introduction__letters-count {
+  position: absolute;
 }
-
-select.column2__job,
-select.column2__level,
-input.column2__skill {
-  margin: 0.15rem 0 !important;
+input.github-span {
+  width: 10rem;
+  color: $black !important;
 }

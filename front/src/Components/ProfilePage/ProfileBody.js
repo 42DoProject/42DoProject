@@ -11,15 +11,13 @@ export default function ProfileBody() {
     <div className="profileBody">
       <div className="profileBody__col1">
         <div className="col1__profile-card1">
-          <div className="card1__column1">
-            <div className="column1__job">직업</div>
-            <div className="column1__level">레벨</div>
-            <div className="column1__skill">보유 스킬</div>
+          <div className="card1__job">
+            <div className="job__label">포지션</div>
+            <div className="job__content">프론트엔드</div>
           </div>
-          <div className="card1__column2">
-            <div className="column2__job">프론트엔드</div>
-            <div className="column2__level">초보</div>
-            <div className="column2__skill">
+          <div className="card1__skill">
+            <div className="skill__label">보유 스킬</div>
+            <div className="skill__content">
               <img
                 alt="badge1"
                 src="https://img.shields.io/badge/HTML-E34F26?style=flat-square&logo=HTML5&logoColor=white"
@@ -52,13 +50,24 @@ export default function ProfileBody() {
             <Icon icon="carbon:location-filled" height="25px" />
             <span>{loginState.location}</span>
           </div>
+          <div className="card2__level">
+            <Icon icon="simple-icons:42" width="25px" />
+            <span>{`level ${loginState.level}`}</span>
+          </div>
           <div className="card2__email">
             <Icon icon="fluent:mail-48-filled" height="25px" />
-            <span className="email-span">{loginState.email}</span>
+            <a href={`mailto:${loginState.email}`} className="email-span">
+              {loginState.email}
+            </a>
           </div>
           <div className="card2__github">
             <Icon icon="akar-icons:github-fill" height="22px" />
-            <span className="github-span">Jiyong95</span>
+            <a
+              href="https://github.com/Jiyong95"
+              target="_blank"
+              className="github-span">
+              Jiyong95
+            </a>
           </div>
         </div>
       </div>
@@ -70,6 +79,11 @@ export default function ProfileBody() {
         <hr className="hr__line" />
         <div className="col2__done-projects">
           <span className="col2__subject-span">완료한 프로젝트</span>
+          <span>없음</span>
+        </div>
+        <hr className="hr__line" />
+        <div className="col2__registered-projects">
+          <span className="col2__subject-span">참여 신청중인 프로젝트</span>
           <span>없음</span>
         </div>
         <hr className="hr__line" />

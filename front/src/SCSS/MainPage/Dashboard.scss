@@ -37,15 +37,17 @@
       font-size: $fontXXl;
       margin-right: 1rem;
     }
+    .IntraImage {
+      border-radius: 50%;
+      width: 3rem;
+      height: 3rem;
+      object-fit: cover;
+      margin-right: 1rem;
+    }
     .user__name {
       font-size: $fontLg;
       font-weight: 800;
       margin-right: 0.5rem;
-    }
-    .user__level {
-      position: relative;
-      font-size: $fontSm;
-      bottom: -0.5rem;
     }
   }
   .row1__button {

@@ -22,7 +22,24 @@
   // padding-right: 1rem;
 }
 
+.a-color {
+  color: $black;
+}
+
+.b-color {
+  color: $mainColor;
+}
+
 .recruit-project {
+  font-weight: $bold;
+  font-size: $fontMd;
+  color: $black;
+  margin-left: 2rem;
+  .innerHtml:hover {
+    color: $mainColor;
+  }
+}
+.proceed-project {
   font-weight: $bold;
   font-size: $fontMd;
   color: $black;

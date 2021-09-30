@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import "../../SCSS/ProfilePage/ProfileHeader.scss";
 // import { Icon } from "@iconify/react";
 
-export default function ProfileHeader() {
+export default function ProfileEditHeader() {
   // let userState = useSelector((state) => state.userReducer);
   let loginState = useSelector((state) => state.loginReducer);
 
@@ -16,29 +16,31 @@ export default function ProfileHeader() {
           src={loginState.profileImage}
         />
 
-        <div className="profile__bubble">
-          리액트를 이용한 웹 프론트엔드 개발을 해보고 싶습니다!
-        </div>
+        <textarea
+          spellcheck="false"
+          className="profile__bubble"
+          maxlength="30"
+        />
         <div className="profile__last-access">마지막 접속: 3일 전</div>
       </div>
       <div className="header__right">
         <div className="right__row1">
           <div className="row1__name">{loginState.name}</div>
-          <button className="row1__send-message">메시지 보내기</button>
-          <button className="row1__follow">팔로우</button>
+          <input
+            type="submit"
+            className="row1__finish-edit"
+            value="프로필 저장"
+          />
         </div>
         <div className="right__row2">
-          <div className="row2__status">프로젝트 찾는 중</div>
+          <select className="row2__status">
+            <option value="프로젝트_찾는_중">프로젝트 찾는 중</option>
+            <option value="휴식중">휴식중</option>
+          </select>
           <div className="row2__follower">팔로워 10명</div>
           <div className="row2__following">팔로워 15명</div>
         </div>
-        <div className="right__introduction">
-          풀스택 개발자 지망생 jiylee입니다! <br />
-          <br />
-          포트폴리오 겸 프론트엔드 쪽으로 프로젝트 구하고 있습니다. <br />
-          <br />
-          채팅 주세요~
-        </div>
+        <textarea spellcheck="false" className="right__introduction" />
       </div>
     </div>
   );

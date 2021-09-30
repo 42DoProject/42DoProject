@@ -1,19 +1,15 @@
 import React from "react";
-import Navbar from "../CommonComponent/Navbar";
-import ProjectContents from "./ProjectContents";
 import ProjectTypeBar from "./ProjectTypeBar";
 import "../../SCSS/AllProjectPage/ProjectTypeBar.scss";
 import "../../SCSS/AllProjectPage/AllProjectPage.scss";
 import ProjectPaginate from "./ProjectPaginate";
 
-export default function AllProjectPage() {
+export default function ProceedProjects() {
   return (
     <>
-      <Navbar />
       <div className="allproject__wrap">
-        <ProjectTypeBar />
-        <ProjectContents />
-        <ProjectPaginate />
+        <ProjectTypeBar state="proceeding" />
+        <ProjectPaginate state="proceeding" />
       </div>
     </>
   );

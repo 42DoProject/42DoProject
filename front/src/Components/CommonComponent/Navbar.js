@@ -8,6 +8,15 @@ export default function Navbar(props) {
   let [clickFlag, setClickFlag] = useState(0);
   let userState = useSelector((state) => state.userReducer);
   let loginState = useSelector((state) => state.loginReducer);
+  let closeFlag = 0;
+  document.body.onclick = function () {
+    if (clickFlag === 1) closeFlag++;
+    if (closeFlag === 2) {
+      let iconEl = document.querySelector(".icon");
+      setClickFlag(0);
+      iconEl.style.color = "#565656";
+    }
+  };
   return (
     <div className="Nav">
       <div className="Nav-column1">
@@ -96,18 +105,7 @@ export default function Navbar(props) {
         ) : (
           <div className="Nav__user">
             <div className="Nav__user name">
-              <PopUp username={loginState.name} />
-            </div>
-            <div className="Nav__user image">
-              {loginState.profileImage !== null ? (
-                <img
-                  className="IntraImage"
-                  src={loginState.profileImage}
-                  alt="intraImage"
-                />
-              ) : (
-                <Icon icon="bi:person-fill" />
-              )}
+              <PopUp />
             </div>
           </div>
         )}

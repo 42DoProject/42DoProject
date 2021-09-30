@@ -21,7 +21,11 @@ export default function AuthMain() {
       } = Data;
       // loginReducer state 변경
       dispatch({ type: "LOGIN", payload: Data.user });
-      // localStorage.setItem("accessToken", accessToken);
+
+      // console.log("access Token", accessToken);
+      // console.log("refresh Token", refreshToken);
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
       history.push("/");
     } catch (err) {
       console.log(err);

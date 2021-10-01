@@ -43,7 +43,15 @@ export default function ProfileEditHeader() {
           />
         </div>
         <div className="right__row2">
-          <select className="row2__status">
+          <select
+            className="row2__status"
+            onChange={() => {
+              let statusEl = document.querySelector(".row2__status");
+
+              if (statusEl.value === "휴식중")
+                statusEl.style.backgroundColor = "#c4c4c4";
+              else statusEl.style.backgroundColor = "#5bbcb6";
+            }}>
             <option value="프로젝트_찾는_중">프로젝트 찾는 중</option>
             <option value="휴식중">휴식중</option>
           </select>

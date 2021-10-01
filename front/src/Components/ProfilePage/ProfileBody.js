@@ -18,7 +18,7 @@ export default function ProfileBody() {
           <div className="card1__skill">
             <div className="skill__label">보유 스킬</div>
             <div className="skill__content">
-              {skills.skills.map((e, idx) => {
+              {skills.skills.sort().map((e, idx) => {
                 return <img src={e[1]} />;
               })}
             </div>

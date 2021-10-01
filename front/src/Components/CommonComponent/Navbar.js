@@ -37,7 +37,6 @@ export default function Navbar(props) {
             프로젝트
           </Link>
         </div>
-
         <div className="Nav__cadet">
           <Link className="a-color" to="/cadet/recruit">
             카뎃

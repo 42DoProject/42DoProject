@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Icon } from "@iconify/react";
 import "../../SCSS/ProfilePage/ProfileBody.scss";
 import { useSelector } from "react-redux";
@@ -8,6 +8,7 @@ import skills from "../../skills.json";
 export default function ProfileEditBody() {
   // let userState = useSelector((state) => state.userReducer);
   let loginState = useSelector((state) => state.loginReducer);
+  const [selected, setSelected] = useState([]);
 
   return (
     <div className="profileBody">
@@ -25,14 +26,50 @@ export default function ProfileEditBody() {
             <div className="skill__label">보유 스킬</div>
             <input
               className="skill__content"
+              id="skill__input"
               list="tech-stacks"
               placeholder="스킬을 검색해 추가해보세요"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  for (let el of skills.skills) {
+                    if (e.target.value === el[0]) {
+                      for (let el of selected) {
+                        if (el[0] === e.target.value) {
+                          e.target.value = "";
+                          return;
+                        }
+                      }
+                      setSelected([...selected, el]);
+                      e.target.value = "";
+                    }
+                  }
+                }
+              }}
             />
-            <datalist id="tech-stacks">
-              {skills.skills.map((e) => {
+            <datalist id="tech-stacks" autocomplete="off">
+              {skills.skills.sort().map((e) => {
                 return <option value={e[0]} />;
               })}
             </datalist>
+          </div>
+          <div className="selected-skills">
+            {selected.map((e, idx) => {
+              return (
+                <div className="selected-el">
+                  <img src={e[1]} alt={e[0]} />
+                  <Icon
+                    key={idx}
+                    className="selected-x"
+                    icon="bi:x-circle-fill"
+                    onClick={(e) => {
+                      let test = [...selected];
+                      test.splice(idx, 1);
+                      setSelected(test);
+                    }}
+                  />
+                </div>
+              );
+            })}
           </div>
         </div>
         <div className="col1__profile-card2">

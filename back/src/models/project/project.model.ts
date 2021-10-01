@@ -36,6 +36,9 @@ export class Project extends Model {
   @Column(DataType.INTEGER)
   viewCount!: number;
 
+  @Column(DataType.INTEGER)
+  commentCount!: number;
+
   @ForeignKey(() => Content)
   @Column
   contentId!: number

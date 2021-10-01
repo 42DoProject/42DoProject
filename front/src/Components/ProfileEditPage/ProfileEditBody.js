@@ -29,8 +29,8 @@ export default function ProfileEditBody() {
               placeholder="스킬을 검색해 추가해보세요"
             />
             <datalist id="tech-stacks">
-              {skills.languages.map((v, i) => {
-                return <option value={v[i][0]} />;
+              {skills.skills.map((e) => {
+                return <option value={e[0]} />;
               })}
             </datalist>
           </div>

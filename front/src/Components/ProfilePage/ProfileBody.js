@@ -18,23 +18,8 @@ export default function ProfileBody() {
           <div className="card1__skill">
             <div className="skill__label">보유 스킬</div>
             <div className="skill__content">
-              {skills.languages.map((e, idx) => {
-                return <img src={e[idx][1]} />;
-              })}
-              {skills.frameworks.map((e, idx) => {
-                return <img src={e[idx][1]} />;
-              })}
-              {skills.servers.map((e, idx) => {
-                return <img src={e[idx][1]} />;
-              })}
-              {skills.databases.map((e, idx) => {
-                return <img src={e[idx][1]} />;
-              })}
-              {skills.mldl.map((e, idx) => {
-                return <img src={e[idx][1]} />;
-              })}
-              {skills.gaming.map((e, idx) => {
-                return <img src={e[idx][1]} />;
+              {skills.skills.map((e, idx) => {
+                return <img src={e[1]} />;
               })}
             </div>
           </div>

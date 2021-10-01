@@ -214,6 +214,7 @@
   position: relative;
   display: flex;
   align-items: center;
+
   .name {
     .btn {
       display: flex;
@@ -224,6 +225,9 @@
       color: $darkGrey;
       font-weight: $bold;
       box-shadow: none;
+      &:hover {
+        color: $mainColor;
+      }
     }
   }
   .name__list {

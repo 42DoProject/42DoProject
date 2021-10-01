@@ -38,6 +38,17 @@
     }
   }
 
+  .bubble__wrapper {
+    position: relative;
+    .bubble__letters-count {
+      position: absolute;
+      right: 1rem;
+      bottom: 1.3rem;
+      color: $lightGrey;
+      font-size: $fontSs;
+    }
+  }
+
   .profile__bubble {
     background-color: white;
     padding: 1rem 2rem;
@@ -125,8 +136,21 @@
   min-height: 10rem;
   max-height: 30rem;
   border-radius: $round;
+  position: relative;
+  .introduction__letters-count {
+    position: absolute;
+    right: 0.5rem;
+    bottom: 0.5rem;
+    font-size: $fontSs;
+    color: $lightGrey;
+  }
 }
-textarea.right__introduction {
+textarea.introduction__textarea {
+  width: 100%;
+  min-height: 10rem;
+  max-height: 30rem;
+  border-radius: $round;
+  position: relative;
   border: 2px solid $mainColor;
   padding: 1rem;
   resize: none;

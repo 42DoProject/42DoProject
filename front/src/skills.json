@@ -495,6 +495,66 @@
     [
       "Unreal Engine",
       "https://img.shields.io/badge/Unreal_Engine-%23313131.svg?style=flat-square&logo=unrealengine&logoColor=white"
+    ],
+    [
+      "Qiskit",
+      "https://img.shields.io/badge/Qiskit-%236929C4.svg?style=flat-square&logo=Qiskit&logoColor=white"
+    ],
+    [
+      "Figma",
+      "https://img.shields.io/badge/Figma-%23F24E1E.svg?style=flat-square&logo=figma&logoColor=white"
+    ],
+    [
+      "Sketch",
+      "https://img.shields.io/badge/Sketch-FFB387?style=flat-square&logo=sketch&logoColor=black"
+    ],
+    [
+      "Git",
+      "https://img.shields.io/badge/Git-%23F05033.svg?style=flat-square&logo=git&logoColor=white"
+    ],
+    [
+      "GitHub",
+      "https://img.shields.io/badge/GitHub-%23121011.svg?style=flat-square&logo=github&logoColor=white"
+    ],
+    [
+      "Bitbucket",
+      "https://img.shields.io/badge/bitbucket-%230047B3.svg?style=flat-square&logo=bitbucket&logoColor=white"
+    ],
+    [
+      "Gitea",
+      "https://img.shields.io/badge/Gitea-34495E?style=flat-square&logo=gitea&logoColor=5D9425"
+    ],
+    [
+      "GitLab",
+      "https://img.shields.io/badge/GitLab-%23181717.svg?style=flat-square&logo=gitlab&logoColor=white"
+    ],
+    [
+      "Perforce Helix",
+      "https://img.shields.io/badge/-PERFORCE%20HELIX-00AEEF?style=flat-square&logo=Perforce&logoColor=white"
+    ],
+    [
+      "Linux",
+      "https://img.shields.io/badge/Linux-FCC624?style=flat-square&logo=linux&logoColor=black"
+    ],
+    [
+      "Docker",
+      "https://img.shields.io/badge/Docker-%230db7ed.svg?style=flat-square&logo=docker&logoColor=white"
+    ],
+    [
+      "Arduino",
+      "https://img.shields.io/badge/-Arduino-00979D?style=flat-square&logo=Arduino&logoColor=white"
+    ],
+    [
+      "Kubernetes",
+      "https://img.shields.io/badge/Kubernetes-%23326ce5.svg?style=flat-square&logo=kubernetes&logoColor=white"
+    ],
+    [
+      "Raspberry Pi",
+      "https://img.shields.io/badge/-RaspberryPi-C51A4A?style=flat-square&logo=Raspberry-Pi"
+    ],
+    [
+      "Postman",
+      "https://img.shields.io/badge/Postman-FF6C37?style=flat-square&logo=postman&logoColor=white"
     ]
   ]
 }

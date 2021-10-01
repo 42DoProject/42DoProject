@@ -70,6 +70,21 @@ input.skill__content {
   bottom: 0.4rem;
   width: 14rem;
 }
+.selected-skills {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 4rem;
+  .selected-el {
+    margin: 0.1rem 0.5rem;
+    position: relative;
+    .selected-x {
+      position: absolute;
+      right: -0.8rem;
+      bottom: 0;
+      color: $grey;
+    }
+  }
+}
 
 .col1__profile-card2 {
   display: flex;

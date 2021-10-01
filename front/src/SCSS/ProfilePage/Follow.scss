@@ -1,0 +1,49 @@
+@import "../Base.scss";
+
+.follow__wrapper {
+  z-index: 1;
+  position: absolute;
+  margin-top: 2rem;
+  width: 20rem;
+  height: 20rem;
+  background-color: white;
+  border-radius: $round;
+  box-shadow: $shadow;
+  //   visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+  .follow__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .box-space {
+      height: 2rem;
+      width: 2rem;
+    }
+    .follow__subject {
+      font-weight: $semiBold;
+    }
+    .follow__x {
+      cursor: pointer;
+    }
+  }
+
+  .follow__list {
+    overflow-y: scroll;
+  }
+}
+
+.follow__wrapper:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+  border-bottom-color: white;
+  border-top: 0;
+  margin-left: -10px;
+  margin-top: -10px;
+}

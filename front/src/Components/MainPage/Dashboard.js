@@ -78,29 +78,25 @@ export default function Dashboard() {
               <div className="reportbox__report">
                 <Link
                   className="dashboard__project__link1"
-                  to="/project/proceed"
-                >
+                  to="/project/proceed">
                   42
                 </Link>
                 개의 프로젝트가{" "}
                 <Link
                   className="dashboard__project__link2"
-                  to="/project/proceed"
-                >
+                  to="/project/proceed">
                   진행중
                 </Link>
                 이고{" "}
                 <Link
                   className="dashboard__project__link3"
-                  to="/project/complete"
-                >
+                  to="/project/complete">
                   142
                 </Link>
                 개의 프로젝트가{" "}
                 <Link
                   className="dashboard__project__link4"
-                  to="/project/complete"
-                >
+                  to="/project/complete">
                   완료
                 </Link>
                 되었어요

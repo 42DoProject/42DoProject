@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import "../../SCSS/ProfilePage/ProfileHeader.scss";
-// import { Icon } from "@iconify/react";
+import Follow from "./Follow";
 
 export default function ProfileHeader() {
   // let userState = useSelector((state) => state.userReducer);
   let loginState = useSelector((state) => state.loginReducer);
+  let [followerFlag, setFollowerFlag] = useState(0);
+  let [followingFlag, setFollowingFlag] = useState(0);
 
   return (
     <div className="profileHeader">
@@ -29,8 +31,30 @@ export default function ProfileHeader() {
         </div>
         <div className="right__row2">
           <div className="row2__status">프로젝트 찾는 중</div>
-          <div className="row2__follower">팔로워 10명</div>
-          <div className="row2__following">팔로워 15명</div>
+          <div className="row2__follower-wrapper">
+            <div
+              className="row2__follower"
+              onClick={(e) => {
+                followerFlag === 0 ? setFollowerFlag(1) : setFollowerFlag(0);
+              }}>
+              팔로워 10명
+            </div>
+            {followerFlag === 1 ? (
+              <Follow setFollowFlag={setFollowerFlag} subject="팔로워" />
+            ) : null}
+          </div>
+          <div className="row2__following-wrapper">
+            <div
+              className="row2__following"
+              onClick={(e) => {
+                followingFlag === 0 ? setFollowingFlag(1) : setFollowingFlag(0);
+              }}>
+              팔로우 15명
+            </div>
+            {followingFlag === 1 ? (
+              <Follow setFollowFlag={setFollowingFlag} subject="팔로우" />
+            ) : null}
+          </div>
         </div>
         <div className="right__introduction">
           풀스택 개발자 지망생 jiylee입니다! <br />

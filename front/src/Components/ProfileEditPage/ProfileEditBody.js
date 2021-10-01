@@ -2,6 +2,7 @@ import React from "react";
 import { Icon } from "@iconify/react";
 import "../../SCSS/ProfilePage/ProfileBody.scss";
 import { useSelector } from "react-redux";
+import skills from "../../skills.json";
 // import Cards from "../MainPage/Cards";
 
 export default function ProfileEditBody() {
@@ -28,11 +29,9 @@ export default function ProfileEditBody() {
               placeholder="스킬을 검색해 추가해보세요"
             />
             <datalist id="tech-stacks">
-              <option value="HTML" />
-              <option value="CSS" />
-              <option value="Javascript" />
-              <option value="Java" />
-              <option value="Spring" />
+              {skills.languages.map((v, i) => {
+                return <option value={v[i][0]} />;
+              })}
             </datalist>
           </div>
         </div>

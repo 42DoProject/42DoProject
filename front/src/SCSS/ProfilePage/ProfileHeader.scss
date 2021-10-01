@@ -123,12 +123,19 @@
     margin-right: 1rem;
     border: none;
   }
-  .row2__follower,
-  .row2__following {
-    font-weight: 700;
-    margin-right: 1rem;
-    cursor: pointer;
-  }
+}
+
+.row2__follower-wrapper,
+.row2__following-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.row2__follower,
+.row2__following {
+  font-weight: 700;
+  margin-right: 1rem;
+  cursor: pointer;
 }
 
 .right__introduction {

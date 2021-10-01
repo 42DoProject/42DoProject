@@ -2,11 +2,11 @@ import React from "react";
 import { Icon } from "@iconify/react";
 import "../../SCSS/ProfilePage/ProfileBody.scss";
 import { useSelector } from "react-redux";
+import skills from "../../skills.json";
 // import Cards from "../MainPage/Cards";
 export default function ProfileBody() {
   // let userState = useSelector((state) => state.userReducer);
   let loginState = useSelector((state) => state.loginReducer);
-
   return (
     <div className="profileBody">
       <div className="profileBody__col1">
@@ -18,30 +18,24 @@ export default function ProfileBody() {
           <div className="card1__skill">
             <div className="skill__label">보유 스킬</div>
             <div className="skill__content">
-              <img
-                alt="badge1"
-                src="https://img.shields.io/badge/HTML-E34F26?style=flat-square&logo=HTML5&logoColor=white"
-              />
-              <img
-                alt="badge2"
-                src="https://img.shields.io/badge/CSS-1572B6?style=flat-square&logo=CSS3&logoColor=white"
-              />
-              <img
-                alt="badge3"
-                src="https://img.shields.io/badge/Javascript-F7DF1E?style=flat-square&logo=JavaScript&logoColor=white"
-              />
-              <img
-                alt="badge1"
-                src="https://img.shields.io/badge/HTML-E34F26?style=flat-square&logo=HTML5&logoColor=white"
-              />
-              <img
-                alt="badge2"
-                src="https://img.shields.io/badge/CSS-1572B6?style=flat-square&logo=CSS3&logoColor=white"
-              />
-              <img
-                alt="badge3"
-                src="https://img.shields.io/badge/Javascript-F7DF1E?style=flat-square&logo=JavaScript&logoColor=white"
-              />
+              {skills.languages.map((e, idx) => {
+                return <img src={e[idx][1]} />;
+              })}
+              {skills.frameworks.map((e, idx) => {
+                return <img src={e[idx][1]} />;
+              })}
+              {skills.servers.map((e, idx) => {
+                return <img src={e[idx][1]} />;
+              })}
+              {skills.databases.map((e, idx) => {
+                return <img src={e[idx][1]} />;
+              })}
+              {skills.mldl.map((e, idx) => {
+                return <img src={e[idx][1]} />;
+              })}
+              {skills.gaming.map((e, idx) => {
+                return <img src={e[idx][1]} />;
+              })}
             </div>
           </div>
         </div>

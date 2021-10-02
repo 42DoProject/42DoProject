@@ -8,7 +8,7 @@ import axios from "axios";
 export const Example = () => {
   let loginState = useSelector((state) => state.loginReducer);
   return (
-    <OverlayTrigger trigger="click" placement="bottom" overlay={Pop()}>
+    <OverlayTrigger trigger="focus" placement="bottom" overlay={Pop()}>
       <Button variant="light">
         <div>{loginState.name}</div>
         <div className="Nav__user image">
@@ -35,7 +35,8 @@ function Pop() {
         onClick={() => {
           logOut();
           dispatch({ type: "LOGOUT" });
-        }}>
+        }}
+      >
         <Popover.Body>SIGN OUT</Popover.Body>
       </div>
     </Popover>

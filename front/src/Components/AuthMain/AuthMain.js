@@ -10,21 +10,7 @@ export default function AuthMain() {
   let dispatch = useDispatch();
   let history = useHistory();
   let loginState = useSelector((state) => state.loginReducer);
-  // 새로운 Token 발급
-  const getToken = async () => {
-    try {
-      const prevRefreshToken = localStorage.getItem("refreshToken");
-      const {
-        data: { accessToken: newAccessToken, refreshToken: newRefreshToken },
-      } = await axios.get(
-        `http://localhost:5000/auth/signin?refresh_token=${prevRefreshToken}`
-      );
-      localStorage.setItem("accessToken", newAccessToken);
-      localStorage.setItem("refreshToken", newRefreshToken);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+
   // 42API에서 User Data 받아오기.
   useEffect(() => {
     const getData = async () => {
@@ -37,11 +23,8 @@ export default function AuthMain() {
         } = Data;
         // loginReducer state 변경
         dispatch({ type: "LOGIN", payload: Data.user });
-        // 29분마다 요청
-        const timerId = setInterval(getToken, 1000 * 60 * 29);
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("refreshToken", refreshToken);
-        localStorage.setItem("timerId", timerId);
         history.push("/");
       } catch (err) {
         console.log(err);

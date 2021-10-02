@@ -11,8 +11,34 @@ import ProfileEditPage from "./Components/ProfileEditPage/ProfileEditPage";
 import Layout from "./Components/CommonComponent/Layout";
 import "./SCSS/init.scss";
 import AllCadet from "./Components/CadetPage/AllCadet";
-
+import axios from "axios";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 function App(props) {
+  // 새로운 Token 발급
+  let loginState = useSelector((state) => state.loginReducer);
+  const getToken = async () => {
+    try {
+      const prevRefreshToken = localStorage.getItem("refreshToken");
+      if (loginState) {
+        const {
+          data: { accessToken: newAccessToken, refreshToken: newRefreshToken },
+        } = await axios.get(
+          `http://localhost:5000/auth/signin?refresh_token=${prevRefreshToken}`
+        );
+        localStorage.setItem("accessToken", newAccessToken);
+        localStorage.setItem("refreshToken", newRefreshToken);
+        // console.log(newRefreshToken);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  // 29분마다 요청
+  useEffect(() => {
+    const timerId = setInterval(getToken, 1000 * 60 * 29);
+    localStorage.setItem("timerId", timerId);
+  }, [loginState]);
   return (
     <Layout>
       <Switch>

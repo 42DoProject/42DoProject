@@ -107,6 +107,12 @@
     font-weight: $normal;
     margin-right: 1rem;
   }
+  .row1__edit-profile {
+    background-color: $bodyColor;
+    color: $black;
+    border: 1px solid $lightestGrey;
+    box-shadow: none;
+  }
 }
 
 .right__row2 {

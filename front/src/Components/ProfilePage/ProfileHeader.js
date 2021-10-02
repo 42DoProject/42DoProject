@@ -2,12 +2,15 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import "../../SCSS/ProfilePage/ProfileHeader.scss";
 import Follow from "./Follow";
+import relativeTime from "../../relativeTime";
+import { useHistory } from "react-router";
 
-export default function ProfileHeader() {
+export default function ProfileHeader(props) {
   // let userState = useSelector((state) => state.userReducer);
   let loginState = useSelector((state) => state.loginReducer);
   let [followerFlag, setFollowerFlag] = useState(0);
   let [followingFlag, setFollowingFlag] = useState(0);
+  let history = useHistory();
 
   return (
     <div className="profileHeader">
@@ -18,16 +21,26 @@ export default function ProfileHeader() {
           src={loginState.profileImage}
         />
 
-        <div className="profile__bubble">
-          리액트를 이용한 웹 프론트엔드 개발을 해보고 싶습니다!
+        <div className="profile__bubble">{props.user.statusMessage}</div>
+        <div className="profile__last-access">
+          마지막 접속: {relativeTime(Date.parse(props.user.lastAccess))}
         </div>
-        <div className="profile__last-access">마지막 접속: 3일 전</div>
       </div>
       <div className="header__right">
         <div className="right__row1">
-          <div className="row1__name">{loginState.name}</div>
-          <button className="row1__send-message">메시지 보내기</button>
-          <button className="row1__follow">팔로우</button>
+          <div className="row1__name">{props.user.username}</div>
+          {/* <button className="row1__send-message">메시지 보내기</button>
+          <button className="row1__follow">팔로우</button> */}
+          {/* <Link className="icon__link" to="/profile/edit">
+                  <Icon icon="akar-icons:edit" />
+                </Link> */}
+          <button
+            className="row1__edit-profile"
+            onClick={() => {
+              history.push("/profile/edit");
+            }}>
+            프로필 수정
+          </button>
         </div>
         <div className="right__row2">
           <div className="row2__status">프로젝트 찾는 중</div>
@@ -37,7 +50,7 @@ export default function ProfileHeader() {
               onClick={(e) => {
                 followerFlag === 0 ? setFollowerFlag(1) : setFollowerFlag(0);
               }}>
-              팔로워 10명
+              {`팔로워 ${props.user.follower}명`}
             </div>
             {followerFlag === 1 ? (
               <Follow setFollowFlag={setFollowerFlag} subject="팔로워" />
@@ -49,20 +62,14 @@ export default function ProfileHeader() {
               onClick={(e) => {
                 followingFlag === 0 ? setFollowingFlag(1) : setFollowingFlag(0);
               }}>
-              팔로우 15명
+              {`팔로우 ${props.user.following}명`}
             </div>
             {followingFlag === 1 ? (
               <Follow setFollowFlag={setFollowingFlag} subject="팔로우" />
             ) : null}
           </div>
         </div>
-        <div className="right__introduction">
-          풀스택 개발자 지망생 jiylee입니다! <br />
-          <br />
-          포트폴리오 겸 프론트엔드 쪽으로 프로젝트 구하고 있습니다. <br />
-          <br />
-          채팅 주세요~
-        </div>
+        <div className="right__introduction">{props.user.introduction}</div>
       </div>
     </div>
   );

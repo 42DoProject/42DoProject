@@ -26,28 +26,28 @@ export default function AuthMain() {
     }
   };
   // 42API에서 User Data 받아오기.
-  const getData = async () => {
-    try {
-      const { data: Data } = await axios.get(
-        `http://localhost:5000/auth/signin?code=${code}`
-      );
-      const {
-        token: { accessToken, refreshToken },
-      } = Data;
-      // loginReducer state 변경
-      dispatch({ type: "LOGIN", payload: Data.user });
-      // 29분마다 요청
-      const timerId = setInterval(getToken, 1000 * 60 * 29);
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
-      localStorage.setItem("timerId", timerId);
-      history.push("/");
-    } catch (err) {
-      console.log(err);
-    }
-  };
   useEffect(() => {
+    const getData = async () => {
+      try {
+        const { data: Data } = await axios.get(
+          `http://localhost:5000/auth/signin?code=${code}`
+        );
+        const {
+          token: { accessToken, refreshToken },
+        } = Data;
+        // loginReducer state 변경
+        dispatch({ type: "LOGIN", payload: Data.user });
+        // 29분마다 요청
+        const timerId = setInterval(getToken, 1000 * 60 * 29);
+        localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem("refreshToken", refreshToken);
+        localStorage.setItem("timerId", timerId);
+        history.push("/");
+      } catch (err) {
+        console.log(err);
+      }
+    };
     getData();
-  }, []);
+  }, [code, dispatch, history]);
   return loginState === null && <ReactLoading type="spin" color="#a7bc5b" />;
 }

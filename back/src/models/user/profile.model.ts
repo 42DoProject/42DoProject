@@ -14,7 +14,7 @@ import { Comments } from "../project/comments.model";
 
 @Table({ timestamps: false })
 export class Profile extends Model {
-  @Column(DataType.INTEGER)
+  @Column(DataType.FLOAT)
   level!: Number;
 
   @Column(DataType.STRING(20))

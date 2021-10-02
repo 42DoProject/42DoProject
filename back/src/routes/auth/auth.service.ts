@@ -11,8 +11,13 @@ import { accessToken, issueJwt, jwtToObject, tokenToUser } from "./oauth";
 
 const userModelCheck = async (user: any): Promise<number> => {
   var temp;
-  if ((temp = await User.findOne({ where: { intraId: user.id } })))
+  if ((temp = await User.findOne({ where: { intraId: user.id } }))) {
+    await Profile.update(
+      { level: user.cursus_users[1].level },
+      { where: { userId: temp.id } }
+    );
     return temp.id;
+  }
   const row = await User.create({
     intraId: user.id,
     username: user.login,
@@ -35,7 +40,7 @@ const userModelCheck = async (user: any): Promise<number> => {
     userId: row.id,
   });
   await Profile.create({
-    level: 0,
+    level: user.cursus_users[1].level,
     lastAccess: getIsoString(),
     status: 0,
     position: [],
@@ -59,6 +64,10 @@ export const signIn = async (request: Request, response: Response) => {
       return;
     }
     const user = await tokenToUser((<IOToken>token).access_token);
+    if ((<any>user).cursus_users.length < 2) {
+      response.status(400).json({ error: "service can only used by cadets" });
+      return;
+    }
     if (!user) {
       response.status(400).json({ error: "42 intra is not working" });
       return;

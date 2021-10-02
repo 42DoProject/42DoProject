@@ -3,10 +3,12 @@ import { Icon } from "@iconify/react";
 import "../../SCSS/ProfilePage/ProfileBody.scss";
 import { useSelector } from "react-redux";
 import skills from "../../skills.json";
+
 // import Cards from "../MainPage/Cards";
-export default function ProfileBody() {
+export default function ProfileBody(props) {
   // let userState = useSelector((state) => state.userReducer);
   let loginState = useSelector((state) => state.loginReducer);
+
   return (
     <div className="profileBody">
       <div className="profileBody__col1">
@@ -18,9 +20,13 @@ export default function ProfileBody() {
           <div className="card1__skill">
             <div className="skill__label">보유 스킬</div>
             <div className="skill__content">
-              {skills.skills.sort().map((e, idx) => {
-                return <img src={e[1]} />;
-              })}
+              {props.user.skill &&
+                props.user.skill.map((e) => {
+                  // console.log(e);
+                  return (
+                    <img alt={skills.skills[e][0]} src={skills.skills[e][1]} />
+                  );
+                })}
             </div>
           </div>
         </div>
@@ -31,7 +37,7 @@ export default function ProfileBody() {
           </div>
           <div className="card2__level">
             <Icon icon="simple-icons:42" width="25px" />
-            <span>{`level ${loginState.level}`}</span>
+            <span>{`level ${props.user.level}`}</span>
           </div>
           <div className="card2__email">
             <Icon icon="fluent:mail-48-filled" height="25px" />
@@ -42,10 +48,10 @@ export default function ProfileBody() {
           <div className="card2__github">
             <Icon icon="akar-icons:github-fill" height="22px" />
             <a
-              href="https://github.com/Jiyong95"
+              href={`https://github.com/${props.user.github}`}
               target="_blank"
               className="github-span">
-              Jiyong95
+              {`${props.user.github}`}
             </a>
           </div>
         </div>

@@ -1,14 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import "../../SCSS/ProfilePage/ProfileBody.scss";
 import { useSelector } from "react-redux";
 import skills from "../../skills.json";
+import { positions } from "../../userData";
 // import Cards from "../MainPage/Cards";
 
-export default function ProfileEditBody() {
+export default function ProfileEditBody(props) {
   // let userState = useSelector((state) => state.userReducer);
   let loginState = useSelector((state) => state.loginReducer);
+  let existingSkills = [];
   const [selected, setSelected] = useState([]);
+
+  useEffect(() => {
+    if (props.user.skill) {
+      props.user.skill.forEach((e) => {
+        existingSkills.push([skills.skills[e][0], skills.skills[e][1], e]);
+      });
+      setSelected(existingSkills);
+    }
+  }, [props]);
 
   return (
     <div className="profileBody">
@@ -17,54 +28,65 @@ export default function ProfileEditBody() {
           <div className="card1__job">
             <div className="job__label">포지션</div>
             <select id="job_select" className="job__content">
-              <option value="프론트엔드">프론트엔드</option>
-              <option value="백엔드">백엔드</option>
-              <option value="iOS">iOS</option>
+              {positions.map((v, idx) => {
+                return (
+                  <option key={idx} value={idx}>
+                    {v}
+                  </option>
+                );
+              })}
             </select>
           </div>
           <div className="card1__skill">
             <div className="skill__label">보유 스킬</div>
             <input
               className="skill__content"
-              id="skill__input"
               list="tech-stacks"
               placeholder="스킬을 검색해 추가해보세요"
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
-                  for (let el of skills.skills) {
-                    if (e.target.value === el[0]) {
-                      for (let el of selected) {
-                        if (el[0] === e.target.value) {
+                  skills.skills.forEach((el, idx) => {
+                    if (e.target.value == el[0]) {
+                      // 선택한 값이 skills에 있으면
+                      for (let elem of selected) {
+                        if (elem[0] === e.target.value) {
+                          //선택한 값이 이미 selected에 있으면
                           e.target.value = "";
-                          return;
+                          return; // 추가안하고 지워준 후 종료
                         }
                       }
-                      setSelected([...selected, el]);
+                      setSelected([...selected, [...el, idx + ""]]); // selected에 인덱스(el[2])와 함께 추가
                       e.target.value = "";
+                      // console.log(idx);
                     }
-                  }
+                  });
                 }
               }}
             />
-            <datalist id="tech-stacks" autocomplete="off">
-              {skills.skills.sort().map((e) => {
-                return <option value={e[0]} />;
+            <datalist id="tech-stacks">
+              {[...skills.skills].sort().map((v, idx) => {
+                return <option key={idx} value={v[0]} />;
               })}
             </datalist>
           </div>
           <div className="selected-skills">
             {selected.map((e, idx) => {
               return (
-                <div className="selected-el">
-                  <img src={e[1]} alt={e[0]} />
+                <div key={idx} className="selected-el">
+                  <img
+                    className="selected-img"
+                    key={idx + 1}
+                    src={e[1]}
+                    alt={e[2]}
+                  />
                   <Icon
-                    key={idx}
+                    key={idx + 2}
                     className="selected-x"
                     icon="bi:x-circle-fill"
                     onClick={(e) => {
-                      let test = [...selected];
-                      test.splice(idx, 1);
-                      setSelected(test);
+                      let dup = [...selected];
+                      dup.splice(idx, 1);
+                      setSelected(dup);
                     }}
                   />
                 </div>
@@ -79,7 +101,7 @@ export default function ProfileEditBody() {
           </div>
           <div className="card2__level">
             <Icon icon="simple-icons:42" width="25px" />
-            <span>{`level ${loginState.level}`}</span>
+            <span>{`level ${props.user.level}`}</span>
           </div>
           <div className="card2__email">
             <Icon icon="fluent:mail-48-filled" height="25px" />
@@ -93,6 +115,7 @@ export default function ProfileEditBody() {
               className="github-span"
               maxLength="15"
               placeholder="깃허브 user name"
+              defaultValue={props.user.github}
             />
           </div>
         </div>

@@ -1,21 +1,71 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ProfileEditHeader from "./ProfileEditHeader";
 import ProfileEditBody from "./ProfileEditBody";
 import "../../SCSS/ProfileEditPage/ProfileEditPage.scss";
 import { useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
+import axios from "axios";
+import { useHistory } from "react-router";
 
 export default function ProfileEditPage() {
+  const [userData, setUserData] = useState({});
+  const ACCESS_TOKEN = localStorage.getItem("accessToken");
   let loginState = useSelector((state) => state.loginReducer);
+  let history = useHistory();
+
+  const getData = async () => {
+    try {
+      const { data } = await axios.get("http://localhost:5000/user/me", {
+        headers: {
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+        },
+      });
+      setUserData(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const submit = (data) => {
+    let skill = document.querySelectorAll(".selected-img");
+    let skills = [];
+    for (let el of skill) {
+      skills.push(parseInt(el.alt));
+    }
+    axios({
+      method: "POST",
+      url: "http://localhost:5000/user/me",
+      headers: {
+        Authorization: `Bearer ${ACCESS_TOKEN}`,
+      },
+      data: {
+        statusMessage: document.querySelector(".profile__bubble").value,
+        introduction: document.querySelector(".introduction__textarea").value,
+        github: document.querySelector(".github-span").value,
+        position: document.querySelector(".job__content").value,
+        skill: skills,
+        // status: document.querySelector(".row2__status").value,
+      },
+    })
+      .then((res) => {
+        // console.log(res);
+        history.push("/profile");
+      })
+      .catch((e) => console.log(e));
+  };
+
   if (loginState === null) {
     return <Redirect to="/" />;
   }
   return (
     <>
       <div className="profileEditPage-wrap">
-        <ProfileEditHeader />
+        <ProfileEditHeader user={userData} submit={submit} />
         <hr />
-        <ProfileEditBody />
+        <ProfileEditBody user={userData} />
       </div>
     </>
   );

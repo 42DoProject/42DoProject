@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import "../../SCSS/ProfilePage/ProfileHeader.scss";
-// import { Icon } from "@iconify/react";
+import { status } from "../../userData";
+import relativeTime from "../../relativeTime";
 
-export default function ProfileEditHeader() {
+export default function ProfileEditHeader(props) {
   // let userState = useSelector((state) => state.userReducer);
   let loginState = useSelector((state) => state.loginReducer);
   let [bubbleLength, setBubbleLength] = useState(0);
@@ -23,6 +24,7 @@ export default function ProfileEditHeader() {
             className="profile__bubble"
             maxLength="30"
             placeholder="ex. 리액트를 이용한 웹 프론트엔드 개발을 해보고 싶습니다!"
+            defaultValue={props.user.statusMessage}
             onChange={(e) => {
               if (e.target.value.length > e.target.maxLength) {
                 e.target.value.substr(0, e.target.maxLength); //한글 처리
@@ -31,7 +33,9 @@ export default function ProfileEditHeader() {
           />
           <div className="bubble__letters-count">{bubbleLength} / 30</div>
         </div>
-        <div className="profile__last-access">마지막 접속: 3일 전</div>
+        <div className="profile__last-access">
+          마지막 접속: {relativeTime(Date.parse(props.user.lastAccess))}
+        </div>
       </div>
       <div className="header__right">
         <div className="right__row1">
@@ -40,6 +44,9 @@ export default function ProfileEditHeader() {
             type="submit"
             className="row1__finish-edit"
             value="프로필 저장"
+            onClick={() => {
+              props.submit();
+            }}
           />
         </div>
         <div className="right__row2">
@@ -52,11 +59,16 @@ export default function ProfileEditHeader() {
                 statusEl.style.backgroundColor = "#c4c4c4";
               else statusEl.style.backgroundColor = "#5bbcb6";
             }}>
-            <option value="프로젝트_찾는_중">프로젝트 찾는 중</option>
-            <option value="휴식중">휴식중</option>
+            {status.map((v, idx) => {
+              return (
+                <option key={idx} value={idx}>
+                  {v}
+                </option>
+              );
+            })}
           </select>
-          <div className="row2__follower">팔로워 10명</div>
-          <div className="row2__following">팔로워 15명</div>
+          <div className="row2__follower">팔로워 {props.user.follower}명</div>
+          <div className="row2__following">팔로우 {props.user.following}명</div>
         </div>
         <div className="right__introduction">
           <textarea
@@ -64,6 +76,7 @@ export default function ProfileEditHeader() {
             className="introduction__textarea"
             maxLength="500"
             placeholder="자기소개를 작성해주세요. (ex. 내가 잘하는 분야, 하고 싶은 프로젝트, 배우고 싶은 스킬 등)"
+            defaultValue={props.user.introduction}
             onChange={(e) => {
               if (e.target.value.length > e.target.maxLength) {
                 e.target.value.substr(0, e.target.maxLength); //한글 처리

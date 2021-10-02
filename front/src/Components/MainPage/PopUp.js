@@ -44,11 +44,15 @@ function Pop() {
 }
 
 function logOut() {
-  axios.get(`http://localhost:5000/auth/signout`, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-    },
-  });
-  const timerId = localStorage.getItem("timerId");
-  clearInterval(timerId);
+  try {
+    axios.get(`http://localhost:5000/auth/signout`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    });
+    const timerId = localStorage.getItem("timerId");
+    clearInterval(timerId);
+  } catch (err) {
+    console.log(err);
+  }
 }

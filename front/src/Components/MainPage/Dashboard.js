@@ -1,14 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import "../../SCSS/MainPage/Dashboard.scss";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import ProgressSlide from "./ProgressSlide";
 import FavoriteSlide from "./FavoriteSlide";
-
+import axios from "axios";
+import { positions } from "../../userData";
+import { skills } from "../../skills.json";
 export default function Dashboard() {
   let userState = useSelector((store) => store.userReducer);
   let loginState = useSelector((state) => state.loginReducer);
+  let [userData, setUserData] = useState(null);
+  const getData = async () => {
+    try {
+      let ACCESS_TOKEN = localStorage.getItem("accessToken");
+      const { data } = await axios.get("http://localhost:5000/user/me", {
+        headers: {
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+        },
+      });
+      setUserData(data);
+      // console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    getData();
+  }, []);
+  // console.log(userData);
   return (
     <div className="dashboard">
       <div className="dashboard__wrap">
@@ -40,23 +61,20 @@ export default function Dashboard() {
           <div className="row2">
             <div className="row2__box1">
               <div className="box1__column1">
-                <div className="column1__job">직업</div>
-                <div className="column1__level">레벨</div>
+                <div className="column1__job">포지션</div>
                 <div className="column1__skill">보유 스킬</div>
               </div>
               <div className="box1__column2">
                 <div className="column2__job">
-                  {loginState === null ? null : userState.work}
-                </div>
-                <div className="column2__level">
-                  {loginState === null ? null : userState.level}
+                  {userData && positions[+userData.position]}
                 </div>
                 <div className="column2__skill">
-                  {loginState === null
-                    ? null
-                    : userState.skill.map((e, idx) => {
-                        return <img key={idx} alt={"badge" + idx} src={e} />;
-                      })}
+                  {userData &&
+                    userData.skill.map((e, idx) => {
+                      return (
+                        <img key={idx} src={skills[e][1]} alt={skills[e][0]} />
+                      );
+                    })}
                 </div>
               </div>
             </div>
@@ -78,25 +96,29 @@ export default function Dashboard() {
               <div className="reportbox__report">
                 <Link
                   className="dashboard__project__link1"
-                  to="/project/proceed">
+                  to="/project/proceed"
+                >
                   42
                 </Link>
                 개의 프로젝트가{" "}
                 <Link
                   className="dashboard__project__link2"
-                  to="/project/proceed">
+                  to="/project/proceed"
+                >
                   진행중
                 </Link>
                 이고{" "}
                 <Link
                   className="dashboard__project__link3"
-                  to="/project/complete">
+                  to="/project/complete"
+                >
                   142
                 </Link>
                 개의 프로젝트가{" "}
                 <Link
                   className="dashboard__project__link4"
-                  to="/project/complete">
+                  to="/project/complete"
+                >
                   완료
                 </Link>
                 되었어요

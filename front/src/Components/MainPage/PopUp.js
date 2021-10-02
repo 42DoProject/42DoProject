@@ -3,6 +3,7 @@ import { Popover, OverlayTrigger, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import "../../SCSS/MainPage/PopUp.scss";
+import axios from "axios";
 
 export const Example = () => {
   let loginState = useSelector((state) => state.loginReducer);
@@ -32,6 +33,7 @@ function Pop() {
       <div
         className="popover__wrap"
         onClick={() => {
+          logOut();
           dispatch({ type: "LOGOUT" });
         }}
       >
@@ -39,4 +41,14 @@ function Pop() {
       </div>
     </Popover>
   );
+}
+
+function logOut() {
+  axios.get(`http://localhost:5000/auth/signout`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    },
+  });
+  const timerId = localStorage.getItem("timerId");
+  clearInterval(timerId);
 }

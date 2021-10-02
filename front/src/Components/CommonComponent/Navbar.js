@@ -8,10 +8,12 @@ export default function Navbar(props) {
   let [clickFlag, setClickFlag] = useState(0);
   let userState = useSelector((state) => state.userReducer);
   let loginState = useSelector((state) => state.loginReducer);
-  let closeFlag = 0;
-  document.body.onclick = function () {
-    if (clickFlag === 1) closeFlag++;
-    if (closeFlag === 2) {
+  document.body.onclick = function (e) {
+    if (
+      clickFlag &&
+      e.target.offsetParent &&
+      e.target.offsetParent.className !== "notiText__wrap"
+    ) {
       let iconEl = document.querySelector(".icon");
       setClickFlag(0);
       iconEl.style.color = "#565656";
@@ -96,7 +98,8 @@ export default function Navbar(props) {
           <button className="Nav__user__login">
             <a
               className="login__link"
-              href={`https://api.intra.42.fr/oauth/authorize?client_id=${process.env.REACT_APP_API_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_API_REDIRECT_URI}&response_type=code`}>
+              href={`https://api.intra.42.fr/oauth/authorize?client_id=${process.env.REACT_APP_API_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_API_REDIRECT_URI}&response_type=code`}
+            >
               SIGN IN
             </a>
           </button>

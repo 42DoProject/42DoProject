@@ -21,17 +21,30 @@ export default function AuthMain() {
       } = Data;
       // loginReducer state 변경
       dispatch({ type: "LOGIN", payload: Data.user });
-
-      // console.log("access Token", accessToken);
-      // console.log("refresh Token", refreshToken);
+      const timerId = setInterval(getToken, 1000 * 60 * 29);
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
+      localStorage.setItem("timerId", timerId);
+      // 15분마다 요청
       history.push("/");
     } catch (err) {
       console.log(err);
     }
   };
   getData();
-  // console.log("out", loginState);
+  const getToken = async () => {
+    try {
+      const prevRefreshToken = localStorage.getItem("refreshToken");
+      const {
+        data: { accessToken: newAccessToken, refreshToken: newRefreshToken },
+      } = await axios.get(
+        `http://localhost:5000/auth/signin?refresh_token=${prevRefreshToken}`
+      );
+      localStorage.setItem("accessToken", newAccessToken);
+      localStorage.setItem("refreshToken", newRefreshToken);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return loginState === null && <ReactLoading type="spin" color="#a7bc5b" />;
 }

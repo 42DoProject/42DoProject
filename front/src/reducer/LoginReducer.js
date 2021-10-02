@@ -9,6 +9,8 @@ export default function loginReducer(state, action) {
       };
       return copy;
     case "LOGOUT":
+      const timerId = localStorage.getItem("timerId");
+      clearInterval(+timerId);
       return null;
     default:
       return null;

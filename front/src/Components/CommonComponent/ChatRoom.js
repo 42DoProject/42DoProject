@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Icon } from "@iconify/react";
+import React from "react";
+// import { Icon } from "@iconify/react";
 import "../../SCSS/ChatRoom.scss";
 
 export default function ChatRoom() {

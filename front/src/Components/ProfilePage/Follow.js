@@ -1,5 +1,4 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import "../../SCSS/ProfilePage/Follow.scss";
 import { Icon } from "@iconify/react";
 

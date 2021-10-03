@@ -50,7 +50,7 @@ export default function ProfileEditBody(props) {
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   skills.skills.forEach((el, idx) => {
-                    if (e.target.value == el[0]) {
+                    if (e.target.value === el[0]) {
                       // 선택한 값이 skills에 있으면
                       for (let elem of selected) {
                         if (elem[0] === e.target.value) {

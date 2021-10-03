@@ -3,7 +3,7 @@ import { Icon } from "@iconify/react";
 import "../../SCSS/ProfilePage/ProfileBody.scss";
 import { useSelector } from "react-redux";
 import skills from "../../skills.json";
-import { positions, status } from "../../userData";
+import { positions } from "../../userData";
 
 // import Cards from "../MainPage/Cards";
 export default function ProfileBody(props) {
@@ -24,10 +24,14 @@ export default function ProfileBody(props) {
             <div className="skill__label">보유 스킬</div>
             <div className="skill__content">
               {props.user.skill &&
-                props.user.skill.map((e) => {
+                props.user.skill.map((e, i) => {
                   // console.log(e);
                   return (
-                    <img alt={skills.skills[e][0]} src={skills.skills[e][1]} />
+                    <img
+                      key={i}
+                      alt={skills.skills[e][0]}
+                      src={skills.skills[e][1]}
+                    />
                   );
                 })}
             </div>
@@ -54,8 +58,9 @@ export default function ProfileBody(props) {
               <a
                 href={`https://github.com/${props.user.github}`}
                 target="_blank"
+                rel="noreferrer noopener"
                 className="github-span">
-                `${props.user.github}`
+                {props.user.github}
               </a>
             ) : (
               <span className="github-span" style={{ color: "#565656" }}>

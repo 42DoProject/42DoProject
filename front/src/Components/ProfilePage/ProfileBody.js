@@ -3,6 +3,7 @@ import { Icon } from "@iconify/react";
 import "../../SCSS/ProfilePage/ProfileBody.scss";
 import { useSelector } from "react-redux";
 import skills from "../../skills.json";
+import { positions, status } from "../../userData";
 
 // import Cards from "../MainPage/Cards";
 export default function ProfileBody(props) {
@@ -15,7 +16,9 @@ export default function ProfileBody(props) {
         <div className="col1__profile-card1">
           <div className="card1__job">
             <div className="job__label">포지션</div>
-            <div className="job__content">프론트엔드</div>
+            <div className="job__content">
+              {positions[+props.user.position]}
+            </div>
           </div>
           <div className="card1__skill">
             <div className="skill__label">보유 스킬</div>
@@ -37,7 +40,7 @@ export default function ProfileBody(props) {
           </div>
           <div className="card2__level">
             <Icon icon="simple-icons:42" width="25px" />
-            <span>{`level ${props.user.level}`}</span>
+            <span>{`level ${Math.floor(props.user.level)}`}</span>
           </div>
           <div className="card2__email">
             <Icon icon="fluent:mail-48-filled" height="25px" />
@@ -47,12 +50,18 @@ export default function ProfileBody(props) {
           </div>
           <div className="card2__github">
             <Icon icon="akar-icons:github-fill" height="22px" />
-            <a
-              href={`https://github.com/${props.user.github}`}
-              target="_blank"
-              className="github-span">
-              {`${props.user.github}`}
-            </a>
+            {props.user.github ? (
+              <a
+                href={`https://github.com/${props.user.github}`}
+                target="_blank"
+                className="github-span">
+                `${props.user.github}`
+              </a>
+            ) : (
+              <span className="github-span" style={{ color: "#565656" }}>
+                -
+              </span>
+            )}
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import "../../SCSS/ProfilePage/ProfileHeader.scss";
 import { status } from "../../userData";
@@ -9,6 +9,13 @@ export default function ProfileEditHeader(props) {
   let loginState = useSelector((state) => state.loginReducer);
   let [bubbleLength, setBubbleLength] = useState(0);
   let [introLength, setIntroLength] = useState(0);
+  let [statusColor, setStatusColor] = useState("#ff6864");
+  const statusEl = document.querySelector(".row2__status");
+
+  useEffect(() => {
+    if (props.user.status) setStatusColor("#5bbcb6");
+    else setStatusColor("#c4c4c4");
+  }, [props]);
 
   return (
     <div className="profileHeader">
@@ -52,15 +59,21 @@ export default function ProfileEditHeader(props) {
         <div className="right__row2">
           <select
             className="row2__status"
+            style={{ backgroundColor: statusColor }}
             onChange={() => {
-              let statusEl = document.querySelector(".row2__status");
-
-              if (statusEl.value === "휴식중")
-                statusEl.style.backgroundColor = "#c4c4c4";
-              else statusEl.style.backgroundColor = "#5bbcb6";
+              let idx = +statusEl.value;
+              if (idx) {
+                setStatusColor("#5bbcb6");
+              } else {
+                setStatusColor("#c4c4c4");
+              }
             }}>
             {status.map((v, idx) => {
-              return (
+              return idx === props.user.status ? (
+                <option key={idx} value={idx} selected>
+                  {v}
+                </option>
+              ) : (
                 <option key={idx} value={idx}>
                   {v}
                 </option>

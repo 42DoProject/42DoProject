@@ -29,7 +29,11 @@ export default function ProfileEditBody(props) {
             <div className="job__label">포지션</div>
             <select id="job_select" className="job__content">
               {positions.map((v, idx) => {
-                return (
+                return idx === props.user.position ? (
+                  <option key={idx} value={idx} selected>
+                    {v}
+                  </option>
+                ) : (
                   <option key={idx} value={idx}>
                     {v}
                   </option>
@@ -101,7 +105,7 @@ export default function ProfileEditBody(props) {
           </div>
           <div className="card2__level">
             <Icon icon="simple-icons:42" width="25px" />
-            <span>{`level ${props.user.level}`}</span>
+            <span>{`level ${Math.floor(props.user.level)}`}</span>
           </div>
           <div className="card2__email">
             <Icon icon="fluent:mail-48-filled" height="25px" />

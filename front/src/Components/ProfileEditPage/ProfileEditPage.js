@@ -29,12 +29,16 @@ export default function ProfileEditPage() {
     getData();
   }, []);
 
-  const submit = (data) => {
-    let skill = document.querySelectorAll(".selected-img");
+  const submit = () => {
+    const skill = document.querySelectorAll(".selected-img");
     let skills = [];
+    const githubSpan = document.querySelector(".github-span").value;
+    let githubPost;
     for (let el of skill) {
       skills.push(parseInt(el.alt));
     }
+    githubSpan === "" ? (githubPost = null) : (githubPost = githubSpan.value);
+
     axios({
       method: "POST",
       url: "http://localhost:5000/user/me",
@@ -44,10 +48,11 @@ export default function ProfileEditPage() {
       data: {
         statusMessage: document.querySelector(".profile__bubble").value,
         introduction: document.querySelector(".introduction__textarea").value,
-        github: document.querySelector(".github-span").value,
+        github: githubPost,
         position: document.querySelector(".job__content").value,
         skill: skills,
-        // status: document.querySelector(".row2__status").value,
+        status: document.querySelector(".row2__status").value,
+        position: +document.querySelector(".job__content").value,
       },
     })
       .then((res) => {

@@ -4,6 +4,7 @@ import "../../SCSS/ProfilePage/ProfileHeader.scss";
 import Follow from "./Follow";
 import relativeTime from "../../relativeTime";
 import { useHistory } from "react-router";
+import { status } from "../../userData";
 
 export default function ProfileHeader(props) {
   // let userState = useSelector((state) => state.userReducer);
@@ -43,7 +44,15 @@ export default function ProfileHeader(props) {
           </button>
         </div>
         <div className="right__row2">
-          <div className="row2__status">프로젝트 찾는 중</div>
+          {props.user.status ? (
+            <div className="row2__status">{status[props.user.status]}</div>
+          ) : (
+            <div
+              className="row2__status"
+              style={{ backgroundColor: "#C4C4C4" }}>
+              {status[props.user.status]}
+            </div>
+          )}
           <div className="row2__follower-wrapper">
             <div
               className="row2__follower"
@@ -69,7 +78,7 @@ export default function ProfileHeader(props) {
             ) : null}
           </div>
         </div>
-        <div className="right__introduction">{props.user.introduction}</div>
+        <pre className="right__introduction">{props.user.introduction}</pre>
       </div>
     </div>
   );

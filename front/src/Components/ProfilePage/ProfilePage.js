@@ -12,7 +12,7 @@ export default function ProfilePage() {
   let loginState = useSelector((state) => state.loginReducer);
   const getData = async () => {
     try {
-      const { data: data } = await axios.get("http://localhost:5000/user/me", {
+      const { data } = await axios.get("http://localhost:5000/user/me", {
         headers: {
           Authorization: `Bearer ${ACCESS_TOKEN}`,
         },

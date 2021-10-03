@@ -37,7 +37,7 @@ export default function ProfileEditPage() {
     for (let el of skill) {
       skills.push(parseInt(el.alt));
     }
-    githubSpan === "" ? (githubPost = null) : (githubPost = githubSpan.value);
+    githubSpan === "" ? (githubPost = null) : (githubPost = githubSpan);
 
     axios({
       method: "POST",
@@ -52,11 +52,11 @@ export default function ProfileEditPage() {
         position: document.querySelector(".job__content").value,
         skill: skills,
         status: document.querySelector(".row2__status").value,
-        position: +document.querySelector(".job__content").value,
+        position: parseInt(document.querySelector(".job__content").value),
       },
     })
       .then((res) => {
-        // console.log(res);
+        console.log(res);
         history.push("/profile");
       })
       .catch((e) => console.log(e));

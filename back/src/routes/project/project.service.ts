@@ -1,12 +1,9 @@
+import sequelize from "sequelize";
 import express, { Request, Response } from "express";
 import { Comments } from "../../models/project/comments.model";
 import { Content } from "../../models/project/content.model";
-import { Position } from "../../models/project/position.model";
 import { Project } from "../../models/project/project.model";
-import { Projectposition } from "../../models/project/projectposition.model";
 import { Projectprofile } from "../../models/project/projectprofile.model";
-import { Projecttag } from "../../models/project/projecttag.model";
-import { Tag } from "../../models/project/tag.model";
 import { Profile } from "../../models/user/profile.model";
 import { getIsoString } from "../../module/time";
 
@@ -14,7 +11,7 @@ const app = express();
 app.set("query parser", "extended");
 
 const pagination = async (request: Request, response: Response, state: string) => {
-    const { page, pageSize, tag, order } = request.query;
+    const { page, pageSize, skill, order } = request.query;
     let project;
     let inputOrder: string = "";
 
@@ -35,15 +32,23 @@ const pagination = async (request: Request, response: Response, state: string) =
         const limit = (page !== undefined && pageSize !== undefined) ? Number(pageSize) : undefined;
         const offset = (limit !== undefined) ? (Number(page) - 1) * limit : undefined;
 
-        if (tag === undefined) {
+        if (skill === undefined) {
             if (state === 'all') {
                 project = await Project.findAll({
-                    attributes: ['id', 'title', 'totalMember', 'currentMember', 'state', 'like', 'viewCount', 'commentCount', 'createdAt', 'updatedAt'],
-                    include: {
-                        model: Projecttag,
-                        attributes: ['id'],
-                        include: [{ model: Tag, attributes: ['tagTitle']}]
-                    },
+                    attributes: [
+                        'id',
+                        'title',
+                        'totalMember',
+                        'currentMember',
+                        'state',
+                        'like',
+                        'viewCount',
+                        'commentCount',
+                        'skill',
+                        'position',
+                        'createdAt',
+                        'updatedAt'
+                    ],
                     order: [[inputOrder, 'DESC'], ['createdAt', 'DESC']],
                     offset: offset,
                     limit: limit
@@ -52,12 +57,20 @@ const pagination = async (request: Request, response: Response, state: string) =
                 });
             } else {
                 project = await Project.findAll({
-                    attributes: ['id', 'title', 'totalMember', 'currentMember', 'state', 'like', 'viewCount', 'commentCount', 'createdAt', 'updatedAt'],
-                    include: {
-                        model: Projecttag,
-                        attributes: ['id'],
-                        include: [{ model: Tag, attributes: ['tagTitle']}]
-                    },
+                    attributes: [
+                        'id',
+                        'title',
+                        'totalMember',
+                        'currentMember',
+                        'state',
+                        'like',
+                        'viewCount',
+                        'commentCount',
+                        'skill',
+                        'position',
+                        'createdAt',
+                        'updatedAt'
+                    ],
                     order: [[inputOrder, 'DESC'], ['createdAt', 'DESC']],
                     where: { state: state },
                     offset: offset,
@@ -68,37 +81,47 @@ const pagination = async (request: Request, response: Response, state: string) =
             }
         } else {
             let where;
-            let projectId: number[] = [];
-
-            await Projecttag.findAll({
-                attributes: ['projectId'],
-                include: {
-                    model: Tag,
-                    where: { tagTitle: tag }
-                }
-            }).then(filteredProject => {
-                filteredProject.forEach( async (element) => {
-                    if (element.projectId !== undefined) {
-                        projectId.push(element.projectId);
-                    }
-                })
-            }).catch(err => {
-                response.status(405).json({ errMessage: String(err) });
-            });
 
             if (state === 'all') {
-                where = { id: projectId };
+                where = sequelize.where(
+                    sequelize.fn(
+                        'JSON_SEARCH',
+                        sequelize.col('skill'),
+                        sequelize.literal(JSON.stringify('one')),
+                        sequelize.literal(JSON.stringify(skill))
+                    ),
+                    'is not null = ',
+                    '1'
+                );
             } else {
-                where = { state: state, id: projectId };
+                where = sequelize.and(sequelize.where(sequelize.col('state'), state),
+                    sequelize.where(
+                        sequelize.fn(
+                            'JSON_SEARCH',
+                            sequelize.col('skill'),
+                            sequelize.literal(JSON.stringify('one')),
+                            sequelize.literal(JSON.stringify(skill))
+                        ),
+                        'is not null = ',
+                        '1'
+                    ));
             }
 
             project = await Project.findAll({
-                attributes: ['id', 'title', 'totalMember', 'currentMember', 'state', 'like', 'viewCount', 'commentCount', 'createdAt', 'updatedAt'],
-                include: {
-                    model: Projecttag,
-                    attributes: ['id'],
-                    include: [{ model: Tag, attributes: ['tagTitle'] }]
-                },
+                attributes: [
+                    'id',
+                    'title',
+                    'totalMember',
+                    'currentMember',
+                    'state',
+                    'like',
+                    'viewCount',
+                    'commentCount',
+                    'skill',
+                    'position',
+                    'createdAt',
+                    'updatedAt'
+                ],
                 order: [[inputOrder, 'DESC'], ['createdAt', 'DESC']],
                 where: where,
                 offset: offset,
@@ -131,12 +154,32 @@ export const getList = async (request: Request, response: Response) => {
     response.status(200).json({ project });
 }
 
+const arrayCondition = (array: Number[], max: Number): Number[] => {
+    return array.filter(
+        (item, index) => array.indexOf(item) === index && 0 <= item && item <= max
+    );
+};
+
 export const postList = async (request: Request, response: Response) => {
-    const { title, totalMember, currentMember, state, startDate, endDate, content, tag, position } = request.body;
+    const { title, totalMember, currentMember, state, startDate, endDate, content } = request.body;
+    let { skill, position } = request.body;
     let inputState: string = (totalMember - currentMember > 0) ? 'recruiting' : 'proceeding';
     
     if (state !== undefined)
         inputState = state;
+
+    try {
+        if (skill) skill = arrayCondition(skill, Number(process.env.SKILL));
+    } catch (e) {
+        response.status(400).json({ errMessage: 'invalid skill query' });
+        return;
+    }
+    try {
+        if (position) position = arrayCondition(position, Number(process.env.POSITION));
+    } catch (e) {
+        response.status(400).json({ errMessage: 'invalid position query' });
+        return;
+    }
 
     await Project.create({
     	title: title,
@@ -150,6 +193,8 @@ export const postList = async (request: Request, response: Response) => {
         like: 0,
         viewCount: 0,
         commentCount: 0,
+        skill: skill,
+        position: position,
         createdAt: getIsoString(),
         updatedAt: getIsoString()
     })
@@ -169,40 +214,6 @@ export const postList = async (request: Request, response: Response) => {
             response.status(405).json({ errMessage: String(err) });
         });
 
-        if (tag !== undefined) {
-            await Tag.findAll({ attributes: ['id'], where: { tagTitle: tag } })
-            .then(tagTable => {
-                tagTable.forEach( async (element) => {
-                    await Projecttag.create({
-                        projectId: project.id,
-                        tagId: element.id
-                    }).catch(err => {
-                        response.status(405).json({ errMessage: String(err) });
-                    })
-                })
-            })
-            .catch(err => {
-                response.status(405).json({ errMessage: String(err) });
-            });
-        }
-
-        if (position !== undefined) {
-            await Position.findAll({ attributes: ['id'], where: { positionName: position } })
-            .then(positionTable => {
-                positionTable.forEach( async (element) => {
-                    await Projectposition.create({
-                        projectId: project.id,
-                        positionId: element.id
-                    }).catch(err => {
-                        response.status(405).json({ errMessage: String(err) });
-                    })
-                })
-            })
-            .catch(err => {
-                response.status(405).json({ errMessage: String(err) });
-            });
-        }
-
         response.status(200).json({ message: 'added successfully.' });
     })
     .catch(err => {
@@ -213,6 +224,7 @@ export const postList = async (request: Request, response: Response) => {
 export const updateList = async (request: Request, response: Response) => {
     const { projectId } = request.query;
     const { title, totalMember, currentMember, state, startDate, endDate, content } = request.body;
+    let { skill, position } = request.body;
     let inputState: string = (totalMember - currentMember > 0) ? 'recruiting' : 'proceeding';
 
     if (projectId === undefined) {
@@ -221,6 +233,19 @@ export const updateList = async (request: Request, response: Response) => {
     if (state !== undefined)
         inputState = state;
 
+    try {
+        if (skill) skill = arrayCondition(skill, Number(process.env.SKILL));
+    } catch (e) {
+        response.status(400).json({ errMessage: 'invalid skill query' });
+        return;
+    }
+    try {
+        if (position) position = arrayCondition(position, Number(process.env.POSITION));
+    } catch (e) {
+        response.status(400).json({ errMessage: 'invalid position query' });
+        return;
+    }
+
     await Project.update({
         title: title,
         totalMember: totalMember,
@@ -228,6 +253,8 @@ export const updateList = async (request: Request, response: Response) => {
         state: inputState,
         startDate: startDate,
         endDate: endDate,
+        skill: skill,
+        position: position,
         updatedAt: getIsoString(),
     }, { where: { id: projectId } })
     .then(async () => {
@@ -246,140 +273,6 @@ export const updateList = async (request: Request, response: Response) => {
     })
 }
 
-export const updateTag = async (request: Request, response: Response) => {
-    const { projectId } = request.query;
-    const { tag } = request.body;
-
-    if (projectId === undefined) {
-        response.status(400).json({ errMessage: 'please input projectId query' });
-    }
-
-    await Project.findOne({
-        include: {
-            model: Projecttag,
-            attributes: ['tagId']
-        },
-        where: { id: projectId }
-    })
-    .then(async project => {
-        const projectTag = project?.projecttag;
-        const reqTag = await Tag.findAll({ attributes: ['id'], where: { tagTitle: tag } })
-
-        if (projectTag !== undefined && projectTag?.length > reqTag.length) {
-            let flag: number;
-    
-            projectTag.forEach( async (element1) => {
-                flag = 0;
-                reqTag.forEach( async (element2) => {
-                    if (element1.tagId === element2.id) {
-                        flag = 1;
-                    }
-                })
-                if (flag === 0) {
-                    await Projecttag.destroy({
-                        where: { tagId: element1.tagId }
-                    })
-                    .catch(err => {
-                        response.status(405).json({ errMessage: String(err) });
-                    });
-                }
-            })
-        } else if (projectTag !== undefined && projectTag?.length < reqTag.length) {
-            let flag: number;
-    
-            reqTag.forEach( async (element1) => {
-                flag = 0;
-                projectTag.forEach( async (element2) => {
-                    if (element1.id === element2.tagId) {
-                        flag = 1;
-                    }
-                })
-                if (flag === 0) {
-                    await Projecttag.create({
-                        projectId: projectId,
-                        tagId: element1.id
-                    })
-                    .catch(err => {
-                        response.status(405).json({ errMessage: String(err) });
-                    });
-                }
-            })
-        }
-    })
-    .catch(err => {
-    	response.status(405).json({ errMessage: String(err) });
-    });
-
-    response.status(200).json({ message: 'updated successfully.' });
-}
-
-export const updatePosition = async (request: Request, response: Response) => {
-    const { projectId } = request.query;
-    const { position } = request.body;
-
-    if (projectId === undefined) {
-        response.status(400).json({ errMessage: 'please input projectId query' });
-    }
-
-    await Project.findOne({
-        include: {
-            model: Projectposition,
-            attributes: ['positionId']
-        },
-        where: { id: projectId }
-    })
-    .then(async project => {
-        const projectPosition = project?.projectposition;
-        const reqPosition = await Position.findAll({ attributes: ['id'], where: { positionName: position } });
-
-        if (projectPosition !== undefined && projectPosition?.length > reqPosition.length) {
-            let flag: number;
-    
-            projectPosition.forEach( async (element1) => {
-                flag = 0;
-                reqPosition.forEach( async (element2) => {
-                    if (element1.positionId === element2.id) {
-                        flag = 1;
-                    }
-                })
-                if (flag === 0) {
-                    await Projectposition.destroy({
-                        where: { positionId: element1.positionId }
-                    })
-                    .catch(err => {
-                        response.status(405).json({ errMessage: String(err) });
-                    });
-                }
-            })
-        } else if (projectPosition !== undefined && projectPosition?.length < reqPosition.length) {
-            let flag: number;
-    
-            reqPosition.forEach( async (element1) => {
-                flag = 0;
-                projectPosition.forEach( async (element2) => {
-                    if (element1.id === element2.positionId) {
-                        flag = 1;
-                    }
-                })
-                if (flag === 0) {
-                    await Projectposition.create({
-                        projectId: projectId,
-                        positionId: element1.id
-                    })
-                    .catch(err => {
-                        response.status(405).json({ errMessage: String(err) });
-                    });
-                }
-            })
-        }
-    })
-    .catch(err => {
-    	response.status(405).json({ errMessage: String(err) });
-    });
-
-    response.status(200).json({ message: 'updated successfully.' });
-}
-
 export const deleteList = async (request: Request, response: Response) => {
     const { projectId } = request.query;
 
@@ -387,18 +280,6 @@ export const deleteList = async (request: Request, response: Response) => {
         response.status(400).json({ errMessage: 'please input projectId query' });
     }
 
-    await Projectposition.destroy({
-        where: { projectId: projectId }
-    })
-    .catch(err => {
-        response.status(405).json({ errMessage: String(err) });
-    });
-    await Projecttag.destroy({
-        where: { projectId: projectId }
-    })
-    .catch(err => {
-        response.status(405).json({ errMessage: String(err) });
-    });
     await Content.destroy({
         where: { projectId: projectId }
     })
@@ -436,7 +317,20 @@ export const getContent = async (request: Request, response: Response) => {
     });
 
     await Project.findOne({
-        attributes: ['id', 'title', 'totalMember', 'currentMember', 'state', 'startDate', 'endDate', 'like', 'viewCount', 'commentCount'],
+        attributes: [
+            'id',
+            'title',
+            'totalMember',
+            'currentMember',
+            'state',
+            'startDate',
+            'endDate',
+            'like',
+            'viewCount',
+            'commentCount',
+            'skill',
+            'position'
+        ],
         include: [{
             model: Content,
             attributes: ['id', 'content', 'createdAt', 'updatedAt']
@@ -445,14 +339,6 @@ export const getContent = async (request: Request, response: Response) => {
             attributes: ['id'],
             include: [{
                 model: Profile
-            }],
-            separate: true
-        }, {
-            model: Projectposition,
-            attributes: ['id'],
-            include: [{
-                model: Position,
-                attributes: ['positionName']
             }],
             separate: true
         }],

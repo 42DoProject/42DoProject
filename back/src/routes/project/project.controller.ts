@@ -32,14 +32,6 @@ router.put("/", (request: Request, response: Response) => {
   projectService.updateList(request, response);
 });
 
-router.put("/tag", (request: Request, response: Response) => {
-  projectService.updateTag(request, response);
-});
-
-router.put("/position", (request: Request, response: Response) => {
-  projectService.updatePosition(request, response);
-});
-
 router.delete("/", (request: Request, response: Response) => {
   projectService.deleteList(request, response);
 });

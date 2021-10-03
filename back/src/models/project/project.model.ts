@@ -1,6 +1,4 @@
 import { Table, Column, Model, DataType, HasOne, HasMany, ForeignKey } from "sequelize-typescript";
-import { Projecttag } from "./projecttag.model";
-import { Projectposition } from "./projectposition.model";
 import { Projectprofile } from "./projectprofile.model";
 import { Content } from "./content.model";
 
@@ -39,18 +37,18 @@ export class Project extends Model {
   @Column(DataType.INTEGER)
   commentCount!: number;
 
+  @Column(DataType.JSON)
+  skill!: Number[];
+
+  @Column(DataType.JSON)
+  position!: Number[];
+
   @ForeignKey(() => Content)
   @Column
   contentId!: number
 
   @HasOne(() => Content)
   content!: Content;
-
-  @HasMany(() => Projecttag)
-  projecttag!: Projecttag[];
-
-  @HasMany(() => Projectposition)
-  projectposition!: Projectposition[];
 
   @HasMany(() => Projectprofile)
   projectprofile!: Projectprofile[];

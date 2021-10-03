@@ -27,7 +27,7 @@ export class User extends Model {
   @Column(DataType.STRING(80))
   location!: string;
 
-  @Column(DataType.STRING(80))
+  @Column(DataType.TEXT)
   profileImage!: string;
 
   @HasOne(() => OToken)

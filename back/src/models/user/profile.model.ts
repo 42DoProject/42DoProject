@@ -23,7 +23,7 @@ export class Profile extends Model {
   @Column(DataType.INTEGER)
   status!: Number;
 
-  @Column(DataType.JSON)
+  @Column(DataType.INTEGER)
   position!: Number;
 
   @Column(DataType.JSON)
@@ -35,7 +35,7 @@ export class Profile extends Model {
   @Column(DataType.TEXT)
   introduction!: string;
 
-  @Column(DataType.STRING(50))
+  @Column(DataType.STRING(80))
   github!: string;
 
   @Column(DataType.JSON)

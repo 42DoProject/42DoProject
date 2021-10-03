@@ -47,7 +47,6 @@ export const modifyMe = async (request: Request, response: Response) => {
     email,
     status,
     position,
-    level,
     skill,
     statusMessage,
     introduction,
@@ -60,9 +59,6 @@ export const modifyMe = async (request: Request, response: Response) => {
     return;
   }
   if (
-    (level &&
-      (!(0 <= Number(level) && Number(level) <= Number(100)) ||
-        isNaN(Number(level)))) ||
     (status &&
       (!(0 <= Number(status) && Number(status) <= Number(process.env.STATUS)) ||
         isNaN(Number(status)))) ||
@@ -72,9 +68,11 @@ export const modifyMe = async (request: Request, response: Response) => {
         Number(position) <= Number(process.env.POSITION)
       ) ||
         isNaN(Number(position)))) ||
-    (introduction &&
-      typeof introduction === "string" &&
-      introduction.length > 50)
+    (email && typeof email === "string" && email.length > 80) ||
+    (statusMessage &&
+      typeof statusMessage === "string" &&
+      statusMessage.length > 50) ||
+    (github && typeof github === "string" && github.length > 80)
   ) {
     response.status(400).json({ error: "bad request" });
     return;
@@ -93,7 +91,6 @@ export const modifyMe = async (request: Request, response: Response) => {
     {
       status: status ? status : profile!.status,
       position: position ? position : profile!.position,
-      level: level ? level : profile!.level,
       skill: skill ? skill : profile!.skill,
       statusMessage: statusMessage ? statusMessage : profile!.statusMessage,
       introduction: introduction ? introduction : profile!.introduction,
@@ -101,7 +98,7 @@ export const modifyMe = async (request: Request, response: Response) => {
     },
     { where: { userId: request.user!.id } }
   );
-  response.status(200).json({ error: "successfully updated" });
+  response.status(200).json({ message: "successfully updated" });
 };
 
 export const profileMain = async (request: Request, response: Response) => {

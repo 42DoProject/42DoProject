@@ -60,13 +60,10 @@ export const modifyMe = async (request: Request, response: Response) => {
   }
   if (
     (status &&
-      (!(0 <= Number(status) && Number(status) <= Number(process.env.STATUS)) ||
+      (!(0 <= Number(status) && status <= Number(process.env.STATUS)) ||
         isNaN(Number(status)))) ||
     (position &&
-      (!(
-        0 <= Number(position) &&
-        Number(position) <= Number(process.env.POSITION)
-      ) ||
+      (!(0 <= Number(position) && position <= Number(process.env.POSITION)) ||
         isNaN(Number(position)))) ||
     (email && typeof email === "string" && email.length > 80) ||
     (statusMessage &&

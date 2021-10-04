@@ -13,6 +13,9 @@ export class Project extends Model {
   @Column(DataType.STRING(200))
   filePath!: string;
 
+  @Column(DataType.STRING(200))
+  unplashLink!: string;
+
   @Column(DataType.INTEGER)
   totalMember!: number;
 

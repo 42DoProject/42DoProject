@@ -11,7 +11,7 @@ const app = express();
 app.set("query parser", "extended");
 
 const pagination = async (request: Request, response: Response, state: string) => {
-    const { page, pageSize, skill, order } = request.query;
+    const { page, pageSize, skill, position, order } = request.query;
     let project;
     let inputOrder: string = "";
 
@@ -32,54 +32,131 @@ const pagination = async (request: Request, response: Response, state: string) =
         const limit = (page !== undefined && pageSize !== undefined) ? Number(pageSize) : undefined;
         const offset = (limit !== undefined) ? (Number(page) - 1) * limit : undefined;
 
-        if (skill === undefined) {
+        if (skill !== undefined && position !== undefined) {
+            let where;
+
             if (state === 'all') {
-                project = await Project.findAll({
-                    attributes: [
-                        'id',
-                        'title',
-                        'totalMember',
-                        'currentMember',
-                        'state',
-                        'like',
-                        'viewCount',
-                        'commentCount',
-                        'skill',
-                        'position',
-                        'createdAt',
-                        'updatedAt'
-                    ],
-                    order: [[inputOrder, 'DESC'], ['createdAt', 'DESC']],
-                    offset: offset,
-                    limit: limit
-                }).catch(err => {
-                    response.status(405).json({ errMessage: String(err) });
-                });
+                where = sequelize.and(
+                    sequelize.where(
+                        sequelize.fn(
+                            'JSON_SEARCH',
+                            sequelize.col('skill'),
+                            sequelize.literal(JSON.stringify('one')),
+                            sequelize.literal(JSON.stringify(skill))
+                        ),
+                        'is not null = ',
+                        '1'
+                    ),
+                    sequelize.where(
+                        sequelize.fn(
+                            'JSON_SEARCH',
+                            sequelize.col('position'),
+                            sequelize.literal(JSON.stringify('one')),
+                            sequelize.literal(JSON.stringify(position))
+                        ),
+                        'is not null = ',
+                        '1'
+                    )
+                );
             } else {
-                project = await Project.findAll({
-                    attributes: [
-                        'id',
-                        'title',
-                        'totalMember',
-                        'currentMember',
-                        'state',
-                        'like',
-                        'viewCount',
-                        'commentCount',
-                        'skill',
-                        'position',
-                        'createdAt',
-                        'updatedAt'
-                    ],
-                    order: [[inputOrder, 'DESC'], ['createdAt', 'DESC']],
-                    where: { state: state },
-                    offset: offset,
-                    limit: limit
-                }).catch(err => {
-                    response.status(405).json({ errMessage: String(err) });
-                });
+                where = sequelize.and(
+                    sequelize.where(sequelize.col('state'), state),
+                    sequelize.where(
+                        sequelize.fn(
+                            'JSON_SEARCH',
+                            sequelize.col('skill'),
+                            sequelize.literal(JSON.stringify('one')),
+                            sequelize.literal(JSON.stringify(skill))
+                        ),
+                        'is not null = ',
+                        '1'
+                    ),
+                    sequelize.where(
+                        sequelize.fn(
+                            'JSON_SEARCH',
+                            sequelize.col('position'),
+                            sequelize.literal(JSON.stringify('one')),
+                            sequelize.literal(JSON.stringify(position))
+                        ),
+                        'is not null = ',
+                        '1'
+                    )
+                );
             }
-        } else {
+
+            project = await Project.findAndCountAll({
+                attributes: [
+                    'id',
+                    'title',
+                    'totalMember',
+                    'currentMember',
+                    'state',
+                    'like',
+                    'viewCount',
+                    'commentCount',
+                    'skill',
+                    'position',
+                    'createdAt',
+                    'updatedAt'
+                ],
+                order: [[inputOrder, 'DESC'], ['createdAt', 'DESC']],
+                where: where,
+                offset: offset,
+                limit: limit
+            }).catch(err => {
+                response.status(405).json({ errMessage: String(err) });
+            });
+        } else if (skill === undefined && position !== undefined) {
+            let where;
+
+            if (state === 'all') {
+                where = sequelize.where(
+                    sequelize.fn(
+                        'JSON_SEARCH',
+                        sequelize.col('position'),
+                        sequelize.literal(JSON.stringify('one')),
+                        sequelize.literal(JSON.stringify(position))
+                    ),
+                    'is not null = ',
+                    '1'
+                );
+            } else {
+                where = sequelize.and(sequelize.where(sequelize.col('state'), state),
+                    sequelize.where(
+                        sequelize.fn(
+                            'JSON_SEARCH',
+                            sequelize.col('position'),
+                            sequelize.literal(JSON.stringify('one')),
+                            sequelize.literal(JSON.stringify(position))
+                        ),
+                        'is not null = ',
+                        '1'
+                    ));
+            }
+
+            project = await Project.findAndCountAll({
+                attributes: [
+                    'id',
+                    'title',
+                    'totalMember',
+                    'currentMember',
+                    'state',
+                    'like',
+                    'viewCount',
+                    'commentCount',
+                    'skill',
+                    'position',
+                    'createdAt',
+                    'updatedAt'
+                ],
+                order: [[inputOrder, 'DESC'], ['createdAt', 'DESC']],
+                where: where,
+                offset: offset,
+                limit: limit
+            }).catch(err => {
+                response.status(405).json({ errMessage: String(err) });
+            });
+        } else if (skill !== undefined && position === undefined) {
             let where;
 
             if (state === 'all') {
@@ -107,7 +184,38 @@ const pagination = async (request: Request, response: Response, state: string) =
                     ));
             }
 
-            project = await Project.findAll({
+            project = await Project.findAndCountAll({
+                attributes: [
+                    'id',
+                    'title',
+                    'totalMember',
+                    'currentMember',
+                    'state',
+                    'like',
+                    'viewCount',
+                    'commentCount',
+                    'skill',
+                    'position',
+                    'createdAt',
+                    'updatedAt'
+                ],
+                order: [[inputOrder, 'DESC'], ['createdAt', 'DESC']],
+                where: where,
+                offset: offset,
+                limit: limit
+            }).catch(err => {
+                response.status(405).json({ errMessage: String(err) });
+            });
+        } else {
+            let where;
+
+            if (state == 'all') {
+                where = {};
+            } else {
+                where = { state: state };
+            }
+
+            project = await Project.findAndCountAll({
                 attributes: [
                     'id',
                     'title',
@@ -146,10 +254,6 @@ export const getList = async (request: Request, response: Response) => {
     } else {
         response.status(400).json({ errMessage: 'invalid state query' });
     }
-    // if (!project) {
-    //     response.status(404).json({ errMessage: "empty response" });
-    //     return;
-    // }
 
     response.status(200).json({ project });
 }
@@ -365,7 +469,7 @@ export const getComments = async (request: Request, response: Response) => {
         response.status(400).json({ errMessage: "missing page or pageSize query" });
     }
 
-    await Comments.findAll({
+    await Comments.findAndCountAll({
         attributes: ['id', 'comment', 'createdAt', 'updatedAt'],
         include: [{
             model: Content,

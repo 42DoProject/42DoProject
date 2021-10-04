@@ -3,6 +3,30 @@ import { IFollowUser } from "../../interface/user.interface";
 import { Feed } from "../../models/user/feed.mongo";
 import { Profile } from "../../models/user/profile.model";
 import { User } from "../../models/user/user.model";
+import { io } from "../../socket/bridge";
+
+export const getConcurrentUsers = async (
+  request: Request,
+  response: Response
+) => {
+  const iterator = io.sockets.sockets.values();
+  const users = [];
+  for (var s of iterator) {
+    if (s.data.user != null) {
+      const u = await User.findOne({
+        where: { id: s.data.user },
+        include: [Profile],
+      });
+      users.push({
+        userId: u!.id,
+        username: u!.username,
+        profileImage: u!.profileImage,
+        statusMessage: u!.profile!.statusMessage,
+      });
+    }
+  }
+  response.status(200).send(users);
+};
 
 export const getFeed = async (request: Request, response: Response) => {
   const feed = await Feed.find({

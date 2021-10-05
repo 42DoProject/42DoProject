@@ -4,6 +4,10 @@ import * as userService from "./user.service";
 
 const router: express.Router = express.Router();
 
+router.get("/concurrent", (request: Request, response: Response) => {
+  userService.getConcurrentUsers(request, response);
+});
+
 router.get("/feed", jwtGuards, (request: Request, response: Response) => {
   userService.getFeed(request, response);
 });

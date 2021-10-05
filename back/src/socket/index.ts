@@ -7,6 +7,7 @@ import { getUserSocket } from "./bridge";
 import { Chat } from "../models/chat/chat.model";
 import { ProfileChat } from "../models/chat/profilechat.model";
 import { Profile } from "../models/user/profile.model";
+import { User } from "../models/user/user.model";
 
 const jwtAuth = async (token: string): Promise<number> => {
   var payload: string | boolean | JwtPayload;
@@ -30,6 +31,27 @@ const roomManage = async (socket: Socket): Promise<void> => {
   for (var chat of chats) socket.join(chat.id);
 };
 
+/*
+ * @param
+ *   type: 0->connect, 1->disconnect
+ */
+const inConcurrent = async (io: Server, userId: Number, type: Number) => {
+  if (type === 0) {
+    const u = await User.findOne({
+      where: { id: userId.toString() },
+      include: [Profile],
+    });
+    io.emit("concurrent:connect", {
+      userId: u!.id,
+      username: u!.username,
+      profileImage: u!.profileImage,
+      statusMessage: u!.profile!.statusMessage,
+    });
+  } else if (type === 1) {
+    io.emit("concurrent:disconnect", { userId: userId });
+  }
+};
+
 export const handlersFactory = (io: Server) => {
   return (socket: Socket) => {
     socket.data.user = null;
@@ -49,6 +71,7 @@ export const handlersFactory = (io: Server) => {
           if (user !== -1) {
             const old = getUserSocket(user);
             if (old?.id !== socket.id) old?.disconnect();
+            if (socket.data.user === null) await inConcurrent(io, user, 0);
             socket.data.user = user;
             await roomManage(socket);
           }
@@ -74,6 +97,7 @@ const connect = (io: Server, socket: Socket): void => {
   console.log(`connect: ${socket.id}`);
 };
 
-const disconnect = (io: Server, socket: Socket): void => {
+const disconnect = async (io: Server, socket: Socket) => {
   console.log(`disconnect: ${socket.id}`);
+  if (socket.data.user != null) await inConcurrent(io, socket.data.user, 1);
 };

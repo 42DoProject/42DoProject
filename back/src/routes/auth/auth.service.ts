@@ -43,7 +43,7 @@ const userModelCheck = async (user: any): Promise<number> => {
     level: user.cursus_users[1].level,
     lastAccess: getIsoString(),
     status: 0,
-    position: [],
+    position: 0,
     skill: [],
     statusMessage: "",
     introduction: "",

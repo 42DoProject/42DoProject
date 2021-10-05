@@ -8,7 +8,7 @@ import FavoriteSlide from "./FavoriteSlide";
 import axios from "axios";
 import { positions } from "../../userData";
 import { skills } from "../../skills.json";
-export default function Dashboard() {
+export default function Dashboard(props) {
   let userState = useSelector((store) => store.userReducer);
   let loginState = useSelector((state) => state.loginReducer);
   let [userData, setUserData] = useState(null);
@@ -98,7 +98,7 @@ export default function Dashboard() {
                   className="dashboard__project__link1"
                   to="/project/proceed"
                 >
-                  42
+                  {props.progressPr}
                 </Link>
                 개의 프로젝트가{" "}
                 <Link
@@ -112,7 +112,7 @@ export default function Dashboard() {
                   className="dashboard__project__link3"
                   to="/project/complete"
                 >
-                  142
+                  {props.finishPr}
                 </Link>
                 개의 프로젝트가{" "}
                 <Link

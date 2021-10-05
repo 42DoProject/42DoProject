@@ -5,16 +5,19 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import ReactLoading from "./MainLoading";
 
-export default function Cardlist() {
+export default function RecruitList(props) {
   let [slideFlag, setSlideFlag] = useState(0);
   const [recruitingProject, setRecruitingProject] = useState([]);
   const getData = async () => {
     try {
       const {
-        data: { project: recruitingData },
+        data: {
+          project: { count, rows: recruitingData },
+        },
       } = await axios.get(
         `http://localhost:5000/project?state=recruiting&pageSize=20&page=1`
       );
+      props.setProgressPr(count);
       setRecruitingProject(recruitingData);
     } catch (err) {
       console.log(err);

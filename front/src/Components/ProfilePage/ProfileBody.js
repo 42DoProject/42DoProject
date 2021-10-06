@@ -4,8 +4,8 @@ import "../../SCSS/ProfilePage/ProfileBody.scss";
 import { useSelector } from "react-redux";
 import skills from "../../skills.json";
 import { positions } from "../../userData";
+import ProgressSlide from "../MainPage/ProgressSlide";
 
-// import Cards from "../MainPage/Cards";
 export default function ProfileBody(props) {
   // let userState = useSelector((state) => state.userReducer);
   let loginState = useSelector((state) => state.loginReducer);
@@ -74,11 +74,19 @@ export default function ProfileBody(props) {
         <div className="col2__ongoing-projects">
           <span className="col2__subject-span">진행중인 프로젝트</span>
           <span>없음</span>
+          <div className="projects__list">
+            <ProgressSlide />
+            <ProgressSlide />
+          </div>
         </div>
         <hr className="hr__line" />
         <div className="col2__done-projects">
           <span className="col2__subject-span">완료한 프로젝트</span>
           <span>없음</span>
+          <div className="projects__list">
+            <ProgressSlide />
+            <ProgressSlide />
+          </div>
         </div>
         <hr className="hr__line" />
         <div className="col2__registered-projects">
@@ -89,10 +97,10 @@ export default function ProfileBody(props) {
         <div className="col2__interested-projects">
           <span className="col2__subject-span">관심있는 프로젝트</span>
           <span>없음</span>
-          <div className="interested__cards">
-            {/* <Cards />
-            <Cards />
-            <Cards /> */}
+          <div className="projects__list">
+            <ProgressSlide />
+            <ProgressSlide />
+            <ProgressSlide />
           </div>
         </div>
       </div>

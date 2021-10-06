@@ -145,10 +145,18 @@
 }
 
 .right__introduction {
-  width: 90%;
+  // width: 90%;
+  max-width: 35rem;
+  word-wrap: break-word;
+  white-space: pre-wrap; /* CSS3*/
+  white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+  white-space: -pre-wrap; /* Opera 4-6 */
+  white-space: -o-pre-wrap; /* Opera 7 */
+  word-wrap: break-all; /* Internet Explorer 5.5+ */
   min-height: 10rem;
   max-height: 30rem;
   position: relative;
+  padding: 0.2rem 0;
   .introduction__letters-count {
     position: absolute;
     right: 0.5rem;

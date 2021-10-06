@@ -118,7 +118,7 @@ export default function ProfileEditBody(props) {
               type="text"
               className="github-span"
               maxLength="15"
-              placeholder="깃허브 user name"
+              placeholder="GitHub user name"
               defaultValue={props.user.github}
             />
           </div>

@@ -47,3 +47,53 @@
   margin-left: -10px;
   margin-top: -10px;
 }
+
+.follow__list {
+  padding: 0.5rem;
+}
+.follow__follower {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  .follow__button {
+    background-color: $mainColor;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.3rem 0.6rem;
+    font-size: $fontSs;
+    font-weight: $normal;
+  }
+}
+
+.follow__profile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.follow__img {
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  object-fit: cover;
+  margin-right: 1rem;
+}
+
+.follow__info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  .follow__name {
+    font-size: $fontSm;
+    color: $black;
+    font-weight: $normal;
+    margin-bottom: 0.2rem;
+  }
+  .follow__position {
+    font-size: $fontSs;
+    color: $grey;
+  }
+}

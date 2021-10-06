@@ -103,16 +103,16 @@ export const modifyMe = async (request: Request, response: Response) => {
   });
   await User.update(
     {
-      email: email ? email : profile!.user.email,
+      email: email !== undefined ? email : profile!.user.email,
       profileImage: profileImage ? profileImage : profile!.user.profileImage,
     },
     { where: { id: request.user!.id } }
   );
   await Profile.update(
     {
-      status: status ? status : profile!.status,
-      position: position ? position : profile!.position,
-      skill: skill ? skill : profile!.skill,
+      status: status !== undefined ? status : profile!.status,
+      position: position !== undefined ? position : profile!.position,
+      skill: skill !== undefined ? skill : profile!.skill,
       statusMessage: statusMessage !== undefined ? statusMessage : profile!.statusMessage,
       introduction: introduction !== undefined ? introduction : profile!.introduction,
       github: github !== undefined ? github : profile!.github,

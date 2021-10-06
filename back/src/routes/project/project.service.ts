@@ -329,6 +329,12 @@ export const deleteList = async (request: Request, response: Response) => {
     .catch(err => {
         response.status(405).json({ errMessage: String(err) });
     });
+    await Projectprofile.destroy({
+        where: { projectId: projectId }
+    })
+    .catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+    });
     await Project.destroy({
         where: { id: projectId }
     })

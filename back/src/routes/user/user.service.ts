@@ -113,8 +113,8 @@ export const modifyMe = async (request: Request, response: Response) => {
       status: status ? status : profile!.status,
       position: position ? position : profile!.position,
       skill: skill ? skill : profile!.skill,
-      statusMessage: statusMessage ? statusMessage : profile!.statusMessage,
-      introduction: introduction ? introduction : profile!.introduction,
+      statusMessage: statusMessage !== undefined ? statusMessage : profile!.statusMessage,
+      introduction: introduction !== undefined ? introduction : profile!.introduction,
       github: github !== undefined ? github : profile!.github,
     },
     { where: { userId: request.user!.id } }

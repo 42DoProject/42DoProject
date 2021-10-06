@@ -56,4 +56,24 @@ router.delete("/comments", (request: Request, response: Response) => {
   projectService.deleteComments(request, response);
 });
 
+router.get("/apply/:projectId", (request: Request, response: Response) => {
+  projectService.getApplyerList(request, response);
+});
+
+router.post("/apply/:projectId/:profileId", (request: Request, response: Response) => {
+  projectService.applyTeam(request, response);
+});
+
+router.delete("/apply/:projectId/:profileId", (request: Request, response: Response) => {
+  projectService.cancelApply(request, response);
+});
+
+router.post("/accept/:projectId/:profileId", (request: Request, response: Response) => {
+  // projectService.addMember(request, response);
+});
+
+router.delete("/accept/:projectId/:profileId", (request: Request, response: Response) => {
+  // projectService.deleteMember(request, response);
+});
+
 export default router;

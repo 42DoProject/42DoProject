@@ -9,8 +9,10 @@ import {
 } from "sequelize-typescript";
 import { ProfileChat } from "../chat/profilechat.model";
 import { User } from "./user.model";
-import { Projectprofile } from "../project/projectprofile.model";
 import { Comments } from "../project/comments.model";
+import { Applyprojectprofile } from "../project/applyprojectprofile.model";
+import { Likeprojectprofile } from "../project/likeprojectprofile.model";
+import { Projectprofile } from "../project/projectprofile.model";
 
 @Table({ timestamps: false })
 export class Profile extends Model {
@@ -62,4 +64,10 @@ export class Profile extends Model {
 
   @HasMany(() => Comments)
   commentsprofile!: Comments[];
+
+  @HasMany(() => Applyprojectprofile)
+  applyprojectprofile!: Applyprojectprofile[];
+
+  @HasMany(() => Likeprojectprofile)
+  likeprojectprofile!: Likeprojectprofile[];
 }

@@ -1,4 +1,6 @@
 import { Table, Column, Model, DataType, HasOne, HasMany, ForeignKey } from "sequelize-typescript";
+import { Applyprojectprofile } from "./applyprojectprofile.model";
+import { Likeprojectprofile } from "./likeprojectprofile.model";
 import { Projectprofile } from "./projectprofile.model";
 import { Content } from "./content.model";
 
@@ -55,4 +57,10 @@ export class Project extends Model {
 
   @HasMany(() => Projectprofile)
   projectprofile!: Projectprofile[];
+
+  @HasMany(() => Applyprojectprofile)
+  applyprojectprofile!: Applyprojectprofile[];
+
+  @HasMany(() => Likeprojectprofile)
+  likeprojectprofile!: Likeprojectprofile[];
 }

@@ -1,10 +1,10 @@
 import React from "react";
 import "../../SCSS/MainPage/MainBody.scss";
 import RecruitList from "./RecruitList";
-import PubilcList from "./PubilcList";
+import PublicList from "./PublicList";
 import { Link } from "react-router-dom";
 
-export default function MainBody() {
+export default function MainBody(props) {
   return (
     <div className="recruit__wrap">
       <div className="recruit">
@@ -13,7 +13,7 @@ export default function MainBody() {
             모집중인 프로젝트
           </Link>
         </div>
-        <RecruitList />
+        <RecruitList setProgressPr={props.setProgressPr} />
       </div>
       <div className="public">
         <div className="public__title">
@@ -21,7 +21,7 @@ export default function MainBody() {
             완료된 프로젝트
           </Link>
         </div>
-        <PubilcList />
+        <PublicList setFinishPr={props.setFinishPr} />
       </div>
     </div>
   );

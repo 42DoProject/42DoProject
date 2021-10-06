@@ -5,16 +5,19 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import ReactLoading from "./MainLoading";
 
-export default function Cardlist() {
+export default function PublicList(props) {
   let [slideFlag, setSlideFlag] = useState(0);
   const [completedProject, setCompletedProject] = useState([]);
   const getData = async () => {
     try {
       const {
-        data: { project: completedData },
+        data: {
+          project: { count, rows: completedData },
+        },
       } = await axios.get(
         `http://localhost:5000/project?state=completed&pageSize=20&page=1`
       );
+      props.setFinishPr(count);
       setCompletedProject(completedData);
     } catch (err) {
       console.log(err);

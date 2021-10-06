@@ -12,9 +12,6 @@ $> ./docker-compose-down.sh
 ```
 위 명령어로 컨테이너를 종료합니다.
 
-- back 서버가 실행될 때, tag table에 초기값을 넣는 기능을 추가하였습니다.
-: tag에 넣고자 하는 값들을 `/back/.env` 파일에 환경변수로 선언해주시면 됩니다. (Ex. `TAG_LIST=react;express;typescript;mysql`)
-
 ## MySQL DB 접근 방법
 
 1. 모든 컨테이너를 올립니다.

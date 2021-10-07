@@ -9,6 +9,7 @@ import LoungePage from "./Components/LoungePage/LoungePage";
 import AuthMain from "./Components/AuthMain/AuthMain";
 import ProfileEditPage from "./Components/ProfileEditPage/ProfileEditPage";
 import Layout from "./Components/CommonComponent/Layout";
+import ProjectEditPage from "./Components/ProjectEditPage/ProjectEditPage";
 import "./SCSS/init.scss";
 import AllCadet from "./Components/CadetPage/AllCadet";
 import axios from "axios";
@@ -40,7 +41,7 @@ function App(props) {
   };
   // 29분마다 요청
   useEffect(() => {
-    const timerId = setInterval(getToken, 1000 * 60 * 29);
+    const timerId = setInterval(getToken, 1000 * 6 * 29);
     localStorage.setItem("timerId", timerId);
   }, []);
   return (
@@ -56,6 +57,7 @@ function App(props) {
         <Route path="/cadet/recruit" component={RecruitCadet} />
         <Route path="/cadet/all" component={AllCadet} />
         <Route path="/lounge" component={LoungePage} />
+        <Route path="/project/edit" component={ProjectEditPage} />
       </Switch>
     </Layout>
   );

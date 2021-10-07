@@ -1,0 +1,69 @@
+@import "../Base.scss";
+
+.project-edit__wrapper {
+  width: 90%;
+  max-width: 1000px;
+  background-color: white;
+  border-radius: $round;
+  box-shadow: $shadow;
+  margin: 1rem auto;
+  input,
+  textarea {
+    max-width: 80%;
+  }
+  button {
+    padding: 0.5rem 1rem;
+    border-radius: $round;
+    border: 2px solid $lightGrey;
+    background-color: white;
+    color: $grey;
+  }
+  .project-edit__thumbnail {
+    border-radius: $round;
+    display: flex;
+    align-items: flex-end;
+    img {
+      border-radius: $round;
+      object-fit: cover;
+      margin-right: 1rem;
+    }
+  }
+
+  .project-edit__form {
+    padding: 2rem 4rem;
+    height: 60rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    .project-edit__name {
+      width: 70%;
+    }
+    .project-edit__introduction {
+      padding: 1rem;
+    }
+    label {
+      margin: 2rem 0 1rem 0;
+      font-weight: $semiBold;
+    }
+  }
+
+  .project-edit__buttons {
+    display: flex;
+    justify-content: center;
+    button {
+      color: white;
+      border: none;
+      margin: 0 0.5rem;
+    }
+    .project-edit__delete {
+      background-color: $pointRed;
+    }
+    .project-edit__save {
+      background-color: $mainColor;
+    }
+  }
+  .project-edit__asterisk {
+    color: $pointRed;
+    margin-left: 0.2rem;
+  }
+}

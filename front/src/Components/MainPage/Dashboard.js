@@ -9,6 +9,7 @@ import axios from "axios";
 import { positions } from "../../userData";
 import { skills } from "../../skills.json";
 export default function Dashboard(props) {
+
   let loginState = useSelector((state) => state.loginReducer);
   let [userData, setUserData] = useState(null);
   let dispatch = useDispatch();
@@ -95,29 +96,25 @@ export default function Dashboard(props) {
               <div className="reportbox__report">
                 <Link
                   className="dashboard__project__link1"
-                  to="/project/proceed"
-                >
+                  to="/project/proceed">
                   {props.progressPr}
                 </Link>
                 개의 프로젝트가{" "}
                 <Link
                   className="dashboard__project__link2"
-                  to="/project/proceed"
-                >
+                  to="/project/proceed">
                   진행중
                 </Link>
                 이고{" "}
                 <Link
                   className="dashboard__project__link3"
-                  to="/project/complete"
-                >
+                  to="/project/complete">
                   {props.finishPr}
                 </Link>
                 개의 프로젝트가{" "}
                 <Link
                   className="dashboard__project__link4"
-                  to="/project/complete"
-                >
+                  to="/project/complete">
                   완료
                 </Link>
                 되었어요

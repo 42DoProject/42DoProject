@@ -31,11 +31,11 @@ export default function ProfileEditPage() {
 
   const submit = () => {
     const skill = document.querySelectorAll(".selected-img");
-    let skills = [];
+    let skillPost = [];
     const githubSpan = document.querySelector(".github-span").value;
     let githubPost;
     for (let el of skill) {
-      skills.push(parseInt(el.alt));
+      skillPost.push(parseInt(el.alt));
     }
     githubSpan === "" ? (githubPost = null) : (githubPost = githubSpan);
 
@@ -50,9 +50,8 @@ export default function ProfileEditPage() {
         introduction: document.querySelector(".introduction__textarea").value,
         github: githubPost,
         position: document.querySelector(".job__content").value,
-        skill: skills,
+        skill: skillPost,
         status: document.querySelector(".row2__status").value,
-        position: parseInt(document.querySelector(".job__content").value),
       },
     })
       .then((res) => {

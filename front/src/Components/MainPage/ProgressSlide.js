@@ -8,10 +8,9 @@ export default function ProgressSlide() {
     <div className="dashSlide">
       <button
         className="cardbutton prev"
-        onClick={(event) => {
+        onClick={() => {
           prevUtil(slideFlag, setSlideFlag);
-        }}
-      >
+        }}>
         <Icon className="prev__icon" icon="dashicons:arrow-left-alt2" />
       </button>
       <div className="dashCardslist">
@@ -38,8 +37,7 @@ export default function ProgressSlide() {
         className="cardbutton next"
         onClick={(event) => {
           nextUtil(slideFlag, setSlideFlag);
-        }}
-      >
+        }}>
         <Icon className="next__icon" icon="dashicons:arrow-right-alt2" />
       </button>
     </div>

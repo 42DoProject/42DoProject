@@ -19,6 +19,9 @@ export class Project extends Model {
   unplashLink!: string;
 
   @Column(DataType.INTEGER)
+  leader!: number;
+
+  @Column(DataType.INTEGER)
   totalMember!: number;
 
   @Column(DataType.INTEGER)

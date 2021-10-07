@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 // import multer from "multer";
 // import path from "path";
+import { jwtGuards } from "../auth/oauth";
 import * as projectService from "./project.service";
 
 const router: express.Router = express.Router();
@@ -24,15 +25,15 @@ router.get("/", (request: Request, response: Response) => {
   projectService.getList(request, response);
 });
 
-router.post("/", (request: Request, response: Response) => {
+router.post("/", jwtGuards, (request: Request, response: Response) => {
   projectService.postList(request, response);
 });
 
-router.put("/", (request: Request, response: Response) => {
+router.put("/", jwtGuards, (request: Request, response: Response) => {
   projectService.updateList(request, response);
 });
 
-router.delete("/", (request: Request, response: Response) => {
+router.delete("/", jwtGuards, (request: Request, response: Response) => {
   projectService.deleteList(request, response);
 });
 
@@ -44,36 +45,36 @@ router.get("/comments", (request: Request, response: Response) => {
   projectService.getComments(request, response);
 });
 
-router.post("/comments", (request: Request, response: Response) => {
+router.post("/comments", jwtGuards, (request: Request, response: Response) => {
   projectService.postComments(request, response);
 });
 
-router.put("/comments", (request: Request, response: Response) => {
+router.put("/comments", jwtGuards, (request: Request, response: Response) => {
   projectService.updateComments(request, response);
 });
 
-router.delete("/comments", (request: Request, response: Response) => {
+router.delete("/comments", jwtGuards, (request: Request, response: Response) => {
   projectService.deleteComments(request, response);
 });
 
-router.get("/apply/:projectId", (request: Request, response: Response) => {
+router.get("/apply/:projectId", jwtGuards, (request: Request, response: Response) => {
   projectService.getApplyerList(request, response);
 });
 
-router.post("/apply/:projectId/:profileId", (request: Request, response: Response) => {
+router.post("/apply/:projectId", jwtGuards, (request: Request, response: Response) => {
   projectService.applyTeam(request, response);
 });
 
-router.delete("/apply/:projectId/:profileId", (request: Request, response: Response) => {
+router.delete("/apply/:projectId/:profileId", jwtGuards, (request: Request, response: Response) => {
   projectService.cancelApply(request, response);
 });
 
-router.post("/accept/:projectId/:profileId", (request: Request, response: Response) => {
-  // projectService.addMember(request, response);
+router.post("/accept/:projectId/:profileId", jwtGuards, (request: Request, response: Response) => {
+  projectService.addMember(request, response);
 });
 
-router.delete("/accept/:projectId/:profileId", (request: Request, response: Response) => {
-  // projectService.deleteMember(request, response);
+router.delete("/accept/:projectId/:profileId", jwtGuards, (request: Request, response: Response) => {
+  projectService.deleteMember(request, response);
 });
 
 export default router;

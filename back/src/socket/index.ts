@@ -78,6 +78,13 @@ export const handlersFactory = (io: Server) => {
         }
         return;
       }
+      if (event === "signOut") {
+        if (socket.data.user !== null) {
+          await inConcurrent(io, socket.data.user, 1);
+          socket.data.user = null;
+        }
+        return;
+      }
       if (socket.data.user !== null) next();
     });
     connect(io, socket);

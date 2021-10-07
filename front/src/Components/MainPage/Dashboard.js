@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import "../../SCSS/MainPage/Dashboard.scss";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import ProgressSlide from "./ProgressSlide";
 import FavoriteSlide from "./FavoriteSlide";
@@ -9,9 +9,10 @@ import axios from "axios";
 import { positions } from "../../userData";
 import { skills } from "../../skills.json";
 export default function Dashboard(props) {
-  // let userState = useSelector((store) => store.userReducer);
+
   let loginState = useSelector((state) => state.loginReducer);
   let [userData, setUserData] = useState(null);
+  let dispatch = useDispatch();
   const getData = async () => {
     try {
       let ACCESS_TOKEN = localStorage.getItem("accessToken");
@@ -23,13 +24,12 @@ export default function Dashboard(props) {
       setUserData(data);
       // console.log(data);
     } catch (err) {
-      console.log(err);
+      dispatch({ type: "LOGOUT" });
     }
   };
   useEffect(() => {
-    getData();
+    if (loginState) getData();
   }, []);
-  // console.log(userData);
   return (
     <div className="dashboard">
       <div className="dashboard__wrap">

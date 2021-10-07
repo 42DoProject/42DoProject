@@ -41,9 +41,10 @@ function App(props) {
   };
   // 29분마다 요청
   useEffect(() => {
+    console.log("hihihihi");
     const timerId = setInterval(getToken, 1000 * 6 * 29);
     localStorage.setItem("timerId", timerId);
-  }, []);
+  }, [loginState]);
   return (
     <Layout>
       <Switch>

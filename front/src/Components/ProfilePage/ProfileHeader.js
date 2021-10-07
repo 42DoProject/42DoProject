@@ -22,7 +22,7 @@ export default function ProfileHeader(props) {
           src={loginState.profileImage}
         />
 
-        <div className="profile__bubble">{props.user.statusMessage}</div>
+        <div className="profile__bubble">{props.user.statusMessage || "-"}</div>
         <div className="profile__last-access">
           마지막 접속: {relativeTime(Date.parse(props.user.lastAccess))}
         </div>
@@ -78,7 +78,9 @@ export default function ProfileHeader(props) {
             ) : null}
           </div>
         </div>
-        <pre className="right__introduction">{props.user.introduction}</pre>
+        <pre className="right__introduction">
+          {props.user.introduction || "-"}
+        </pre>
       </div>
     </div>
   );

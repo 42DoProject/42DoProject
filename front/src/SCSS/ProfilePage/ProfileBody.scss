@@ -6,6 +6,7 @@
   align-items: flex-start;
   justify-content: center;
   flex-wrap: wrap;
+  margin-bottom: 2rem;
   .profileBody__col1 {
     margin-left: 2rem;
     width: 30%;
@@ -117,7 +118,7 @@ input.skill__content {
   background-color: white;
   border-radius: $round;
   box-shadow: $shadow;
-  padding: 1rem 2rem;
+  padding: 2rem;
   width: 50%;
   // flex-grow: 2;
   margin-right: 2rem;
@@ -137,7 +138,7 @@ input.skill__content {
   .col2__done-projects,
   .col2__registered-projects,
   .col2__interested-projects {
-    margin: 1rem 0;
+    margin: 1rem 0 0 0;
     span {
       color: $lightGrey;
       font-weight: $normal;
@@ -159,4 +160,8 @@ input.skill__content {
 input.github-span {
   width: 10rem;
   color: $black !important;
+}
+
+.projects__list {
+  display: flex;
 }

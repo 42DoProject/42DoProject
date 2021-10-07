@@ -120,6 +120,7 @@ export const makeChatRoom = async (request: Request, response: Response) => {
       availableDate: -1,
       date: date,
     }).save();
+    getUserSocket(userId)?.join(uuid);
   };
   for (var u of users) await register(room.id, u);
   io.to(room.id).emit("chat:newRoom", {

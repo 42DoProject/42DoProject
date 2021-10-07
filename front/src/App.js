@@ -13,10 +13,13 @@ import "./SCSS/init.scss";
 import AllCadet from "./Components/CadetPage/AllCadet";
 import axios from "axios";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
 function App(props) {
   // 새로운 Token 발급
   let loginState = useSelector((state) => state.loginReducer);
+  let dispatch = useDispatch();
+
   const getToken = async () => {
     try {
       const prevRefreshToken = localStorage.getItem("refreshToken");
@@ -31,6 +34,7 @@ function App(props) {
         // console.log(newRefreshToken);
       }
     } catch (err) {
+      dispatch({ type: "LOGOUT" });
       console.log(err);
     }
   };
@@ -38,7 +42,7 @@ function App(props) {
   useEffect(() => {
     const timerId = setInterval(getToken, 1000 * 60 * 29);
     localStorage.setItem("timerId", timerId);
-  }, [loginState]);
+  }, []);
   return (
     <Layout>
       <Switch>

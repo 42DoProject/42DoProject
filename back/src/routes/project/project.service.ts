@@ -1,16 +1,48 @@
 import sequelize from "sequelize";
 import express, { Request, Response } from "express";
+import { Applyprojectprofile } from "../../models/project/applyprojectprofile.model";
 import { Comments } from "../../models/project/comments.model";
 import { Content } from "../../models/project/content.model";
 import { Project } from "../../models/project/project.model";
 import { Projectprofile } from "../../models/project/projectprofile.model";
 import { Profile } from "../../models/user/profile.model";
+import { User } from "../../models/user/user.model";
 import { getIsoString } from "../../module/time";
 
 const app = express();
 app.set("query parser", "extended");
 
-const pagination = async (request: Request, response: Response, state: string) => {
+const getFiltedData = async (inputOrder: string, limit: number | undefined,
+    offset: number | undefined, where: {} | sequelize.AndOperator<any> | sequelize.Utils.Where,
+    response: Response) => {
+    const project = await Project.findAndCountAll({
+        attributes: [
+            'id',
+            'title',
+            'leader',
+            'totalMember',
+            'currentMember',
+            'state',
+            'like',
+            'viewCount',
+            'commentCount',
+            'skill',
+            'position',
+            'createdAt',
+            'updatedAt'
+        ],
+        order: [[inputOrder, 'DESC'], ['createdAt', 'DESC']],
+        where: where,
+        offset: offset,
+        limit: limit
+    }).catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+        return -1;
+    })
+    return project;
+}
+
+const paginationAndOrdering = async (request: Request, response: Response, state: string) => {
     const { page, pageSize, skill, position, order } = request.query;
     let project;
     let inputOrder: string = "";
@@ -31,10 +63,9 @@ const pagination = async (request: Request, response: Response, state: string) =
     } else {
         const limit = (page !== undefined && pageSize !== undefined) ? Number(pageSize) : undefined;
         const offset = (limit !== undefined) ? (Number(page) - 1) * limit : undefined;
+        let where;
 
         if (skill !== undefined && position !== undefined) {
-            let where;
-
             if (state === 'all') {
                 where = sequelize.and(
                     sequelize.where(
@@ -83,32 +114,7 @@ const pagination = async (request: Request, response: Response, state: string) =
                     )
                 );
             }
-
-            project = await Project.findAndCountAll({
-                attributes: [
-                    'id',
-                    'title',
-                    'totalMember',
-                    'currentMember',
-                    'state',
-                    'like',
-                    'viewCount',
-                    'commentCount',
-                    'skill',
-                    'position',
-                    'createdAt',
-                    'updatedAt'
-                ],
-                order: [[inputOrder, 'DESC'], ['createdAt', 'DESC']],
-                where: where,
-                offset: offset,
-                limit: limit
-            }).catch(err => {
-                response.status(405).json({ errMessage: String(err) });
-            });
         } else if (skill === undefined && position !== undefined) {
-            let where;
-
             if (state === 'all') {
                 where = sequelize.where(
                     sequelize.fn(
@@ -133,32 +139,7 @@ const pagination = async (request: Request, response: Response, state: string) =
                         '1'
                     ));
             }
-
-            project = await Project.findAndCountAll({
-                attributes: [
-                    'id',
-                    'title',
-                    'totalMember',
-                    'currentMember',
-                    'state',
-                    'like',
-                    'viewCount',
-                    'commentCount',
-                    'skill',
-                    'position',
-                    'createdAt',
-                    'updatedAt'
-                ],
-                order: [[inputOrder, 'DESC'], ['createdAt', 'DESC']],
-                where: where,
-                offset: offset,
-                limit: limit
-            }).catch(err => {
-                response.status(405).json({ errMessage: String(err) });
-            });
         } else if (skill !== undefined && position === undefined) {
-            let where;
-
             if (state === 'all') {
                 where = sequelize.where(
                     sequelize.fn(
@@ -183,60 +164,16 @@ const pagination = async (request: Request, response: Response, state: string) =
                         '1'
                     ));
             }
-
-            project = await Project.findAndCountAll({
-                attributes: [
-                    'id',
-                    'title',
-                    'totalMember',
-                    'currentMember',
-                    'state',
-                    'like',
-                    'viewCount',
-                    'commentCount',
-                    'skill',
-                    'position',
-                    'createdAt',
-                    'updatedAt'
-                ],
-                order: [[inputOrder, 'DESC'], ['createdAt', 'DESC']],
-                where: where,
-                offset: offset,
-                limit: limit
-            }).catch(err => {
-                response.status(405).json({ errMessage: String(err) });
-            });
         } else {
-            let where;
-
             if (state == 'all') {
                 where = {};
             } else {
                 where = { state: state };
             }
-
-            project = await Project.findAndCountAll({
-                attributes: [
-                    'id',
-                    'title',
-                    'totalMember',
-                    'currentMember',
-                    'state',
-                    'like',
-                    'viewCount',
-                    'commentCount',
-                    'skill',
-                    'position',
-                    'createdAt',
-                    'updatedAt'
-                ],
-                order: [[inputOrder, 'DESC'], ['createdAt', 'DESC']],
-                where: where,
-                offset: offset,
-                limit: limit
-            }).catch(err => {
-                response.status(405).json({ errMessage: String(err) });
-            });
+        }
+        project = await getFiltedData(inputOrder, limit, offset, where, response);
+        if (project === -1) {
+            return -1;
         }
     }
     return project;
@@ -246,13 +183,17 @@ export const getList = async (request: Request, response: Response) => {
     let project;
 
     if (request.query.state === undefined) {
-        project = await pagination(request, response, 'all');
+        project = await paginationAndOrdering(request, response, 'all');
     }
     else if (request.query.state === 'recruiting' || request.query.state === 'proceeding'
         || request.query.state === 'completed') {
-        project = await pagination(request, response, request.query.state);
+        project = await paginationAndOrdering(request, response, request.query.state);
     } else {
         response.status(400).json({ errMessage: 'invalid state query' });
+        return ;
+    }
+    if (project === -1) {
+        return ;
     }
 
     response.status(200).json({ project });
@@ -269,26 +210,28 @@ export const postList = async (request: Request, response: Response) => {
     let { skill, position } = request.body;
     let inputState: string = (totalMember - currentMember > 0) ? 'recruiting' : 'proceeding';
     
-    if (state !== undefined)
+    if (state !== undefined) {
         inputState = state;
+    }
 
     try {
         if (skill) skill = arrayCondition(skill, Number(process.env.SKILL));
     } catch (e) {
         response.status(400).json({ errMessage: 'invalid skill query' });
-        return;
+        return ;
     }
     try {
         if (position) position = arrayCondition(position, Number(process.env.POSITION));
     } catch (e) {
         response.status(400).json({ errMessage: 'invalid position query' });
-        return;
+        return ;
     }
 
-    await Project.create({
+    const project = await Project.create({
     	title: title,
         // fileName: (request.file === undefined ? null : request.file.filename),
         // filePath: (request.file === undefined ? null : request.file.path),
+        leader: request.user?.id,
         totalMember: totalMember,
         currentMember: currentMember,
         state: inputState,
@@ -302,27 +245,25 @@ export const postList = async (request: Request, response: Response) => {
         createdAt: getIsoString(),
         updatedAt: getIsoString()
     })
-    .then(async project => {
-        Content.create({
-            content: content,
-            projectId: project.id,
-            createdAt: getIsoString(),
-            updatedAt: getIsoString()
-        })
-        .then(content => {
-            Project.update({ contentId: content.id }, { where: { id: project.id }})
-            .catch(err => {
-                response.status(405).json({ errMessage: String(err) });
-            });
-        }).catch(err => {
-            response.status(405).json({ errMessage: String(err) });
-        });
-
-        response.status(200).json({ message: 'added successfully.' });
-    })
     .catch(err => {
     	response.status(405).json({ errMessage: String(err) });
     })
+    const newContent = await Content.create({
+        content: content,
+        projectId: project!.id,
+        createdAt: getIsoString(),
+        updatedAt: getIsoString()
+    })
+    .catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+    });
+    Project.update({ contentId: newContent!.id }, { where: { id: project!.id }})
+    .then(() => {
+        response.status(200).json({ message: 'added successfully.' });
+    })
+    .catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+    });
 }
 
 export const updateList = async (request: Request, response: Response) => {
@@ -333,21 +274,34 @@ export const updateList = async (request: Request, response: Response) => {
 
     if (projectId === undefined) {
         response.status(400).json({ errMessage: 'please input projectId query' });
+        return ;
     }
-    if (state !== undefined)
+    if (state !== undefined) {
         inputState = state;
+    }
+    const project = await Project.findOne({
+        attributes: ['leader'],
+        where: { id: projectId }
+    })
+    .catch(err => {
+    	response.status(405).json({ errMessage: String(err) });
+    })
+    if (project!.leader !== request.user!.id) {
+        response.status(400).json({ errMessage: 'no authority' });
+        return ;
+    }
 
     try {
         if (skill) skill = arrayCondition(skill, Number(process.env.SKILL));
     } catch (e) {
         response.status(400).json({ errMessage: 'invalid skill query' });
-        return;
+        return ;
     }
     try {
         if (position) position = arrayCondition(position, Number(process.env.POSITION));
     } catch (e) {
         response.status(400).json({ errMessage: 'invalid position query' });
-        return;
+        return ;
     }
 
     await Project.update({
@@ -361,20 +315,19 @@ export const updateList = async (request: Request, response: Response) => {
         position: position,
         updatedAt: getIsoString(),
     }, { where: { id: projectId } })
-    .then(async () => {
-        await Content.update({
-            content: content,
-            updatedAt: getIsoString()
-        }, { where: { projectId: projectId }})
-        .catch(err => {
-            response.status(405).json({ errMessage: String(err) });
-        })
-
-        response.status(200).json({ message: 'updated successfully.' });
-    })
     .catch(err => {
     	response.status(405).json({ errMessage: String(err) });
     })
+    await Content.update({
+        content: content,
+        updatedAt: getIsoString()
+    }, { where: { projectId: projectId }})
+    .then(() => {
+        response.status(200).json({ message: 'updated successfully.' });
+    })
+    .catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+    });
 }
 
 export const deleteList = async (request: Request, response: Response) => {
@@ -382,9 +335,33 @@ export const deleteList = async (request: Request, response: Response) => {
 
     if (projectId === undefined) {
         response.status(400).json({ errMessage: 'please input projectId query' });
+        return ;
+    }
+    const project = await Project.findOne({
+        attributes: ['leader'],
+        where: { id: projectId }
+    })
+    .catch(err => {
+    	response.status(405).json({ errMessage: String(err) });
+    })
+    if (project!.leader !== request.user!.id) {
+        response.status(400).json({ errMessage: 'no authority' });
+        return ;
     }
 
     await Content.destroy({
+        where: { projectId: projectId }
+    })
+    .catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+    });
+    await Applyprojectprofile.destroy({
+        where: { projectId: projectId }
+    })
+    .catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+    });
+    await Projectprofile.destroy({
         where: { projectId: projectId }
     })
     .catch(err => {
@@ -406,6 +383,7 @@ export const getContent = async (request: Request, response: Response) => {
 
     if (projectId === undefined) {
         response.status(400).json({ errMessage: 'please input projectId query' });
+        return ;
     }
 
     await Project.findOne({
@@ -417,13 +395,17 @@ export const getContent = async (request: Request, response: Response) => {
         let newViews: number = Number(curViews) + 1;
         await Project.update({
             viewCount: newViews
-        }, { where: { id: projectId } });
+        }, { where: { id: projectId } })
+        .catch(err => {
+            response.status(405).json({ errMessage: String(err) });
+        });
     });
 
     await Project.findOne({
         attributes: [
             'id',
             'title',
+            'leader',
             'totalMember',
             'currentMember',
             'state',
@@ -442,7 +424,11 @@ export const getContent = async (request: Request, response: Response) => {
             model: Projectprofile,
             attributes: ['id'],
             include: [{
-                model: Profile
+                model: Profile,
+                include: [{
+                    model: User,
+                    attributes: ['profileImage']
+                }]
             }],
             separate: true
         }],
@@ -463,10 +449,12 @@ export const getComments = async (request: Request, response: Response) => {
 
     if (projectId === undefined) {
         response.status(400).json({ errMessage: 'please input projectId value' });
+        return ;
     }
     if ((page !== undefined && pageSize === undefined) ||
         (page === undefined && pageSize !== undefined)) {
         response.status(400).json({ errMessage: "missing page or pageSize query" });
+        return ;
     }
 
     await Comments.findAndCountAll({
@@ -492,7 +480,17 @@ export const getComments = async (request: Request, response: Response) => {
 }
 
 export const postComments = async (request: Request, response: Response) => {
-    const { comment, contentId, profileId } = request.body;
+    const { contentId } = request.query;
+    const { comment } = request.body;
+
+    if (contentId === undefined) {
+        response.status(400).json({ errMessage: 'please input contentId value' });
+        return ;
+    }
+    if (request.user === null || request.user === undefined) {
+        response.status(400).json({ message: 'no authority' });
+        return ;
+    }
 
     await Project.findOne({
         attributes: ['commentCount'],
@@ -503,6 +501,9 @@ export const postComments = async (request: Request, response: Response) => {
         await Project.update({
             commentCount: newCount
         }, { where: { contentId: contentId } })
+        .catch(err => {
+            response.status(405).json({ errMessage: String(err) });
+        })
     })
     .catch(err => {
     	response.status(405).json({ errMessage: String(err) });
@@ -511,7 +512,7 @@ export const postComments = async (request: Request, response: Response) => {
     await Comments.create({
         comment: comment,
         contentId: contentId,
-        profileId: profileId,
+        profileId: request.user.id,
         createdAt: getIsoString(),
         updatedAt: getIsoString()
     })
@@ -529,6 +530,18 @@ export const updateComments = async (request: Request, response: Response) => {
 
     if (commentId === undefined) {
         response.status(400).json({ errMessage: 'please input commentId value' });
+        return ;
+    }
+    const checkAuthority = await Comments.findOne({
+        attributes: ['profileId'],
+        where: { id: commentId }
+    })
+    .catch(err => {
+    	response.status(405).json({ errMessage: String(err) });
+    })
+    if (checkAuthority!.profileId !== request.user!.id) {
+        response.status(400).json({ errMessage: 'no authority' });
+        return ;
     }
 
     await Comments.update({
@@ -548,24 +561,30 @@ export const deleteComments = async (request: Request, response: Response) => {
 
     if (commentId === undefined) {
         response.status(400).json({ errMessage: 'please input commentId value' });
+        return ;
     }
 
-    await Comments.findOne({
+    const comment = await Comments.findOne({
         attributes: ['contentId'],
         where: { id: commentId }
     })
-    .then(async content => {
-        const contentId = content?.contentId;
-        await Project.findOne({
-            attributes: ['commentCount'],
-            where: { contentId: contentId }
-        })
-        .then(async project => {
-            const newCount: number = (project?.commentCount === undefined)? 0 : project?.commentCount - 1;
-            await Project.update({
-                commentCount: newCount
-            }, { where: { contentId: contentId } })
-        })
+    .catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+    })
+    if (comment!.profileId !== request.user!.id) {
+        response.status(400).json({ errMessage: 'no authority' });
+        return ;
+    }
+    const contentId = comment?.contentId;
+    await Project.findOne({
+        attributes: ['commentCount'],
+        where: { contentId: contentId }
+    })
+    .then(async project => {
+        const newCount: number = (project?.commentCount === undefined)? 0 : project?.commentCount - 1;
+        await Project.update({
+            commentCount: newCount
+        }, { where: { contentId: contentId } })
         .catch(err => {
             response.status(405).json({ errMessage: String(err) });
         })
@@ -576,6 +595,215 @@ export const deleteComments = async (request: Request, response: Response) => {
 
     await Comments.destroy({
         where: { id: commentId }
+    })
+    .then(() => {
+        response.status(200).json({ message: 'deleted successfully.' });
+    })
+    .catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+    });
+}
+
+export const getApplyerList = async (request: Request, response: Response) => {
+    const { projectId } = request.params;
+    
+    if (projectId === undefined) {
+        response.status(400).json({ errMessage: 'please input projectId or profileId value' });
+        return ;
+    }
+    const project = await Project.findOne({
+        attributes: ['id', 'leader'],
+        where: { projectId: projectId }
+    })
+    .catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+    });
+    if (!project) {
+        response.status(400).json({ errMessage: 'invalid projectId param' });
+        return ;
+    }
+    if (project!.leader !== request.user!.id) {
+        response.status(400).json({ errMessage: 'no authority' });
+        return ;
+    }
+
+    await Applyprojectprofile.findAndCountAll({
+        attributes: ['projectId'],
+        include: {
+            model: Profile,
+        },
+        where: { projectId: projectId }
+    })
+    .then(applyerList => {
+        if (applyerList.count === 0) {
+            response.status(200).json({ message: 'empty applyerList' });
+        } else {
+            response.status(200).json({ applyerList });
+        }
+    })
+    .catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+    });
+}
+
+export const applyTeam = async (request: Request, response: Response) => {
+    const { projectId } = request.params;
+
+    if (projectId === undefined) {
+        response.status(400).json({ errMessage: 'please input projectId or profileId value' });
+        return ;
+    }
+    const project = await Project.findOne({
+        attributes: ['id'],
+        where: { id: projectId }
+    })
+    .catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+    });
+    if (!project) {
+        response.status(400).json({ errMessage: 'invalid projectId param' });
+        return ;
+    }
+    const profile = await Profile.findOne({
+        attributes: ['id'],
+        where: { id: request.user!.id }
+    })
+    .catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+    });
+    if (!profile) {
+        response.status(400).json({ errMessage: 'invalid profileId param' });
+        return ;
+    }
+
+    await Applyprojectprofile.create({
+        projectId: projectId,
+        profileId: request.user!.id,
+        createdAt: getIsoString(),
+        updatedAt: getIsoString()
+    })
+    .then(() => {
+        response.status(200).json({ message: 'applyed successfully.' });
+    })
+    .catch(err => {
+    	response.status(405).json({ errMessage: String(err) });
+    })
+}
+
+export const cancelApply = async (request: Request, response: Response) => {
+    const { projectId, profileId } = request.params;
+
+    if (projectId === undefined || profileId === undefined) {
+        response.status(400).json({ errMessage: 'please input projectId or profileId value' });
+        return ;
+    }
+    const applyprojectprofile = await Applyprojectprofile.findOne({
+        attributes: ['id'],
+        include: {
+            model: Project,
+            attributes: ['leader']
+        },
+        where: { projectId: projectId, profileId: profileId }
+    })
+    .catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+    });
+    if (!applyprojectprofile) {
+        response.status(400).json({ errMessage: 'invalid projectId or profileId param' });
+        return ;
+    }
+    if (request.user!.id !== profileId && request.user!.id !== applyprojectprofile?.project.leader) {
+        response.status(400).json({ message: 'no authority' });
+        return ;
+    }
+
+    await Applyprojectprofile.destroy({
+        where: { projectId: projectId, profileId: profileId }
+    })
+    .then(() => {
+        response.status(200).json({ message: 'canceled successfully.' });
+    })
+    .catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+    });
+}
+
+export const addMember = async (request: Request, response: Response) => {
+    const { projectId, profileId } = request.params;
+
+    if (projectId === undefined || profileId === undefined) {
+        response.status(400).json({ errMessage: 'please input projectId or profileId value' });
+        return ;
+    }
+    const applyprojectprofile = await Applyprojectprofile.findOne({
+        attributes: ['id'],
+        include: {
+            model: Project,
+            attributes: ['leader']
+        },
+        where: { projectId: projectId, profileId: profileId }
+    })
+    .catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+    });
+    if (!applyprojectprofile) {
+        response.status(400).json({ errMessage: 'invalid projectId or profileId param' });
+        return ;
+    }
+    if (request.user!.id !== applyprojectprofile?.project.leader) {
+        response.status(400).json({ message: 'no authority' });
+        return ;
+    }
+
+    await Projectprofile.create({
+        projectId: projectId,
+        profileId: profileId,
+        createdAt: getIsoString(),
+        updatedAt: getIsoString()
+    })
+    .catch(err => {
+    	response.status(405).json({ errMessage: String(err) });
+    })
+    await Applyprojectprofile.destroy({
+        where: { projectId: projectId, profileId: profileId }
+    })
+    .then(() => {
+        response.status(200).json({ message: 'added successfully.' });
+    })
+    .catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+    });
+}
+
+export const deleteMember = async (request: Request, response: Response) => {
+    const { projectId, profileId } = request.params;
+
+    if (projectId === undefined || profileId === undefined) {
+        response.status(400).json({ errMessage: 'please input projectId or profileId value' });
+        return ;
+    }
+    const projectprofile = await Projectprofile.findOne({
+        attributes: ['id'],
+        include: {
+            model: Project,
+            attributes: ['leader']
+        },
+        where: { projectId: projectId, profileId: profileId }
+    })
+    .catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+    });
+    if (!projectprofile) {
+        response.status(400).json({ errMessage: 'invalid projectId or profileId param' });
+        return ;
+    }
+    if (request.user!.id !== projectprofile?.project.leader) {
+        response.status(400).json({ message: 'no authority' });
+        return ;
+    }
+
+    await Projectprofile.destroy({
+        where: { projectId: projectId, profileId: profileId }
     })
     .then(() => {
         response.status(200).json({ message: 'deleted successfully.' });

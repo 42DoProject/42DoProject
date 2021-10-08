@@ -15,6 +15,12 @@ export default function ProfileEditHeader(props) {
   useEffect(() => {
     if (props.user.status) setStatusColor("#5bbcb6");
     else setStatusColor("#c4c4c4");
+
+    props.user.statusMessage &&
+      setBubbleLength(props.user.statusMessage.length);
+    props.user.introduction && setIntroLength(props.user.introduction.length);
+
+    console.log(props.user);
   }, [props]);
 
   return (

@@ -77,12 +77,6 @@ export const makeChatRoom = async (request: Request, response: Response) => {
     response.status(400).json({ error: "users length can't zero" });
     return;
   }
-  for (var u of users) {
-    if (u == request.user?.id || !(await User.findOne({ where: { id: u } }))) {
-      response.status(400).json({ error: "invalid user id included" });
-      return;
-    }
-  }
   var dm;
   if (
     users.length === 1 &&
@@ -90,6 +84,28 @@ export const makeChatRoom = async (request: Request, response: Response) => {
   ) {
     response.status(200).json({ uuid: dm });
     return;
+  }
+  const userList = [];
+  var user;
+  user = await User.findOne({ where: { id: request.user!.id } });
+  userList.push({
+    id: user!.id,
+    username: user!.username,
+    profileImage: user!.profileImage,
+  });
+  for (var u of users) {
+    if (
+      u == request.user?.id ||
+      !(user = await User.findOne({ where: { id: u } }))
+    ) {
+      response.status(400).json({ error: "invalid user id included" });
+      return;
+    }
+    userList.push({
+      id: user.id,
+      username: user.username,
+      profileImage: user.profileImage,
+    });
   }
   const date = Date.now();
   const room = await Chat.create({
@@ -104,10 +120,20 @@ export const makeChatRoom = async (request: Request, response: Response) => {
       availableDate: -1,
       date: date,
     }).save();
+    getUserSocket(userId)?.join(uuid);
   };
-  await register(room.id, request.user?.id);
   for (var u of users) await register(room.id, u);
-  response.status(200).json({ uuid: room.id });
+  io.to(room.id).emit("chat:newRoom", {
+    uuid: room.id,
+    type: room.type,
+    users: userList,
+  });
+  await register(room.id, request.user?.id);
+  response.status(200).json({
+    uuid: room.id,
+    type: room.type,
+    users: userList,
+  });
 };
 
 export const getChats = async (request: Request, response: Response) => {
@@ -222,11 +248,13 @@ export const inviteUser = async (request: Request, response: Response) => {
     for (const u of userList) {
       await register(room.id, u.id);
     }
+    getUserSocket(request.user!.id)?.leave(room.id);
     io.to(room.id).emit("chat:newRoom", {
       uuid: room.id,
       type: 1,
       users: userList,
     });
+    getUserSocket(request.user!.id)?.join(room.id);
     response.status(200).json({
       uuid: room.id,
       type: 1,

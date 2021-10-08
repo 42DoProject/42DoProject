@@ -49,6 +49,7 @@ function App(props) {
       <Switch>
         <Route exact path="/" component={Main} />
         <Route path="/auth" component={AuthMain} />
+        <Route path="/profile/:id" component={ProfilePage} />
         <Route exact path="/profile" component={ProfilePage} />
         <Route path="/profile/edit" component={ProfileEditPage} />
         <Route path="/project/recruit" component={RecruitProjects} />

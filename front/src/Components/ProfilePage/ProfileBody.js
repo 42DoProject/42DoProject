@@ -40,7 +40,7 @@ export default function ProfileBody(props) {
         <div className="col1__profile-card2">
           <div className="card2__location">
             <Icon icon="carbon:location-filled" height="25px" />
-            <span>{loginState.location}</span>
+            <span>{props.user.location}</span>
           </div>
           <div className="card2__level">
             <Icon icon="simple-icons:42" width="25px" />
@@ -48,8 +48,8 @@ export default function ProfileBody(props) {
           </div>
           <div className="card2__email">
             <Icon icon="fluent:mail-48-filled" height="25px" />
-            <a href={`mailto:${loginState.email}`} className="email-span">
-              {loginState.email}
+            <a href={`mailto:${props.user.email}`} className="email-span">
+              {props.user.email}
             </a>
           </div>
           <div className="card2__github">

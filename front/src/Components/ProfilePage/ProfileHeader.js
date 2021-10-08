@@ -19,7 +19,7 @@ export default function ProfileHeader(props) {
         <img
           className="profileImage"
           alt="profileImage"
-          src={loginState.profileImage}
+          src={props.user.profileImage}
         />
 
         <div className="profile__bubble">{props.user.statusMessage || "-"}</div>

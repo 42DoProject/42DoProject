@@ -24,7 +24,7 @@ const makeDump = async (
   profileImage: String
 ) => {
   const row = await User.create({
-    intraId: 19245,
+    intraId: Math.floor(Math.random() * 99999),
     username: username,
     name: name,
     email: email,
@@ -56,11 +56,13 @@ const makeDump = async (
     follower: [],
     userId: row.id,
   });
+  return row.id;
 };
 
 router.post("/dump", async (request, response) => {
   const { username, name, email, profileImage } = request.body;
-  await makeDump(username, name, email, profileImage);
+  const res = await makeDump(username, name, email, profileImage);
+  response.status(200).json({ userId: res });
 });
 
 export default router;

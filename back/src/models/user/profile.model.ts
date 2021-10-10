@@ -17,19 +17,19 @@ import { Projectprofile } from "../project/projectprofile.model";
 @Table({ timestamps: false })
 export class Profile extends Model {
   @Column(DataType.FLOAT)
-  level!: Number;
+  level!: number;
 
   @Column(DataType.STRING(20))
   lastAccess!: string;
 
   @Column(DataType.INTEGER)
-  status!: Number;
+  status!: number;
 
   @Column(DataType.INTEGER)
-  position!: Number;
+  position!: number;
 
   @Column(DataType.JSON)
-  skill!: Number[];
+  skill!: number[];
 
   @Column(DataType.STRING(50))
   statusMessage!: string;
@@ -45,6 +45,9 @@ export class Profile extends Model {
 
   @Column(DataType.JSON)
   follower!: number[];
+
+  @Column(DataType.BIGINT)
+  feed!: number;
 
   @HasMany(() => ProfileChat)
   userchat!: ProfileChat[];

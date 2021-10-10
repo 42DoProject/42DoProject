@@ -9,7 +9,6 @@ import routes from "./routes";
 import * as auth from "./routes/auth/oauth";
 import * as bridge from "./socket/bridge";
 import * as ws from "./socket";
-import { Feed } from "./models/user/feed.mongo";
 
 dotenv.config();
 

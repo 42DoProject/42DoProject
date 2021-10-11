@@ -33,12 +33,35 @@ export const getConcurrentUsers = async (
 };
 
 export const getFeed = async (request: Request, response: Response) => {
+  const date = Number(request.query.date);
+  const u = await Profile.findOne({ where: { userId: request.user!.id } });
+  const list = [];
+  if (!isNaN(date)) {
+    const feed = await Feed.find({
+      userId: request.user!.id,
+      date: { $lt: date },
+    })
+      .sort({ date: -1 })
+      .limit(20);
+    for (const f of feed)
+      list.push({ date: f.date, type: f.type, args: f.args });
+    response.status(200).json(list);
+    return;
+  }
   const feed = await Feed.find({
-    userId: request.user?.id,
+    userId: request.user!.id,
+    date: { $lte: u!.feed },
   })
     .sort({ date: -1 })
-    .limit(20);
-  console.log(feed);
+    .limit(10);
+  const unreadFeed = await Feed.find({
+    userId: request.user!.id,
+    date: { $gt: u!.feed },
+  });
+  for (const f of unreadFeed.reverse())
+    list.push({ date: f.date, type: f.type, args: f.args });
+  for (const f of feed) list.push({ date: f.date, type: f.type, args: f.args });
+  response.status(200).json({ unread: unreadFeed.length, list: list });
 };
 
 export const getMe = async (request: Request, response: Response) => {
@@ -123,8 +146,10 @@ export const modifyMe = async (request: Request, response: Response) => {
       status: status !== undefined ? status : profile!.status,
       position: position !== undefined ? position : profile!.position,
       skill: skill !== undefined ? skill : profile!.skill,
-      statusMessage: statusMessage !== undefined ? statusMessage : profile!.statusMessage,
-      introduction: introduction !== undefined ? introduction : profile!.introduction,
+      statusMessage:
+        statusMessage !== undefined ? statusMessage : profile!.statusMessage,
+      introduction:
+        introduction !== undefined ? introduction : profile!.introduction,
       github: github !== undefined ? github : profile!.github,
     },
     { where: { userId: request.user!.id } }

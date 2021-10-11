@@ -50,6 +50,7 @@ const userModelCheck = async (user: any): Promise<number> => {
     github: null,
     following: [],
     follower: [],
+    feed: -1,
     userId: row.id,
   });
   return row.id;

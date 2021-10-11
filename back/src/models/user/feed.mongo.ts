@@ -4,8 +4,16 @@ import { IFeed } from "../../interface/user.interface";
 const schema = new Schema<IFeed>({
   userId: { type: Number, required: true },
   date: { type: Number, required: true },
-  message: { type: String, required: true },
-  args: [{ type: Array }],
+  type: { type: Number, required: true },
+  args: [
+    {
+      userId: Number,
+      username: String,
+      status: Number,
+      project: String,
+      projectId: Number,
+    },
+  ],
 });
 schema.index({ userId: 1, date: 1 });
 

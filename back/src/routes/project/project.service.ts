@@ -3,6 +3,7 @@ import express, { Request, Response } from "express";
 import { Applyprojectprofile } from "../../models/project/applyprojectprofile.model";
 import { Comments } from "../../models/project/comments.model";
 import { Content } from "../../models/project/content.model";
+import { Likeprojectprofile } from "../../models/project/likeprojectprofile.model";
 import { Project } from "../../models/project/project.model";
 import { Projectprofile } from "../../models/project/projectprofile.model";
 import { Profile } from "../../models/user/profile.model";
@@ -199,6 +200,39 @@ export const getList = async (request: Request, response: Response) => {
     response.status(200).json({ project });
 }
 
+export const getStatus = async (request: Request, response: Response) => {
+    const { projectId } = request.query;
+
+    if (projectId === undefined) {
+        response.status(400).json({ errMessage: 'please input projectId query' });
+        return ;
+    }
+
+    const user = await Profile.findOne({
+        attributes: ['id'],
+        include: [{
+            model: Projectprofile,
+            attributes: ['id'],
+            where: { projectId: projectId }
+        }, {
+            model: Applyprojectprofile,
+            attributes: ['id'],
+            where: { projectId: projectId }
+        }],
+        where: { id: request.user!.id }
+    }).catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+    });
+
+    if (user?.projectprofile !== null) {
+        response.status(200).json({ status: 'participating' });
+    } else if (user?.applyprojectprofile !== null) {
+        response.status(200).json({ status: 'applying' });
+    } else {
+        response.status(200).json({ status: 'nothing' });
+    }
+}
+
 const arrayCondition = (array: Number[], max: Number): Number[] => {
     return array.filter(
         (item, index) => array.indexOf(item) === index && 0 <= item && item <= max
@@ -287,7 +321,7 @@ export const updateList = async (request: Request, response: Response) => {
     	response.status(405).json({ errMessage: String(err) });
     })
     if (project!.leader !== request.user!.id) {
-        response.status(400).json({ errMessage: 'no authority' });
+        response.status(401).json({ errMessage: 'no authority' });
         return ;
     }
 
@@ -345,7 +379,7 @@ export const deleteList = async (request: Request, response: Response) => {
     	response.status(405).json({ errMessage: String(err) });
     })
     if (project!.leader !== request.user!.id) {
-        response.status(400).json({ errMessage: 'no authority' });
+        response.status(401).json({ errMessage: 'no authority' });
         return ;
     }
 
@@ -488,7 +522,7 @@ export const postComments = async (request: Request, response: Response) => {
         return ;
     }
     if (request.user === null || request.user === undefined) {
-        response.status(400).json({ message: 'no authority' });
+        response.status(401).json({ message: 'no authority' });
         return ;
     }
 
@@ -540,7 +574,7 @@ export const updateComments = async (request: Request, response: Response) => {
     	response.status(405).json({ errMessage: String(err) });
     })
     if (checkAuthority!.profileId !== request.user!.id) {
-        response.status(400).json({ errMessage: 'no authority' });
+        response.status(401).json({ errMessage: 'no authority' });
         return ;
     }
 
@@ -572,7 +606,7 @@ export const deleteComments = async (request: Request, response: Response) => {
         response.status(405).json({ errMessage: String(err) });
     })
     if (comment!.profileId !== request.user!.id) {
-        response.status(400).json({ errMessage: 'no authority' });
+        response.status(401).json({ errMessage: 'no authority' });
         return ;
     }
     const contentId = comment?.contentId;
@@ -608,7 +642,7 @@ export const getApplyerList = async (request: Request, response: Response) => {
     const { projectId } = request.params;
     
     if (projectId === undefined) {
-        response.status(400).json({ errMessage: 'please input projectId or profileId value' });
+        response.status(400).json({ errMessage: 'please input projectId value' });
         return ;
     }
     const project = await Project.findOne({
@@ -623,7 +657,7 @@ export const getApplyerList = async (request: Request, response: Response) => {
         return ;
     }
     if (project!.leader !== request.user!.id) {
-        response.status(400).json({ errMessage: 'no authority' });
+        response.status(401).json({ errMessage: 'no authority' });
         return ;
     }
 
@@ -650,7 +684,7 @@ export const applyTeam = async (request: Request, response: Response) => {
     const { projectId } = request.params;
 
     if (projectId === undefined) {
-        response.status(400).json({ errMessage: 'please input projectId or profileId value' });
+        response.status(400).json({ errMessage: 'please input projectId value' });
         return ;
     }
     const project = await Project.findOne({
@@ -713,7 +747,7 @@ export const cancelApply = async (request: Request, response: Response) => {
         return ;
     }
     if (request.user!.id !== profileId && request.user!.id !== applyprojectprofile?.project.leader) {
-        response.status(400).json({ message: 'no authority' });
+        response.status(401).json({ message: 'no authority' });
         return ;
     }
 
@@ -751,7 +785,7 @@ export const addMember = async (request: Request, response: Response) => {
         return ;
     }
     if (request.user!.id !== applyprojectprofile?.project.leader) {
-        response.status(400).json({ message: 'no authority' });
+        response.status(401).json({ message: 'no authority' });
         return ;
     }
 
@@ -798,7 +832,7 @@ export const deleteMember = async (request: Request, response: Response) => {
         return ;
     }
     if (request.user!.id !== projectprofile?.project.leader) {
-        response.status(400).json({ message: 'no authority' });
+        response.status(401).json({ message: 'no authority' });
         return ;
     }
 
@@ -808,6 +842,127 @@ export const deleteMember = async (request: Request, response: Response) => {
     .then(() => {
         response.status(200).json({ message: 'deleted successfully.' });
     })
+    .catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+    });
+}
+
+export const likeProject = async (request: Request, response: Response) => {
+    const { projectId } = request.params;
+
+    if (projectId === undefined) {
+        response.status(400).json({ errMessage: 'please input projectId value' });
+        return ;
+    }
+    const project = await Project.findOne({
+        attributes: ['id'],
+        where: { id: projectId }
+    })
+    .catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+    });
+    if (!project) {
+        response.status(400).json({ errMessage: 'invalid projectId param' });
+        return ;
+    }
+    const profile = await Profile.findOne({
+        attributes: ['id'],
+        where: { id: request.user!.id }
+    })
+    .catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+    });
+    if (!profile) {
+        response.status(400).json({ errMessage: 'invalid profileId param' });
+        return ;
+    }
+
+    await Likeprojectprofile.create({
+        projectId: projectId,
+        profileId: request.user!.id,
+        createdAt: getIsoString(),
+        updatedAt: getIsoString()
+    })
+    .catch(err => {
+    	response.status(405).json({ errMessage: String(err) });
+    })
+    await Project.findOne({
+        attributes: ['like'],
+        where: { id: projectId }
+    })
+    .then(async project => {
+        let curLikes = project?.like;
+        let newLikes: number = Number(curLikes) + 1;
+        await Project.update({
+            like: newLikes
+        }, { where: { id: projectId } })
+        .then(() => {
+            response.status(200).json({ message: 'liked successfully.' });
+        })
+        .catch(err => {
+            response.status(405).json({ errMessage: String(err) });
+        });
+    });
+}
+
+export const unlikeProject = async (request: Request, response: Response) => {
+    const { projectId } = request.params;
+
+    if (projectId === undefined) {
+        response.status(400).json({ errMessage: 'please input projectId value' });
+        return ;
+    }
+
+    await Likeprojectprofile.destroy({
+        where: { projectId: projectId, profileId: request.user!.id }
+    })
+    .catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+    });
+    await Project.findOne({
+        attributes: ['like'],
+        where: { id: projectId }
+    })
+    .then(async project => {
+        let curLikes = project?.like;
+        let newLikes: number = Number(curLikes) - 1;
+        await Project.update({
+            like: newLikes
+        }, { where: { id: projectId } })
+        .then(() => {
+            response.status(200).json({ message: 'unliked successfully.' });
+        })
+        .catch(err => {
+            response.status(405).json({ errMessage: String(err) });
+        });
+    });
+}
+
+export const deletePosition = async (request: Request, response: Response) => {
+    const { projectId, position } = request.params;
+
+    if (projectId === undefined || position === undefined) {
+        response.status(400).json({ errMessage: 'please input projectId or position value' });
+        return ;
+    }
+
+    const project = await Project.findOne({
+        attributes: ['position'],
+        where: { id: projectId }
+    })
+    .catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+    });
+    if (request.user!.id !== project?.leader) {
+        response.status(401).json({ message: 'no authority' });
+        return ;
+    }
+    
+    let curPosition = project!.position;
+    curPosition.splice(curPosition.indexOf(parseInt(position)), 1);
+    await Project.update({
+        position: curPosition
+    }, { where: { id: projectId } })
     .catch(err => {
         response.status(405).json({ errMessage: String(err) });
     });

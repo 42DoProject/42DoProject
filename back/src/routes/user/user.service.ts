@@ -4,6 +4,7 @@ import { Feed } from "../../models/user/feed.mongo";
 import { Profile } from "../../models/user/profile.model";
 import { User } from "../../models/user/user.model";
 import { io } from "../../socket/bridge";
+import * as feed from "../../module/feed";
 
 export const getConcurrentUsers = async (
   request: Request,
@@ -144,6 +145,8 @@ export const modifyMe = async (request: Request, response: Response) => {
     },
     { where: { userId: request.user!.id } }
   );
+  if (status !== undefined && status != profile!.status)
+    feed.changeStatus(request.user!.id, request.user!.username, status);
   response.status(200).json({ message: "successfully updated" });
 };
 
@@ -191,26 +194,27 @@ export const follow = async (request: Request, response: Response) => {
     response.status(400).json({ error: "invalid user id" });
     return;
   }
-  if (parseInt(id) == parseInt(request.user?.id)) {
+  if (parseInt(id) == parseInt(request.user!.id)) {
     response.status(400).json({ error: "can't follow yourself" });
     return;
   }
   const src = await Profile.findOne({
     include: { model: User, where: { id: request.user?.id } },
   });
-  const following: number[] = <number[]>src?.following;
-  const follower: number[] = <number[]>dst?.follower;
+  const following: number[] = <number[]>src!.following;
+  const follower: number[] = <number[]>dst!.follower;
   if (following.includes(parseInt(id))) {
     response.status(400).json({ error: "already followed" });
     return;
   }
   following.push(parseInt(id));
-  follower.push(parseInt(request.user?.id));
+  follower.push(parseInt(request.user!.id));
   await Profile.update(
     { following: following },
-    { where: { userId: request.user?.id } }
+    { where: { userId: request.user!.id } }
   );
   await Profile.update({ follower: follower }, { where: { userId: id } });
+  feed.follow(request.user!.id, request.user!.username, parseInt(id));
   response.status(200).json({ message: "successfully followed" });
 };
 

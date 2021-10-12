@@ -40,7 +40,24 @@ export const getAllChats = async (request: Request, response: Response) => {
         profileImage: user.profileImage,
       });
     }
-    chatList.push({ uuid: room.id, type: room.type, users: userList });
+    const lastChatDate = await LastChat.findOne({
+      uuid: room.id,
+      userId: request.user!.id,
+    });
+    const unreadCount = await ChatRow.count({
+      uuid: room.id,
+      date: { $gt: lastChatDate!.date },
+    });
+    const last = await ChatRow.findOne({
+      uuid: room.id,
+    }).sort({ date: -1 });
+    chatList.push({
+      uuid: room.id,
+      type: room.type,
+      unread: unreadCount,
+      last: last ? last.message : "",
+      users: userList,
+    });
   }
   response.status(200).json(chatList);
 };

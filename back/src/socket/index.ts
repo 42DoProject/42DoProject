@@ -3,6 +3,7 @@ import { JwtPayload } from "jsonwebtoken";
 import { BlackList } from "../models/user/blacklist.model";
 import { jwtToObject } from "../routes/auth/oauth";
 import * as chatHandler from "./chat/chat.handler";
+import * as feedHandler from "./feed/feed.handler";
 import { getUserSocket } from "./bridge";
 import { Chat } from "../models/chat/chat.model";
 import { ProfileChat } from "../models/chat/profilechat.model";
@@ -106,6 +107,7 @@ export const handlersFactory = (io: Server) => {
      */
     handler("chat:send", chatHandler.send);
     handler("chat:readAt", chatHandler.readAt);
+    handler("feed:readAt", feedHandler.readAt);
   };
 };
 

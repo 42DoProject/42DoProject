@@ -14,6 +14,8 @@ export interface IChatUser {
 export interface IChatRoom {
   uuid: string;
   type: number;
+  unread: number;
+  last: string;
   users: IChatUser[];
 }
 

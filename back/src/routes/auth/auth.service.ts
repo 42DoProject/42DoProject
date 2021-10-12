@@ -109,6 +109,7 @@ export const signIn = async (request: Request, response: Response) => {
     const meta = await User.findOne({ where: { id: idx } });
     response.status(200).json({
       user: {
+        id: meta!.id,
         username: meta!.username,
         profileImage: meta!.profileImage,
         location: meta!.location,

@@ -1,10 +1,16 @@
+import multer from "multer";
 import { Request, Response } from "express";
 import { IFollowUser } from "../../interface/user.interface";
+import { Applyprojectprofile } from "../../models/project/applyprojectprofile.model";
+import { Likeprojectprofile } from "../../models/project/likeprojectprofile.model";
+import { Projectprofile } from "../../models/project/projectprofile.model";
+import { Project } from "../../models/project/project.model";
 import { Feed } from "../../models/user/feed.mongo";
 import { Profile } from "../../models/user/profile.model";
 import { User } from "../../models/user/user.model";
 import { io } from "../../socket/bridge";
 import * as feed from "../../module/feed";
+import * as awsS3 from "../../module/aws/s3";
 
 export const getConcurrentUsers = async (
   request: Request,
@@ -63,13 +69,17 @@ export const getFeed = async (request: Request, response: Response) => {
 
 export const getMe = async (request: Request, response: Response) => {
   const profile = await Profile.findOne({
-    include: { model: User, where: { id: request.user!.id } },
+    include: [{ model: User, where: { id: request.user!.id } },
+              { model: Projectprofile, attributes: ['id'], include: [{ model: Project }] },
+              { model: Applyprojectprofile, attributes: ['id'], include: [{ model: Project }] },
+              { model: Likeprojectprofile, attributes: ['id'], include: [{ model: Project }] }]
   });
   response.status(200).json({
     username: profile!.user.username,
     profileImage: profile!.user.profileImage,
     location: profile!.user.location,
     email: profile!.user.email,
+    followings: profile!.following,
     following: profile!.following.length,
     follower: profile!.follower.length,
     status: profile!.status,
@@ -80,6 +90,9 @@ export const getMe = async (request: Request, response: Response) => {
     statusMessage: profile!.statusMessage,
     introduction: profile!.introduction,
     github: profile!.github,
+    participatingProject: profile!.projectprofile,
+    applyingProject: profile!.applyprojectprofile,
+    interestedProject: profile!.likeprojectprofile
   });
 };
 
@@ -150,6 +163,36 @@ export const modifyMe = async (request: Request, response: Response) => {
   response.status(200).json({ message: "successfully updated" });
 };
 
+export const profileImage = async (request: Request, response: Response) => {
+  try {
+    await new Promise((resolve, reject) => {
+      awsS3.profile.single("profile")(request, response, (err) => {
+        if (err instanceof multer.MulterError) {
+          reject(err.message);
+        } else if (err) {
+          reject(err.message);
+        }
+        resolve(null);
+      });
+    });
+  } catch (e) {
+    response.status(400).json({ error: e });
+    return;
+  }
+  if (request.urls!.length !== 1) {
+    response.status(400).json({ error: "file is not exist" });
+    return;
+  }
+  const link = `https://${
+    process.env.AWS_FILE_BUCKET_NAME
+  }.s3.ap-northeast-2.amazonaws.com/${(<string[]>request.urls)[0]}`;
+  await User.update(
+    { profileImage: link },
+    { where: { id: request.user!.id } }
+  );
+  response.status(200).json({ url: link });
+};
+
 export const profileMain = async (request: Request, response: Response) => {
   const { id } = request.params;
   if (!id) {
@@ -157,7 +200,10 @@ export const profileMain = async (request: Request, response: Response) => {
     return;
   }
   const profile = await Profile.findOne({
-    include: { model: User, where: { id: id } },
+    include: [{ model: User, where: { id: id } },
+              { model: Projectprofile, attributes: ['id'], include: [{ model: Project }] },
+              { model: Applyprojectprofile, attributes: ['id'], include: [{ model: Project }] },
+              { model: Likeprojectprofile, attributes: ['id'], include: [{ model: Project }] }]
   });
   if (!profile) {
     response.status(400).json({ error: "invalid user id" });
@@ -178,6 +224,9 @@ export const profileMain = async (request: Request, response: Response) => {
     statusMessage: profile.statusMessage,
     introduction: profile.introduction,
     github: profile.github,
+    participatingProject: profile!.projectprofile,
+    applyingProject: profile!.applyprojectprofile,
+    interestedProject: profile!.likeprojectprofile
   });
 };
 

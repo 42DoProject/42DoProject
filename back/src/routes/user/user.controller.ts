@@ -20,6 +20,14 @@ router.post("/me", jwtGuards, (request: Request, response: Response) => {
   userService.modifyMe(request, response);
 });
 
+router.post(
+  "/me/profile",
+  jwtGuards,
+  (request: Request, response: Response) => {
+    userService.profileImage(request, response);
+  }
+);
+
 router.get("/profile/:id", (request: Request, response: Response) => {
   userService.profileMain(request, response);
 });

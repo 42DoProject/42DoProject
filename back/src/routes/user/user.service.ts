@@ -1,9 +1,12 @@
+import multer from "multer";
 import { Request, Response } from "express";
 import { IFollowUser } from "../../interface/user.interface";
 import { Feed } from "../../models/user/feed.mongo";
 import { Profile } from "../../models/user/profile.model";
 import { User } from "../../models/user/user.model";
 import { io } from "../../socket/bridge";
+import * as feed from "../../module/feed";
+import * as awsS3 from "../../module/aws/s3";
 
 export const getConcurrentUsers = async (
   request: Request,
@@ -145,7 +148,39 @@ export const modifyMe = async (request: Request, response: Response) => {
     },
     { where: { userId: request.user!.id } }
   );
+  if (status !== undefined && status != profile!.status)
+    feed.changeStatus(request.user!.id, request.user!.username, status);
   response.status(200).json({ message: "successfully updated" });
+};
+
+export const profileImage = async (request: Request, response: Response) => {
+  try {
+    await new Promise((resolve, reject) => {
+      awsS3.profile.single("profile")(request, response, (err) => {
+        if (err instanceof multer.MulterError) {
+          reject(err.message);
+        } else if (err) {
+          reject(err.message);
+        }
+        resolve(null);
+      });
+    });
+  } catch (e) {
+    response.status(400).json({ error: e });
+    return;
+  }
+  if (request.urls!.length !== 1) {
+    response.status(400).json({ error: "file is not exist" });
+    return;
+  }
+  const link = `https://${
+    process.env.AWS_FILE_BUCKET_NAME
+  }.s3.ap-northeast-2.amazonaws.com/${(<string[]>request.urls)[0]}`;
+  await User.update(
+    { profileImage: link },
+    { where: { id: request.user!.id } }
+  );
+  response.status(200).json({ url: link });
 };
 
 export const profileMain = async (request: Request, response: Response) => {
@@ -192,26 +227,27 @@ export const follow = async (request: Request, response: Response) => {
     response.status(400).json({ error: "invalid user id" });
     return;
   }
-  if (parseInt(id) == parseInt(request.user?.id)) {
+  if (parseInt(id) == parseInt(request.user!.id)) {
     response.status(400).json({ error: "can't follow yourself" });
     return;
   }
   const src = await Profile.findOne({
     include: { model: User, where: { id: request.user?.id } },
   });
-  const following: number[] = <number[]>src?.following;
-  const follower: number[] = <number[]>dst?.follower;
+  const following: number[] = <number[]>src!.following;
+  const follower: number[] = <number[]>dst!.follower;
   if (following.includes(parseInt(id))) {
     response.status(400).json({ error: "already followed" });
     return;
   }
   following.push(parseInt(id));
-  follower.push(parseInt(request.user?.id));
+  follower.push(parseInt(request.user!.id));
   await Profile.update(
     { following: following },
-    { where: { userId: request.user?.id } }
+    { where: { userId: request.user!.id } }
   );
   await Profile.update({ follower: follower }, { where: { userId: id } });
+  feed.follow(request.user!.id, request.user!.username, parseInt(id));
   response.status(200).json({ message: "successfully followed" });
 };
 

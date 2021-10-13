@@ -3,7 +3,6 @@ import "../../SCSS/MainPage/List.scss";
 import { Icon } from "@iconify/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import ReactLoading from "./MainLoading";
 
 export default function RecruitList(props) {
   let [slideFlag, setSlideFlag] = useState(0);
@@ -29,7 +28,7 @@ export default function RecruitList(props) {
   return (
     <>
       {recruitingProject.length === 0 ? (
-        <ReactLoading type="spin" color="#a7bc5b" />
+        <div className="noProject">진행중인 프로젝트가 없어요</div>
       ) : (
         <div className="cardlist">
           {slideFlag === 0 ? null : (

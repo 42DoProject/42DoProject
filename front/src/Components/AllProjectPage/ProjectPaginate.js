@@ -9,14 +9,18 @@ import "../../SCSS/AllProjectPage/ProjectGrid.scss";
 export default function ProjectPaginate(props) {
   const [page, setPage] = useState(1);
   const [Project, setProject] = useState([]);
+  let totCount = 1;
   const getData = async () => {
     try {
       const {
-        data: { project: projectData },
+        data: {
+          project: { rows: projectData, count },
+        },
       } = await axios.get(
         `http://localhost:5000/project?state=${props.state}&pageSize=12&page=${page}`
       );
       setProject(projectData);
+      totCount = count;
     } catch (err) {
       console.log(err);
     }
@@ -42,7 +46,7 @@ export default function ProjectPaginate(props) {
         hideFirstLastPages={true}
         activePage={page}
         itemsCountPerPage={12}
-        totalItemsCount={450}
+        totalItemsCount={totCount}
         pageRangeDisplayed={4}
         prevPageText={
           <Icon

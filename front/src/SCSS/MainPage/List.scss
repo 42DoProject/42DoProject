@@ -1,5 +1,11 @@
 @import "../Base.scss";
 
+.noProject {
+  display: flex;
+  justify-content: center;
+  padding: 8rem;
+  font-weight: $bold;
+}
 .cardlist {
   display: flex;
   position: relative;

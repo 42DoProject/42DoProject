@@ -4,6 +4,8 @@ import { Feed } from "../../models/user/feed.mongo";
 import { Profile } from "../../models/user/profile.model";
 import { User } from "../../models/user/user.model";
 import { io } from "../../socket/bridge";
+import multer from "multer";
+import * as awsS3 from "../../module/aws/s3";
 
 export const getConcurrentUsers = async (
   request: Request,
@@ -145,6 +147,36 @@ export const modifyMe = async (request: Request, response: Response) => {
     { where: { userId: request.user!.id } }
   );
   response.status(200).json({ message: "successfully updated" });
+};
+
+export const profileImage = async (request: Request, response: Response) => {
+  try {
+    await new Promise((resolve, reject) => {
+      awsS3.profile.single("profile")(request, response, (err) => {
+        if (err instanceof multer.MulterError) {
+          reject(err.message);
+        } else if (err) {
+          reject(err.message);
+        }
+        resolve(null);
+      });
+    });
+  } catch (e) {
+    response.status(400).json({ error: e });
+    return;
+  }
+  if (request.urls!.length !== 1) {
+    response.status(400).json({ error: "file is not exist" });
+    return;
+  }
+  const link = `https://${
+    process.env.AWS_FILE_BUCKET_NAME
+  }.s3.ap-northeast-2.amazonaws.com/${(<string[]>request.urls)[0]}`;
+  await User.update(
+    { profileImage: link },
+    { where: { id: request.user!.id } }
+  );
+  response.status(200).json({ url: link });
 };
 
 export const profileMain = async (request: Request, response: Response) => {

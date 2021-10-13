@@ -88,6 +88,7 @@ export const authorization = async (
 ) => {
   var payload: string | boolean | JwtPayload;
   const header = request.headers.authorization;
+  request.urls = [];
   request.user = null;
   if (header) {
     const [, token] = header.split(" ");

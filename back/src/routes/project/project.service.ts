@@ -639,7 +639,7 @@ export const deleteComments = async (request: Request, response: Response) => {
     }
 
     const comment = await Comments.findOne({
-        attributes: ['contentId'],
+        attributes: ['contentId', 'profileId'],
         where: { id: commentId }
     })
     .catch(err => {
@@ -941,17 +941,6 @@ export const likeProject = async (request: Request, response: Response) => {
     });
     if (!project) {
         response.status(400).json({ errMessage: 'invalid projectId param' });
-        return ;
-    }
-    const profile = await Profile.findOne({
-        attributes: ['id'],
-        where: { id: request.user!.id }
-    })
-    .catch(err => {
-        response.status(405).json({ errMessage: String(err) });
-    });
-    if (!profile) {
-        response.status(400).json({ errMessage: 'invalid profileId param' });
         return ;
     }
 

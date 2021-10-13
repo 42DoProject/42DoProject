@@ -69,6 +69,7 @@ export const getMe = async (request: Request, response: Response) => {
     profileImage: profile!.user.profileImage,
     location: profile!.user.location,
     email: profile!.user.email,
+    followings: profile!.following,
     following: profile!.following.length,
     follower: profile!.follower.length,
     status: profile!.status,

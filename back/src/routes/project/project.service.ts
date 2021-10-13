@@ -208,13 +208,20 @@ export const getStatus = async (request: Request, response: Response) => {
         return ;
     }
 
-    const user = await Profile.findOne({
+    const user1 = await Profile.findOne({
         attributes: ['id'],
         include: [{
             model: Projectprofile,
             attributes: ['id'],
             where: { projectId: projectId }
-        }, {
+        }],
+        where: { id: request.user!.id }
+    }).catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+    });
+    const user2 = await Profile.findOne({
+        attributes: ['id'],
+        include: [{
             model: Applyprojectprofile,
             attributes: ['id'],
             where: { projectId: projectId }
@@ -224,9 +231,9 @@ export const getStatus = async (request: Request, response: Response) => {
         response.status(405).json({ errMessage: String(err) });
     });
 
-    if (user?.projectprofile !== null) {
+    if (user1?.projectprofile !== undefined) {
         response.status(200).json({ status: 'participating' });
-    } else if (user?.applyprojectprofile !== null) {
+    } else if (user2?.applyprojectprofile !== undefined) {
         response.status(200).json({ status: 'applying' });
     } else {
         response.status(200).json({ status: 'nothing' });
@@ -240,9 +247,9 @@ const arrayCondition = (array: Number[], max: Number): Number[] => {
 };
 
 export const postList = async (request: Request, response: Response) => {
-    const { title, totalMember, currentMember, state, startDate, endDate, content } = request.body;
+    const { title, totalMember, state, startDate, endDate, content } = request.body;
     let { skill, position } = request.body;
-    let inputState: string = (totalMember - currentMember > 0) ? 'recruiting' : 'proceeding';
+    let inputState: string = (totalMember > 1) ? 'recruiting' : 'proceeding';
     
     if (state !== undefined) {
         inputState = state;
@@ -267,7 +274,7 @@ export const postList = async (request: Request, response: Response) => {
         // filePath: (request.file === undefined ? null : request.file.path),
         leader: request.user?.id,
         totalMember: totalMember,
-        currentMember: currentMember,
+        currentMember: 1,
         state: inputState,
         startDate: startDate,
         endDate: endDate,
@@ -276,6 +283,15 @@ export const postList = async (request: Request, response: Response) => {
         commentCount: 0,
         skill: skill,
         position: position,
+        createdAt: getIsoString(),
+        updatedAt: getIsoString()
+    })
+    .catch(err => {
+    	response.status(405).json({ errMessage: String(err) });
+    })
+    await Projectprofile.create({
+        projectId: project!.id,
+        profileId: request.user?.id,
         createdAt: getIsoString(),
         updatedAt: getIsoString()
     })
@@ -304,17 +320,14 @@ export const updateList = async (request: Request, response: Response) => {
     const { projectId } = request.query;
     const { title, totalMember, currentMember, state, startDate, endDate, content } = request.body;
     let { skill, position } = request.body;
-    let inputState: string = (totalMember - currentMember > 0) ? 'recruiting' : 'proceeding';
 
     if (projectId === undefined) {
         response.status(400).json({ errMessage: 'please input projectId query' });
         return ;
     }
-    if (state !== undefined) {
-        inputState = state;
-    }
+    
     const project = await Project.findOne({
-        attributes: ['leader'],
+        attributes: ['leader', 'currentMember'],
         where: { id: projectId }
     })
     .catch(err => {
@@ -323,6 +336,14 @@ export const updateList = async (request: Request, response: Response) => {
     if (project!.leader !== request.user!.id) {
         response.status(401).json({ errMessage: 'no authority' });
         return ;
+    }
+    if (totalMember < project!.currentMember) {
+        response.status(400).json({ errMessage: 'invalid totalMember' });
+        return ;
+    }
+    let inputState: string = (totalMember - currentMember > 0) ? 'recruiting' : 'proceeding';
+    if (state !== undefined) {
+        inputState = state;
     }
 
     try {
@@ -382,7 +403,20 @@ export const deleteList = async (request: Request, response: Response) => {
         response.status(401).json({ errMessage: 'no authority' });
         return ;
     }
+    const content = await Content.findOne({
+        attributes: ['id'],
+        where: { projectId: projectId }
+    })
+    .catch(err => {
+    	response.status(405).json({ errMessage: String(err) });
+    })
 
+    await Comments.destroy({
+        where: { contentId: content!.id }
+    })
+    .catch(err => {
+    	response.status(405).json({ errMessage: String(err) });
+    })
     await Content.destroy({
         where: { projectId: projectId }
     })
@@ -390,6 +424,12 @@ export const deleteList = async (request: Request, response: Response) => {
         response.status(405).json({ errMessage: String(err) });
     });
     await Applyprojectprofile.destroy({
+        where: { projectId: projectId }
+    })
+    .catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+    });
+    await Likeprojectprofile.destroy({
         where: { projectId: projectId }
     })
     .catch(err => {
@@ -647,7 +687,7 @@ export const getApplyerList = async (request: Request, response: Response) => {
     }
     const project = await Project.findOne({
         attributes: ['id', 'leader'],
-        where: { projectId: projectId }
+        where: { id: projectId }
     })
     .catch(err => {
         response.status(405).json({ errMessage: String(err) });
@@ -798,6 +838,28 @@ export const addMember = async (request: Request, response: Response) => {
     .catch(err => {
     	response.status(405).json({ errMessage: String(err) });
     })
+    const project = await Project.findOne({
+        attributes: ['totalMember', 'currentMember'],
+        where: { id: projectId }
+    })
+    .catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+    });
+    let curMembers = project?.currentMember;
+    let newMembers: number = Number(curMembers) + 1;
+    if (newMembers > project!.totalMember) {
+        response.status(400).json({ errMessage: 'please expand totalMember' });
+        return ;
+    }
+    let inputState: string = (project!.totalMember - newMembers > 0) ? 'recruiting' : 'proceeding';
+    await Project.update({
+        currentMember: newMembers,
+        state: inputState
+    }, { where: { id: projectId } })
+    .catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+    });
+
     await Applyprojectprofile.destroy({
         where: { projectId: projectId, profileId: profileId }
     })
@@ -836,6 +898,22 @@ export const deleteMember = async (request: Request, response: Response) => {
         return ;
     }
 
+    const project = await Project.findOne({
+        attributes: ['totalMember', 'currentMember'],
+        where: { id: projectId }
+    })
+    .catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+    });
+    let curMembers = project?.currentMember;
+    let newMembers: number = Number(curMembers) - 1;
+    await Project.update({
+        currentMember: newMembers,
+        state: 'recruiting'
+    }, { where: { id: projectId } })
+    .catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+    });
     await Projectprofile.destroy({
         where: { projectId: projectId, profileId: profileId }
     })
@@ -947,7 +1025,7 @@ export const deletePosition = async (request: Request, response: Response) => {
     }
 
     const project = await Project.findOne({
-        attributes: ['position'],
+        attributes: ['position', 'leader'],
         where: { id: projectId }
     })
     .catch(err => {
@@ -963,6 +1041,9 @@ export const deletePosition = async (request: Request, response: Response) => {
     await Project.update({
         position: curPosition
     }, { where: { id: projectId } })
+    .then(() => {
+        response.status(200).json({ message: 'deleted successfully.' });
+    })
     .catch(err => {
         response.status(405).json({ errMessage: String(err) });
     });

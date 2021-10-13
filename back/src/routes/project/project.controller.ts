@@ -77,4 +77,20 @@ router.delete("/accept/:projectId/:profileId", jwtGuards, (request: Request, res
   projectService.deleteMember(request, response);
 });
 
+router.post("/like/:projectId", jwtGuards, (request: Request, response: Response) => {
+  projectService.likeProject(request, response);
+});
+
+router.delete("/like/:projectId", jwtGuards, (request: Request, response: Response) => {
+  projectService.unlikeProject(request, response);
+});
+
+router.get("/status", jwtGuards, (request: Request, response: Response) => {
+  projectService.getStatus(request, response);
+});
+
+router.delete("/position/:projectId/:position", jwtGuards, (request: Request, response: Response) => {
+  projectService.deletePosition(request, response);
+})
+
 export default router;

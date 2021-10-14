@@ -15,13 +15,10 @@ import AllCadet from "./Components/CadetPage/AllCadet";
 import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import socket from "./socket";
-
 function App(props) {
   // 새로운 Token 발급
   let loginState = useSelector((state) => state.loginReducer);
   let dispatch = useDispatch();
-
   const getToken = async () => {
     try {
       const prevRefreshToken = localStorage.getItem("refreshToken");

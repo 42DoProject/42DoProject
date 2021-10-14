@@ -3,6 +3,7 @@ import { Icon } from "@iconify/react";
 import "../../SCSS/Chat.scss";
 import ChatRoom from "./ChatRoom";
 import axios from "axios";
+
 export default function Chat() {
   let [clickFlag, setClickFlag] = useState(0);
   let [convFlag, setConvFlag] = useState(0);
@@ -10,10 +11,9 @@ export default function Chat() {
 
   const getChatRoom = async () => {
     try {
-      let ACCESS_TOKEN = localStorage.getItem("accessToken");
       const { data } = await axios.get("http://localhost:5000/chat", {
         headers: {
-          Authorization: `Bearer ${ACCESS_TOKEN}`,
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
       setChatRoom(data);

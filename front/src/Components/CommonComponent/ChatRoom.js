@@ -2,17 +2,12 @@ import React, { useEffect, useState } from "react";
 import "../../SCSS/ChatRoom.scss";
 import axios from "axios";
 import relativeTime from "../../relativeTime";
-import io from "socket.io-client";
 import socket from "../../socket";
 
 export default function ChatRoom(props) {
   const { chatRoom, clickFlag } = props;
   const [chat, setChat] = useState([]);
   const [refreshFlag, setRefreshFlag] = useState(0);
-
-  socket.emit("authorization", {
-    token: localStorage.getItem("accessToken"),
-  });
   const getChat = async (uuid) => {
     try {
       const ACCESS_TOKEN = localStorage.getItem("accessToken");
@@ -29,9 +24,7 @@ export default function ChatRoom(props) {
   useEffect(() => {
     getChat(chatRoom.uuid);
   }, [refreshFlag]);
-  socket.on("connect", () => {
-    console.log("socket connect");
-  });
+
   socket.on("chat:receive", (payload) => {
     console.log("chat:receive");
     refreshFlag ? setRefreshFlag(0) : setRefreshFlag(1);

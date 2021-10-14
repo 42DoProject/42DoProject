@@ -3,11 +3,13 @@ import { JwtPayload } from "jsonwebtoken";
 import { BlackList } from "../models/user/blacklist.model";
 import { jwtToObject } from "../routes/auth/oauth";
 import * as chatHandler from "./chat/chat.handler";
+import * as feedHandler from "./feed/feed.handler";
 import { getUserSocket } from "./bridge";
 import { Chat } from "../models/chat/chat.model";
 import { ProfileChat } from "../models/chat/profilechat.model";
 import { Profile } from "../models/user/profile.model";
 import { User } from "../models/user/user.model";
+import { getIsoString } from "../module/time";
 
 const jwtAuth = async (token: string): Promise<number> => {
   var payload: string | boolean | JwtPayload;
@@ -47,8 +49,16 @@ const inConcurrent = async (io: Server, userId: Number, type: Number) => {
       profileImage: u!.profileImage,
       statusMessage: u!.profile!.statusMessage,
     });
+    await Profile.update(
+      { lastAccess: "online" },
+      { where: { userId: u!.id } }
+    );
   } else if (type === 1) {
     io.emit("concurrent:disconnect", { userId: userId });
+    await Profile.update(
+      { lastAccess: getIsoString() },
+      { where: { userId: userId.toString() } }
+    );
   }
 };
 
@@ -97,6 +107,7 @@ export const handlersFactory = (io: Server) => {
      */
     handler("chat:send", chatHandler.send);
     handler("chat:readAt", chatHandler.readAt);
+    handler("feed:readAt", feedHandler.readAt);
   };
 };
 
@@ -106,5 +117,7 @@ const connect = (io: Server, socket: Socket): void => {
 
 const disconnect = async (io: Server, socket: Socket) => {
   console.log(`disconnect: ${socket.id}`);
-  if (socket.data.user != null) await inConcurrent(io, socket.data.user, 1);
+  if (socket.data.user != null) {
+    await inConcurrent(io, socket.data.user, 1);
+  }
 };

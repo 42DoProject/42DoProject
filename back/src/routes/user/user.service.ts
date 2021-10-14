@@ -1,9 +1,16 @@
+import multer from "multer";
 import { Request, Response } from "express";
 import { IFollowUser } from "../../interface/user.interface";
+import { Applyprojectprofile } from "../../models/project/applyprojectprofile.model";
+import { Likeprojectprofile } from "../../models/project/likeprojectprofile.model";
+import { Projectprofile } from "../../models/project/projectprofile.model";
+import { Project } from "../../models/project/project.model";
 import { Feed } from "../../models/user/feed.mongo";
 import { Profile } from "../../models/user/profile.model";
 import { User } from "../../models/user/user.model";
 import { io } from "../../socket/bridge";
+import * as feed from "../../module/feed";
+import * as awsS3 from "../../module/aws/s3";
 
 export const getConcurrentUsers = async (
   request: Request,
@@ -29,23 +36,64 @@ export const getConcurrentUsers = async (
 };
 
 export const getFeed = async (request: Request, response: Response) => {
+  const date = Number(request.query.date);
+  const u = await Profile.findOne({ where: { userId: request.user!.id } });
+  const list = [];
+  if (!isNaN(date)) {
+    const feed = await Feed.find({
+      userId: request.user!.id,
+      date: { $lt: date },
+    })
+      .sort({ date: -1 })
+      .limit(20);
+    for (const f of feed)
+      list.push({ date: f.date, type: f.type, args: f.args });
+    response.status(200).json(list);
+    return;
+  }
   const feed = await Feed.find({
-    userId: request.user?.id,
+    userId: request.user!.id,
+    date: { $lte: u!.feed },
   })
     .sort({ date: -1 })
-    .limit(20);
-  console.log(feed);
+    .limit(10);
+  const unreadFeed = await Feed.find({
+    userId: request.user!.id,
+    date: { $gt: u!.feed },
+  });
+  for (const f of unreadFeed.reverse())
+    list.push({ date: f.date, type: f.type, args: f.args });
+  for (const f of feed) list.push({ date: f.date, type: f.type, args: f.args });
+  response.status(200).json({ unread: unreadFeed.length, list: list });
 };
 
 export const getMe = async (request: Request, response: Response) => {
   const profile = await Profile.findOne({
-    include: { model: User, where: { id: request.user!.id } },
+    include: [
+      { model: User, where: { id: request.user!.id } },
+      {
+        model: Projectprofile,
+        attributes: ["id"],
+        include: [{ model: Project }],
+      },
+      {
+        model: Applyprojectprofile,
+        attributes: ["id"],
+        include: [{ model: Project }],
+      },
+      {
+        model: Likeprojectprofile,
+        attributes: ["id"],
+        include: [{ model: Project }],
+      },
+    ],
   });
   response.status(200).json({
     username: profile!.user.username,
     profileImage: profile!.user.profileImage,
     location: profile!.user.location,
     email: profile!.user.email,
+    followings: profile!.following,
     following: profile!.following.length,
     follower: profile!.follower.length,
     status: profile!.status,
@@ -56,6 +104,9 @@ export const getMe = async (request: Request, response: Response) => {
     statusMessage: profile!.statusMessage,
     introduction: profile!.introduction,
     github: profile!.github,
+    participatingProject: profile!.projectprofile,
+    applyingProject: profile!.applyprojectprofile,
+    interestedProject: profile!.likeprojectprofile,
   });
 };
 
@@ -113,13 +164,47 @@ export const modifyMe = async (request: Request, response: Response) => {
       status: status !== undefined ? status : profile!.status,
       position: position !== undefined ? position : profile!.position,
       skill: skill !== undefined ? skill : profile!.skill,
-      statusMessage: statusMessage !== undefined ? statusMessage : profile!.statusMessage,
-      introduction: introduction !== undefined ? introduction : profile!.introduction,
+      statusMessage:
+        statusMessage !== undefined ? statusMessage : profile!.statusMessage,
+      introduction:
+        introduction !== undefined ? introduction : profile!.introduction,
       github: github !== undefined ? github : profile!.github,
     },
     { where: { userId: request.user!.id } }
   );
+  if (status !== undefined && status != profile!.status)
+    feed.changeStatus(request.user!.id, request.user!.username, status);
   response.status(200).json({ message: "successfully updated" });
+};
+
+export const profileImage = async (request: Request, response: Response) => {
+  try {
+    await new Promise((resolve, reject) => {
+      awsS3.profile.single("profile")(request, response, (err) => {
+        if (err instanceof multer.MulterError) {
+          reject(err.message);
+        } else if (err) {
+          reject(err.message);
+        }
+        resolve(null);
+      });
+    });
+  } catch (e) {
+    response.status(400).json({ error: e });
+    return;
+  }
+  if (request.urls!.length !== 1) {
+    response.status(400).json({ error: "file is not exist" });
+    return;
+  }
+  const link = `https://${
+    process.env.AWS_FILE_BUCKET_NAME
+  }.s3.ap-northeast-2.amazonaws.com/${(<string[]>request.urls)[0]}`;
+  await User.update(
+    { profileImage: link },
+    { where: { id: request.user!.id } }
+  );
+  response.status(200).json({ url: link });
 };
 
 export const profileMain = async (request: Request, response: Response) => {
@@ -129,7 +214,24 @@ export const profileMain = async (request: Request, response: Response) => {
     return;
   }
   const profile = await Profile.findOne({
-    include: { model: User, where: { id: id } },
+    include: [
+      { model: User, where: { id: id } },
+      {
+        model: Projectprofile,
+        attributes: ["id"],
+        include: [{ model: Project }],
+      },
+      {
+        model: Applyprojectprofile,
+        attributes: ["id"],
+        include: [{ model: Project }],
+      },
+      {
+        model: Likeprojectprofile,
+        attributes: ["id"],
+        include: [{ model: Project }],
+      },
+    ],
   });
   if (!profile) {
     response.status(400).json({ error: "invalid user id" });
@@ -150,6 +252,9 @@ export const profileMain = async (request: Request, response: Response) => {
     statusMessage: profile.statusMessage,
     introduction: profile.introduction,
     github: profile.github,
+    participatingProject: profile!.projectprofile,
+    applyingProject: profile!.applyprojectprofile,
+    interestedProject: profile!.likeprojectprofile,
   });
 };
 
@@ -166,26 +271,27 @@ export const follow = async (request: Request, response: Response) => {
     response.status(400).json({ error: "invalid user id" });
     return;
   }
-  if (parseInt(id) == parseInt(request.user?.id)) {
+  if (parseInt(id) == parseInt(request.user!.id)) {
     response.status(400).json({ error: "can't follow yourself" });
     return;
   }
   const src = await Profile.findOne({
     include: { model: User, where: { id: request.user?.id } },
   });
-  const following: number[] = <number[]>src?.following;
-  const follower: number[] = <number[]>dst?.follower;
+  const following: number[] = <number[]>src!.following;
+  const follower: number[] = <number[]>dst!.follower;
   if (following.includes(parseInt(id))) {
     response.status(400).json({ error: "already followed" });
     return;
   }
   following.push(parseInt(id));
-  follower.push(parseInt(request.user?.id));
+  follower.push(parseInt(request.user!.id));
   await Profile.update(
     { following: following },
-    { where: { userId: request.user?.id } }
+    { where: { userId: request.user!.id } }
   );
   await Profile.update({ follower: follower }, { where: { userId: id } });
+  feed.follow(request.user!.id, request.user!.username, parseInt(id));
   response.status(200).json({ message: "successfully followed" });
 };
 
@@ -248,7 +354,7 @@ export const following = async (request: Request, response: Response) => {
       userId: u,
       username: user!.username,
       profileImage: user!.profileImage,
-      statusMessage: user!.profile!.statusMessage,
+      position: user!.profile!.position,
     });
   }
   response.status(200).json(userList);
@@ -276,7 +382,7 @@ export const follower = async (request: Request, response: Response) => {
       userId: u,
       username: user!.username,
       profileImage: user!.profileImage,
-      statusMessage: user!.profile!.statusMessage,
+      position: user!.profile!.position,
     });
   }
   response.status(200).json(userList);

@@ -16,6 +16,7 @@ import { getUserSocket, io } from "../../socket/bridge";
 
 export const getAllChats = async (request: Request, response: Response) => {
   const { id } = <User>request.user;
+  const chatSort: any[] = [];
   const chatList: IChatRoom[] = [];
   const chats = await Chat.findAll({
     include: {
@@ -51,14 +52,19 @@ export const getAllChats = async (request: Request, response: Response) => {
     const last = await ChatRow.findOne({
       uuid: room.id,
     }).sort({ date: -1 });
-    chatList.push({
-      uuid: room.id,
-      type: room.type,
-      unread: unreadCount,
-      last: last ? last.message : "",
-      users: userList,
+    chatSort.push({
+      date: last ? last.date : 0,
+      payload: {
+        uuid: room.id,
+        type: room.type,
+        unread: unreadCount,
+        last: last ? last.message : "",
+        users: userList,
+      },
     });
   }
+  chatSort.sort((a, b) => b.date - a.date);
+  for (const o of chatSort) chatList.push(o.payload);
   response.status(200).json(chatList);
 };
 
@@ -90,7 +96,7 @@ const isDMExist = async (
 
 export const makeChatRoom = async (request: Request, response: Response) => {
   const { users } = request.body;
-  if (users.length === 0) {
+  if (!users || users.length === 0) {
     response.status(400).json({ error: "users length can't zero" });
     return;
   }

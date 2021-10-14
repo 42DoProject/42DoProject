@@ -34,15 +34,15 @@ a {
 ::-webkit-scrollbar-thumb:hover {
   background: $lightGrey;
 }
-::-webkit-scrollbar-track-piece:end {
-  background: transparent;
-  margin-bottom: 1rem;
-}
+// ::-webkit-scrollbar-track-piece:end {
+//   background: transparent;
+//   margin-bottom: 1rem;
+// }
 
-::-webkit-scrollbar-track-piece:start {
-  background: transparent;
-  margin-top: 1rem;
-}
+// ::-webkit-scrollbar-track-piece:start {
+//   background: transparent;
+//   margin-top: 1rem;
+// }
 
 input,
 select,

@@ -1,22 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "../../SCSS/ProfilePage/Follow.scss";
 import { Icon } from "@iconify/react";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { positions } from "../../userData";
+import UnfollowAlert from "./UnfollowAlert";
 
 export default function Follow(props) {
   const loginState = useSelector((state) => state.loginReducer);
-  const [followerList, setFollowerList] = useState([]);
+  const [followerList, setFollowerList] = useState([]); // 보고있는 프로필의 유저id의 팔로워/팔로잉 리스트
   const [followButton, setFollowButton] = useState();
+  const [unfollowAlert, setUnfollowAlert] = useState(0); // 1일때 unfollowAlert창 보임
+  const [followUser, setFollowUser] = useState(); // (UnfollowAlert로 보내줄) 언팔로우 버튼이 클릭된 유저
 
   const handleClickOutside = (event) => {
-    if (
-      event.target.className !== "follow__wrapper" &&
-      event.target.offsetParent &&
-      event.target.offsetParent.className !== "follow__wrapper"
-    ) {
-      props.setFollowFlag(0);
-    }
+    // if (
+    //   event.target.className !== "follow__wrapper" &&
+    //   event.target.offsetParent &&
+    //   event.target.offsetParent.className !== "follow__wrapper"
+    // ) {
+    //   props.setFollowFlag(0);
+    // }
   };
 
   document.addEventListener("mousedown", handleClickOutside);
@@ -28,7 +32,7 @@ export default function Follow(props) {
         }?page=1`,
         {
           headers: {
-            Authorization: `Bearer ${props.ACCESS_TOKEN}`,
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         }
       )
@@ -42,11 +46,13 @@ export default function Follow(props) {
     else if (props.subject === "팔로우") getFollow("following");
   }, []);
 
-  // useEffect(() => {
-  //   props.myFollowings.includes(Number(props.userId))
-  //     ? setFollowButton("unfollow")
-  //     : setFollowButton("follow");
-  // }, [props.myFollowings]);
+  useEffect(() => {
+    if (props.refreshFlag === 1) {
+      getFollow("follower");
+      getFollow("following");
+      props.setRefreshFlag(0);
+    }
+  }, [props.refreshFlag]);
 
   return (
     <div className="follow__wrapper">
@@ -75,26 +81,50 @@ export default function Follow(props) {
                   <img className="follow__img" src={`${v.profileImage}`} />
                   <div className="follow__info">
                     <div className="follow__name">{v.username}</div>
-                    <div className="follow__position">{v.position}</div>
+                    <div className="follow__position">
+                      {positions[v.position]}
+                    </div>
                   </div>
                 </div>
-                <button
-                  className="follow__button"
-                  onClick={async () => {
-                    await axios.get(
-                      `http://localhost:5000/user/follow/${v.userId}`,
-                      {
-                        headers: {
-                          Authorization: `Bearer ${props.ACCESS_TOKEN}`,
-                        },
-                      }
-                    );
-                    // props.setGetDataFlag(1);
-                    // setFollowButton("follow");
-                    // setUnfollowAlert(0);}
-                  }}>
-                  팔로우
-                </button>
+                {v.userId ===
+                loginState.id ? null : props.myFollowings.includes(
+                    Number(props.userId)
+                  ) ? (
+                  <button
+                    className="follow__button"
+                    onClick={async () => {
+                      await axios.get(
+                        `http://localhost:5000/user/follow/${v.userId}`,
+                        {
+                          headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                              "accessToken"
+                            )}`,
+                          },
+                        }
+                      );
+                      // props.setGetDataFlag(1);
+                      // setFollowButton("follow");
+                      // setUnfollowAlert(0);}
+                    }}>
+                    팔로우
+                  </button>
+                ) : (
+                  <>
+                    <button
+                      className="unfollow__button"
+                      onClick={() => {
+                        setUnfollowAlert(1);
+                        setFollowUser(v);
+                      }}>
+                      <Icon
+                        icon="bx:bxs-user-check"
+                        className="unfollow__icon"
+                        style={{ fontSize: "1.3rem" }}
+                      />
+                    </button>
+                  </>
+                )}
               </div>
             );
           })
@@ -104,6 +134,15 @@ export default function Follow(props) {
           </div>
         )}
       </div>
+      {unfollowAlert === 1 && (
+        <UnfollowAlert
+          setUnfollowAlert={setUnfollowAlert}
+          setFollowButton={setFollowButton}
+          setGetDataFlag={props.setGetDataFlag}
+          user={followUser}
+          setRefreshFlag={props.setRefreshFlag}
+        />
+      )}
     </div>
   );
 }

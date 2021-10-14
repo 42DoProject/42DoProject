@@ -1,7 +1,6 @@
 import React from "react";
 import { Icon } from "@iconify/react";
 import "../../SCSS/ProfilePage/ProfileBody.scss";
-import { useSelector } from "react-redux";
 import skills from "../../skills.json";
 import { positions } from "../../userData";
 import ProgressSlide from "../MainPage/ProgressSlide";
@@ -23,17 +22,17 @@ export default function ProfileBody(props) {
           <div className="card1__skill">
             <div className="skill__label">보유 스킬</div>
             <div className="skill__content">
-              {props.user.skill &&
-                props.user.skill.map((e, i) => {
-                  // console.log(e);
-                  return (
-                    <img
-                      key={i}
-                      alt={skills.skills[e][0]}
-                      src={skills.skills[e][1]}
-                    />
-                  );
-                })}
+              {props.user.skill && props.user.skill.length
+                ? props.user.skill.map((e, i) => {
+                    return (
+                      <img
+                        key={i}
+                        alt={skills.skills[e][0]}
+                        src={skills.skills[e][1]}
+                      />
+                    );
+                  })
+                : "-"}
             </div>
           </div>
         </div>

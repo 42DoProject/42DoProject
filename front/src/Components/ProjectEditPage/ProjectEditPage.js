@@ -4,7 +4,7 @@ import "@toast-ui/editor/dist/toastui-editor.css";
 import { Editor } from "@toast-ui/react-editor";
 
 export default function ProjectEditPage() {
-  let [unsplashFlag, setUnsplashFlag] = useState(0);
+  // let [unsplashFlag, setUnsplashFlag] = useState(0);
 
   return (
     <div className="project-edit__wrapper">

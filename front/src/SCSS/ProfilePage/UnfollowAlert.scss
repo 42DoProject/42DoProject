@@ -1,0 +1,54 @@
+@import "../Base.scss";
+
+.unfollow__alert {
+  cursor: auto;
+  position: fixed;
+  box-shadow: 0 0 0 9999px #000000b0;
+  border-radius: $round;
+  top: 50%;
+  left: 50%;
+  margin: -10rem 0 0 -10rem;
+  z-index: 10;
+  width: 20rem;
+  height: 20rem;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  font-size: $fontSm;
+  font-weight: 400;
+  .unfollow__img {
+    width: 6rem;
+    height: 6rem;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-top: 1rem;
+  }
+  .unfollow__user {
+    font-weight: $bold;
+  }
+  .unfollow__desc {
+    line-height: normal;
+    margin-bottom: 0;
+  }
+  .unfollow__unfollow {
+    width: 100%;
+    color: $pointRed;
+    font-weight: $normal;
+    cursor: pointer;
+  }
+  .unfollow__cancel {
+    cursor: pointer;
+    width: 100%;
+  }
+  hr {
+    width: 100% !important;
+    margin: 0;
+  }
+  div {
+    padding: 0 1rem;
+    margin: 1rem 0;
+  }
+}

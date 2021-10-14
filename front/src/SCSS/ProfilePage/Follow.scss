@@ -107,3 +107,16 @@
   align-items: center;
   color: $lightGrey;
 }
+
+.unfollow__button {
+  color: $black;
+  background-color: $lightestGrey;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.2rem 0.6rem;
+  font-size: $fontSs;
+  font-weight: $normal;
+  .unfollow__icon {
+    width: 2rem;
+  }
+}

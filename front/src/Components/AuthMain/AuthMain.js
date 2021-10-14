@@ -27,7 +27,7 @@ export default function AuthMain() {
         dispatch({ type: "LOGIN", payload: Data.user });
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("refreshToken", refreshToken);
-        history.push("/");
+        history.goBack();
       } catch (err) {
         console.log(err);
       }

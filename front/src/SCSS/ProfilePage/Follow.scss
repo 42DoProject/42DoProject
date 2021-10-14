@@ -50,6 +50,7 @@
 
 .follow__list {
   padding: 0.5rem;
+  height: 100%;
 }
 .follow__follower {
   display: flex;
@@ -71,6 +72,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 
 .follow__img {
@@ -96,4 +98,12 @@
     font-size: $fontSs;
     color: $grey;
   }
+}
+
+.no-follow {
+  display: flex;
+  justify-content: center;
+  height: 90%;
+  align-items: center;
+  color: $lightGrey;
 }

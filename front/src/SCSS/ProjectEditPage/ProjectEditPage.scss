@@ -31,7 +31,7 @@
 
   .project-edit__form {
     padding: 2rem 4rem;
-    height: 60rem;
+    height: 80rem;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -67,3 +67,8 @@
     margin-left: 0.2rem;
   }
 }
+
+// .markdown__editor {
+//   border-radius: $round;
+//   color: $lightGrey;
+// }

@@ -49,9 +49,9 @@ export default function ProfileEditPage() {
         statusMessage: document.querySelector(".profile__bubble").value,
         introduction: document.querySelector(".introduction__textarea").value,
         github: githubPost,
-        position: document.querySelector(".job__content").value,
+        position: +document.querySelector(".job__content").value,
         skill: skillPost,
-        status: document.querySelector(".row2__status").value,
+        status: +document.querySelector(".row2__status").value,
       },
     })
       .then((res) => {

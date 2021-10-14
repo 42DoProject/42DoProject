@@ -50,7 +50,8 @@ function App(props) {
         <Route exact path="/" component={Main} />
         <Route path="/auth" component={AuthMain} />
         <Route exact path="/profile" component={ProfilePage} />
-        <Route path="/profile/edit" component={ProfileEditPage} />
+        <Route exact path="/profile/edit" component={ProfileEditPage} />
+        <Route exact path="/profile/:id" component={ProfilePage} />
         <Route path="/project/recruit" component={RecruitProjects} />
         <Route path="/project/proceed" component={ProceedProjects} />
         <Route path="/project/complete" component={CompleteProjects} />

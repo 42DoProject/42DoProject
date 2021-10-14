@@ -6,6 +6,7 @@ export default function loginReducer(state, action) {
         email: action.payload.email,
         profileImage: action.payload.profileImage,
         location: action.payload.location,
+        id: action.payload.id,
       };
       return copy;
     case "LOGOUT":

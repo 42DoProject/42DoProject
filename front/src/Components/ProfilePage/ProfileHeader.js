@@ -6,6 +6,7 @@ import relativeTime from "../../relativeTime";
 import { useHistory } from "react-router";
 import { status } from "../../userData";
 import { Icon } from "@iconify/react";
+import UnfollowAlert from "./UnfollowAlert";
 // import { Link } from "react-router-dom";
 import axios from "axios";
 
@@ -16,6 +17,7 @@ export default function ProfileHeader(props) {
   const [followingFlag, setFollowingFlag] = useState(0);
   const [followButton, setFollowButton] = useState();
   const [unfollowAlert, setUnfollowAlert] = useState(0);
+  const [refreshFlag, setRefreshFlag] = useState(0); // 팔로워/팔로우 리스트 flag==1일 때 refresh
 
   const history = useHistory();
 
@@ -57,12 +59,15 @@ export default function ProfileHeader(props) {
                       `http://localhost:5000/user/follow/${props.userId}`,
                       {
                         headers: {
-                          Authorization: `Bearer ${props.ACCESS_TOKEN}`,
+                          Authorization: `Bearer ${localStorage.getItem(
+                            "accessToken"
+                          )}`,
                         },
                       }
                     );
                     props.setGetDataFlag(1);
                     setFollowButton("unfollow");
+                    setRefreshFlag(1);
                   }}>
                   팔로우
                 </button>
@@ -78,51 +83,18 @@ export default function ProfileHeader(props) {
                     <Icon
                       className="unfollow__icon"
                       icon="bx:bxs-user-check"
-                      height="30"
+                      style={{ fontSize: "1.7rem" }}
                     />
                   </button>
                   {unfollowAlert === 1 ? (
-                    <div className="unfollow__alert">
-                      <div>
-                        <img
-                          className="unfollow__img"
-                          src={props.user.profileImage}
-                        />
-                        <div className="unfollow__desc">
-                          팔로우를 취소하면{" "}
-                          <span className="unfollow__user">
-                            {props.user.username}
-                          </span>
-                          님의 소식을 더이상 받을 수 없게 됩니다.
-                        </div>
-                      </div>
-                      <hr />
-                      <div
-                        className="unfollow__unfollow"
-                        onClick={async () => {
-                          await axios.get(
-                            `http://localhost:5000/user/unfollow/${props.userId}`,
-                            {
-                              headers: {
-                                Authorization: `Bearer ${props.ACCESS_TOKEN}`,
-                              },
-                            }
-                          );
-                          props.setGetDataFlag(1);
-                          setFollowButton("follow");
-                          setUnfollowAlert(0);
-                        }}>
-                        팔로우 취소
-                      </div>
-                      <hr />
-                      <div
-                        className="unfollow__cancel"
-                        onClick={() => {
-                          setUnfollowAlert(0);
-                        }}>
-                        취소
-                      </div>
-                    </div>
+                    <UnfollowAlert
+                      user={props.user}
+                      userId={props.userId}
+                      setUnfollowAlert={setUnfollowAlert}
+                      setFollowButton={setFollowButton}
+                      setGetDataFlag={props.setGetDataFlag}
+                      setRefreshFlag={setRefreshFlag}
+                    />
                   ) : null}
                 </>
               )}
@@ -160,7 +132,11 @@ export default function ProfileHeader(props) {
                 setFollowFlag={setFollowerFlag}
                 subject="팔로워"
                 userId={props.userId}
-                ACCESS_TOKEN={props.ACCESS_TOKEN}
+                user={props.user}
+                myFollowings={props.myFollowings}
+                setGetDataFlag={props.setGetDataFlag}
+                setRefreshFlag={setRefreshFlag}
+                refreshFlag={refreshFlag}
               />
             ) : null}
           </div>
@@ -177,8 +153,11 @@ export default function ProfileHeader(props) {
                 setFollowFlag={setFollowingFlag}
                 subject="팔로우"
                 userId={props.userId}
-                ACCESS_TOKEN={props.ACCESS_TOKEN}
+                user={props.user}
                 myFollowings={props.myFollowings}
+                setGetDataFlag={props.setGetDataFlag}
+                setRefreshFlag={setRefreshFlag}
+                refreshFlag={refreshFlag}
               />
             ) : null}
           </div>

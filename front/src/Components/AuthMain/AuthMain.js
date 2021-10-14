@@ -26,11 +26,11 @@ export default function AuthMain() {
         socket.emit("authorization", {
           token: localStorage.getItem("accessToken"),
         });
-        localStorage.setItem("accessToken", accessToken);
-        localStorage.setItem("refreshToken", refreshToken);
         // loginReducer state 변경
         dispatch({ type: "LOGIN", payload: Data.user });
-        history.push("/");
+        localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem("refreshToken", refreshToken);
+        history.goBack();
       } catch (err) {
         console.log(err);
       }

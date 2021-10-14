@@ -9,7 +9,6 @@ import { useLocation, useParams } from "react-router";
 
 export default function ProfilePage() {
   const [userData, setUserData] = useState([]);
-  const ACCESS_TOKEN = localStorage.getItem("accessToken");
   let loginState = useSelector((state) => state.loginReducer);
   const userId = useParams()["id"];
   const location = useLocation();
@@ -18,15 +17,17 @@ export default function ProfilePage() {
 
   const getData = async () => {
     try {
-      const { data } = await axios.get(
-        `http://localhost:5000/user/profile/${userId}`
-      );
-      setUserData(data);
+      if (userId) {
+        const { data } = await axios.get(
+          `http://localhost:5000/user/profile/${userId}`
+        );
+        setUserData(data);
+      }
       const { data: myData } = await axios.get(
         "http://localhost:5000/user/me",
         {
           headers: {
-            Authorization: `Bearer ${ACCESS_TOKEN}`,
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         }
       );
@@ -40,7 +41,7 @@ export default function ProfilePage() {
     try {
       const { data } = await axios.get("http://localhost:5000/user/me", {
         headers: {
-          Authorization: `Bearer ${ACCESS_TOKEN}`,
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
       setUserData(data);
@@ -67,7 +68,6 @@ export default function ProfilePage() {
           user={userData}
           location={location}
           userId={userId}
-          ACCESS_TOKEN={ACCESS_TOKEN}
           myFollowings={myFollowings}
           setGetDataFlag={setGetDataFlag}
         />

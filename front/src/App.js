@@ -15,6 +15,7 @@ import AllCadet from "./Components/CadetPage/AllCadet";
 import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import socket from "./socket";
 
 function App(props) {
   // 새로운 Token 발급
@@ -32,17 +33,15 @@ function App(props) {
         );
         localStorage.setItem("accessToken", newAccessToken);
         localStorage.setItem("refreshToken", newRefreshToken);
-        // console.log(newRefreshToken);
       }
     } catch (err) {
       dispatch({ type: "LOGOUT" });
       console.log(err);
     }
   };
-  // 29분마다 요청
+  // 25분마다 요청
   useEffect(() => {
-    console.log("hihihihi");
-    const timerId = setInterval(getToken, 1000 * 6 * 29);
+    const timerId = setInterval(getToken, 1000 * 60 * 25);
     localStorage.setItem("timerId", timerId);
   }, [loginState]);
   return (

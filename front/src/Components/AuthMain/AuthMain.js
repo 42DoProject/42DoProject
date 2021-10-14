@@ -3,6 +3,7 @@ import { useHistory, useLocation } from "react-router";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import ReactLoading from "../CommonComponent/Loading";
+import socket from "../../socket";
 
 export default function AuthMain() {
   const location = useLocation().search;
@@ -21,10 +22,14 @@ export default function AuthMain() {
         const {
           token: { accessToken, refreshToken },
         } = Data;
-        // loginReducer state 변경
-        dispatch({ type: "LOGIN", payload: Data.user });
+        // socket 인증
+        socket.emit("authorization", {
+          token: localStorage.getItem("accessToken"),
+        });
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("refreshToken", refreshToken);
+        // loginReducer state 변경
+        dispatch({ type: "LOGIN", payload: Data.user });
         history.push("/");
       } catch (err) {
         console.log(err);

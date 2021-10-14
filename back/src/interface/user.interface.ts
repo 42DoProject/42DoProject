@@ -15,5 +15,5 @@ export interface IFollowUser {
   userId: number;
   username: string;
   profileImage: string;
-  statusMessage: string;
+  position: number;
 }

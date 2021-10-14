@@ -1,4 +1,5 @@
 export default function relativeTime(createdAt) {
+  if (createdAt === 0) return null;
   const milliSeconds = new Date() - createdAt;
   const seconds = milliSeconds / 1000;
   if (seconds < 60) return `방금 전`;

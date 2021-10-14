@@ -2,14 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import "../../SCSS/Chat.scss";
 import ChatRoom from "./ChatRoom";
-import io from "socket.io-client";
 import axios from "axios";
 export default function Chat() {
   let [clickFlag, setClickFlag] = useState(0);
   let [convFlag, setConvFlag] = useState(0);
-  let [socket, setSocket] = useState();
   let [chatRoom, setChatRoom] = useState();
-  let [chat, setChat] = useState([]);
+
   const getChatRoom = async () => {
     try {
       let ACCESS_TOKEN = localStorage.getItem("accessToken");
@@ -18,57 +16,15 @@ export default function Chat() {
           Authorization: `Bearer ${ACCESS_TOKEN}`,
         },
       });
-      await data.forEach((e) => {
-        getChat(e.uuid);
-      });
       setChatRoom(data);
     } catch (err) {
       console.log(err);
     }
   };
-  const getChat = async (uuid) => {
-    try {
-      let ACCESS_TOKEN = localStorage.getItem("accessToken");
-      const { data } = await axios.get(`http://localhost:5000/chat/${uuid}`, {
-        headers: {
-          Authorization: `Bearer ${ACCESS_TOKEN}`,
-        },
-      });
-      chat.push(data);
-      setChat(chat);
-    } catch (err) {
-      console.log(err);
-    }
-  };
   useEffect(() => {
-    setSocket(
-      io("ws://localhost:5000", {
-        transports: ["websocket"],
-      })
-    );
     getChatRoom();
   }, []);
-  if (socket) {
-    socket.on("connect", () => {
-      console.log("socket connect");
-    });
-    socket.on("disconnect", () => {
-      console.log("socket disconnect");
-    });
-    socket.emit("authorization", {
-      token: localStorage.getItem("accessToken"),
-    });
-    socket.on("chat:receive", () => {
-      console.log("chatreceive");
-    });
-    socket.on("chat:newRoom", () => {
-      console.log("newRoom");
-    });
-    socket.emit("chat:send", () => {
-      console.log("send");
-    });
-  }
-  console.log(chat);
+
   return (
     <>
       <div
@@ -159,8 +115,6 @@ export default function Chat() {
               <ChatRoom
                 key={idx}
                 chatRoom={chatRoom[idx]}
-                chat={chat[idx]}
-                socket={socket}
                 clickFlag={clickFlag}
               />
             ))}

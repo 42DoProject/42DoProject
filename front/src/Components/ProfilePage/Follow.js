@@ -9,53 +9,40 @@ import UnfollowAlert from "./UnfollowAlert";
 export default function Follow(props) {
   const loginState = useSelector((state) => state.loginReducer);
   const [followerList, setFollowerList] = useState([]); // 보고있는 프로필의 유저id의 팔로워/팔로잉 리스트
-  const [followButton, setFollowButton] = useState();
-  const [unfollowAlert, setUnfollowAlert] = useState(0); // 1일때 unfollowAlert창 보임
+  const [followButton, setFollowButton] = useState(); // followButton == "follow"이면 팔로우 버튼, followButton =="unfollow"이면 언팔로우 버튼
+  const [unfollowAlert, setUnfollowAlert] = useState(0); // 1일때 unfollowAlert창이 보인다
   const [followUser, setFollowUser] = useState(); // (UnfollowAlert로 보내줄) 언팔로우 버튼이 클릭된 유저
+  const myRef = useRef();
 
   const handleClickOutside = (event) => {
-    // if (
-    //   event.target.className !== "follow__wrapper" &&
-    //   event.target.offsetParent &&
-    //   event.target.offsetParent.className !== "follow__wrapper"
-    // ) {
-    //   props.setFollowFlag(0);
-    // }
+    if (myRef.current && !myRef.current.contains(event.target))
+      props.setFollowFlag(0);
   };
 
   document.addEventListener("mousedown", handleClickOutside);
-  const getFollow = (subj) => {
-    axios
-      .get(
+
+  /*보고있는 프로필 페이지의 팔로워/팔로잉 리스트 가져오기*/
+  const getFollow = async (subj) => {
+    try {
+      const { data } = await axios.get(
         `http://localhost:5000/user/${subj}/${
           props.userId || loginState.id
-        }?page=1`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
-      )
-      .then((res) => {
-        setFollowerList(res.data);
-      });
+        }?page=1`
+      );
+      setFollowerList(data);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
     if (props.subject === "팔로워") getFollow("follower");
     else if (props.subject === "팔로우") getFollow("following");
-  }, []);
-
-  useEffect(() => {
-    if (props.refreshFlag === 1) {
-      getFollow("follower");
-      getFollow("following");
-      props.setRefreshFlag(0);
-    }
+    props.setRefreshFlag(0);
   }, [props.refreshFlag]);
 
   return (
-    <div className="follow__wrapper">
+    <div ref={myRef} className="follow__wrapper">
       <div className="follow__header">
         <div className="box-space"></div>
         <div className="follow__subject">{props.subject}</div>
@@ -86,26 +73,33 @@ export default function Follow(props) {
                     </div>
                   </div>
                 </div>
-                {v.userId ===
-                loginState.id ? null : props.myFollowings.includes(
-                    Number(props.userId)
+                {!loginState ||
+                (loginState &&
+                  v.userId ===
+                    loginState.id) ? null : !props.myFollowings.includes(
+                    v.userId
                   ) ? (
                   <button
                     className="follow__button"
                     onClick={async () => {
-                      await axios.get(
-                        `http://localhost:5000/user/follow/${v.userId}`,
-                        {
-                          headers: {
-                            Authorization: `Bearer ${localStorage.getItem(
-                              "accessToken"
-                            )}`,
-                          },
-                        }
-                      );
-                      // props.setGetDataFlag(1);
-                      // setFollowButton("follow");
-                      // setUnfollowAlert(0);}
+                      try {
+                        await axios.get(
+                          `http://localhost:5000/user/follow/${v.userId}`,
+                          {
+                            headers: {
+                              Authorization: `Bearer ${localStorage.getItem(
+                                "accessToken"
+                              )}`,
+                            },
+                          }
+                        );
+                        console.log("Successfully followed userId:", v.userId);
+                        props.setGetDataFlag(1);
+                        // setFollowButton("unfollow");
+                        setUnfollowAlert(0);
+                      } catch (err) {
+                        console.log(err);
+                      }
                     }}>
                     팔로우
                   </button>
@@ -140,6 +134,7 @@ export default function Follow(props) {
           setFollowButton={setFollowButton}
           setGetDataFlag={props.setGetDataFlag}
           user={followUser}
+          userId={followUser.userId}
           setRefreshFlag={props.setRefreshFlag}
         />
       )}

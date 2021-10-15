@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-// import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import "../../SCSS/ProfilePage/ProfileHeader.scss";
 import Follow from "./Follow";
 import relativeTime from "../../relativeTime";
@@ -12,12 +12,12 @@ import axios from "axios";
 
 export default function ProfileHeader(props) {
   // let userState = useSelector((state) => state.userReducer);
-  // let loginState = useSelector((state) => state.loginReducer);
+  let loginState = useSelector((state) => state.loginReducer);
   const [followerFlag, setFollowerFlag] = useState(0);
   const [followingFlag, setFollowingFlag] = useState(0);
-  const [followButton, setFollowButton] = useState();
+  const [followButton, setFollowButton] = useState(); // "unfollow" / "follow" 버튼
   const [unfollowAlert, setUnfollowAlert] = useState(0);
-  const [refreshFlag, setRefreshFlag] = useState(0); // 팔로워/팔로우 리스트 flag==1일 때 refresh
+  const [refreshFlag, setRefreshFlag] = useState(0); // 팔로워/팔로우 리스트 flag==1일 때 다시 가져온다.
 
   const history = useHistory();
 
@@ -32,7 +32,7 @@ export default function ProfileHeader(props) {
       <div className="header__left">
         <img
           className="profileImage"
-          alt="profileImage"
+          alt={props.user.username}
           src={props.user.profileImage}
         />
 
@@ -48,66 +48,67 @@ export default function ProfileHeader(props) {
       <div className="header__right">
         <div className="right__row1">
           <div className="row1__name">{props.user.username}</div>
-          {props.location.pathname !== "/profile" ? (
-            <>
-              <button className="row1__send-message">메시지 보내기</button>
-              {followButton === "follow" ? (
-                <button
-                  className="row1__follow"
-                  onClick={async () => {
-                    await axios.get(
-                      `http://localhost:5000/user/follow/${props.userId}`,
-                      {
-                        headers: {
-                          Authorization: `Bearer ${localStorage.getItem(
-                            "accessToken"
-                          )}`,
-                        },
-                      }
-                    );
-                    props.setGetDataFlag(1);
-                    setFollowButton("unfollow");
-                    setRefreshFlag(1);
-                  }}>
-                  팔로우
-                </button>
-              ) : (
-                <>
+          {loginState &&
+            (props.location.pathname !== "/profile" ? (
+              <>
+                <button className="row1__send-message">메시지 보내기</button>
+                {followButton === "follow" ? (
                   <button
-                    className="row1__unfollow"
-                    onClick={() => {
-                      unfollowAlert === 0
-                        ? setUnfollowAlert(1)
-                        : setUnfollowAlert(0);
+                    className="row1__follow"
+                    onClick={async () => {
+                      await axios.get(
+                        `http://localhost:5000/user/follow/${props.userId}`,
+                        {
+                          headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                              "accessToken"
+                            )}`,
+                          },
+                        }
+                      );
+                      props.setGetDataFlag(1);
+                      setFollowButton("unfollow");
+                      setRefreshFlag(1);
                     }}>
-                    <Icon
-                      className="unfollow__icon"
-                      icon="bx:bxs-user-check"
-                      style={{ fontSize: "1.7rem" }}
-                    />
+                    팔로우
                   </button>
-                  {unfollowAlert === 1 ? (
-                    <UnfollowAlert
-                      user={props.user}
-                      userId={props.userId}
-                      setUnfollowAlert={setUnfollowAlert}
-                      setFollowButton={setFollowButton}
-                      setGetDataFlag={props.setGetDataFlag}
-                      setRefreshFlag={setRefreshFlag}
-                    />
-                  ) : null}
-                </>
-              )}
-            </>
-          ) : (
-            <button
-              className="row1__edit-profile"
-              onClick={() => {
-                history.push("/profile/edit");
-              }}>
-              프로필 수정
-            </button>
-          )}
+                ) : (
+                  <>
+                    <button
+                      className="row1__unfollow"
+                      onClick={() => {
+                        unfollowAlert === 0
+                          ? setUnfollowAlert(1)
+                          : setUnfollowAlert(0);
+                      }}>
+                      <Icon
+                        className="unfollow__icon"
+                        icon="bx:bxs-user-check"
+                        style={{ fontSize: "1.7rem" }}
+                      />
+                    </button>
+                    {unfollowAlert === 1 ? (
+                      <UnfollowAlert
+                        user={props.user}
+                        userId={props.userId}
+                        setUnfollowAlert={setUnfollowAlert}
+                        setFollowButton={setFollowButton}
+                        setGetDataFlag={props.setGetDataFlag}
+                        setRefreshFlag={setRefreshFlag}
+                      />
+                    ) : null}
+                  </>
+                )}
+              </>
+            ) : (
+              <button
+                className="row1__edit-profile"
+                onClick={() => {
+                  history.push("/profile/edit");
+                }}>
+                프로필 수정
+              </button>
+            ))}
         </div>
         <div className="right__row2">
           {props.user.status ? (

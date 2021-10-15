@@ -23,6 +23,14 @@ export default function ProfilePage() {
         );
         setUserData(data);
       }
+    } catch (err) {
+      console.log(err);
+      // history.push("/");
+    }
+  };
+
+  const getMyFollowings = async () => {
+    try {
       const { data: myData } = await axios.get(
         "http://localhost:5000/user/me",
         {
@@ -34,9 +42,9 @@ export default function ProfilePage() {
       setMyFollowings(myData.followings);
     } catch (err) {
       console.log(err);
-      // history.push("/");
     }
   };
+
   const getMyData = async () => {
     try {
       const { data } = await axios.get("http://localhost:5000/user/me", {
@@ -51,10 +59,11 @@ export default function ProfilePage() {
   };
 
   useEffect(() => {
-    if (location.pathname !== "/profile" || getDataFlag === 1) {
-      getData();
-      setGetDataFlag(0);
-    } else getMyData();
+    // console.log("loginState", loginState);
+    if (loginState !== null) getMyFollowings();
+    if (location.pathname !== "/profile" || getDataFlag === 1) getData();
+    else getMyData();
+    setGetDataFlag(0);
   }, [getDataFlag]);
 
   if (location.pathname === "/profile" && loginState === null) {

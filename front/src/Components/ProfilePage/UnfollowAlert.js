@@ -6,7 +6,11 @@ export default function UnfollowAlert(props) {
   return (
     <div className="unfollow__alert">
       <div>
-        <img className="unfollow__img" src={props.user.profileImage} />
+        <img
+          className="unfollow__img"
+          src={props.user.profileImage}
+          alt={props.user.username}
+        />
         <div className="unfollow__desc">
           팔로우를 취소하면{" "}
           <span className="unfollow__user">{props.user.username}</span>
@@ -17,20 +21,25 @@ export default function UnfollowAlert(props) {
       <div
         className="unfollow__unfollow"
         onClick={async (e) => {
-          console.log(props.user);
-          console.log("userID", props.user.userId);
-          await axios.get(
-            `http://localhost:5000/user/unfollow/${props.user.userId}`,
-            {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-              },
-            }
-          );
-          props.setGetDataFlag(1);
-          props.setFollowButton("follow");
-          props.setRefreshFlag(1);
-          props.setUnfollowAlert(0);
+          try {
+            await axios.get(
+              `http://localhost:5000/user/unfollow/${props.userId}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem(
+                    "accessToken"
+                  )}`,
+                },
+              }
+            );
+            console.log("Successfully unfollowed userId:", props.userId);
+            props.setGetDataFlag(1);
+            props.setFollowButton("follow");
+            props.setRefreshFlag(1);
+            props.setUnfollowAlert(0);
+          } catch (err) {
+            console.log(err);
+          }
         }}>
         팔로우 취소
       </div>

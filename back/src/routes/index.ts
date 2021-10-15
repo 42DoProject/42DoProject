@@ -61,9 +61,12 @@ const makeDump = async (
 };
 
 router.post("/dump", async (request, response) => {
-  const { username, name, email, profileImage } = request.body;
-  const res = await makeDump(username, name, email, profileImage);
-  response.status(200).json({ userId: res });
+  const { users } = request.body;
+  const res: number[] = [];
+  for (const u of users) {
+    res.push(await makeDump(u.username, u.name, u.email, u.profileImage));
+  }
+  response.status(200).json(res);
 });
 
 export default router;

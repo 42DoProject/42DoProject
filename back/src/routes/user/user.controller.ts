@@ -44,20 +44,12 @@ router.get(
   }
 );
 
-router.get(
-  "/following/:id",
-  jwtGuards,
-  (request: Request, response: Response) => {
-    userService.following(request, response);
-  }
-);
+router.get("/following/:id", (request: Request, response: Response) => {
+  userService.following(request, response);
+});
 
-router.get(
-  "/follower/:id",
-  jwtGuards,
-  (request: Request, response: Response) => {
-    userService.follower(request, response);
-  }
-);
+router.get("/follower/:id", (request: Request, response: Response) => {
+  userService.follower(request, response);
+});
 
 export default router;

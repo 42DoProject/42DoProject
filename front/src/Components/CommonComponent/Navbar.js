@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Icon } from "@iconify/react";
-import "../../SCSS/Navbar.scss";
+import "../../SCSS/Common/Navbar/Navbar.scss";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Example as PopUp } from "../MainPage/PopUp";

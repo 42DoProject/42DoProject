@@ -1,0 +1,79 @@
+@import "../../Base.scss";
+
+.chatCard-other {
+  margin: 0.5rem 0;
+  display: flex;
+  align-items: center;
+  position: relative;
+  .chatCard__column1 {
+    .chatCard__column1-small {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      .empty {
+        width: 4.5rem;
+      }
+      img {
+        position: relative;
+        border-radius: 50%;
+        width: 2.5rem;
+        height: 2.5rem;
+        object-fit: cover;
+        right: -0.2rem;
+        margin: 0 1rem;
+      }
+      .column1-small__name {
+        font-weight: $bold;
+      }
+    }
+  }
+  .chatCard__column2 {
+    right: 4rem;
+    .chat-message-small {
+      padding: 1rem;
+      box-shadow: $shadow;
+      border-radius: $round;
+      margin: 0 0.5rem;
+    }
+  }
+}
+.chatCard-me {
+  margin: 0.5rem 0;
+  display: flex;
+  align-items: center;
+  position: relative;
+  flex-direction: row-reverse;
+  .chatCard__column1 {
+    .chatCard__column1-small {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      .empty {
+        width: 4.5rem;
+      }
+      img {
+        position: relative;
+        border-radius: 50%;
+        width: 2.5rem;
+        height: 2.5rem;
+        object-fit: cover;
+        right: -0.2rem;
+        margin: 0 1rem;
+      }
+      .column1-small__name {
+        font-weight: $bold;
+      }
+    }
+  }
+  .chatCard__column2 {
+    right: 4rem;
+    .chat-message-small {
+      padding: 1rem;
+      box-shadow: $shadow;
+      border-radius: $round;
+      margin: 0 0.5rem;
+    }
+  }
+}

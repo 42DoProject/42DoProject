@@ -26,16 +26,16 @@ export default function AuthMain() {
         socket.emit("authorization", {
           token: localStorage.getItem("accessToken"),
         });
-        // loginReducer state 변경
-        dispatch({ type: "LOGIN", payload: Data.user });
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("refreshToken", refreshToken);
+        // loginReducer state 변경
+        dispatch({ type: "LOGIN", payload: Data.user });
         history.goBack();
       } catch (err) {
         console.log(err);
       }
     };
     getData();
-  }, [code, dispatch, history]);
+  }, []);
   return loginState === null && <ReactLoading type="spin" color="#a7bc5b" />;
 }

@@ -81,7 +81,21 @@ export default function InChat(props) {
         </div>
 
         <div className="inChat__input-small">
-          <input placeholder="메세지 입력..." spellCheck="false"></input>
+          <input
+            placeholder="메세지 입력..."
+            spellCheck="false"
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                if (e.target.value.length) {
+                  socket.emit("chat:send", {
+                    uuid: chatRoom.uuid,
+                    message: e.target.value,
+                  });
+                  e.target.value = "";
+                }
+              }
+            }}
+          ></input>
           <div
             className="input__send"
             onClick={() => {

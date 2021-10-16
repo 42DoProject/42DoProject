@@ -30,12 +30,12 @@ export default function AuthMain() {
         localStorage.setItem("refreshToken", refreshToken);
         // loginReducer state 변경
         dispatch({ type: "LOGIN", payload: Data.user });
-        history.goBack();
+        history.push("/");
       } catch (err) {
         console.log(err);
       }
     };
     getData();
-  }, []);
+  }, [code, dispatch, history]);
   return loginState === null && <ReactLoading type="spin" color="#a7bc5b" />;
 }

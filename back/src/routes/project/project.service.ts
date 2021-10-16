@@ -561,17 +561,13 @@ export const postComments = async (request: Request, response: Response) => {
         response.status(400).json({ errMessage: 'please input contentId value' });
         return ;
     }
-    if (request.user === null || request.user === undefined) {
-        response.status(401).json({ message: 'no authority' });
-        return ;
-    }
 
     await Project.findOne({
         attributes: ['commentCount'],
         where: { contentId: contentId }
     })
     .then(async project => {
-        const newCount: number = (project?.commentCount === undefined)? 0 : project?.commentCount + 1;
+        const newCount: number = (project?.commentCount === undefined) ? 0 : project?.commentCount + 1;
         await Project.update({
             commentCount: newCount
         }, { where: { contentId: contentId } })
@@ -586,7 +582,7 @@ export const postComments = async (request: Request, response: Response) => {
     await Comments.create({
         comment: comment,
         contentId: contentId,
-        profileId: request.user.id,
+        profileId: request.user!.id,
         createdAt: getIsoString(),
         updatedAt: getIsoString()
     })
@@ -786,8 +782,8 @@ export const cancelApply = async (request: Request, response: Response) => {
         response.status(400).json({ errMessage: 'invalid projectId or profileId param' });
         return ;
     }
-    if (request.user!.id !== profileId && request.user!.id !== applyprojectprofile?.project.leader) {
-        response.status(401).json({ message: 'no authority' });
+    if (request.user!.id != profileId && request.user!.id !== applyprojectprofile?.project.leader) {
+        response.status(401).json({ errMessage: 'no authority' });
         return ;
     }
 
@@ -825,19 +821,10 @@ export const addMember = async (request: Request, response: Response) => {
         return ;
     }
     if (request.user!.id !== applyprojectprofile?.project.leader) {
-        response.status(401).json({ message: 'no authority' });
+        response.status(401).json({ errMessage: 'no authority' });
         return ;
     }
 
-    await Projectprofile.create({
-        projectId: projectId,
-        profileId: profileId,
-        createdAt: getIsoString(),
-        updatedAt: getIsoString()
-    })
-    .catch(err => {
-    	response.status(405).json({ errMessage: String(err) });
-    })
     const project = await Project.findOne({
         attributes: ['totalMember', 'currentMember'],
         where: { id: projectId }
@@ -859,6 +846,15 @@ export const addMember = async (request: Request, response: Response) => {
     .catch(err => {
         response.status(405).json({ errMessage: String(err) });
     });
+    await Projectprofile.create({
+        projectId: projectId,
+        profileId: profileId,
+        createdAt: getIsoString(),
+        updatedAt: getIsoString()
+    })
+    .catch(err => {
+    	response.status(405).json({ errMessage: String(err) });
+    })
 
     await Applyprojectprofile.destroy({
         where: { projectId: projectId, profileId: profileId }
@@ -894,7 +890,7 @@ export const deleteMember = async (request: Request, response: Response) => {
         return ;
     }
     if (request.user!.id !== projectprofile?.project.leader) {
-        response.status(401).json({ message: 'no authority' });
+        response.status(401).json({ errMessage: 'no authority' });
         return ;
     }
 
@@ -1021,11 +1017,14 @@ export const deletePosition = async (request: Request, response: Response) => {
         response.status(405).json({ errMessage: String(err) });
     });
     if (request.user!.id !== project?.leader) {
-        response.status(401).json({ message: 'no authority' });
+        response.status(401).json({ errMessage: 'no authority' });
         return ;
     }
     
     let curPosition = project!.position;
+    if (curPosition === null) {
+        response.status(400).json({ errMessage: 'empty position' });
+    }
     curPosition.splice(curPosition.indexOf(parseInt(position)), 1);
     await Project.update({
         position: curPosition

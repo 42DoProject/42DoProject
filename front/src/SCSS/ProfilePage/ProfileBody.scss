@@ -165,3 +165,12 @@ input.github-span {
 .projects__list {
   display: flex;
 }
+
+@media (max-width: 1000px) {
+  .profileBody__col1,
+  .profileBody__col2 {
+    // flex-direction: row !important;
+    // align-items: flex-start !important;
+    width: 80%;
+  }
+}

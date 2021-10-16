@@ -10,6 +10,7 @@ export default function loginReducer(state, action) {
       };
       return copy;
     case "LOGOUT":
+      clearInterval(localStorage.getItem("timerId"));
       return null;
     default:
       return null;

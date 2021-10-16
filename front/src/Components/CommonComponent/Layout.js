@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import Chat from "./Chat";
+import Chat from "./Chat/Chat";
 import Navbar from "./Navbar";
 
 export default function Layout(props) {

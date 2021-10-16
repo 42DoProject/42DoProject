@@ -8,6 +8,7 @@ import FavoriteSlide from "./FavoriteSlide";
 import axios from "axios";
 import { positions } from "../../userData";
 import { skills } from "../../skills.json";
+
 export default function Dashboard(props) {
   let loginState = useSelector((state) => state.loginReducer);
   let [userData, setUserData] = useState(null);
@@ -66,10 +67,11 @@ export default function Dashboard(props) {
               </div>
               <div className="box1__column2">
                 <div className="column2__job">
-                  {userData && positions[+userData.position]}
+                  {loginState && userData && positions[+userData.position]}
                 </div>
                 <div className="column2__skill">
-                  {userData &&
+                  {loginState &&
+                    userData &&
                     userData.skill.map((e, idx) => {
                       return (
                         <img key={idx} src={skills[e][1]} alt={skills[e][0]} />

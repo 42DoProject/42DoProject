@@ -1,1 +1,51 @@
 @import "../Base.scss";
+
+.unsplash__wrapper {
+  background-color: white;
+  box-shadow: $shadow;
+  border-radius: $round;
+  width: 25rem;
+  height: 35rem;
+  position: absolute;
+  top: 0;
+  left: 19rem;
+  z-index: 3;
+  .unsplash__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    .box-space {
+      width: 2rem;
+    }
+    .unsplash__subject {
+      font-weight: $normal;
+    }
+    .unsplash__x {
+      cursor: pointer;
+    }
+  }
+  hr {
+    margin: 0;
+    color: $lightGrey;
+    height: 2px;
+  }
+  .unsplash__tab {
+    display: flex;
+    padding: 0.5rem;
+    font-weight: $normal;
+    div {
+      margin: 0 1rem;
+      color: $lightGrey;
+      cursor: pointer;
+    }
+    .presets-icon,
+    .search-icon,
+    .upload-icon {
+      margin-right: 0.3rem;
+    }
+    .tab__presets {
+      color: $darkGrey;
+    }
+  }
+}

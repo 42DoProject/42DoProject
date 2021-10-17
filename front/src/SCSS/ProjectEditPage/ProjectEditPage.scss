@@ -1,15 +1,23 @@
 @import "../Base.scss";
 
 .project-edit__wrapper {
-  width: 90%;
-  max-width: 1000px;
+  overflow: auto;
+  // padding: 1rem;
+  max-width: 1400px;
   background-color: white;
   border-radius: $round;
   box-shadow: $shadow;
   margin: 1rem auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   input,
   textarea {
-    max-width: 80%;
+    border: 2px solid $lightestGrey;
+    padding: 0.5rem 1rem;
+  }
+  select {
+    border: 2px solid $lightestGrey;
   }
   button {
     padding: 0.5rem 1rem;
@@ -17,30 +25,34 @@
     border: 2px solid $lightGrey;
     background-color: white;
     color: $grey;
+    min-width: max-content;
   }
   .project-edit__thumbnail {
     border-radius: $round;
     display: flex;
     align-items: flex-end;
-    img {
+    min-width: max-content;
+    position: relative;
+    .project-edit__img {
       border-radius: $round;
       object-fit: cover;
-      margin-right: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 18rem;
+      height: 12rem;
+      background-color: $lightestGrey;
+      cursor: pointer;
+    }
+    .add-thumbnail {
+      margin: 0 1rem;
     }
   }
 
   .project-edit__form {
-    padding: 2rem 4rem;
-    height: 80rem;
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    .project-edit__name {
-      width: 70%;
-    }
-    .project-edit__introduction {
-      padding: 1rem;
-    }
+    // flex-wrap: wrap-reverse;
+    justify-content: center;
     label {
       margin: 2rem 0 1rem 0;
       font-weight: $semiBold;
@@ -50,6 +62,7 @@
   .project-edit__buttons {
     display: flex;
     justify-content: center;
+    margin: 2rem 0;
     button {
       color: white;
       border: none;
@@ -68,8 +81,93 @@
   }
 }
 
+.project-edit__left,
+.project-edit__right {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  margin: 0 2rem;
+}
+.project-edit__left {
+  width: 40%;
+  // background-color: pink;
+  .project-edit__add-position {
+    margin-left: 2rem;
+    background-color: $bodyColor;
+    color: $grey;
+  }
+  .project-edit__position {
+    // height: 6rem;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .project-edit__skill-label {
+    display: flex;
+    align-items: center;
+    .project-edit__add-skill {
+      margin-left: 2rem;
+      background-color: $bodyColor;
+    }
+  }
+
+  .project-edit__skill {
+    // height: 6rem;
+    .project-edit__add-skill {
+      width: 15rem;
+    }
+  }
+  .project-edit__period {
+    min-width: max-content;
+  }
+}
+.project-edit__right {
+  box-sizing: border-box;
+  width: 60%;
+  // background-color: beige;
+  .project-edit__introduction {
+    box-sizing: border-box;
+  }
+  .project-edit__name {
+    width: 26.5rem;
+  }
+}
+
 /* Toast-UI editor */
-// .toastui-editor-defaultUI {
-//   border: 2px solid $mainColor !important;
-//   border-radius: $round !important;
-// }
+.toastui-editor-defaultUI {
+  border: 2px solid $lightestGrey !important;
+  border-radius: $round !important;
+  overflow-x: hidden;
+  .toastui-editor-defaultUI-toolbar {
+    border-top-right-radius: $round !important;
+    overflow-x: hidden;
+  }
+  .toastui-editor-md-tab-container {
+    border-top-left-radius: $round !important;
+  }
+  .toastui-editor-mode-switch {
+    border-bottom-left-radius: $round;
+    border-bottom-right-radius: $round;
+  }
+  .toastui-editor-popup {
+    border-radius: $round;
+  }
+}
+.project-edit__date {
+  width: 11rem;
+  padding: 0.2rem 0.5rem !important;
+  margin: 0 0.5rem;
+}
+
+@media (max-width: 950px) {
+  .project-edit__form {
+    padding: 1rem;
+    flex-direction: column-reverse;
+    justify-content: flex-start;
+    justify-content: center;
+    .project-edit__left,
+    .project-edit__right {
+      width: 90%;
+    }
+  }
+}

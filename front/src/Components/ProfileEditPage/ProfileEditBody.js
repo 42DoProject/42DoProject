@@ -47,7 +47,7 @@ export default function ProfileEditBody(props) {
               className="skill__content"
               list="tech-stacks"
               placeholder="스킬을 검색해 추가해보세요"
-              onKeyDown={(e) => {
+              onKeyPress={(e) => {
                 if (e.key === "Enter") {
                   skills.skills.forEach((el, idx) => {
                     if (e.target.value === el[0]) {

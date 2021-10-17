@@ -5,9 +5,8 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import ChatCard from "./ChatCard";
 import socket from "../../../socket";
-export default function InChat(props) {
+export default function InChat({ chatRoom, clickFlag, setInFlag }) {
   let loginState = useSelector((state) => state.loginReducer);
-  const { chatRoom, clickFlag, setInFlag } = props;
   const [chat, setChat] = useState();
   const userList = chatRoom.users.filter((e) => e.id !== loginState.id);
   const getChat = async (uuid) => {
@@ -25,7 +24,10 @@ export default function InChat(props) {
   };
   useEffect(() => {
     chatRoom && getChat(chatRoom.uuid);
-  }, [chatRoom]);
+  }, []);
+  socket.on("chat:receive", (payload) => {
+    getChat(chatRoom.uuid);
+  });
   return (
     <>
       <div className="inChat">

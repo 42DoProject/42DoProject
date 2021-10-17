@@ -1,19 +1,20 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import "../../../SCSS/Common/Chat/ChatCard.scss";
-export default function ChatCard(props) {
-  const { chatInfo, userInfo, imgFlag } = props;
+export default function ChatCard({ chatInfo, userInfo, imgFlag }) {
   let loginState = useSelector((state) => state.loginReducer);
   return (
     <>
-      {loginState.id === userInfo.id ? (
+      {loginState.id === userInfo?.id ? (
         <div className="chatCard-me">
           <div className="chatCard__column1">
             <div className="chatCard__column1-small">
               {imgFlag ? (
                 <>
-                  <img src={userInfo.profileImage} alt="img"></img>
-                  <div className="column1-small__name">{userInfo.username}</div>
+                  <img src={userInfo?.profileImage} alt="img"></img>
+                  <div className="column1-small__name">
+                    {userInfo?.username}
+                  </div>
                 </>
               ) : (
                 <div className="empty"></div>
@@ -30,8 +31,10 @@ export default function ChatCard(props) {
             <div className="chatCard__column1-small">
               {imgFlag ? (
                 <>
-                  <img src={userInfo.profileImage} alt="img"></img>
-                  <div className="column1-small__name">{userInfo.username}</div>
+                  <img src={userInfo?.profileImage} alt="img"></img>
+                  <div className="column1-small__name">
+                    {userInfo?.username}
+                  </div>
                 </>
               ) : (
                 <div className="empty"></div>

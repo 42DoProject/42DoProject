@@ -4,8 +4,7 @@ import axios from "axios";
 import relativeTime from "../../../relativeTime";
 import { useSelector } from "react-redux";
 
-export default function ChatRoom(props) {
-  const { chatRoom, clickFlag } = props;
+export default function ChatRoom({ chatRoom, clickFlag, setInFlag }) {
   const [chat, setChat] = useState([]);
   let loginState = useSelector((state) => state.loginReducer);
   const chatRoomCP = chatRoom.users.filter((e) => {
@@ -33,14 +32,15 @@ export default function ChatRoom(props) {
       <div
         className="chatRoom"
         onClick={() => {
-          props.setInFlag(props.idx);
+          // props.setInFlag(props.uuid);
+          setInFlag(chatRoom);
         }}
       >
         <div className="chatRoom__nav">
           <div className="chatRoom__profile">
             <img
               className="chatRoom__img"
-              src={chatRoomCP[0].profileImage}
+              src={chatRoomCP[0]?.profileImage}
               alt="chatRoom__img"
             ></img>
             <div className="chatRoom__name">

@@ -26,7 +26,11 @@ export default function Chat() {
     getChatRoom();
   }, []);
   socket.on("chat:receive", (payload) => {
-    getChatRoom();
+    if (inFlag === -1) {
+      //inFlag가 왜 실행되냐
+      console.log("chatjs");
+      getChatRoom();
+    }
   });
   return (
     <>
@@ -51,9 +55,10 @@ export default function Chat() {
         </div>
       </div>
       <div className="chatLog">
-        {inFlag > -1 ? (
+        {inFlag !== -1 ? (
           <InChat
-            chatRoom={chatRoom[inFlag]}
+            chatRoom={inFlag}
+            // chatRoom={chatRoom?.find(({ uuid }) => inFlag === uuid)}
             setInFlag={setInFlag}
             clickFlag={clickFlag}
           />
@@ -119,12 +124,11 @@ export default function Chat() {
             ) : null}
             <div className="chatLog__body">
               {chatRoom &&
-                chatRoom.map((_, idx) => (
+                chatRoom.map((room) => (
                   <ChatRoom
-                    key={idx}
-                    chatRoom={chatRoom[idx]}
+                    key={room.uuid}
+                    chatRoom={room}
                     clickFlag={clickFlag}
-                    idx={idx}
                     setInFlag={setInFlag}
                   />
                 ))}

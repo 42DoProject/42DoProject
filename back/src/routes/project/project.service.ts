@@ -1036,3 +1036,24 @@ export const deletePosition = async (request: Request, response: Response) => {
         response.status(405).json({ errMessage: String(err) });
     });
 }
+
+export const checkInterestProject = async (request: Request, response: Response) => {
+    const { projectId } = request.params;
+
+    if (projectId === undefined) {
+        response.status(400).json({ errMessage: 'please input projectId value' });
+        return ;
+    }
+
+    const likeprojectprofile = await Likeprojectprofile.findOne({
+        where: { projectId: projectId, profileId: request.user!.id }
+    })
+    .catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+    });
+    if (likeprojectprofile === null) {
+        response.status(200).json({ message: 'false' });
+    } else {
+        response.status(200).json({ message: 'true' });
+    }
+}

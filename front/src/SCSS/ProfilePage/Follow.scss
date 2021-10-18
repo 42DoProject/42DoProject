@@ -50,6 +50,7 @@
 
 .follow__list {
   padding: 0.5rem;
+  height: 100%;
 }
 .follow__follower {
   display: flex;
@@ -71,6 +72,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 
 .follow__img {
@@ -95,5 +97,26 @@
   .follow__position {
     font-size: $fontSs;
     color: $grey;
+  }
+}
+
+.no-follow {
+  display: flex;
+  justify-content: center;
+  height: 90%;
+  align-items: center;
+  color: $lightGrey;
+}
+
+.unfollow__button {
+  color: $black;
+  background-color: $lightestGrey;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.2rem 0.6rem;
+  font-size: $fontSs;
+  font-weight: $normal;
+  .unfollow__icon {
+    width: 2rem;
   }
 }

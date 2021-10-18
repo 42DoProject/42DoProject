@@ -1,13 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import "../../SCSS/Chat.scss";
 import ChatRoom from "./ChatRoom";
-// import { useSelector } from "react-redux";
-// import { Link } from "react-router-dom";
+import axios from "axios";
 
 export default function Chat() {
   let [clickFlag, setClickFlag] = useState(0);
   let [convFlag, setConvFlag] = useState(0);
+  let [chatRoom, setChatRoom] = useState();
+
+  const getChatRoom = async () => {
+    try {
+      const { data } = await axios.get("http://localhost:5000/chat", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      setChatRoom(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    getChatRoom();
+  }, []);
 
   return (
     <>
@@ -92,13 +108,14 @@ export default function Chat() {
         ) : null}
 
         <div className="chatLog__body">
-          <ChatRoom />
-          <ChatRoom />
-          <ChatRoom />
-          <ChatRoom />
-          <ChatRoom />
-          <ChatRoom />
-          <ChatRoom />
+          {chatRoom &&
+            chatRoom.map((_, idx) => (
+              <ChatRoom
+                key={idx}
+                chatRoom={chatRoom[idx]}
+                clickFlag={clickFlag}
+              />
+            ))}
         </div>
       </div>
     </>

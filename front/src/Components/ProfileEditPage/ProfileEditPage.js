@@ -9,7 +9,6 @@ import { useHistory } from "react-router";
 
 export default function ProfileEditPage() {
   const [userData, setUserData] = useState({});
-  const ACCESS_TOKEN = localStorage.getItem("accessToken");
   let loginState = useSelector((state) => state.loginReducer);
   let history = useHistory();
 
@@ -17,7 +16,7 @@ export default function ProfileEditPage() {
     try {
       const { data } = await axios.get("http://localhost:5000/user/me", {
         headers: {
-          Authorization: `Bearer ${ACCESS_TOKEN}`,
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
       setUserData(data);
@@ -43,15 +42,15 @@ export default function ProfileEditPage() {
       method: "POST",
       url: "http://localhost:5000/user/me",
       headers: {
-        Authorization: `Bearer ${ACCESS_TOKEN}`,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
       data: {
         statusMessage: document.querySelector(".profile__bubble").value,
         introduction: document.querySelector(".introduction__textarea").value,
         github: githubPost,
-        position: document.querySelector(".job__content").value,
+        position: +document.querySelector(".job__content").value,
         skill: skillPost,
-        status: document.querySelector(".row2__status").value,
+        status: +document.querySelector(".row2__status").value,
       },
     })
       .then((res) => {

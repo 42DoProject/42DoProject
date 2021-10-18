@@ -68,6 +68,9 @@
   .profile__last-access {
     color: $lightGrey;
     font-weight: $normal;
+    .profile__online {
+      color: $pointBlue;
+    }
   }
 }
 
@@ -107,6 +110,14 @@
     font-weight: $normal;
     margin-right: 1rem;
   }
+  .row1__unfollow {
+    background-color: $bodyColor;
+    color: $darkGrey;
+    box-shadow: none;
+    border: 1px solid $lightestGrey;
+    padding: 0 1.2rem;
+  }
+
   .row1__edit-profile {
     background-color: $bodyColor;
     color: $black;

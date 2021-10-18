@@ -1,7 +1,6 @@
 import React from "react";
 import { Popover, OverlayTrigger, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import "../../SCSS/MainPage/PopUp.scss";
 import axios from "axios";
 
@@ -27,16 +26,15 @@ function Pop() {
   let dispatch = useDispatch();
   return (
     <Popover id="popover-basic">
-      <Link to="/profile">
+      <a href="/profile">
         <Popover.Body>프로필 보기</Popover.Body>
-      </Link>
+      </a>
       <div
         className="popover__wrap"
         onClick={() => {
           logOut();
           dispatch({ type: "LOGOUT" });
-        }}
-      >
+        }}>
         <Popover.Body>SIGN OUT</Popover.Body>
       </div>
     </Popover>

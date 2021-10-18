@@ -69,10 +69,24 @@ export const getFeed = async (request: Request, response: Response) => {
 
 export const getMe = async (request: Request, response: Response) => {
   const profile = await Profile.findOne({
-    include: [{ model: User, where: { id: request.user!.id } },
-      { model: Projectprofile, attributes: ['id'], include: [{ model: Project }] },
-      { model: Applyprojectprofile, attributes: ['id'], include: [{ model: Project }] },
-      { model: Likeprojectprofile, attributes: ['id'], include: [{ model: Project }] }]
+    include: [
+      { model: User, where: { id: request.user!.id } },
+      {
+        model: Projectprofile,
+        attributes: ["id"],
+        include: [{ model: Project }],
+      },
+      {
+        model: Applyprojectprofile,
+        attributes: ["id"],
+        include: [{ model: Project }],
+      },
+      {
+        model: Likeprojectprofile,
+        attributes: ["id"],
+        include: [{ model: Project }],
+      },
+    ],
   });
   response.status(200).json({
     username: profile!.user.username,
@@ -92,7 +106,7 @@ export const getMe = async (request: Request, response: Response) => {
     github: profile!.github,
     participatingProject: profile!.projectprofile,
     applyingProject: profile!.applyprojectprofile,
-    interestedProject: profile!.likeprojectprofile
+    interestedProject: profile!.likeprojectprofile,
   });
 };
 
@@ -200,10 +214,24 @@ export const profileMain = async (request: Request, response: Response) => {
     return;
   }
   const profile = await Profile.findOne({
-    include: [{ model: User, where: { id: id } },
-      { model: Projectprofile, attributes: ['id'], include: [{ model: Project }] },
-      { model: Applyprojectprofile, attributes: ['id'], include: [{ model: Project }] },
-      { model: Likeprojectprofile, attributes: ['id'], include: [{ model: Project }] }]
+    include: [
+      { model: User, where: { id: id } },
+      {
+        model: Projectprofile,
+        attributes: ["id"],
+        include: [{ model: Project }],
+      },
+      {
+        model: Applyprojectprofile,
+        attributes: ["id"],
+        include: [{ model: Project }],
+      },
+      {
+        model: Likeprojectprofile,
+        attributes: ["id"],
+        include: [{ model: Project }],
+      },
+    ],
   });
   if (!profile) {
     response.status(400).json({ error: "invalid user id" });
@@ -226,7 +254,7 @@ export const profileMain = async (request: Request, response: Response) => {
     github: profile.github,
     participatingProject: profile!.projectprofile,
     applyingProject: profile!.applyprojectprofile,
-    interestedProject: profile!.likeprojectprofile
+    interestedProject: profile!.likeprojectprofile,
   });
 };
 
@@ -326,7 +354,7 @@ export const following = async (request: Request, response: Response) => {
       userId: u,
       username: user!.username,
       profileImage: user!.profileImage,
-      statusMessage: user!.profile!.statusMessage,
+      position: user!.profile!.position,
     });
   }
   response.status(200).json(userList);
@@ -354,7 +382,7 @@ export const follower = async (request: Request, response: Response) => {
       userId: u,
       username: user!.username,
       profileImage: user!.profileImage,
-      statusMessage: user!.profile!.statusMessage,
+      position: user!.profile!.position,
     });
   }
   response.status(200).json(userList);

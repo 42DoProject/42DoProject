@@ -1,14 +1,13 @@
 import React from "react";
 import { Icon } from "@iconify/react";
 import "../../SCSS/ProfilePage/ProfileBody.scss";
-import { useSelector } from "react-redux";
 import skills from "../../skills.json";
 import { positions } from "../../userData";
 import ProgressSlide from "../MainPage/ProgressSlide";
 
 export default function ProfileBody(props) {
   // let userState = useSelector((state) => state.userReducer);
-  let loginState = useSelector((state) => state.loginReducer);
+  // let loginState = useSelector((state) => state.loginReducer);
 
   return (
     <div className="profileBody">
@@ -23,24 +22,24 @@ export default function ProfileBody(props) {
           <div className="card1__skill">
             <div className="skill__label">보유 스킬</div>
             <div className="skill__content">
-              {props.user.skill &&
-                props.user.skill.map((e, i) => {
-                  // console.log(e);
-                  return (
-                    <img
-                      key={i}
-                      alt={skills.skills[e][0]}
-                      src={skills.skills[e][1]}
-                    />
-                  );
-                })}
+              {props.user.skill && props.user.skill.length
+                ? props.user.skill.map((e, i) => {
+                    return (
+                      <img
+                        key={i}
+                        alt={skills.skills[e][0]}
+                        src={skills.skills[e][1]}
+                      />
+                    );
+                  })
+                : "-"}
             </div>
           </div>
         </div>
         <div className="col1__profile-card2">
           <div className="card2__location">
             <Icon icon="carbon:location-filled" height="25px" />
-            <span>{loginState.location}</span>
+            <span>{props.user.location}</span>
           </div>
           <div className="card2__level">
             <Icon icon="simple-icons:42" width="25px" />
@@ -48,8 +47,8 @@ export default function ProfileBody(props) {
           </div>
           <div className="card2__email">
             <Icon icon="fluent:mail-48-filled" height="25px" />
-            <a href={`mailto:${loginState.email}`} className="email-span">
-              {loginState.email}
+            <a href={`mailto:${props.user.email}`} className="email-span">
+              {props.user.email}
             </a>
           </div>
           <div className="card2__github">
@@ -88,21 +87,25 @@ export default function ProfileBody(props) {
             <ProgressSlide />
           </div>
         </div>
-        <hr className="hr__line" />
-        <div className="col2__registered-projects">
-          <span className="col2__subject-span">참여 신청중인 프로젝트</span>
-          <span>없음</span>
-        </div>
-        <hr className="hr__line" />
-        <div className="col2__interested-projects">
-          <span className="col2__subject-span">관심있는 프로젝트</span>
-          <span>없음</span>
-          <div className="projects__list">
-            <ProgressSlide />
-            <ProgressSlide />
-            <ProgressSlide />
-          </div>
-        </div>
+        {props.location.pathname === "/profile" ? (
+          <>
+            <hr className="hr__line" />
+            <div className="col2__registered-projects">
+              <span className="col2__subject-span">참여 신청중인 프로젝트</span>
+              <span>없음</span>
+            </div>
+            <hr className="hr__line" />
+            <div className="col2__interested-projects">
+              <span className="col2__subject-span">관심있는 프로젝트</span>
+              <span>없음</span>
+              <div className="projects__list">
+                <ProgressSlide />
+                <ProgressSlide />
+                <ProgressSlide />
+              </div>
+            </div>
+          </>
+        ) : null}
       </div>
     </div>
   );

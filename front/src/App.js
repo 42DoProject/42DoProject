@@ -15,12 +15,10 @@ import AllCadet from "./Components/CadetPage/AllCadet";
 import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
 function App(props) {
   // 새로운 Token 발급
   let loginState = useSelector((state) => state.loginReducer);
   let dispatch = useDispatch();
-
   const getToken = async () => {
     try {
       const prevRefreshToken = localStorage.getItem("refreshToken");
@@ -32,17 +30,15 @@ function App(props) {
         );
         localStorage.setItem("accessToken", newAccessToken);
         localStorage.setItem("refreshToken", newRefreshToken);
-        // console.log(newRefreshToken);
       }
     } catch (err) {
       dispatch({ type: "LOGOUT" });
       console.log(err);
     }
   };
-  // 29분마다 요청
+  // 25분마다 요청
   useEffect(() => {
-    console.log("hihihihi");
-    const timerId = setInterval(getToken, 1000 * 6 * 29);
+    const timerId = setInterval(getToken, 1000 * 60 * 25);
     localStorage.setItem("timerId", timerId);
   }, [loginState]);
   return (
@@ -51,7 +47,8 @@ function App(props) {
         <Route exact path="/" component={Main} />
         <Route path="/auth" component={AuthMain} />
         <Route exact path="/profile" component={ProfilePage} />
-        <Route path="/profile/edit" component={ProfileEditPage} />
+        <Route exact path="/profile/edit" component={ProfileEditPage} />
+        <Route exact path="/profile/:id" component={ProfilePage} />
         <Route path="/project/recruit" component={RecruitProjects} />
         <Route path="/project/proceed" component={ProceedProjects} />
         <Route path="/project/complete" component={CompleteProjects} />

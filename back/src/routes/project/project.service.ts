@@ -698,7 +698,7 @@ export const getApplyerList = async (request: Request, response: Response) => {
     }
 
     await Applyprojectprofile.findAndCountAll({
-        attributes: ['projectId'],
+        attributes: ['projectId', 'position'],
         include: {
             model: Profile,
         },
@@ -717,10 +717,10 @@ export const getApplyerList = async (request: Request, response: Response) => {
 }
 
 export const applyTeam = async (request: Request, response: Response) => {
-    const { projectId } = request.params;
+    const { projectId, position } = request.params;
 
-    if (projectId === undefined) {
-        response.status(400).json({ errMessage: 'please input projectId value' });
+    if (projectId === undefined && position === undefined) {
+        response.status(400).json({ errMessage: 'please input projectId and position value' });
         return ;
     }
     const project = await Project.findOne({
@@ -747,6 +747,7 @@ export const applyTeam = async (request: Request, response: Response) => {
     }
 
     await Applyprojectprofile.create({
+        position: position,
         projectId: projectId,
         profileId: request.user!.id,
         createdAt: getIsoString(),
@@ -806,7 +807,7 @@ export const addMember = async (request: Request, response: Response) => {
         return ;
     }
     const applyprojectprofile = await Applyprojectprofile.findOne({
-        attributes: ['id'],
+        attributes: ['id', 'position'],
         include: {
             model: Project,
             attributes: ['leader']
@@ -826,22 +827,25 @@ export const addMember = async (request: Request, response: Response) => {
     }
 
     const project = await Project.findOne({
-        attributes: ['totalMember', 'currentMember'],
+        attributes: ['totalMember', 'currentMember', 'position'],
         where: { id: projectId }
     })
     .catch(err => {
         response.status(405).json({ errMessage: String(err) });
     });
-    let curMembers = project?.currentMember;
-    let newMembers: number = Number(curMembers) + 1;
+    const curMembers = project?.currentMember;
+    const newMembers: number = Number(curMembers) + 1;
     if (newMembers > project!.totalMember) {
         response.status(400).json({ errMessage: 'please expand totalMember' });
         return ;
     }
-    let inputState: string = (project!.totalMember - newMembers > 0) ? 'recruiting' : 'proceeding';
+    let curPosition = project!.position;
+    curPosition.splice(curPosition.indexOf(applyprojectprofile!.position), 1);
+    const inputState: string = (project!.totalMember - newMembers > 0) ? 'recruiting' : 'proceeding';
     await Project.update({
         currentMember: newMembers,
-        state: inputState
+        state: inputState,
+        position: curPosition
     }, { where: { id: projectId } })
     .catch(err => {
         response.status(405).json({ errMessage: String(err) });

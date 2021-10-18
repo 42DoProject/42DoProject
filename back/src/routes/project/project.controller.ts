@@ -44,7 +44,7 @@ router.get("/apply/:projectId", jwtGuards, (request: Request, response: Response
   projectService.getApplyerList(request, response);
 });
 
-router.post("/apply/:projectId", jwtGuards, (request: Request, response: Response) => {
+router.post("/apply/:projectId/:position", jwtGuards, (request: Request, response: Response) => {
   projectService.applyTeam(request, response);
 });
 

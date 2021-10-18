@@ -539,7 +539,11 @@ export const getComments = async (request: Request, response: Response) => {
             where: { projectId: projectId },
             required: true
         }, {
-            model: Profile
+            model: Profile,
+            include: [{
+                model: User,
+                attributes: ['username']
+            }]
         }],
         order: ['createdAt'],
         offset: offset,
@@ -561,17 +565,13 @@ export const postComments = async (request: Request, response: Response) => {
         response.status(400).json({ errMessage: 'please input contentId value' });
         return ;
     }
-    if (request.user === null || request.user === undefined) {
-        response.status(401).json({ message: 'no authority' });
-        return ;
-    }
 
     await Project.findOne({
         attributes: ['commentCount'],
         where: { contentId: contentId }
     })
     .then(async project => {
-        const newCount: number = (project?.commentCount === undefined)? 0 : project?.commentCount + 1;
+        const newCount: number = (project?.commentCount === undefined) ? 0 : project?.commentCount + 1;
         await Project.update({
             commentCount: newCount
         }, { where: { contentId: contentId } })
@@ -586,7 +586,7 @@ export const postComments = async (request: Request, response: Response) => {
     await Comments.create({
         comment: comment,
         contentId: contentId,
-        profileId: request.user.id,
+        profileId: request.user!.id,
         createdAt: getIsoString(),
         updatedAt: getIsoString()
     })
@@ -702,7 +702,7 @@ export const getApplyerList = async (request: Request, response: Response) => {
     }
 
     await Applyprojectprofile.findAndCountAll({
-        attributes: ['projectId'],
+        attributes: ['projectId', 'position'],
         include: {
             model: Profile,
         },
@@ -721,10 +721,10 @@ export const getApplyerList = async (request: Request, response: Response) => {
 }
 
 export const applyTeam = async (request: Request, response: Response) => {
-    const { projectId } = request.params;
+    const { projectId, position } = request.params;
 
-    if (projectId === undefined) {
-        response.status(400).json({ errMessage: 'please input projectId value' });
+    if (projectId === undefined && position === undefined) {
+        response.status(400).json({ errMessage: 'please input projectId and position value' });
         return ;
     }
     const project = await Project.findOne({
@@ -751,6 +751,7 @@ export const applyTeam = async (request: Request, response: Response) => {
     }
 
     await Applyprojectprofile.create({
+        position: position,
         projectId: projectId,
         profileId: request.user!.id,
         createdAt: getIsoString(),
@@ -786,8 +787,8 @@ export const cancelApply = async (request: Request, response: Response) => {
         response.status(400).json({ errMessage: 'invalid projectId or profileId param' });
         return ;
     }
-    if (request.user!.id !== profileId && request.user!.id !== applyprojectprofile?.project.leader) {
-        response.status(401).json({ message: 'no authority' });
+    if (request.user!.id != profileId && request.user!.id !== applyprojectprofile?.project.leader) {
+        response.status(401).json({ errMessage: 'no authority' });
         return ;
     }
 
@@ -810,7 +811,7 @@ export const addMember = async (request: Request, response: Response) => {
         return ;
     }
     const applyprojectprofile = await Applyprojectprofile.findOne({
-        attributes: ['id'],
+        attributes: ['id', 'position'],
         include: {
             model: Project,
             attributes: ['leader']
@@ -825,10 +826,34 @@ export const addMember = async (request: Request, response: Response) => {
         return ;
     }
     if (request.user!.id !== applyprojectprofile?.project.leader) {
-        response.status(401).json({ message: 'no authority' });
+        response.status(401).json({ errMessage: 'no authority' });
         return ;
     }
 
+    const project = await Project.findOne({
+        attributes: ['totalMember', 'currentMember', 'position'],
+        where: { id: projectId }
+    })
+    .catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+    });
+    const curMembers = project?.currentMember;
+    const newMembers: number = Number(curMembers) + 1;
+    if (newMembers > project!.totalMember) {
+        response.status(400).json({ errMessage: 'please expand totalMember' });
+        return ;
+    }
+    let curPosition = project!.position;
+    curPosition.splice(curPosition.indexOf(applyprojectprofile!.position), 1);
+    const inputState: string = (project!.totalMember - newMembers > 0) ? 'recruiting' : 'proceeding';
+    await Project.update({
+        currentMember: newMembers,
+        state: inputState,
+        position: curPosition
+    }, { where: { id: projectId } })
+    .catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+    });
     await Projectprofile.create({
         projectId: projectId,
         profileId: profileId,
@@ -838,27 +863,6 @@ export const addMember = async (request: Request, response: Response) => {
     .catch(err => {
     	response.status(405).json({ errMessage: String(err) });
     })
-    const project = await Project.findOne({
-        attributes: ['totalMember', 'currentMember'],
-        where: { id: projectId }
-    })
-    .catch(err => {
-        response.status(405).json({ errMessage: String(err) });
-    });
-    let curMembers = project?.currentMember;
-    let newMembers: number = Number(curMembers) + 1;
-    if (newMembers > project!.totalMember) {
-        response.status(400).json({ errMessage: 'please expand totalMember' });
-        return ;
-    }
-    let inputState: string = (project!.totalMember - newMembers > 0) ? 'recruiting' : 'proceeding';
-    await Project.update({
-        currentMember: newMembers,
-        state: inputState
-    }, { where: { id: projectId } })
-    .catch(err => {
-        response.status(405).json({ errMessage: String(err) });
-    });
 
     await Applyprojectprofile.destroy({
         where: { projectId: projectId, profileId: profileId }
@@ -894,7 +898,7 @@ export const deleteMember = async (request: Request, response: Response) => {
         return ;
     }
     if (request.user!.id !== projectprofile?.project.leader) {
-        response.status(401).json({ message: 'no authority' });
+        response.status(401).json({ errMessage: 'no authority' });
         return ;
     }
 
@@ -1021,11 +1025,14 @@ export const deletePosition = async (request: Request, response: Response) => {
         response.status(405).json({ errMessage: String(err) });
     });
     if (request.user!.id !== project?.leader) {
-        response.status(401).json({ message: 'no authority' });
+        response.status(401).json({ errMessage: 'no authority' });
         return ;
     }
     
     let curPosition = project!.position;
+    if (curPosition === null) {
+        response.status(400).json({ errMessage: 'empty position' });
+    }
     curPosition.splice(curPosition.indexOf(parseInt(position)), 1);
     await Project.update({
         position: curPosition
@@ -1036,4 +1043,25 @@ export const deletePosition = async (request: Request, response: Response) => {
     .catch(err => {
         response.status(405).json({ errMessage: String(err) });
     });
+}
+
+export const checkInterestProject = async (request: Request, response: Response) => {
+    const { projectId } = request.params;
+
+    if (projectId === undefined) {
+        response.status(400).json({ errMessage: 'please input projectId value' });
+        return ;
+    }
+
+    const likeprojectprofile = await Likeprojectprofile.findOne({
+        where: { projectId: projectId, profileId: request.user!.id }
+    })
+    .catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+    });
+    if (likeprojectprofile === null) {
+        response.status(200).json({ message: 'false' });
+    } else {
+        response.status(200).json({ message: 'true' });
+    }
 }

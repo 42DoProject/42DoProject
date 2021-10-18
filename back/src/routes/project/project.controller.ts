@@ -1,25 +1,8 @@
 import express, { Request, Response } from "express";
-// import multer from "multer";
-// import path from "path";
 import { jwtGuards } from "../auth/oauth";
 import * as projectService from "./project.service";
 
 const router: express.Router = express.Router();
-
-// const upload = multer({
-//   storage: multer.diskStorage({
-//     // set a localstorage destination
-//     destination: (req, file, cb) => {
-//       cb(null, 'uploads/');
-//     },
-//     // convert a file name
-//     filename: (req, file, cb) => {
-//       cb(null, new Date().valueOf() + path.extname(file.originalname));
-//     },
-//   }),
-// });
-
-// const upload = multer({ storage: multer.memoryStorage() });
 
 router.get("/", (request: Request, response: Response) => {
   projectService.getList(request, response);
@@ -61,7 +44,7 @@ router.get("/apply/:projectId", jwtGuards, (request: Request, response: Response
   projectService.getApplyerList(request, response);
 });
 
-router.post("/apply/:projectId", jwtGuards, (request: Request, response: Response) => {
+router.post("/apply/:projectId/:position", jwtGuards, (request: Request, response: Response) => {
   projectService.applyTeam(request, response);
 });
 
@@ -92,5 +75,9 @@ router.get("/status", jwtGuards, (request: Request, response: Response) => {
 router.delete("/position/:projectId/:position", jwtGuards, (request: Request, response: Response) => {
   projectService.deletePosition(request, response);
 })
+
+router.get("/interest/:projectId", jwtGuards, (request: Request, response: Response) => {
+  projectService.checkInterestProject(request, response);
+});
 
 export default router;

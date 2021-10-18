@@ -539,7 +539,11 @@ export const getComments = async (request: Request, response: Response) => {
             where: { projectId: projectId },
             required: true
         }, {
-            model: Profile
+            model: Profile,
+            include: [{
+                model: User,
+                attributes: ['username']
+            }]
         }],
         order: ['createdAt'],
         offset: offset,

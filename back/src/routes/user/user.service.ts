@@ -11,6 +11,7 @@ import { User } from "../../models/user/user.model";
 import { io } from "../../socket/bridge";
 import * as feed from "../../module/feed";
 import * as awsS3 from "../../module/aws/s3";
+import { updateUser } from "../../module/search";
 
 export const getConcurrentUsers = async (
   request: Request,
@@ -204,6 +205,7 @@ export const profileImage = async (request: Request, response: Response) => {
     { profileImage: link },
     { where: { id: request.user!.id } }
   );
+  updateUser({ profileImage: link }, { id: request.user!.id });
   response.status(200).json({ url: link });
 };
 

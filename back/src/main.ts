@@ -10,10 +10,12 @@ import * as auth from "./routes/auth/oauth";
 import * as bridge from "./socket/bridge";
 import * as ws from "./socket";
 import * as aws from "./module/aws/index";
+import * as search from "./module/search";
 
 dotenv.config();
 
 async function bootstrap() {
+  search.init();
   await aws.init();
   await sequelize.sync();
   await mongoose();

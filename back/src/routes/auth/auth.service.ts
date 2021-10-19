@@ -6,6 +6,7 @@ import { OToken } from "../../models/user/otoken.model";
 import { Profile } from "../../models/user/profile.model";
 import { Token } from "../../models/user/token.model";
 import { User } from "../../models/user/user.model";
+import { insertUser } from "../../module/search";
 import { getIsoString } from "../../module/time";
 import { accessToken, issueJwt, jwtToObject, tokenToUser } from "./oauth";
 
@@ -52,6 +53,11 @@ const userModelCheck = async (user: any): Promise<number> => {
     follower: [],
     feed: -1,
     userId: row.id,
+  });
+  insertUser({
+    id: row.id,
+    username: row.username,
+    profileImage: row.profileImage,
   });
   return row.id;
 };

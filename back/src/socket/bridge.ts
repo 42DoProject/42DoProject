@@ -1,6 +1,8 @@
 import { Server, Socket } from "socket.io";
 
-export var io: Server;
+var io: Server;
+
+export { io };
 
 export const set = (server: Server) => {
   io = server;

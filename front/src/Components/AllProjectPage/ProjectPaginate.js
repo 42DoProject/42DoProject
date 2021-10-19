@@ -42,28 +42,30 @@ export default function ProjectPaginate(props) {
           return <Cards key={idx} projectData={el} />;
         })}
       </div>
-      <Pagination
-        hideFirstLastPages={true}
-        activePage={page}
-        itemsCountPerPage={12}
-        totalItemsCount={totCount}
-        pageRangeDisplayed={4}
-        prevPageText={
-          <Icon
-            icon="dashicons:arrow-left-alt2"
-            color="#e5e5e5"
-            height="2rem"
-          />
-        }
-        nextPageText={
-          <Icon
-            icon="dashicons:arrow-right-alt2"
-            color="#e5e5e5"
-            height="2rem"
-          />
-        }
-        onChange={handlePageChange}
-      />
+      <div className="project-pagination">
+        <Pagination
+          hideFirstLastPages={true}
+          activePage={page}
+          itemsCountPerPage={12}
+          totalItemsCount={totCount}
+          pageRangeDisplayed={4}
+          prevPageText={
+            <Icon
+              icon="dashicons:arrow-left-alt2"
+              color="#e5e5e5"
+              height="2rem"
+            />
+          }
+          nextPageText={
+            <Icon
+              icon="dashicons:arrow-right-alt2"
+              color="#e5e5e5"
+              height="2rem"
+            />
+          }
+          onChange={handlePageChange}
+        />
+      </div>
     </>
   );
 }

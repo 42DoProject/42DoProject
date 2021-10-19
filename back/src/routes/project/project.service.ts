@@ -705,6 +705,10 @@ export const getApplyerList = async (request: Request, response: Response) => {
         attributes: ['projectId', 'position'],
         include: {
             model: Profile,
+            include: [{
+                model: User,
+                attributes: ['username', 'profileImage']
+            }]
         },
         where: { projectId: projectId }
     })

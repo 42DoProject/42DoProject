@@ -509,7 +509,7 @@ export const getContent = async (request: Request, response: Response) => {
         where: { id: projectId }
     })
     .then(content => {
-        response.status(200).json({ content });
+        response.status(200).json({ 'connectProfileId': request.user!.id, 'content': content });
     })
     .catch(err => {
         response.status(405).json({ errMessage: String(err) });

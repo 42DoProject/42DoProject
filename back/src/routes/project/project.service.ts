@@ -501,7 +501,7 @@ export const getContent = async (request: Request, response: Response) => {
                 model: Profile,
                 include: [{
                     model: User,
-                    attributes: ['profileImage']
+                    attributes: ['profileImage', 'username']
                 }]
             }],
             separate: true

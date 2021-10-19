@@ -15,14 +15,16 @@ import AllCadet from "./Components/CadetPage/AllCadet";
 import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import socket from "./socket";
+
 function App(props) {
   // 새로운 Token 발급
   let loginState = useSelector((state) => state.loginReducer);
   let dispatch = useDispatch();
   const getToken = async () => {
     try {
-      const prevRefreshToken = localStorage.getItem("refreshToken");
       if (loginState) {
+        const prevRefreshToken = localStorage.getItem("refreshToken");
         const {
           data: { accessToken: newAccessToken, refreshToken: newRefreshToken },
         } = await axios.get(
@@ -30,12 +32,18 @@ function App(props) {
         );
         localStorage.setItem("accessToken", newAccessToken);
         localStorage.setItem("refreshToken", newRefreshToken);
+        socket.emit("authorization", {
+          token: newAccessToken,
+        });
       }
     } catch (err) {
       dispatch({ type: "LOGOUT" });
       console.log(err);
     }
   };
+  useEffect(() => {
+    getToken();
+  }, []);
   // 25분마다 요청
   useEffect(() => {
     const timerId = setInterval(getToken, 1000 * 60 * 25);
@@ -46,6 +54,7 @@ function App(props) {
       <Switch>
         <Route exact path="/" component={Main} />
         <Route path="/auth" component={AuthMain} />
+        {/* <Route path="/auth" render={()=><AuthMain props={props}/>} /> */}
         <Route exact path="/profile" component={ProfilePage} />
         <Route exact path="/profile/edit" component={ProfileEditPage} />
         <Route exact path="/profile/:id" component={ProfilePage} />

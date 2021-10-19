@@ -19,8 +19,6 @@ export default function ProfileEditHeader(props) {
     props.user.statusMessage &&
       setBubbleLength(props.user.statusMessage.length);
     props.user.introduction && setIntroLength(props.user.introduction.length);
-
-    console.log(props.user);
   }, [props]);
 
   return (

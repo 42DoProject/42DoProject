@@ -1,0 +1,31 @@
+@import "../Base.scss";
+
+.positionCard {
+  padding: 0.5rem;
+  //   background-color: pink;
+  max-width: max-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  div.positionCard__img {
+    border: 2px solid $lightestGrey;
+    border-radius: 50%;
+    margin-bottom: 0.5rem;
+  }
+  .positionCard__select {
+    background-color: $lightestGrey;
+    display: flex;
+    padding: 0.1rem 0.3rem;
+    border-radius: 2rem;
+    justify-content: space-between;
+    align-items: center;
+    color: $grey;
+    min-width: max-content;
+    .positionCard__position {
+      margin: 0 0.2rem;
+      font-size: $fontSs;
+      font-weight: $normal;
+    }
+  }
+}

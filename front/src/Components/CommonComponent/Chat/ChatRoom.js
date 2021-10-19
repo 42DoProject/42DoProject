@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
-import "../../SCSS/ChatRoom.scss";
+import "../../../SCSS/Common/Chat/ChatRoom.scss";
 import axios from "axios";
-import relativeTime from "../../relativeTime";
-import socket from "../../socket";
+import relativeTime from "../../../relativeTime";
+import { useSelector } from "react-redux";
 
-export default function ChatRoom(props) {
-  const { chatRoom, clickFlag } = props;
+export default function ChatRoom({ chatRoom, clickFlag, setInFlag }) {
   const [chat, setChat] = useState([]);
-  const [refreshFlag, setRefreshFlag] = useState(0);
+  let loginState = useSelector((state) => state.loginReducer);
+  const chatRoomCP = chatRoom.users.filter((e) => {
+    return e.id !== loginState.id;
+  });
   const getChat = async (uuid) => {
     try {
       const ACCESS_TOKEN = localStorage.getItem("accessToken");
@@ -23,28 +25,30 @@ export default function ChatRoom(props) {
   };
   useEffect(() => {
     getChat(chatRoom.uuid);
-  }, [refreshFlag]);
+  }, [chatRoom]);
 
-  socket.on("chat:receive", (payload) => {
-    console.log("chat:receive");
-    refreshFlag ? setRefreshFlag(0) : setRefreshFlag(1);
-  });
   return (
     <>
-      <div className="chatRoom">
+      <div
+        className="chatRoom"
+        onClick={() => {
+          // props.setInFlag(props.uuid);
+          setInFlag(chatRoom);
+        }}
+      >
         <div className="chatRoom__nav">
           <div className="chatRoom__profile">
             <img
               className="chatRoom__img"
-              src={chatRoom.users[0].profileImage}
+              src={chatRoomCP[0]?.profileImage}
               alt="chatRoom__img"
             ></img>
             <div className="chatRoom__name">
               {clickFlag
-                ? chatRoom.users.map((e, idx) => (
+                ? chatRoomCP.map((e, idx) => (
                     <span key={idx}>{e.username}</span>
                   ))
-                : chatRoom.users.map((e, idx) => {
+                : chatRoomCP.map((e, idx) => {
                     if (idx < 3) return <span key={idx}>{e.username}</span>;
                     else if (idx === 3) return <span key={idx}>...</span>;
                     else return <></>;
@@ -56,7 +60,7 @@ export default function ChatRoom(props) {
           </div>
         </div>
         <div className="chatRoom__bubble">
-          {chat.length ? chat[chat.length - 1].message : <br />}
+          {chatRoom ? chatRoom.last : <br />}
         </div>
       </div>
     </>

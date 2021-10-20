@@ -173,6 +173,10 @@ export const modifyMe = async (request: Request, response: Response) => {
     },
     { where: { userId: request.user!.id } }
   );
+  updateUser(
+    { status: status, position: position, skill: skill },
+    { id: request.user!.id }
+  );
   if (status !== undefined && status != profile!.status)
     feed.changeStatus(request.user!.id, request.user!.username, status);
   response.status(200).json({ message: "successfully updated" });

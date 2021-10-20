@@ -14,9 +14,16 @@ export function init() {
         `search block file "${process.env.SEARCH_DATA_BLOCK}" is invalid`
       );
   } catch (e) {
+    object = { user: [], project: [] };
+    fs.writeFileSync(
+      `${process.env.SEARCH_DATA_BLOCK}`,
+      JSON.stringify(object)
+    );
+    /*
     throw new Error(
       `search block file "${process.env.SEARCH_DATA_BLOCK}" is invalid`
     );
+*/
   }
   console.log("[search] ready");
 }
@@ -52,6 +59,36 @@ export function getUser(): IUser[] {
 export function searchUser(name: string): IUser[] {
   const users: IUser[] = [];
   for (const u of object.user) if (compare(name, u.index)) users.push(u);
+  return users;
+}
+
+export function searchUserFilter(filter: {
+  status?: number;
+  position?: number;
+  skill?: number[];
+  level?: number;
+}): IUser[] {
+  const users: IUser[] = [];
+  var threshold = 0;
+  if (filter.status !== undefined) threshold++;
+  if (filter.position !== undefined) threshold++;
+  if (filter.skill !== undefined) threshold++;
+  if (filter.level !== undefined) threshold++;
+  for (const u of object.user) {
+    var condition = 0;
+    if (filter.status !== undefined && filter.status === u.status) condition++;
+    if (filter.position !== undefined && filter.position === u.position)
+      condition++;
+    if (
+      filter.skill !== undefined &&
+      filter.skill.every((x) => u.skill.includes(x))
+    )
+      condition++;
+    if (filter.level !== undefined && filter.level <= u.level) condition++;
+    if (condition === threshold) {
+      users.push(u);
+    }
+  }
   return users;
 }
 
@@ -99,12 +136,20 @@ export function insertUser(user: {
   id: number;
   username: string;
   profileImage: string;
+  status: number;
+  position: number;
+  skill: number[];
+  level: number;
 }) {
   object.user.push({
     index: user.username,
     id: user.id,
     uesrname: user.username,
     profileImage: user.profileImage,
+    status: user.status,
+    position: user.position,
+    skill: user.skill,
+    level: user.level,
   });
   save();
 }
@@ -125,12 +170,22 @@ export function insertProject(project: {
 }
 
 export function updateUser(
-  user: { profileImage: string },
+  user: {
+    profileImage?: string;
+    status?: number;
+    position?: number;
+    skill?: number[];
+    level?: number;
+  },
   where: { id: number }
 ) {
   for (const u of object.user)
     if (u.id === where.id) {
-      u.profileImage = user.profileImage;
+      if (user.profileImage !== undefined) u.profileImage = user.profileImage;
+      if (user.status !== undefined) u.status = user.status;
+      if (user.position !== undefined) u.position = user.position;
+      if (user.skill !== undefined) u.skill = user.skill;
+      if (user.level !== undefined) u.level = user.level;
     }
   save();
 }
@@ -141,11 +196,11 @@ export function updateProject(
 ) {
   for (const u of object.project)
     if (u.id === where.id) {
-      if (project.title) {
+      if (project.title !== undefined) {
         u.index = project.title.toLowerCase().split(" ");
         u.title = project.title;
       }
-      if (project.image) u.image = project.image;
+      if (project.image !== undefined) u.image = project.image;
     }
   save();
 }

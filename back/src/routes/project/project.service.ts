@@ -1,4 +1,5 @@
 import sequelize from "sequelize";
+import multer from "multer";
 import express, { Request, Response } from "express";
 import { Applyprojectprofile } from "../../models/project/applyprojectprofile.model";
 import { Comments } from "../../models/project/comments.model";
@@ -9,6 +10,7 @@ import { Projectprofile } from "../../models/project/projectprofile.model";
 import { Profile } from "../../models/user/profile.model";
 import { User } from "../../models/user/user.model";
 import { getIsoString } from "../../module/time";
+import * as awsS3 from "../../module/aws/s3";
 
 const app = express();
 app.set("query parser", "extended");
@@ -20,6 +22,7 @@ const getFiltedData = async (inputOrder: string, limit: number | undefined,
         attributes: [
             'id',
             'title',
+            'thumbnailImage',
             'leader',
             'totalMember',
             'currentMember',
@@ -270,8 +273,6 @@ export const postList = async (request: Request, response: Response) => {
 
     const project = await Project.create({
     	title: title,
-        // fileName: (request.file === undefined ? null : request.file.filename),
-        // filePath: (request.file === undefined ? null : request.file.path),
         leader: request.user?.id,
         totalMember: totalMember,
         currentMember: 1,
@@ -479,6 +480,7 @@ export const getContent = async (request: Request, response: Response) => {
         attributes: [
             'id',
             'title',
+            'thumbnailImage',
             'leader',
             'totalMember',
             'currentMember',
@@ -1069,3 +1071,51 @@ export const checkInterestProject = async (request: Request, response: Response)
         response.status(200).json({ message: 'true' });
     }
 }
+
+export const postThumbnail = async (request: Request, response: Response) => {
+    const { projectId } = request.params;
+
+    if (projectId === undefined) {
+        response.status(400).json({ errMessage: 'please input projectId value' });
+        return ;
+    }
+    const project = await Project.findOne({
+        attributes: ['leader'],
+        where: { id: projectId }
+    })
+    .catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+    });
+    if (request.user!.id !== project?.leader) {
+        response.status(401).json({ errMessage: 'no authority' });
+        return ;
+    }
+
+    try {
+      await new Promise((resolve, reject) => {
+        awsS3.profile.single("thumbnail")(request, response, (err) => {
+          if (err instanceof multer.MulterError) {
+            reject(err.message);
+          } else if (err) {
+            reject(err.message);
+          }
+          resolve(null);
+        });
+      });
+    } catch (e) {
+      response.status(400).json({ error: e });
+      return;
+    }
+    if (request.urls!.length !== 1) {
+      response.status(400).json({ error: "file is not exist" });
+      return;
+    }
+    const link = `https://${
+      process.env.AWS_FILE_BUCKET_NAME
+    }.s3.ap-northeast-2.amazonaws.com/${(<string[]>request.urls)[0]}`;
+    await Project.update(
+      { thumbnailImage: link },
+      { where: { id: projectId } }
+    );
+    response.status(200).json({ url: link });
+  };

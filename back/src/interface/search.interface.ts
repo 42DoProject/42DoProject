@@ -3,6 +3,10 @@ export interface IUser {
   id: number;
   uesrname: string;
   profileImage: string;
+  status: number;
+  position: number;
+  skill: number[];
+  level: number;
 }
 
 export interface IProject {

@@ -1,0 +1,96 @@
+@import "../Base.scss";
+
+.body-comment {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+  // padding: 10px 100px 100px 10px;
+  border-radius: $round;
+  // border: 1px solid black;
+  background: white;
+  .comment-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    .comment-id {
+      font-size: $fontMs;
+      margin: 0.5rem;
+    }
+    .comment-content {
+      margin: 0.5rem;
+    }
+  }
+  .comment-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+  .comment_text {
+    margin-left: 0.5rem;
+    font-size: $fontMs;
+  }
+  .comment-input {
+    display: flex;
+    flex-direction: row;
+    margin-top: 2rem;
+    input {
+      width: 90%;
+      height: 2rem;
+    }
+    button {
+      margin-left: 0.3rem;
+      background-color: $mainColor;
+      border: none;
+      border-radius: $round;
+      color: white;
+    }
+  }
+}
+
+.comment_pagination {
+  .pagination {
+    display: flex;
+    justify-content: center;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  ul.pagination li {
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    border-top: 1px solid #e2e2e2;
+    border-bottom: 1px solid #e2e2e2;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+  }
+
+  ul.pagination li:first-child {
+    border-left: 1px solid #e2e2e2;
+    border-radius: 10px 0 0 10px;
+    padding-right: 4rem;
+  }
+
+  ul.pagination li:last-child {
+    border-right: 1px solid #e2e2e2;
+    border-radius: 0 10px 10px 0;
+    padding-left: 4rem;
+  }
+
+  ul.pagination li a {
+    text-decoration: none;
+    color: #2c2c34;
+    font-size: $fontMs;
+  }
+
+  ul.pagination li.active a {
+    color: #a7bc5b;
+  }
+}

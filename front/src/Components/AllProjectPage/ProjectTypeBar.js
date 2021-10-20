@@ -17,6 +17,8 @@ export default function ProjectTypeBar(props) {
     case "completed":
       completeColor = "b-color";
       break;
+    default:
+      return null;
   }
 
   return (
@@ -24,17 +26,17 @@ export default function ProjectTypeBar(props) {
       <div className="project-bar">
         <div className="project-bar-column1">
           <div className="recruit-project">
-            <Link className={recruitColor} to="/project/recruit">
+            <Link className={recruitColor} to="/projectlist/recruit">
               모집중인 프로젝트
             </Link>
           </div>
           <div className="proceed-project">
-            <Link className={proceedColor} to="/project/proceed">
+            <Link className={proceedColor} to="/projectlist/proceed">
               진행중인 프로젝트
             </Link>
           </div>
           <div className="public-project">
-            <Link className={completeColor} to="/project/complete">
+            <Link className={completeColor} to="/projectlist/complete">
               완료된 프로젝트
             </Link>
           </div>

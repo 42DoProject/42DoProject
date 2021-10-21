@@ -13,6 +13,7 @@ export default function Dashboard(props) {
   let loginState = useSelector((state) => state.loginReducer);
   let [userData, setUserData] = useState(null);
   let dispatch = useDispatch();
+  // console.log("userData", userData);
   const getData = async () => {
     try {
       const { data } = await axios.get("http://localhost:5000/user/me", {
@@ -21,15 +22,13 @@ export default function Dashboard(props) {
         },
       });
       setUserData(data);
-      // console.log(data);
     } catch (err) {
-      dispatch({ type: "LOGOUT" });
       console.log(err);
     }
   };
   useEffect(() => {
     if (loginState) getData();
-  }, []);
+  }, [loginState]);
   return (
     <div className="dashboard">
       <div className="dashboard__wrap">
@@ -66,29 +65,31 @@ export default function Dashboard(props) {
               </div>
               <div className="box1__column2">
                 <div className="column2__job">
-                  {loginState && userData && positions[+userData.position]}
+                  {userData && positions[+userData.position]}
                 </div>
                 <div className="column2__skill">
-                  {loginState &&
-                    userData &&
-                    userData.skill.map((e, idx) => {
-                      return (
-                        <img key={idx} src={skills[e][1]} alt={skills[e][0]} />
-                      );
-                    })}
+                  {userData?.skill.map((e, idx) => {
+                    return (
+                      <img key={idx} src={skills[e][1]} alt={skills[e][0]} />
+                    );
+                  })}
                 </div>
               </div>
             </div>
             <div className="row2__box2">
               <div className="box2__title">진행중인 프로젝트</div>
               <div className="box2__slides">
-                {loginState === null ? null : <ProgressSlide />}
+                {loginState === null ? null : (
+                  <ProgressSlide projectData={userData?.participatingProject} />
+                )}
               </div>
             </div>
             <div className="row2__box3">
               <div className="box3__title">관심있는 프로젝트</div>
               <div className="box3__slides">
-                {loginState === null ? null : <FavoriteSlide />}
+                {loginState === null ? null : (
+                  <FavoriteSlide projectData={userData?.interestedProject} />
+                )}
               </div>
             </div>
           </div>

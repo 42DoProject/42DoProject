@@ -4,15 +4,15 @@ import "../../../SCSS/Common/Chat/Chat.scss";
 import ChatRoom from "./ChatRoom";
 import axios from "axios";
 import InChat from "./InChat";
-import socket from "../../../socket";
 import { useSelector } from "react-redux";
 
 export default function Chat() {
+  let loginState = useSelector((state) => state.loginReducer);
   const [clickFlag, setClickFlag] = useState(0);
   const [convFlag, setConvFlag] = useState(0);
   const [chatRoom, setChatRoom] = useState();
   const [inFlag, setInFlag] = useState(-1);
-  let loginState = useSelector((state) => state.loginReducer);
+
   const getChatRoom = async () => {
     try {
       const { data } = await axios.get("http://localhost:5000/chat", {
@@ -28,13 +28,7 @@ export default function Chat() {
   useEffect(() => {
     getChatRoom();
   }, []);
-  socket.on("chat:receive", (payload) => {
-    if (inFlag === -1) {
-      //inFlag가 왜 실행되냐
-      console.log("chatjs");
-      getChatRoom();
-    }
-  });
+
   return (
     <>
       <div
@@ -130,6 +124,7 @@ export default function Chat() {
                 chatRoom.map((room) => (
                   <ChatRoom
                     key={room.uuid}
+                    uuid={room.uuid}
                     chatRoom={room}
                     clickFlag={clickFlag}
                     setInFlag={setInFlag}

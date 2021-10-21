@@ -48,7 +48,7 @@ const makeDump = async (
     userId: row.id,
   });
   await Profile.create({
-    level: 0,
+    level: 1,
     lastAccess: getIsoString(),
     status: 0,
     position: 0,
@@ -65,6 +65,10 @@ const makeDump = async (
     id: row.id,
     username: row.username,
     profileImage: row.profileImage,
+    status: 0,
+    position: 0,
+    skill: [],
+    level: 1,
   });
   return row.id;
 };

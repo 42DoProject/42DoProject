@@ -8,7 +8,7 @@ import { positions } from "../../userData";
 
 export default function ProfileEditBody(props) {
   // let userState = useSelector((state) => state.userReducer);
-  let loginState = useSelector((state) => state.loginReducer);
+  const loginState = useSelector((state) => state.loginReducer);
   let existingSkills = [];
   const [selected, setSelected] = useState([]);
 

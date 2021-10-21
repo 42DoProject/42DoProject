@@ -12,7 +12,7 @@ import axios from "axios";
 
 export default function ProfileHeader(props) {
   // let userState = useSelector((state) => state.userReducer);
-  let loginState = useSelector((state) => state.loginReducer);
+  const loginState = useSelector((state) => state.loginReducer);
   const [followerFlag, setFollowerFlag] = useState(0);
   const [followingFlag, setFollowingFlag] = useState(0);
   const [followButton, setFollowButton] = useState(); // "unfollow" / "follow" 버튼
@@ -60,9 +60,7 @@ export default function ProfileHeader(props) {
                         `http://localhost:5000/user/follow/${props.userId}`,
                         {
                           headers: {
-                            Authorization: `Bearer ${localStorage.getItem(
-                              "accessToken"
-                            )}`,
+                            Authorization: `Bearer ${loginState.accessToken}`,
                           },
                         }
                       );

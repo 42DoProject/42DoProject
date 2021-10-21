@@ -2,7 +2,6 @@
 
 .project-edit__wrapper {
   overflow: auto;
-  // padding: 1rem;
   max-width: 1400px;
   background-color: white;
   border-radius: $round;
@@ -52,11 +51,16 @@
   .project-edit__form {
     display: flex;
     // flex-wrap: wrap-reverse;
-    justify-content: center;
+    // justify-content: center;
     label {
       margin: 2rem 0 1rem 0;
       font-weight: $semiBold;
     }
+  }
+
+  .project-edit__body {
+    display: flex;
+    flex-direction: row;
   }
 
   .project-edit__buttons {
@@ -91,13 +95,16 @@
 .project-edit__left {
   width: 40%;
   // background-color: pink;
+  .project-edit__position-label {
+    display: flex;
+    align-items: baseline;
+  }
   .project-edit__add-position {
-    margin-left: 2rem;
+    margin: 0 2rem;
     background-color: $bodyColor;
     color: $grey;
   }
   .project-edit__position {
-    // height: 6rem;
     display: flex;
     flex-wrap: wrap;
   }
@@ -112,9 +119,23 @@
   }
 
   .project-edit__skill {
-    // height: 6rem;
     .project-edit__add-skill {
-      width: 15rem;
+      width: 14rem;
+      padding: 0.2rem 0.7rem;
+    }
+  }
+  .project-eidt__selected-skill {
+    display: flex;
+    flex-wrap: wrap;
+    .selected-el {
+      margin: 0.1rem 0.5rem;
+      position: relative;
+      .selected-x {
+        position: absolute;
+        right: -0.8rem;
+        bottom: 0;
+        color: $grey;
+      }
     }
   }
   .project-edit__period {
@@ -138,9 +159,16 @@
   border: 2px solid $lightestGrey !important;
   border-radius: $round !important;
   overflow-x: hidden;
+  button,
+  input,
+  span {
+    border-radius: $round !important;
+  }
+
   .toastui-editor-defaultUI-toolbar {
     border-top-right-radius: $round !important;
-    overflow-x: hidden;
+    // overflow-x: hidden;
+    padding: 0 0.8rem;
   }
   .toastui-editor-md-tab-container {
     border-top-left-radius: $round !important;
@@ -152,8 +180,21 @@
   .toastui-editor-popup {
     border-radius: $round;
   }
+  .toastui-editor-md-tab-container {
+    .tab-item {
+      border-top-left-radius: $round !important;
+      border-top-right-radius: $round !important;
+    }
+  }
+  .toastui-editor-mode-switch {
+    .tab-item {
+      border-bottom-left-radius: $round !important;
+      border-bottom-right-radius: $round !important;
+    }
+  }
 }
-.project-edit__date {
+.project-edit__start-date,
+.project-edit__end-date {
   width: 11rem;
   padding: 0.2rem 0.5rem !important;
   margin: 0 0.5rem;

@@ -9,7 +9,7 @@ import { useLocation, useParams } from "react-router";
 
 export default function ProfilePage() {
   const [userData, setUserData] = useState([]);
-  let loginState = useSelector((state) => state.loginReducer);
+  const loginState = useSelector((state) => state.loginReducer);
   const userId = useParams()["id"];
   const location = useLocation();
   const [myFollowings, setMyFollowings] = useState([]);
@@ -35,7 +35,7 @@ export default function ProfilePage() {
         "http://localhost:5000/user/me",
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${loginState.accessToken}`,
           },
         }
       );
@@ -49,7 +49,7 @@ export default function ProfilePage() {
     try {
       const { data } = await axios.get("http://localhost:5000/user/me", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${loginState.accessToken}`,
         },
       });
       setUserData(data);
@@ -64,7 +64,7 @@ export default function ProfilePage() {
     if (location.pathname !== "/profile" || getDataFlag === 1) getData();
     else getMyData();
     setGetDataFlag(0);
-  }, [getDataFlag]);
+  }, [getDataFlag, loginState]);
 
   if (location.pathname === "/profile" && loginState === null) {
     return <Redirect to="/" />;

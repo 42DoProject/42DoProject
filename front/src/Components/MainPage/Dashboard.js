@@ -15,10 +15,9 @@ export default function Dashboard(props) {
   let dispatch = useDispatch();
   const getData = async () => {
     try {
-      let ACCESS_TOKEN = localStorage.getItem("accessToken");
       const { data } = await axios.get("http://localhost:5000/user/me", {
         headers: {
-          Authorization: `Bearer ${ACCESS_TOKEN}`,
+          Authorization: `Bearer ${loginState.accessToken}`,
         },
       });
       setUserData(data);

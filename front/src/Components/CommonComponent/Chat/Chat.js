@@ -5,16 +5,19 @@ import ChatRoom from "./ChatRoom";
 import axios from "axios";
 import InChat from "./InChat";
 import socket from "../../../socket";
+import { useSelector } from "react-redux";
+
 export default function Chat() {
   const [clickFlag, setClickFlag] = useState(0);
   const [convFlag, setConvFlag] = useState(0);
   const [chatRoom, setChatRoom] = useState();
   const [inFlag, setInFlag] = useState(-1);
+  let loginState = useSelector((state) => state.loginReducer);
   const getChatRoom = async () => {
     try {
       const { data } = await axios.get("http://localhost:5000/chat", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${loginState.accessToken}`,
         },
       });
       setChatRoom(data);

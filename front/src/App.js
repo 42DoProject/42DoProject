@@ -19,23 +19,19 @@ import socket from "./socket";
 import ProjectDetail from "./Components/ProjectDetail/ProjectDetail";
 
 function App(props) {
-  // 새로운 Token 발급
   let loginState = useSelector((state) => state.loginReducer);
   let dispatch = useDispatch();
+  // 새로운 Token 발급
   const getToken = async () => {
     try {
       if (loginState) {
-        const prevRefreshToken = localStorage.getItem("refreshToken");
-        const {
-          data: { accessToken: newAccessToken, refreshToken: newRefreshToken },
-        } = await axios.get(
-          `http://localhost:5000/auth/signin?refresh_token=${prevRefreshToken}`
+        const { data } = await axios.get(
+          `http://localhost:5000/auth/signin?refresh_token=${loginState.refreshToken}`
         );
-        localStorage.setItem("accessToken", newAccessToken);
-        localStorage.setItem("refreshToken", newRefreshToken);
         socket.emit("authorization", {
-          token: newAccessToken,
+          token: data.accessToken,
         });
+        dispatch({ type: "TOKEN_UPDATE", payload: data });
       }
     } catch (err) {
       dispatch({ type: "LOGOUT" });
@@ -44,18 +40,16 @@ function App(props) {
   };
   useEffect(() => {
     getToken();
-  }, []);
-  // 25분마다 요청
-  useEffect(() => {
     const timerId = setInterval(getToken, 1000 * 60 * 25);
     localStorage.setItem("timerId", timerId);
-  }, [loginState]);
+  }, []);
+
   return (
     <Layout>
       <Switch>
         <Route exact path="/" component={Main} />
         <Route path="/auth" component={AuthMain} />
-        {/* <Route path="/auth" render={()=><AuthMain props={props}/>} /> */}
+        {/* <Route path="/auth" render={() => <AuthMain props={props} />} /> */}
         <Route exact path="/profile" component={ProfilePage} />
         <Route exact path="/profile/edit" component={ProfileEditPage} />
         <Route exact path="/profile/:id" component={ProfilePage} />

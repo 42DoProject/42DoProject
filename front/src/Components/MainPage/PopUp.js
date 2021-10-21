@@ -24,6 +24,7 @@ export const Example = () => {
 
 function Pop() {
   let dispatch = useDispatch();
+  let loginState = useSelector((state) => state.loginReducer);
   return (
     <Popover id="popover-basic">
       <a href="/profile">
@@ -32,20 +33,21 @@ function Pop() {
       <div
         className="popover__wrap"
         onClick={() => {
-          logOut();
+          logOut(loginState.accessToken);
           dispatch({ type: "LOGOUT" });
-        }}>
+        }}
+      >
         <Popover.Body>SIGN OUT</Popover.Body>
       </div>
     </Popover>
   );
 }
 
-function logOut() {
+function logOut(accessToken) {
   try {
     axios.get(`http://localhost:5000/auth/signout`, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     });
     const timerId = localStorage.getItem("timerId");

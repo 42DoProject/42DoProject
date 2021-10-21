@@ -10,10 +10,7 @@ export class Project extends Model {
   title!: string;
 
   @Column(DataType.STRING(200))
-  fileName!: string;
-
-  @Column(DataType.STRING(200))
-  filePath!: string;
+  thumbnailImage!: string;
 
   @Column(DataType.STRING(200))
   unplashLink!: string;

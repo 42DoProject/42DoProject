@@ -5,16 +5,17 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import ChatCard from "./ChatCard";
 import socket from "../../../socket";
+
 export default function InChat({ chatRoom, clickFlag, setInFlag }) {
   let loginState = useSelector((state) => state.loginReducer);
   const [chat, setChat] = useState();
+  console.log(chat);
   const userList = chatRoom.users.filter((e) => e.id !== loginState.id);
   const getChat = async (uuid) => {
     try {
-      const ACCESS_TOKEN = localStorage.getItem("accessToken");
       const { data } = await axios.get(`http://localhost:5000/chat/${uuid}`, {
         headers: {
-          Authorization: `Bearer ${ACCESS_TOKEN}`,
+          Authorization: `Bearer ${loginState.accessToken}`,
         },
       });
       setChat(data);
@@ -22,12 +23,16 @@ export default function InChat({ chatRoom, clickFlag, setInFlag }) {
       console.log(err);
     }
   };
+
   useEffect(() => {
-    chatRoom && getChat(chatRoom.uuid);
-  }, []);
-  socket.on("chat:receive", (payload) => {
     getChat(chatRoom.uuid);
+    return () => socket.off("chat:receive");
+  }, []);
+
+  socket.on("chat:receive", (payload) => {
+    chatRoom.uuid === payload.uuid && getChat(chatRoom.uuid);
   });
+
   return (
     <>
       <div className="inChat">

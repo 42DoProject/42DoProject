@@ -28,10 +28,10 @@ export default function RecruitList(props) {
   return (
     <>
       {recruitingProject.length === 0 ? (
-        <div className="noProject">진행중인 프로젝트가 없어요</div>
+        <div className="noProject">모집중인 프로젝트가 없어요</div>
       ) : (
         <div className="cardlist">
-          {slideFlag === 0 ? null : (
+          {slideFlag !== 0 && (
             <button
               className="cardbutton prev"
               onClick={(event) => {

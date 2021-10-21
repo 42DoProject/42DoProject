@@ -22,23 +22,23 @@ function App(props) {
   let loginState = useSelector((state) => state.loginReducer);
   let dispatch = useDispatch();
   // 새로운 Token 발급
-  const getToken = async () => {
-    try {
-      if (loginState) {
-        const { data } = await axios.get(
-          `http://localhost:5000/auth/signin?refresh_token=${loginState.refreshToken}`
-        );
-        socket.emit("authorization", {
-          token: data.accessToken,
-        });
-        dispatch({ type: "TOKEN_UPDATE", payload: data });
-      }
-    } catch (err) {
-      dispatch({ type: "LOGOUT" });
-      console.log(err);
-    }
-  };
   useEffect(() => {
+    const getToken = async () => {
+      try {
+        if (loginState) {
+          const { data } = await axios.get(
+            `http://localhost:5000/auth/signin?refresh_token=${loginState.refreshToken}`
+          );
+          socket.emit("authorization", {
+            token: data.accessToken,
+          });
+          dispatch({ type: "TOKEN_UPDATE", payload: data });
+        }
+      } catch (err) {
+        dispatch({ type: "LOGOUT" });
+        console.log(err);
+      }
+    };
     getToken();
     const timerId = setInterval(getToken, 1000 * 60 * 25);
     localStorage.setItem("timerId", timerId);

@@ -3,19 +3,22 @@ import "../../../SCSS/Common/Chat/ChatRoom.scss";
 import axios from "axios";
 import relativeTime from "../../../relativeTime";
 import { useSelector } from "react-redux";
+import socket from "../../../socket";
+import { Icon } from "@iconify/react";
 
-export default function ChatRoom({ chatRoom, clickFlag, setInFlag }) {
+export default function ChatRoom({ chatRoom, clickFlag, setInFlag, uuid }) {
   const [chat, setChat] = useState([]);
   let loginState = useSelector((state) => state.loginReducer);
+
   const chatRoomCP = chatRoom.users.filter((e) => {
     return e.id !== loginState.id;
   });
+
   const getChat = async (uuid) => {
     try {
-      const ACCESS_TOKEN = localStorage.getItem("accessToken");
       const { data } = await axios.get(`http://localhost:5000/chat/${uuid}`, {
         headers: {
-          Authorization: `Bearer ${ACCESS_TOKEN}`,
+          Authorization: `Bearer ${loginState.accessToken}`,
         },
       });
       setChat(data);
@@ -23,9 +26,17 @@ export default function ChatRoom({ chatRoom, clickFlag, setInFlag }) {
       console.log(err);
     }
   };
+
   useEffect(() => {
-    getChat(chatRoom.uuid);
-  }, [chatRoom]);
+    getChat(uuid);
+    return () => {
+      socket.off("chat:receive");
+    };
+  }, []);
+
+  socket.on("chat:receive", (payload) => {
+    uuid === payload.uuid && getChat(uuid);
+  });
 
   return (
     <>
@@ -60,7 +71,7 @@ export default function ChatRoom({ chatRoom, clickFlag, setInFlag }) {
           </div>
         </div>
         <div className="chatRoom__bubble">
-          {chatRoom ? chatRoom.last : <br />}
+          {chat ? chat[chat.length - 1]?.message : <br />}
         </div>
       </div>
     </>

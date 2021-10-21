@@ -1,0 +1,95 @@
+@import "../Base.scss";
+
+.ProjectDetail__wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+// .projectdetail-header {
+//   display: flex;
+//   // height: 100px;
+//   margin: 10px;
+//   padding: 100px;
+//   border-radius: $round;
+//   background: cornflowerblue;
+// }
+
+.projectdetail-body {
+  margin: 1px 10px 10px 10px;
+  display: flex;
+  border-radius: $round;
+  flex-direction: row;
+}
+
+.projectdetail-body__row1 {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  // padding: 10px;
+  // margin: 10px;
+  // border-radius: $round;
+  // box-shadow: $shadow;
+  .apply-state {
+    display: flex;
+    padding: 100px;
+    justify-content: center;
+    border-radius: $round;
+    margin: 10px;
+    // border: 1px solid black;
+    background: $mainColor;
+  }
+  .project-info {
+    // justify-content: left;
+    padding: 10px 50px 50px 10px;
+    margin: 10px;
+    box-shadow: $shadow;
+    border-radius: $round;
+    // border: 1px solid black;
+    background: white;
+  }
+  .project-apply {
+    padding: 3rem;
+  }
+  .project-cancle_btn {
+    border: 1px solid #c4c4c4;
+    border-radius: $round;
+    display: flex;
+    justify-content: center;
+    // width: 5rem;
+    margin: 1rem;
+    padding: 1rem;
+    font-size: $fontMs;
+    color: #595959;
+  }
+}
+
+.projectdetail-body_row2 {
+  display: flex;
+  width: 70%;
+  min-width: max-content;
+  flex-direction: column;
+  margin: 10px;
+  padding: 2.5rem;
+  // border: 1px solid black;
+  background-color: white;
+  border-radius: $round;
+  box-shadow: $shadow;
+  .project_memberlist {
+    display: flex;
+    flex-direction: row;
+    // // align-items: center;
+    // justify-content: center;
+  }
+  .body-member {
+    padding: 10px 100px 100px 10px;
+    border-radius: $round;
+    border: 1px solid black;
+    background: white;
+  }
+  .body-content {
+    padding-bottom: 3rem;
+    border-radius: $round;
+    // border: 1px solid black;
+    background: white;
+  }
+}

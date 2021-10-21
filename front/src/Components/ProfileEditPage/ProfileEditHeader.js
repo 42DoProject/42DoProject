@@ -6,10 +6,10 @@ import relativeTime from "../../relativeTime";
 
 export default function ProfileEditHeader(props) {
   // let userState = useSelector((state) => state.userReducer);
-  let loginState = useSelector((state) => state.loginReducer);
-  let [bubbleLength, setBubbleLength] = useState(0);
-  let [introLength, setIntroLength] = useState(0);
-  let [statusColor, setStatusColor] = useState("#ff6864");
+  const loginState = useSelector((state) => state.loginReducer);
+  const [bubbleLength, setBubbleLength] = useState(0);
+  const [introLength, setIntroLength] = useState(0);
+  const [statusColor, setStatusColor] = useState("#ff6864");
   const statusEl = document.querySelector(".row2__status");
 
   useEffect(() => {
@@ -45,7 +45,11 @@ export default function ProfileEditHeader(props) {
           <div className="bubble__letters-count">{bubbleLength} / 30</div>
         </div>
         <div className="profile__last-access">
-          마지막 접속: {relativeTime(Date.parse(props.user.lastAccess))}
+          {props.user.lastAccess === "online" ? (
+            <span className="profile__online">접속중</span>
+          ) : (
+            `마지막 접속: ${relativeTime(Date.parse(props.user.lastAccess))}`
+          )}
         </div>
       </div>
       <div className="header__right">

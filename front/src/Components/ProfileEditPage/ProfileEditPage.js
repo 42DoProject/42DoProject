@@ -9,14 +9,14 @@ import { useHistory } from "react-router";
 
 export default function ProfileEditPage() {
   const [userData, setUserData] = useState({});
-  let loginState = useSelector((state) => state.loginReducer);
+  const loginState = useSelector((state) => state.loginReducer);
   let history = useHistory();
 
   const getData = async () => {
     try {
       const { data } = await axios.get("http://localhost:5000/user/me", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${loginState.accessToken}`,
         },
       });
       setUserData(data);
@@ -42,7 +42,7 @@ export default function ProfileEditPage() {
       method: "POST",
       url: "http://localhost:5000/user/me",
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        Authorization: `Bearer ${loginState.accessToken}`,
       },
       data: {
         statusMessage: document.querySelector(".profile__bubble").value,

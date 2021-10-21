@@ -1,0 +1,56 @@
+@import "../Base.scss";
+
+.project_info {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  margin: 0.5rem;
+  box-shadow: $shadow;
+  border-radius: $round;
+  background: white;
+
+  .info_icon {
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    // align-items: right;
+    margin-bottom: 1.3rem;
+    svg {
+      cursor: pointer;
+      transition: width 300ms ease;
+      // transform: translate(-50%, -50%);
+    }
+    svg:hover {
+      transform: scale(1.1);
+    }
+  }
+
+  .info_date {
+    font-size: $fontMs;
+    font-weight: bold;
+    color: black;
+    margin-bottom: 0.5rem;
+  }
+
+  .info_skill {
+    font-size: $fontMs;
+    font-weight: bold;
+    color: black;
+    margin-bottom: 0.5rem;
+  }
+  .skill {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    img {
+      margin: 5px 5px 0px 0px;
+    }
+    padding-bottom: 5rem;
+  }
+  .info_bottom {
+    display: flex;
+    flex-direction: row;
+    margin-top: 5rem;
+    font-size: $fontSs;
+  }
+}

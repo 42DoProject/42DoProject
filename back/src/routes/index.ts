@@ -3,11 +3,14 @@ import auth from "./auth/auth.controller";
 import user from "./user/user.controller";
 import project from "./project/project.controller";
 import chat from "./chat/chat.controller";
+import search from "./search/search.controller";
+
 import { User } from "../models/user/user.model";
 import { OToken } from "../models/user/otoken.model";
 import { Token } from "../models/user/token.model";
 import { Profile } from "../models/user/profile.model";
 import { getIsoString } from "../module/time";
+import { insertUser } from "../module/search";
 
 const router: express.Router = express.Router();
 
@@ -15,6 +18,7 @@ router.use("/auth", auth);
 router.use("/user", user);
 router.use("/project", project);
 router.use("/chat", chat);
+router.use("/search", search);
 
 /* dump ! */
 const makeDump = async (
@@ -44,7 +48,7 @@ const makeDump = async (
     userId: row.id,
   });
   await Profile.create({
-    level: 0,
+    level: 1,
     lastAccess: getIsoString(),
     status: 0,
     position: 0,
@@ -56,6 +60,15 @@ const makeDump = async (
     follower: [],
     feed: -1,
     userId: row.id,
+  });
+  insertUser({
+    id: row.id,
+    username: row.username,
+    profileImage: row.profileImage,
+    status: 0,
+    position: 0,
+    skill: [],
+    level: 1,
   });
   return row.id;
 };

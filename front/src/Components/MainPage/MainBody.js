@@ -9,7 +9,7 @@ export default function MainBody(props) {
     <div className="recruit__wrap">
       <div className="recruit">
         <div className="recruit__title">
-          <Link className="a-color" to="project/recruit">
+          <Link className="a-color" to="projectlist/recruit">
             모집중인 프로젝트
           </Link>
         </div>
@@ -17,7 +17,7 @@ export default function MainBody(props) {
       </div>
       <div className="public">
         <div className="public__title">
-          <Link className="a-color" to="project/complete">
+          <Link className="a-color" to="projectlist/complete">
             완료된 프로젝트
           </Link>
         </div>

@@ -16,6 +16,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import socket from "./socket";
+import ProjectDetail from "./Components/ProjectDetail/ProjectDetail";
 
 function App(props) {
   // 새로운 Token 발급
@@ -58,13 +59,14 @@ function App(props) {
         <Route exact path="/profile" component={ProfilePage} />
         <Route exact path="/profile/edit" component={ProfileEditPage} />
         <Route exact path="/profile/:id" component={ProfilePage} />
-        <Route path="/project/recruit" component={RecruitProjects} />
-        <Route path="/project/proceed" component={ProceedProjects} />
-        <Route path="/project/complete" component={CompleteProjects} />
+        <Route path="/projectlist/recruit" component={RecruitProjects} />
+        <Route path="/projectlist/proceed" component={ProceedProjects} />
+        <Route path="/projectlist/complete" component={CompleteProjects} />
         <Route path="/cadet/recruit" component={RecruitCadet} />
         <Route path="/cadet/all" component={AllCadet} />
         <Route path="/lounge" component={LoungePage} />
         <Route path="/project/edit" component={ProjectEditPage} />
+        <Route exact path="/project/:id" component={ProjectDetail} />
       </Switch>
     </Layout>
   );

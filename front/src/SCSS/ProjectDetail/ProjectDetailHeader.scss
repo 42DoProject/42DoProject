@@ -1,0 +1,36 @@
+@import "../Base.scss";
+
+.header_image {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // margin-bottom: 1rem;
+  img {
+    margin: 10px 10px 5px 10px;
+    border-radius: $round;
+    object-fit: cover; // 이미지 안찌그러지면서 꽉차게
+    width: 100%;
+    height: 15rem;
+    filter: brightness(50%);
+  }
+}
+
+.project_title {
+  position: absolute;
+  color: $lightestGrey;
+  font-weight: $bold;
+  font-size: $fontLg;
+  // bottom: 2rem;
+}
+
+.project_status {
+  position: absolute;
+  // position: absolute;
+  color: $lightestGrey;
+  font-size: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 1rem;
+  background-color: darkcyan;
+  bottom: 3rem;
+}

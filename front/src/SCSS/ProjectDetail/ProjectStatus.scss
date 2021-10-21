@@ -1,0 +1,30 @@
+@import "../Base.scss";
+
+.status_box {
+  display: flex;
+  flex-direction: column;
+  padding: 3rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: $round;
+  margin: 0.5rem;
+  background: $mainColor;
+  .status_title {
+    color: white;
+    font-weight: $bold;
+    font-size: $fontMl;
+    margin-bottom: 1rem;
+  }
+  .detail_row {
+    display: flex;
+    margin-top: 1rem;
+    align-items: center;
+    flex-direction: row;
+    .status_detail {
+      color: white;
+      font-weight: $bold;
+      font-size: $fontSm;
+      margin-left: 0.2rem;
+    }
+  }
+}

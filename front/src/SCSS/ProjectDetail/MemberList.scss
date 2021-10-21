@@ -1,0 +1,89 @@
+@import "../Base.scss";
+
+.member_list {
+  display: flex;
+  flex-direction: column;
+  .list_row1 {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    .member_count {
+      font-size: $fontMs;
+    }
+  }
+  .member_image_list {
+    display: flex;
+    flex-direction: row;
+    margin: 1rem 1rem 1rem 1rem;
+    position: relative;
+    .member_image {
+      margin: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      svg {
+        position: absolute;
+        top: -0.9rem;
+      }
+      img {
+        border-radius: 50%;
+        width: 6rem;
+        height: 6rem;
+        object-fit: cover;
+      }
+      .member_position {
+        margin-top: 5px;
+        width: 5rem;
+        height: 1rem;
+        border-radius: 2rem;
+        color: white;
+        font-size: $fontSm;
+        text-align: center;
+        background-color: $mainColor;
+      }
+    }
+    .empty_member {
+      margin: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      .plus_icon {
+        position: absolute;
+        right: 0.5rem;
+        top: -0.5rem;
+        background-color: white;
+        border-radius: 50%;
+        box-shadow: $shadow;
+      }
+      .apply_pop {
+        position: absolute;
+        background-color: white;
+        border-radius: 50%;
+        box-shadow: $shadow;
+      }
+      .chair_icon {
+        svg {
+          border-radius: 50%;
+          width: 6rem;
+          height: 6rem;
+          object-fit: cover;
+          border-radius: 50%;
+          border: 1px solid #c4c4c4;
+        }
+      }
+      .empty_position {
+        margin-top: 5px;
+        width: 5rem;
+        height: 1rem;
+        border-radius: 2rem;
+        color: white;
+        font-size: $fontSm;
+        text-align: center;
+        background-color: #c4c4c4;
+      }
+    }
+  }
+}

@@ -6,6 +6,7 @@ import { OToken } from "../../models/user/otoken.model";
 import { Profile } from "../../models/user/profile.model";
 import { Token } from "../../models/user/token.model";
 import { User } from "../../models/user/user.model";
+import { insertUser, updateUser } from "../../module/search";
 import { getIsoString } from "../../module/time";
 import { accessToken, issueJwt, jwtToObject, tokenToUser } from "./oauth";
 
@@ -16,6 +17,7 @@ const userModelCheck = async (user: any): Promise<number> => {
       { level: user.cursus_users[1].level },
       { where: { userId: temp.id } }
     );
+    updateUser({ level: user.cursus_users[1].level }, { id: temp.id });
     return temp.id;
   }
   const row = await User.create({
@@ -52,6 +54,15 @@ const userModelCheck = async (user: any): Promise<number> => {
     follower: [],
     feed: -1,
     userId: row.id,
+  });
+  insertUser({
+    id: row.id,
+    username: row.username,
+    profileImage: row.profileImage,
+    status: 0,
+    position: 0,
+    skill: [],
+    level: user.cursus_users[1].level,
   });
   return row.id;
 };

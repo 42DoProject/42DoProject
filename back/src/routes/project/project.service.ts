@@ -235,11 +235,11 @@ export const getStatus = async (request: Request, response: Response) => {
     });
 
     if (user1?.projectprofile !== undefined) {
-        response.status(200).json({'connectProfileId': request.user!.id, status: 'participating' });
+        response.status(200).json({ connectProfileId: request.user!.id, status: 'participating' });
     } else if (user2?.applyprojectprofile !== undefined) {
-        response.status(200).json({'connectProfileId': request.user!.id, status: 'applying' });
+        response.status(200).json({ connectProfileId: request.user!.id, status: 'applying' });
     } else {
-        response.status(200).json({'connectProfileId': request.user!.id, status: 'nothing' });
+        response.status(200).json({ connectProfileId: request.user!.id, status: 'nothing' });
     }
 }
 
@@ -511,7 +511,7 @@ export const getContent = async (request: Request, response: Response) => {
         where: { id: projectId }
     })
     .then(content => {
-        response.status(200).json({'content': content});
+        response.status(200).json({ content: content });
     })
     .catch(err => {
         response.status(405).json({ errMessage: String(err) });

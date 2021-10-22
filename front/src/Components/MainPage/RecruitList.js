@@ -1,10 +1,10 @@
 import Cards from "./Cards";
 import "../../SCSS/MainPage/List.scss";
 import { Icon } from "@iconify/react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-export default function RecruitList(props) {
+function RecruitList(props) {
   let [slideFlag, setSlideFlag] = useState(0);
   const [recruitingProject, setRecruitingProject] = useState([]);
   const getData = async () => {
@@ -79,3 +79,5 @@ function prevUtil(slideFlag, setSlideFlag) {
   $cardsrow.style.transform = `translateX(${(-696 / 16) * slideFlag}rem)`;
   setSlideFlag(slideFlag);
 }
+
+export default React.memo(RecruitList);

@@ -53,7 +53,7 @@ function compare(src: string, target: string): boolean {
 }
 
 export function getUser(): IUser[] {
-  return object.user.reverse();
+  return [...object.user].reverse();
 }
 
 export function searchUser(name: string): IUser[] {
@@ -93,7 +93,7 @@ export function searchUserFilter(filter: {
 }
 
 export function getProject(): IProject[] {
-  return object.project.reverse();
+  return [...object.project].reverse();
 }
 
 export function searchProject(name: string[]) {

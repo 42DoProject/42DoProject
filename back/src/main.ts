@@ -11,6 +11,7 @@ import * as bridge from "./socket/bridge";
 import * as ws from "./socket";
 import * as aws from "./module/aws/index";
 import * as search from "./module/search";
+import * as cadet from "./module/cadetqueue";
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ async function bootstrap() {
   await aws.init();
   await sequelize.sync();
   await mongoose();
+  await cadet.init();
 
   const app: express.Application = express();
   const server: http.Server = http.createServer(app);

@@ -11,7 +11,8 @@ import { User } from "../../models/user/user.model";
 import { io } from "../../socket/bridge";
 import * as feed from "../../module/feed";
 import * as awsS3 from "../../module/aws/s3";
-import { updateUser } from "../../module/search";
+import * as search from "../../module/search";
+import * as cadet from "../../module/cadetqueue";
 
 export const getConcurrentUsers = async (
   request: Request,
@@ -34,6 +35,10 @@ export const getConcurrentUsers = async (
     }
   }
   response.status(200).send(users);
+};
+
+export const getCadet = async (request: Request, response: Response) => {
+  response.status(200).send(cadet.getList());
 };
 
 export const getFeed = async (request: Request, response: Response) => {
@@ -173,10 +178,17 @@ export const modifyMe = async (request: Request, response: Response) => {
     },
     { where: { userId: request.user!.id } }
   );
-  updateUser(
+  search.updateUser(
     { status: status, position: position, skill: skill },
     { id: request.user!.id }
   );
+  if (
+    status === Number(process.env.CADET_LOOKING_FOR_PROJECT_STATUS) ||
+    (status === undefined &&
+      profile!.status === Number(process.env.CADET_LOOKING_FOR_PROJECT_STATUS))
+  )
+    cadet.push(request.user!.id);
+  else cadet.statusChanged(request.user!.id);
   if (status !== undefined && status != profile!.status)
     feed.changeStatus(request.user!.id, request.user!.username, status);
   response.status(200).json({ message: "successfully updated" });
@@ -209,7 +221,12 @@ export const profileImage = async (request: Request, response: Response) => {
     { profileImage: link },
     { where: { id: request.user!.id } }
   );
-  updateUser({ profileImage: link }, { id: request.user!.id });
+  if (
+    (await Profile.findOne({ where: { userId: request.user!.id } }))!.status ===
+    Number(process.env.CADET_LOOKING_FOR_PROJECT_STATUS)
+  )
+    cadet.push(request.user!.id);
+  search.updateUser({ profileImage: link }, { id: request.user!.id });
   response.status(200).json({ url: link });
 };
 

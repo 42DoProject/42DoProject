@@ -6,9 +6,10 @@ import { OToken } from "../../models/user/otoken.model";
 import { Profile } from "../../models/user/profile.model";
 import { Token } from "../../models/user/token.model";
 import { User } from "../../models/user/user.model";
-import { insertUser, updateUser } from "../../module/search";
 import { getIsoString } from "../../module/time";
 import { accessToken, issueJwt, jwtToObject, tokenToUser } from "./oauth";
+import * as search from "../../module/search";
+import * as cadet from "../../module/cadetqueue";
 
 const userModelCheck = async (user: any): Promise<number> => {
   var temp;
@@ -17,7 +18,7 @@ const userModelCheck = async (user: any): Promise<number> => {
       { level: user.cursus_users[1].level },
       { where: { userId: temp.id } }
     );
-    updateUser({ level: user.cursus_users[1].level }, { id: temp.id });
+    search.updateUser({ level: user.cursus_users[1].level }, { id: temp.id });
     return temp.id;
   }
   const row = await User.create({
@@ -55,7 +56,7 @@ const userModelCheck = async (user: any): Promise<number> => {
     feed: -1,
     userId: row.id,
   });
-  insertUser({
+  search.insertUser({
     id: row.id,
     username: row.username,
     profileImage: row.profileImage,
@@ -64,6 +65,7 @@ const userModelCheck = async (user: any): Promise<number> => {
     skill: [],
     level: user.cursus_users[1].level,
   });
+  cadet.push(row.id);
   return row.id;
 };
 

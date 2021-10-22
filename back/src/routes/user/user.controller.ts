@@ -8,6 +8,10 @@ router.get("/concurrent", (request: Request, response: Response) => {
   userService.getConcurrentUsers(request, response);
 });
 
+router.get("/cadet", (request: Request, response: Response) => {
+  userService.getCadet(request, response);
+});
+
 router.get("/feed", jwtGuards, (request: Request, response: Response) => {
   userService.getFeed(request, response);
 });

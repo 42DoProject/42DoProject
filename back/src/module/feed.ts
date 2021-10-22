@@ -55,17 +55,18 @@ export async function follow(id: number, username: string, target: number) {
 
 export async function project(
   type: 40 | 41 | 42,
+  userId: number,
   projectId: number,
   projectName: string
 ) {
   const block = {
-    userId: 0,
+    userId: userId,
     date: Date.now(),
     type: type,
-    args: [{ projectId: projectId, projectName: projectName }],
+    args: [{ projectId: projectId, projectName: projectName }]
   };
   await new Feed(block).save();
-  getUserSocket(0)?.emit("feed:notification", block);
+  getUserSocket(userId)?.emit("feed:notification", block);
 }
 
 export async function projectLeader(
@@ -73,7 +74,8 @@ export async function projectLeader(
   userId: number,
   username: string,
   projectId: number,
-  projectName: string
+  projectName: string,
+  leaderId: number
 ) {
   const block = {
     userId: 0,
@@ -85,13 +87,14 @@ export async function projectLeader(
     ],
   };
   await new Feed(block).save();
-  getUserSocket(0)?.emit("feed:notification", block);
+  getUserSocket(leaderId)?.emit("feed:notification", block);
 }
 
 export async function changeProjectStatus(
+  userId: number,
   projectId: number,
   projectName: string,
-  status: number
+  status: string
 ) {
   const block = {
     userId: 0,
@@ -103,5 +106,5 @@ export async function changeProjectStatus(
     ],
   };
   await new Feed(block).save();
-  getUserSocket(0)?.emit("feed:notification", block);
+  getUserSocket(userId)?.emit("feed:notification", block);
 }

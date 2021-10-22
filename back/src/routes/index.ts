@@ -11,6 +11,7 @@ import { Token } from "../models/user/token.model";
 import { Profile } from "../models/user/profile.model";
 import { getIsoString } from "../module/time";
 import { insertUser } from "../module/search";
+import { push } from "../module/cadetqueue";
 
 const router: express.Router = express.Router();
 
@@ -70,6 +71,7 @@ const makeDump = async (
     skill: [],
     level: 1,
   });
+  push(row.id);
   return row.id;
 };
 

@@ -3,7 +3,7 @@ import { Icon } from "@iconify/react";
 import "../../SCSS/ProfilePage/ProfileBody.scss";
 import skills from "../../skills.json";
 import { positions } from "../../userData";
-import ProgressSlide from "../MainPage/ProgressSlide";
+import ProfileProjects from "../ProfilePage/ProfileProjects";
 
 export default function ProfileBody(props) {
   // let userState = useSelector((state) => state.userReducer);
@@ -72,37 +72,68 @@ export default function ProfileBody(props) {
       <div className="profileBody__col2">
         <div className="col2__ongoing-projects">
           <span className="col2__subject-span">진행중인 프로젝트</span>
-          <span>없음</span>
-          <div className="projects__list">
-            <ProgressSlide />
-            <ProgressSlide />
-          </div>
+          {props.user.participatingProject &&
+          props.user.participatingProject.filter(
+            (e) =>
+              e.project.state === "recruiting" ||
+              e.project.state === "proceeding"
+          ).length ? (
+            <div className="projects__list">
+              <ProfileProjects
+                projectData={props.user.participatingProject.filter(
+                  (e) =>
+                    e.project.state === "recruiting" ||
+                    e.project.state === "proceeding"
+                )}
+              />
+            </div>
+          ) : (
+            <span>없음</span>
+          )}
         </div>
         <hr className="hr__line" />
         <div className="col2__done-projects">
           <span className="col2__subject-span">완료한 프로젝트</span>
-          <span>없음</span>
-          <div className="projects__list">
-            <ProgressSlide />
-            <ProgressSlide />
-          </div>
+          {props.user.participatingProject &&
+          props.user.participatingProject.filter(
+            (e) => e.project.state === "completed"
+          ).length ? (
+            <div className="projects__list">
+              <ProfileProjects
+                projectData={props.user.participatingProject.filter(
+                  (e) => e.project.state === "completed"
+                )}
+              />
+            </div>
+          ) : (
+            <span>없음</span>
+          )}
         </div>
         {props.location.pathname === "/profile" ? (
           <>
             <hr className="hr__line" />
             <div className="col2__registered-projects">
               <span className="col2__subject-span">참여 신청중인 프로젝트</span>
-              <span>없음</span>
+              {props.user.applyingProject &&
+              props.user.applyingProject.length ? (
+                <div className="projects__list">
+                  <ProfileProjects projectData={props.user.applyingProject} />
+                </div>
+              ) : (
+                <span>없음</span>
+              )}
             </div>
             <hr className="hr__line" />
             <div className="col2__interested-projects">
               <span className="col2__subject-span">관심있는 프로젝트</span>
-              <span>없음</span>
-              <div className="projects__list">
-                <ProgressSlide />
-                <ProgressSlide />
-                <ProgressSlide />
-              </div>
+              {props.user.interestedProject &&
+              props.user.interestedProject.length ? (
+                <div className="projects__list">
+                  <ProfileProjects projectData={props.user.interestedProject} />
+                </div>
+              ) : (
+                <span>없음</span>
+              )}
             </div>
           </>
         ) : null}

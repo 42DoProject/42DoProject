@@ -22,6 +22,9 @@ export default function ProjectEditPage() {
   const [myData, setMyData] = useState({});
   const editorRef = useRef();
   const history = useHistory();
+  const [image, setImage] = useState();
+  const [imgLoadFlag, setImgLoadFlag] = useState(0); // 1일때 이미지 로드, 로드 완료 후 2
+  const [imgBase64, setImgBase64] = useState(""); // 이미지 파일 base64 (업로드 전 미리보기 기능)
 
   let dateDiff =
     (new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24) + 1;
@@ -90,23 +93,47 @@ export default function ProjectEditPage() {
           <label>
             프로젝트 썸네일<span className="project-edit__asterisk">*</span>
           </label>
-          <div className="project-edit__thumbnail">
+          <div
+            className="project-edit__thumbnail"
+            onMouseOver={() => {
+              document.querySelector(
+                ".project-edit__img-hover"
+              ).style.visibility = "visible";
+            }}
+            onMouseLeave={() => {
+              document.querySelector(
+                ".project-edit__img-hover"
+              ).style.visibility = "hidden";
+            }}>
+            {imgLoadFlag === 0 ? (
+              <div className="project-edit__img">
+                <Icon
+                  icon="ant-design:camera-filled"
+                  style={{ fontSize: "2rem", color: "#8e8e93" }}
+                />
+              </div>
+            ) : (
+              <img className="project-edit__img" src={imgBase64} />
+            )}
             <div
-              className="project-edit__img"
-              onClick={() => {
-                unsplashFlag === 0 ? setUnsplashFlag(1) : setUnsplashFlag(0);
-              }}>
-              <Icon
-                icon="ant-design:camera-filled"
-                style={{ fontSize: "2rem", color: "#8e8e93" }}
+              className="project-edit__img-hover"
+              onClick={() =>
+                unsplashFlag === 0 ? setUnsplashFlag(1) : setUnsplashFlag(0)
+              }>
+              <div className="img-hover__add">이미지 선택</div>
+            </div>
+          </div>
+          {unsplashFlag === 1 && (
+            <div ref={unsplashRef}>
+              <Unsplash
+                setUnsplashFlag={setUnsplashFlag}
+                setImage={setImage}
+                image={image}
+                setImgLoadFlag={setImgLoadFlag}
+                setImgBase64={setImgBase64}
               />
             </div>
-            {unsplashFlag === 1 ? (
-              <div ref={unsplashRef}>
-                <Unsplash setUnsplashFlag={setUnsplashFlag} />
-              </div>
-            ) : null}
-          </div>
+          )}
           <div className="project-edit__position-label">
             <label>
               프로젝트에 필요한 포지션

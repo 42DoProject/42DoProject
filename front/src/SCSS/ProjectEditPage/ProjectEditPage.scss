@@ -32,6 +32,10 @@
     align-items: flex-end;
     min-width: max-content;
     position: relative;
+    width: 18rem;
+    height: 12rem;
+    cursor: pointer;
+
     .project-edit__img {
       border-radius: $round;
       object-fit: cover;
@@ -41,10 +45,25 @@
       width: 18rem;
       height: 12rem;
       background-color: $lightestGrey;
-      cursor: pointer;
     }
-    .add-thumbnail {
-      margin: 0 1rem;
+    .project-edit__img-hover {
+      z-index: 1;
+      position: absolute;
+      width: 18rem;
+      height: 12rem;
+      border-radius: $round;
+      background-color: rgba(0, 0, 0, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      visibility: hidden;
+      .img-hover__add {
+        border: 2px solid $lightestGrey;
+        width: max-content;
+        padding: 0.5rem 1rem;
+        border-radius: $round;
+        color: $lightestGrey;
+      }
     }
   }
 

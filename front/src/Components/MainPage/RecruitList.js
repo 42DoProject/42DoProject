@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 function RecruitList(props) {
-  let [slideFlag, setSlideFlag] = useState(0);
+  const [slideFlag, setSlideFlag] = useState(0);
   const [recruitingProject, setRecruitingProject] = useState([]);
   const getData = async () => {
     try {
@@ -36,8 +36,7 @@ function RecruitList(props) {
               className="cardbutton prev"
               onClick={(event) => {
                 prevUtil(slideFlag, setSlideFlag);
-              }}
-            >
+              }}>
               <Icon className="prev__icon" icon="dashicons:arrow-left-alt2" />
             </button>
           )}
@@ -46,8 +45,7 @@ function RecruitList(props) {
               className="cardbutton next"
               onClick={(event) => {
                 nextUtil(slideFlag, setSlideFlag, recruitingProject.length);
-              }}
-            >
+              }}>
               <Icon className="next__icon" icon="dashicons:arrow-right-alt2" />
             </button>
           )}

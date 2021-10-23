@@ -1,0 +1,43 @@
+@import "../Base.scss";
+
+.profile-project__wrap {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  .cards-row {
+    display: flex;
+  }
+
+  .cardbutton {
+    position: absolute;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background-color: rgba(144, 144, 144, 0.3);
+    border: none;
+    top: 3.5rem;
+    right: 10rem;
+    // visibility: hidden;
+  }
+  .prev {
+    z-index: 2;
+    left: 1.5rem;
+    .prev__icon {
+      font-size: 1.5rem;
+      color: white;
+      position: relative;
+      right: 0.1rem;
+    }
+  }
+  .next {
+    z-index: 2;
+    right: 1.5rem;
+
+    .next__icon {
+      font-size: 1.5rem;
+      color: white;
+      position: relative;
+      left: 0.1rem;
+    }
+  }
+}

@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import socket from "../../../socket";
 import { Icon } from "@iconify/react";
 
-export default function ChatRoom({ chatRoom, clickFlag, setInFlag, uuid }) {
+function ChatRoom({ uuid, chatRoom, clickFlag, setInFlag, setConvFlag }) {
   const [chat, setChat] = useState([]);
   let loginState = useSelector((state) => state.loginReducer);
 
@@ -29,14 +29,12 @@ export default function ChatRoom({ chatRoom, clickFlag, setInFlag, uuid }) {
 
   useEffect(() => {
     getChat(uuid);
-    return () => {
-      socket.off("chat:receive");
-    };
-  }, []);
-
-  socket.on("chat:receive", (payload) => {
-    uuid === payload.uuid && getChat(uuid);
-  });
+    socket.on(
+      "chat:receive",
+      (payload) => uuid === payload.uuid && getChat(uuid)
+    );
+    return () => socket.off("chat:receive");
+  }, [loginState]);
 
   return (
     <>
@@ -45,6 +43,7 @@ export default function ChatRoom({ chatRoom, clickFlag, setInFlag, uuid }) {
         onClick={() => {
           // props.setInFlag(props.uuid);
           setInFlag(chatRoom);
+          setConvFlag(0);
         }}
       >
         <div className="chatRoom__nav">
@@ -77,3 +76,5 @@ export default function ChatRoom({ chatRoom, clickFlag, setInFlag, uuid }) {
     </>
   );
 }
+
+export default React.memo(ChatRoom);

@@ -5,8 +5,9 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Example as PopUp } from "../../MainPage/PopUp";
 import Notifiaction from "./Notification";
+import { Example as PopUp2 } from "./PopUp2";
 export default function Navbar(props) {
-  let loginState = useSelector((state) => state.loginReducer);
+  const loginState = useSelector((state) => state.loginReducer);
 
   return (
     <div className="Nav">
@@ -56,7 +57,7 @@ export default function Navbar(props) {
           </div>
         )}
         <div className="Nav__menu">
-          <Icon icon="heroicons-outline:menu-alt-4" />
+          <PopUp2 />
         </div>
       </div>
     </div>

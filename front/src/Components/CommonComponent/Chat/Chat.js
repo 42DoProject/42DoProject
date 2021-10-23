@@ -5,13 +5,15 @@ import ChatRoom from "./ChatRoom";
 import axios from "axios";
 import InChat from "./InChat";
 import { useSelector } from "react-redux";
-
+import socket from "../../../socket";
 export default function Chat() {
+  console.log("chat");
   let loginState = useSelector((state) => state.loginReducer);
   const [clickFlag, setClickFlag] = useState(0);
   const [convFlag, setConvFlag] = useState(0);
   const [chatRoom, setChatRoom] = useState();
   const [inFlag, setInFlag] = useState(-1);
+  const [chatOutFlag, setChatOutFlag] = useState(0);
 
   const getChatRoom = async () => {
     try {
@@ -25,9 +27,19 @@ export default function Chat() {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    socket.off("chat:newRoom");
+
+    socket.on("chat:newRoom", () => {
+      console.log("sosososo");
+      getChatRoom();
+    });
+  }, [loginState]);
+
   useEffect(() => {
     getChatRoom();
-  }, []);
+  }, [loginState, chatOutFlag]);
 
   return (
     <>
@@ -55,9 +67,10 @@ export default function Chat() {
         {inFlag !== -1 ? (
           <InChat
             chatRoom={inFlag}
-            // chatRoom={chatRoom?.find(({ uuid }) => inFlag === uuid)}
             setInFlag={setInFlag}
             clickFlag={clickFlag}
+            chatOutFlag={chatOutFlag}
+            setChatOutFlag={setChatOutFlag}
           />
         ) : (
           <>
@@ -113,23 +126,23 @@ export default function Chat() {
                 </div>
               </div>
             </div>
-            {convFlag === 1 ? (
+            {convFlag === 1 && (
               <div className="chatLog__addConv">
                 <span className="addConv__placeholder">대화상대 추가 : </span>
                 <input type="text" className="addConv__input" />
               </div>
-            ) : null}
+            )}
             <div className="chatLog__body">
-              {chatRoom &&
-                chatRoom.map((room) => (
-                  <ChatRoom
-                    key={room.uuid}
-                    uuid={room.uuid}
-                    chatRoom={room}
-                    clickFlag={clickFlag}
-                    setInFlag={setInFlag}
-                  />
-                ))}
+              {chatRoom?.map((room) => (
+                <ChatRoom
+                  key={room.uuid}
+                  uuid={room.uuid}
+                  chatRoom={room}
+                  clickFlag={clickFlag}
+                  setInFlag={setInFlag}
+                  setConvFlag={setConvFlag}
+                />
+              ))}
             </div>
           </>
         )}

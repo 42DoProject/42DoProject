@@ -3,6 +3,7 @@ import { Popover, OverlayTrigger, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import "../../SCSS/MainPage/PopUp.scss";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export const Example = () => {
   let loginState = useSelector((state) => state.loginReducer);
@@ -27,9 +28,9 @@ function Pop() {
   let loginState = useSelector((state) => state.loginReducer);
   return (
     <Popover id="popover-basic">
-      <a href="/profile">
+      <Link to="/profile">
         <Popover.Body>프로필 보기</Popover.Body>
-      </a>
+      </Link>
       <div
         className="popover__wrap"
         onClick={() => {

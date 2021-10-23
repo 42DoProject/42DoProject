@@ -214,7 +214,6 @@
   position: relative;
   display: flex;
   align-items: center;
-
   .name {
     .btn {
       display: flex;
@@ -304,7 +303,15 @@
   }
   .Nav__menu {
     display: flex;
-    font-size: $fontLg;
+    .btn {
+      box-shadow: none;
+      .Nav__menu-icon {
+        font-size: $fontLg;
+        &:hover {
+          color: $mainColor;
+        }
+      }
+    }
   }
 }
 @media (max-width: 48rem) {

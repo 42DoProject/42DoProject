@@ -10,11 +10,9 @@ import { positions } from "../../userData";
 import { skills } from "../../skills.json";
 
 export default function Dashboard(props) {
-  console.log("dash");
   let loginState = useSelector((state) => state.loginReducer);
   let [userData, setUserData] = useState(null);
   let dispatch = useDispatch();
-  // console.log("userData", userData);
   const getData = async () => {
     try {
       const { data } = await axios.get("http://localhost:5000/user/me", {

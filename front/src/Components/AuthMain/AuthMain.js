@@ -23,7 +23,7 @@ export default function AuthMain() {
         } = data;
         // socket 인증
         socket.emit("authorization", {
-          token: localStorage.getItem("accessToken"),
+          token: accessToken,
         });
         // loginReducer state 변경
         dispatch({ type: "LOGIN", payload: data });

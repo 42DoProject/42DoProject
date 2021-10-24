@@ -250,7 +250,36 @@ const arrayCondition = (array: Number[], max: Number): Number[] => {
     );
 };
 
+const postThumbnail = async (request: Request, response: Response) => {
+    try {
+      await new Promise((resolve, reject) => {
+        awsS3.project.single("thumbnail")(request, response, (err) => {
+          if (err instanceof multer.MulterError) {
+            reject(err.message);
+          } else if (err) {
+            reject(err.message);
+          }
+          resolve(null);
+        });
+      });
+    } catch (e) {
+      response.status(400).json({ error: e });
+      return -1;
+    }
+    if (request.urls!.length !== 1) {
+      return;
+    }
+    const link = `https://${
+      process.env.AWS_FILE_BUCKET_NAME
+    }.s3.ap-northeast-2.amazonaws.com/${(<string[]>request.urls)[0]}`;
+    return link;
+  };
+
 export const postList = async (request: Request, response: Response) => {
+    const imageLink = await postThumbnail(request, response);
+    if (imageLink === -1) {
+        return ;
+    }
     const { title, state, startDate, endDate, content } = request.body;
     let { skill, position } = request.body;
 
@@ -275,6 +304,7 @@ export const postList = async (request: Request, response: Response) => {
 
     const project = await Project.create({
     	title: title,
+        thumbnailImage: imageLink,
         leader: request.user?.id,
         totalMember: totalMember,
         currentMember: 1,
@@ -320,6 +350,10 @@ export const postList = async (request: Request, response: Response) => {
 }
 
 export const updateList = async (request: Request, response: Response) => {
+    const imageLink = await postThumbnail(request, response);
+    if (imageLink === -1) {
+        return ;
+    }
     const { projectId } = request.query;
     const { title, state, startDate, endDate, content } = request.body;
     let { skill, position } = request.body;
@@ -373,6 +407,11 @@ export const updateList = async (request: Request, response: Response) => {
     .catch(err => {
     	response.status(405).json({ errMessage: String(err) });
     })
+    if (imageLink !== undefined) {
+        await Project.update({
+            thumbnailImage: imageLink
+        }, { where: { id: project!.id }});
+    }
     await Content.update({
         content: content,
         updatedAt: getIsoString()
@@ -1155,51 +1194,3 @@ export const checkInterestProject = async (request: Request, response: Response)
         response.status(200).json({ message: 'true' });
     }
 }
-
-export const postThumbnail = async (request: Request, response: Response) => {
-    const { projectId } = request.params;
-
-    if (projectId === undefined) {
-        response.status(400).json({ errMessage: 'please input projectId value' });
-        return ;
-    }
-    const project = await Project.findOne({
-        attributes: ['leader'],
-        where: { id: projectId }
-    })
-    .catch(err => {
-        response.status(405).json({ errMessage: String(err) });
-    });
-    if (request.user!.id !== project?.leader) {
-        response.status(401).json({ errMessage: 'no authority' });
-        return ;
-    }
-
-    try {
-      await new Promise((resolve, reject) => {
-        awsS3.profile.single("thumbnail")(request, response, (err) => {
-          if (err instanceof multer.MulterError) {
-            reject(err.message);
-          } else if (err) {
-            reject(err.message);
-          }
-          resolve(null);
-        });
-      });
-    } catch (e) {
-      response.status(400).json({ error: e });
-      return;
-    }
-    if (request.urls!.length !== 1) {
-      response.status(400).json({ error: "file is not exist" });
-      return;
-    }
-    const link = `https://${
-      process.env.AWS_FILE_BUCKET_NAME
-    }.s3.ap-northeast-2.amazonaws.com/${(<string[]>request.urls)[0]}`;
-    await Project.update(
-      { thumbnailImage: link },
-      { where: { id: projectId } }
-    );
-    response.status(200).json({ url: link });
-  };

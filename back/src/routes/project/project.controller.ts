@@ -80,8 +80,4 @@ router.get("/interest/:projectId", jwtGuards, (request: Request, response: Respo
   projectService.checkInterestProject(request, response);
 });
 
-router.post("/thumbnail/:projectId", jwtGuards, (request: Request, response: Response) => {
-  projectService.postThumbnail(request, response);
-});
-
 export default router;

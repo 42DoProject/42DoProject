@@ -264,7 +264,7 @@ const postThumbnail = async (request: Request, response: Response) => {
       });
     } catch (e) {
       response.status(400).json({ error: e });
-      return;
+      return -1;
     }
     if (request.urls!.length !== 1) {
       return;
@@ -272,11 +272,14 @@ const postThumbnail = async (request: Request, response: Response) => {
     const link = `https://${
       process.env.AWS_FILE_BUCKET_NAME
     }.s3.ap-northeast-2.amazonaws.com/${(<string[]>request.urls)[0]}`;
-    response.status(200).json({ url: link });
+    return link;
   };
 
 export const postList = async (request: Request, response: Response) => {
     const imageLink = await postThumbnail(request, response);
+    if (imageLink === -1) {
+        return ;
+    }
     const { title, state, startDate, endDate, content } = request.body;
     let { skill, position } = request.body;
 
@@ -348,6 +351,9 @@ export const postList = async (request: Request, response: Response) => {
 
 export const updateList = async (request: Request, response: Response) => {
     const imageLink = await postThumbnail(request, response);
+    if (imageLink === -1) {
+        return ;
+    }
     const { projectId } = request.query;
     const { title, state, startDate, endDate, content } = request.body;
     let { skill, position } = request.body;
@@ -389,7 +395,6 @@ export const updateList = async (request: Request, response: Response) => {
 
     await Project.update({
         title: title,
-        thumbnailImage: imageLink,
         totalMember: totalMember,
         currentMember: project!.currentMember,
         state: inputState,
@@ -402,6 +407,11 @@ export const updateList = async (request: Request, response: Response) => {
     .catch(err => {
     	response.status(405).json({ errMessage: String(err) });
     })
+    if (imageLink !== undefined) {
+        await Project.update({
+            thumbnailImage: imageLink
+        }, { where: { id: project!.id }});
+    }
     await Content.update({
         content: content,
         updatedAt: getIsoString()

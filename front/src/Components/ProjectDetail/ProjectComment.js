@@ -4,7 +4,7 @@ import { Icon } from "@iconify/react";
 import Pagination from "react-js-pagination";
 import "../../SCSS/ProjectDetail/ProjectComment.scss";
 
-export default function ProjectComment({ projectId }) {
+export default function ProjectComment({ projectId, loginState }) {
   const [commentList, setCommentList] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState();
@@ -28,12 +28,11 @@ export default function ProjectComment({ projectId }) {
   };
 
   const onDelete = (commentId, e) => {
-    console.log(commentId);
     axios({
       method: "DELETE",
       url: `http://localhost:5000/project/comments?commentId=${commentId}`,
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        Authorization: `Bearer ${loginState.accessToken}`,
       },
     })
       .then((res) => {
@@ -44,23 +43,26 @@ export default function ProjectComment({ projectId }) {
   };
 
   const onSubmit = (e) => {
-    console.log("submit");
-    axios({
-      method: "POST",
-      url: `http://localhost:5000/project/comments?contentId=${projectId}`,
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-      data: {
-        comment: newComment,
-      },
-    })
-      .then((res) => {
-        console.log(res);
-        setNewComment("");
+    if (loginState === null) alert("로그인이 필요합니다!");
+    else {
+      console.log("submit");
+      axios({
+        method: "POST",
+        url: `http://localhost:5000/project/comments?contentId=${projectId}`,
+        headers: {
+          Authorization: `Bearer ${loginState.accessToken}`,
+        },
+        data: {
+          comment: newComment,
+        },
       })
-      .catch((e) => console.log(e));
-    e.preventDefault();
+        .then((res) => {
+          console.log(res);
+          setNewComment("");
+        })
+        .catch((e) => console.log(e));
+      e.preventDefault();
+    }
   };
 
   const handlePageChange = (page) => {
@@ -81,22 +83,27 @@ export default function ProjectComment({ projectId }) {
         <Icon icon="bi:chat-left-text" color="#565656" height="25" />
         <div className="comment_text">응원 / 질문을 남겨주세요! </div>
       </div>
-      {commentList &&
-        commentList.map((el, key) => (
-          <div className="comment-list">
-            <div className="comment-id">{el.profile.user.username}</div>
-            <div className="comment-content">{el.comment}</div>
-            {el.profile.id === 1 && (
-              <Icon
-                icon="bx:bx-x"
-                color="#ff6864"
-                height="18"
-                onClick={(e) => onDelete(el.id, e)}
-                style={{ cursor: "pointer" }}
-              />
-            )}
-          </div>
-        ))}
+      <div className="comment_main">
+        {commentList.length !== 0 ? (
+          commentList.map((el, key) => (
+            <div className="comment-list">
+              <div className="comment-id">{el.profile.user.username}</div>
+              <div className="comment-content">{el.comment}</div>
+              {el.profile.id === loginState?.id && (
+                <Icon
+                  icon="bx:bx-x"
+                  color="#ff6864"
+                  height="18"
+                  onClick={(e) => onDelete(el.id, e)}
+                  style={{ cursor: "pointer" }}
+                />
+              )}
+            </div>
+          ))
+        ) : (
+          <div className="empty-comment">댓글이 없습니다.</div>
+        )}
+      </div>
       <div className="comment_pagination">
         <Pagination
           hideFirstLastPages={true}

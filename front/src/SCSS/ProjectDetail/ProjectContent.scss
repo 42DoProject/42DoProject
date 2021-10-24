@@ -1,6 +1,7 @@
 @import "../Base.scss";
 
 .project_content {
+  min-height: 30rem;
   margin: 1.5rem 1rem 1rem 0rem;
   .project_content_row1 {
     display: flex;
@@ -14,6 +15,7 @@
   }
   .md_viewer {
     // margin-left: 2rem;
+
     margin: 2rem 2rem 1rem 2rem;
   }
 }

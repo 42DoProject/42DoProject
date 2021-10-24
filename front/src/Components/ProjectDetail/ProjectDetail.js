@@ -17,6 +17,7 @@ export default function ProjectDetail(props) {
   const loginState = useSelector((state) => state.loginReducer);
   // const projectId = props.match.params.id;
 
+  console.log(loginState);
   useEffect(() => {
     getData();
   }, []);
@@ -46,14 +47,19 @@ export default function ProjectDetail(props) {
               </div>
               <div className="projectdetail-body_row2">
                 <div className="project_memberlist">
-                  <MemberList data={project} />
+                  <MemberList data={project} loginState={loginState} />
                 </div>
                 <hr />
                 <div className="body-content">
                   <ProjectContent content={project} />
                 </div>
                 <hr />
-                {project.id && <ProjectComment projectId={project.id} />}
+                {project.id && (
+                  <ProjectComment
+                    projectId={project.id}
+                    loginState={loginState}
+                  />
+                )}
               </div>
             </div>
           </>

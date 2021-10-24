@@ -4,9 +4,17 @@ import { Icon } from "@iconify/react";
 import skills from "../../skills.json";
 import dayjs from "dayjs";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 export default function ProjectInfo({ info, loginstate }) {
   const [clickFlag, setClickFlag] = useState(0);
+  let loginState = useSelector((state) => state.loginReducer);
+
+  var start = dayjs(info.startDate);
+  var end = dayjs(info.endDate);
+  var duration = end.diff(start, "day");
+
+  console.log(duration);
 
   const likeData = [
     {
@@ -25,7 +33,7 @@ export default function ProjectInfo({ info, loginstate }) {
       method: "DELETE",
       url: `http://localhost:5000/project/apply/${info.id}/1`,
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        Authorization: `Bearer ${loginState.accessToken}`,
       },
     })
       .then((res) => {
@@ -41,7 +49,7 @@ export default function ProjectInfo({ info, loginstate }) {
         data: { message: likeStatus },
       } = await axios.get(`http://localhost:5000/project/interest/${info.id}`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${loginState.accessToken}`,
         },
       });
       likeStatus === "true" ? setClickFlag(1) : setClickFlag(0);
@@ -51,18 +59,21 @@ export default function ProjectInfo({ info, loginstate }) {
   };
 
   const onClickLike = (e) => {
-    axios({
-      method: "POST",
-      url: `http://localhost:5000/project/like/${info.id}`,
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    })
-      .then((res) => {
-        console.log(res);
+    if (loginState === null) alert("로그인이 필요합니다!");
+    else {
+      axios({
+        method: "POST",
+        url: `http://localhost:5000/project/like/${info.id}`,
+        headers: {
+          Authorization: `Bearer ${loginState.accessToken}`,
+        },
       })
-      .catch((e) => console.log(e));
-    e.preventDefault();
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((e) => console.log(e));
+      e.preventDefault();
+    }
   };
 
   const onClickUnlike = (e) => {
@@ -70,7 +81,7 @@ export default function ProjectInfo({ info, loginstate }) {
       method: "DELETE",
       url: `http://localhost:5000/project/like/${info.id}`,
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        Authorization: `Bearer ${loginState.accessToken}`,
       },
     })
       .then((res) => {
@@ -105,8 +116,7 @@ export default function ProjectInfo({ info, loginstate }) {
         </div>
         <div className="info_date">프로젝트 기간</div>
         <div className="date">
-          {dayjs(info.startDate).format("YY.MM.DD")} ~{" "}
-          {dayjs(info.endDate).format("YY.MM.DD")}
+          {start.format("YY.MM.DD")} ~ {end.format("YY.MM.DD")} ({duration} 일)
         </div>
         <hr />
         <div className="info_skill">프로젝트 필요 스킬</div>
@@ -123,8 +133,7 @@ export default function ProjectInfo({ info, loginstate }) {
             })}
         </div>
         <div className="info_bottom">
-          관심 {info.like} ∙ 댓글 {info.commentCount} ∙ 조회
-          {info.viewCount}
+          관심 {info.like} ∙ 댓글 {info.commentCount} ∙ 조회 {info.viewCount}
         </div>
       </div>
       {loginstate !== null && (

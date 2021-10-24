@@ -4,14 +4,13 @@ import { Icon } from "@iconify/react";
 import axios from "axios";
 import { positions } from "../../userData";
 
-export default function MemberList({ data }) {
-  const onApply = (e, key) => {
-    console.log("apply");
+export default function MemberList({ data, loginState }) {
+  const onApply = (e, elm) => {
     axios({
       method: "POST",
-      url: `http://localhost:5000/project/apply/${data.id}/1`,
+      url: `http://localhost:5000/project/apply/${data.id}/${elm}`,
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        Authorization: `Bearer ${loginState.acceessToken}`,
       },
     })
       .then((res) => {
@@ -55,14 +54,16 @@ export default function MemberList({ data }) {
             ))}
           </div>
           <div className="empty_list">
-            {data.position.map((e, key) => (
+            {data.position.map((elm, index) => (
               <div className="empty_member">
                 <div className="plus_icon">
                   <Icon
                     icon="akar-icons:circle-plus-fill"
                     color="#5bbcb6"
                     height="24"
-                    onClick={(e, key) => onApply(e, e.position)}
+                    position={elm}
+                    key={index}
+                    onClick={(e) => onApply(e, elm)}
                     style={{ cursor: "pointer" }}
                   />
                 </div>
@@ -80,7 +81,7 @@ export default function MemberList({ data }) {
                     />
                   </svg>
                 </div>
-                <div className="empty_position">{positions[e]}</div>
+                <div className="empty_position">{positions[elm]}</div>
               </div>
             ))}
           </div>

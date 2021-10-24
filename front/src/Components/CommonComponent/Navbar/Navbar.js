@@ -25,17 +25,17 @@ export default function Navbar(props) {
       </div>
       <div className="Nav-column2">
         <div className="Nav__project">
-          <Link className="a-color" to="/projectlist/recruit">
+          <Link className="nav-color" to="/projectlist/recruit">
             프로젝트
           </Link>
         </div>
         <div className="Nav__cadet">
-          <Link className="a-color" to="/cadet/recruit">
+          <Link className="nav-color" to="/cadet/recruit">
             카뎃
           </Link>
         </div>
         <div className="Nav__lounge">
-          <Link className="a-color" to="/lounge">
+          <Link className="nav-color" to="/lounge">
             라운지
           </Link>
         </div>
@@ -44,8 +44,7 @@ export default function Navbar(props) {
           <button className="Nav__user__login">
             <a
               className="login__link"
-              href={`https://api.intra.42.fr/oauth/authorize?client_id=${process.env.REACT_APP_API_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_API_REDIRECT_URI}&response_type=code`}
-            >
+              href={`https://api.intra.42.fr/oauth/authorize?client_id=${process.env.REACT_APP_API_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_API_REDIRECT_URI}&response_type=code`}>
               SIGN IN
             </a>
           </button>

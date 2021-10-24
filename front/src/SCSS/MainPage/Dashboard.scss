@@ -46,7 +46,7 @@
     }
     .user__name {
       font-size: $fontLg;
-      font-weight: 800;
+      font-weight: $bold;
       margin-right: 0.5rem;
     }
   }
@@ -80,7 +80,7 @@
     .box1__column1 {
       color: $mainColor;
       font-size: 1.3rem;
-      font-weight: 800;
+      font-weight: $semiBold;
       margin-right: 1.5rem;
       min-width: max-content;
 
@@ -92,7 +92,7 @@
       left: 10rem;
       color: $lightestGrey;
       font-size: 1.3rem;
-      font-weight: 800;
+      font-weight: $normal;
       .column2__job {
         margin-bottom: 2rem;
       }
@@ -120,7 +120,7 @@
     border-radius: $round;
     color: $lightestGrey;
     font-size: 1.3rem;
-    font-weight: 800;
+    font-weight: $normal;
     margin-left: 1.7rem;
     position: relative;
     width: 8rem;
@@ -152,7 +152,7 @@
     border-radius: $round;
     color: $lightestGrey;
     font-size: 1.3rem;
-    font-weight: 800;
+    font-weight: $normal;
     width: 8rem;
     &:hover {
       .cardbutton {
@@ -202,7 +202,7 @@
   }
 
   .reportbox__report {
-    font-weight: 700;
+    font-weight: $semiBold;
   }
 }
 @media (max-width: 55rem) {

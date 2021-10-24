@@ -23,17 +23,21 @@
 }
 
 .a-color {
-  color: $black;
+  color: $grey;
 }
 
 .b-color {
-  color: $mainColor;
+  color: $black;
+  cursor: default;
+  &:hover {
+    color: $black;
+  }
 }
 
 .recruit-project {
   font-weight: $bold;
   font-size: $fontMd;
-  color: $black;
+  // color: $black;
   margin-left: 2rem;
   .innerHtml:hover {
     color: $mainColor;
@@ -42,7 +46,7 @@
 .proceed-project {
   font-weight: $bold;
   font-size: $fontMd;
-  color: $black;
+  // color: $black;
   margin-left: 2rem;
   .innerHtml:hover {
     color: $mainColor;
@@ -52,6 +56,19 @@
 .public-project {
   font-weight: $bold;
   font-size: $fontMd;
-  color: $black;
+  // color: $black;
   margin-left: 2rem;
+}
+
+.create-project {
+  padding: 0.5rem 1rem;
+  border-radius: $round;
+  border: none;
+  background-color: $mainColor;
+  color: white;
+  font-weight: $normal;
+  margin-right: 1rem;
+  &:hover {
+    color: white;
+  }
 }

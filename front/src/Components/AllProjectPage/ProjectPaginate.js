@@ -9,7 +9,7 @@ import "../../SCSS/AllProjectPage/ProjectGrid.scss";
 export default function ProjectPaginate(props) {
   const [page, setPage] = useState(1);
   const [Project, setProject] = useState([]);
-  let totCount = 1;
+  const [totCount, setTotCount] = useState(1);
   const getData = async () => {
     try {
       const {
@@ -19,8 +19,8 @@ export default function ProjectPaginate(props) {
       } = await axios.get(
         `http://localhost:5000/project?state=${props.state}&pageSize=12&page=${page}`
       );
+      setTotCount(count);
       setProject(projectData);
-      totCount = count;
     } catch (err) {
       console.log(err);
     }

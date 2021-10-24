@@ -22,12 +22,19 @@
     }
     .DashCards__title {
       position: absolute;
+      width: 100%;
       color: $lightestGrey;
-      font-weight: 600;
       bottom: 1rem;
+      padding: 0 0.5rem;
       font-size: $fontSm;
+      font-weight: $normal;
       text-align: center;
-      font-weight: $bold;
+      word-wrap: break-word;
+      white-space: pre-wrap; /* CSS3*/
+      white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+      white-space: -pre-wrap; /* Opera 4-6 */
+      white-space: -o-pre-wrap; /* Opera 7 */
+      word-wrap: break-all; /* Internet Explorer 5.5+ */
     }
   }
 }

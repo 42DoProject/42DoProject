@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { isValidElement, useEffect, useRef, useState } from "react";
 import "../../SCSS/ProjectEditPage/ProjectEditPage.scss";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { Editor } from "@toast-ui/react-editor";
@@ -10,6 +10,7 @@ import { positions } from "../../userData";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
+import ValidateModal from "./ValidateModal";
 
 export default function ProjectEditPage() {
   const loginState = useSelector((state) => state.loginReducer);
@@ -25,6 +26,10 @@ export default function ProjectEditPage() {
   const [image, setImage] = useState();
   const [imgLoadFlag, setImgLoadFlag] = useState(0); // 1일때 이미지 로드, 로드 완료 후 2
   const [imgBase64, setImgBase64] = useState(""); // 이미지 파일 base64 (업로드 전 미리보기 기능)
+  const [validateFlag, setValidateFlag] = useState(0); // 1일때 모달창 띄움
+  const [validateMsg, setValidateMsg] = useState([]); // [validate모달창에 띄울 메시지, 버튼 종류]
+  const [isValid, setIsValid] = useState(0); // validity 테스트 통과하면 1
+  const [titleLength, setTitleLength] = useState(0);
 
   let dateDiff =
     (new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24) + 1;
@@ -33,6 +38,30 @@ export default function ProjectEditPage() {
     if (unsplashRef.current && !unsplashRef.current.contains(event.target))
       setUnsplashFlag(0);
   };
+
+  const testValid = () => {
+    if (!document.querySelector(".project-edit__name").value) {
+      setValidateMsg(["프로젝트명을 입력해주세요", "cancel-only"]);
+      setValidateFlag(1);
+    } else if (!editorRef.current.getInstance().getMarkdown()) {
+      setValidateMsg(["프로젝트 소개를 입력해주세요", "cancel-only"]);
+      setValidateFlag(1);
+    }
+    // else if 이미지
+    else if (dateDiff <= 0) {
+      setValidateMsg([
+        "종료일은 시작일 이후 날짜로 설정해주세요",
+        "cancel-only",
+      ]);
+      setValidateFlag(1);
+    } else if (selectedPos.filter((e) => e[2] === "enabled").length === 0) {
+      setValidateMsg([
+        "빈 포지션이 없으면 프로젝트 참여 신청을 받을 수 없어요. 이대로 프로젝트를 생성할까요?",
+        "both",
+      ]);
+      setValidateFlag(1);
+    } else return 1;
+  }; // 제출 전 입력값들 유효한지 확인하는 함수
 
   const projectSave = async () => {
     try {
@@ -71,10 +100,6 @@ export default function ProjectEditPage() {
         },
       });
       setMyData(data);
-      // console.log(myData);
-      setSelectedPos([
-        [myData.profileImage, positions[myData.position], "disabled"],
-      ]);
     } catch (err) {
       console.log(err);
     }
@@ -83,6 +108,19 @@ export default function ProjectEditPage() {
   useEffect(() => {
     getMyData();
   }, [loginState]);
+
+  useEffect(() => {
+    setSelectedPos([
+      [myData.profileImage, positions[myData.position], "disabled"],
+    ]);
+  }, [myData]);
+
+  useEffect(() => {
+    if (isValid === 1) {
+      projectSave();
+      history.push("/");
+    }
+  }, [isValid]);
 
   unsplashFlag && document.addEventListener("mousedown", handleClickOutside);
 
@@ -113,7 +151,11 @@ export default function ProjectEditPage() {
                 />
               </div>
             ) : (
-              <img className="project-edit__img" src={imgBase64} />
+              <img
+                className="project-edit__img"
+                src={imgBase64}
+                alt="project-thumbnail"
+              />
             )}
             <div
               className="project-edit__img-hover"
@@ -202,10 +244,13 @@ export default function ProjectEditPage() {
                 );
                 setEndDate(endDateEl[0].value);
               }}></input>
-            <span className="period__day">
-              ({startDate && endDate && (dateDiff > 0 ? dateDiff : "")}
-              일)
-            </span>
+            {/* <span className="period__day"> */}
+            {startDate &&
+              endDate &&
+              (dateDiff > 0 ? (
+                <span className="period__day">{`(${dateDiff}일)`}</span>
+              ) : null)}
+            {/* </span> */}
           </div>
           <label className="project-edit__skill-label">
             프로젝트에 필요한 스킬
@@ -272,7 +317,14 @@ export default function ProjectEditPage() {
           <input
             className="project-edit__name"
             placeholder="프로젝트명을 입력해주세요. (ex. 식재료에 따른 요리 추천 앱)"
+            maxLength="45"
+            onChange={(e) => {
+              if (e.target.value.length > e.target.maxLength) {
+                e.target.value.substr(0, e.target.maxLength); //한글 처리
+              } else setTitleLength(e.target.value.length);
+            }}
           />
+          <div className="title__letters-count">{titleLength} / 45</div>
           <label>
             프로젝트 소개<span className="project-edit__asterisk">*</span>
           </label>
@@ -281,13 +333,23 @@ export default function ProjectEditPage() {
           </div>
         </div>
       </div>
+      {validateFlag === 1 && (
+        <ValidateModal
+          body={validateMsg[0]}
+          buttons={validateMsg[1]}
+          setValidateFlag={setValidateFlag}
+          setIsValid={setIsValid}
+        />
+      )}
       <div className="project-edit__buttons">
         {/* <button className="project-edit__delete">프로젝트 삭제</button> */}
         <button
           className="project-edit__save"
           onClick={() => {
-            projectSave();
-            history.push("/");
+            if (testValid() === 1) {
+              projectSave();
+              history.push("/");
+            }
           }}>
           프로젝트 생성
         </button>

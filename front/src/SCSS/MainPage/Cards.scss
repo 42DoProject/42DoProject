@@ -27,11 +27,19 @@
       filter: brightness(50%);
     }
     .image__title {
+      width: 18rem;
       position: absolute;
       color: $lightestGrey;
-      font-weight: $bold;
-      // font-size: $fontMs;
+      font-weight: $normal;
       bottom: 2rem;
+      text-align: center;
+      padding: 0 1rem;
+      word-wrap: break-word;
+      white-space: pre-wrap; /* CSS3*/
+      white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+      white-space: -pre-wrap; /* Opera 4-6 */
+      white-space: -o-pre-wrap; /* Opera 7 */
+      word-wrap: break-all; /* Internet Explorer 5.5+ */
     }
   }
   .card__info {

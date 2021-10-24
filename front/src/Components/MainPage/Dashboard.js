@@ -98,29 +98,25 @@ export default function Dashboard(props) {
               <div className="reportbox__report">
                 <Link
                   className="dashboard__project__link1"
-                  to="/projectlist/proceed"
-                >
+                  to="/projectlist/recruit">
                   {props.progressPr}
                 </Link>
                 개의 프로젝트가{" "}
                 <Link
                   className="dashboard__project__link2"
-                  to="/projectlist/proceed"
-                >
-                  진행중
+                  to="/projectlist/recruit">
+                  모집중
                 </Link>
                 이고{" "}
                 <Link
                   className="dashboard__project__link3"
-                  to="/projectlist/complete"
-                >
+                  to="/projectlist/complete">
                   {props.finishPr}
                 </Link>
                 개의 프로젝트가{" "}
                 <Link
                   className="dashboard__project__link4"
-                  to="/projectlist/complete"
-                >
+                  to="/projectlist/complete">
                   완료
                 </Link>
                 되었어요

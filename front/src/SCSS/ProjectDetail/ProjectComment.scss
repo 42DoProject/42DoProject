@@ -8,18 +8,26 @@
   border-radius: $round;
   // border: 1px solid black;
   background: white;
-  .comment-list {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    .comment-id {
-      font-size: $fontMs;
-      margin: 0.5rem;
+  .comment_main {
+    min-height: 10rem;
+    .comment-list {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      text-align: center;
+      .comment-id {
+        font-size: $fontMs;
+        margin: 0.5rem;
+      }
+      .comment-content {
+        margin: 0.5rem;
+      }
     }
-    .comment-content {
+    .empty-comment {
       margin: 0.5rem;
     }
   }
+
   .comment-row {
     display: flex;
     flex-direction: row;

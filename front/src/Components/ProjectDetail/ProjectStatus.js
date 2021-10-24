@@ -2,9 +2,12 @@ import React, { useState, useEffect } from "react";
 import "../../SCSS/ProjectDetail/ProjectStatus.scss";
 import { Icon, InlineIcon } from "@iconify/react";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 export default function ProjectStatus({ projectId, loginstate }) {
   const [status, setStatus] = useState();
+
+  let loginState = useSelector((state) => state.loginReducer);
 
   const getStatusData = async () => {
     try {
@@ -14,7 +17,7 @@ export default function ProjectStatus({ projectId, loginstate }) {
         `http://localhost:5000/project/status?projectId=${projectId}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${loginState.accessToken}`,
           },
         }
       );

@@ -282,6 +282,12 @@ export const postList = async (request: Request, response: Response) => {
     }
     const { title, state, startDate, endDate, content } = request.body;
     let { skill, position } = request.body;
+    if (skill !== undefined) {
+        skill = JSON.parse(skill);
+    }
+    if (position !== undefined) {
+        position = JSON.parse(position);
+    }
 
     try {
         if (skill) skill = arrayCondition(skill, Number(process.env.SKILL));
@@ -410,7 +416,7 @@ export const updateList = async (request: Request, response: Response) => {
     if (imageLink !== undefined) {
         await Project.update({
             thumbnailImage: imageLink
-        }, { where: { id: project!.id }});
+        }, { where: { id: projectId }});
     }
     await Content.update({
         content: content,

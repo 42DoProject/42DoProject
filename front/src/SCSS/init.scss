@@ -50,7 +50,7 @@ textarea {
   color: $darkGrey;
   border: 2px solid $mainColor;
   padding: 0.2rem 0.7rem;
-  border-radius: 0.7rem;
+  border-radius: $round;
   &:focus {
     outline: none;
   }

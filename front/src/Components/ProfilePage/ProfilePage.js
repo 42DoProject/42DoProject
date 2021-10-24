@@ -15,8 +15,6 @@ export default function ProfilePage() {
   const [myFollowings, setMyFollowings] = useState([]);
   const [getDataFlag, setGetDataFlag] = useState(0);
 
-  loginState && console.log(loginState.accessToken);
-
   const getData = async () => {
     try {
       if (userId) {

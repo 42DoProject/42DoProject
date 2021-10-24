@@ -42,6 +42,9 @@ export default function ProjectTypeBar(props) {
           </div>
         </div>
         <div className="project-bar-column2">
+          <Link className="create-project" to="/project/edit">
+            프로젝트 생성
+          </Link>
           <Icon icon="mi:filter" style={{ fontSize: "2rem" }} />
         </div>
       </div>

@@ -8,19 +8,15 @@ export default function MainBody(props) {
   return (
     <div className="recruit__wrap">
       <div className="recruit">
-        <div className="recruit__title">
-          <Link className="a-color" to="projectlist/recruit">
-            모집중인 프로젝트
-          </Link>
-        </div>
+        <Link className="recruit__title" to="projectlist/recruit">
+          모집중인 프로젝트
+        </Link>
         <RecruitList setProgressPr={props.setProgressPr} />
       </div>
       <div className="public">
-        <div className="public__title">
-          <Link className="a-color" to="projectlist/complete">
-            완료된 프로젝트
-          </Link>
-        </div>
+        <Link className="public__title" to="projectlist/complete">
+          완료된 프로젝트
+        </Link>
         <PublicList setFinishPr={props.setFinishPr} />
       </div>
     </div>

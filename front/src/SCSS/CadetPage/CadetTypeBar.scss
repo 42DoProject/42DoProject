@@ -24,25 +24,21 @@
   .b-color {
     font-weight: $bold;
     font-size: $fontMd;
-    color: $mainColor;
+    color: $black;
     margin-left: 2rem;
-    .innerHtml:hover {
-      color: $mainColor;
-    }
+    cursor: default;
   }
 
   .a-color {
     font-weight: $bold;
     font-size: $fontMd;
-    color: $black;
+    color: $grey;
     margin-left: 2rem;
     a {
       color: $black;
     }
     &:hover {
-      a {
-        color: $mainColor;
-      }
+      color: $mainColor;
     }
   }
 }

@@ -227,7 +227,7 @@ export const getStatus = async (request: Request, response: Response) => {
         attributes: ['id'],
         include: [{
             model: Applyprojectprofile,
-            attributes: ['id'],
+            attributes: ['position'],
             where: { projectId: projectId }
         }],
         where: { id: request.user!.id }
@@ -238,7 +238,7 @@ export const getStatus = async (request: Request, response: Response) => {
     if (user1?.projectprofile !== undefined) {
         response.status(200).json({ connectProfileId: request.user!.id, status: 'participating' });
     } else if (user2?.applyprojectprofile !== undefined) {
-        response.status(200).json({ connectProfileId: request.user!.id, status: 'applying' });
+        response.status(200).json({ connectProfileId: request.user!.id, applyingPosition: user2?.applyprojectprofile, status: 'applying' });
     } else {
         response.status(200).json({ connectProfileId: request.user!.id, status: 'nothing' });
     }
@@ -795,7 +795,7 @@ export const applyTeam = async (request: Request, response: Response) => {
         return ;
     }
     const project = await Project.findOne({
-        attributes: ['id', 'title', 'leader'],
+        attributes: ['id', 'title', 'leader', 'position'],
         where: { id: projectId }
     })
     .catch(err => {
@@ -803,6 +803,10 @@ export const applyTeam = async (request: Request, response: Response) => {
     });
     if (!project) {
         response.status(400).json({ errMessage: 'invalid projectId param' });
+        return ;
+    }
+    if (project.position.indexOf(Number(position)) === -1) {
+        response.status(400).json({ errMessage: 'not recruiting position' });
         return ;
     }
     const profile = await Profile.findOne({
@@ -841,6 +845,7 @@ export const applyTeam = async (request: Request, response: Response) => {
 
 export const cancelApply = async (request: Request, response: Response) => {
     const { projectId, profileId } = request.params;
+    const { position } = request.query;
 
     if (projectId === undefined || profileId === undefined) {
         response.status(400).json({ errMessage: 'please input projectId or profileId value' });
@@ -867,7 +872,7 @@ export const cancelApply = async (request: Request, response: Response) => {
     }
 
     await Applyprojectprofile.destroy({
-        where: { projectId: projectId, profileId: profileId }
+        where: { projectId: projectId, profileId: profileId, position: position }
     })
     .then(() => {
         response.status(200).json({ message: 'canceled successfully.' });
@@ -922,6 +927,10 @@ export const addMember = async (request: Request, response: Response) => {
         return ;
     }
     let curPosition = project!.position;
+    if (curPosition.indexOf(Number(applyprojectprofile!.position)) === -1) {
+        response.status(400).json({ errMessage: 'not recruiting position' });
+        return ;
+    }
     curPosition.splice(curPosition.indexOf(applyprojectprofile!.position), 1);
     const inputState: string = (project!.totalMember - newMembers > 0) ? 'recruiting' : 'proceeding';
     await Project.update({
@@ -1148,6 +1157,14 @@ export const deletePosition = async (request: Request, response: Response) => {
         return ;
     }
     curPosition.splice(curPosition.indexOf(parseInt(position)), 1);
+    if (curPosition.indexOf(Number(position)) === -1) {
+        await Applyprojectprofile.destroy({
+            where: { position: position }
+        })
+        .catch(err => {
+            response.status(405).json({ errMessage: String(err) });
+        });
+    }
     const state: string = (curPosition === null) ? 'proceeding' : 'recruiting';
     const totalMember: number = curPosition.length + Number(project!.currentMember);
     await Project.update({

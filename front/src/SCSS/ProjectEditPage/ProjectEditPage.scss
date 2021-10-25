@@ -91,6 +91,7 @@
       color: white;
       border: none;
       margin: 0 0.5rem;
+      font-weight: $normal;
     }
     .project-edit__delete {
       background-color: $pointRed;
@@ -212,6 +213,18 @@
       border-bottom-left-radius: $round !important;
       border-bottom-right-radius: $round !important;
     }
+  }
+  .toastui-editor-md-preview .toastui-editor-contents h1 {
+    border-bottom: 2px solid $lightestGrey !important;
+  }
+  .toastui-editor-md-preview .toastui-editor-contents h2 {
+    border-bottom: 1px solid $lightestGrey !important;
+  }
+  .toastui-editor-contents p {
+    font-size: 1rem;
+  }
+  .ProseMirror {
+    font-size: inherit;
   }
 }
 .project-edit__start-date,

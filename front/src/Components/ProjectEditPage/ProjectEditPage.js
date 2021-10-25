@@ -107,6 +107,7 @@ export default function ProjectEditPage() {
         data: formData,
       });
       console.log("res", res);
+      history.push("/");
     } catch (err) {
       console.log(err);
     }
@@ -139,7 +140,6 @@ export default function ProjectEditPage() {
   useEffect(() => {
     if (isValid === 1) {
       projectSave();
-      window.location.href = "/";
     }
   }, [isValid]);
 
@@ -340,7 +340,7 @@ export default function ProjectEditPage() {
           <input
             className="project-edit__name"
             placeholder="프로젝트명을 입력해주세요. (ex. 식재료에 따른 요리 추천 앱)"
-            maxLength="45"
+            maxLength="30"
           />
           <label>
             프로젝트 소개<span className="project-edit__asterisk">*</span>
@@ -362,10 +362,10 @@ export default function ProjectEditPage() {
         {/* <button className="project-edit__delete">프로젝트 삭제</button> */}
         <button
           className="project-edit__save"
-          onClick={() => {
+          onClick={(e) => {
             if (testValid() === 1) {
+              e.target.innerText = "생성중...";
               projectSave();
-              window.location.href = "/";
             }
           }}>
           프로젝트 생성

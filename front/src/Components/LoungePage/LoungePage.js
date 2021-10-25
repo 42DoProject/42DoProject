@@ -8,7 +8,7 @@ export default function LoungePage() {
     <>
       <div className="lounge-wrap">
         <LoungeBody />
-        <ProjectPaginate />
+        {/* <ProjectPaginate /> */}
       </div>
     </>
   );

@@ -47,8 +47,10 @@ export default function Unsplash({
             className="upload__input"
             onChange={(e) => setImage(e.target.files[0])}
           />
-          <div> jpeg, jpg, png, gif, bmp 파일</div>
-          <div> 1200px * 3600px 이상</div>
+          <div className="unsplash__body-info">
+            <div> ✓ jpeg, jpg, png, gif, bmp 파일을 업로드할 수 있어요</div>
+            <div> ✓ 가로 1200px x 세로 3600px 이상의 이미지를 선택해주세요</div>
+          </div>
         </div>
         {image ? (
           <button

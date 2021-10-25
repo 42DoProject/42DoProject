@@ -20,8 +20,15 @@
     margin: 2rem 2rem 1rem 2rem;
   }
 
+  /* toast UI */
   .toastui-editor-contents {
     font-size: 1rem;
     font: inherit;
+  }
+  .toastui-editor-contents h1 {
+    border-bottom: 2px solid $lightestGrey !important;
+  }
+  .toastui-editor-contents h2 {
+    border-bottom: 1px solid $lightestGrey !important;
   }
 }

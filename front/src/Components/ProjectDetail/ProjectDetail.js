@@ -22,6 +22,8 @@ export default function ProjectDetail(props) {
     getData();
   }, []);
 
+  console.log(project);
+
   const getData = async () => {
     try {
       const {
@@ -39,7 +41,10 @@ export default function ProjectDetail(props) {
       <div className="ProjectDetail__wrap">
         {project && (
           <>
-            <ProjectDetailHeader title={project.title} />
+            <ProjectDetailHeader
+              title={project.title}
+              image={project.thumbnailImage}
+            />
             <div className="projectdetail-body">
               <div className="projectdetail-body__row1">
                 <ProjectStatus projectId={project.id} loginstate={loginState} />

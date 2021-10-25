@@ -1,16 +1,19 @@
 @import "../Base.scss";
 
 .header_image {
+  margin: 10px 10px 5px 10px;
+  border-radius: $round;
+  background-color: #b0b0b0;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   // margin-bottom: 1rem;
   img {
-    margin: 10px 10px 5px 10px;
     border-radius: $round;
     object-fit: cover; // 이미지 안찌그러지면서 꽉차게
     width: 100%;
+    height: 100%;
     height: 14rem;
     filter: brightness(50%);
   }

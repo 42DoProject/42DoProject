@@ -12,6 +12,8 @@
     align-items: center;
     justify-content: center;
     margin-bottom: 1rem;
+    border-radius: $round;
+    background-color: #808080;
     width: 12rem;
     height: 8rem;
     img {
@@ -24,10 +26,11 @@
     .DashCards__title {
       position: absolute;
       width: 100%;
+      line-height: 120%;
       color: $lightestGrey;
       bottom: 1rem;
       padding: 0 0.5rem;
-      font-size: $fontSm;
+      font-size: $fontSs;
       font-weight: $normal;
       text-align: center;
       word-wrap: break-word;

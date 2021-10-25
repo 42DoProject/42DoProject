@@ -39,7 +39,7 @@ export default function ProjectPaginate(props) {
     <>
       <div className="project-grid">
         {Project.map((el, idx) => {
-          return <Cards key={idx} projectData={el} />;
+          return <Cards key={el.id} projectData={el} />;
         })}
       </div>
       <div className="project-pagination">

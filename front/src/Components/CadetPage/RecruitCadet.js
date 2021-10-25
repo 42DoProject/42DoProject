@@ -12,7 +12,7 @@ export default function RecruitCadet() {
         <CardsList />
         <CardsList />
         <CardsList />
-        <ProjectPaginate state="recruit" />
+        {/* <ProjectPaginate state="recruit" /> */}
       </div>
     </>
   );

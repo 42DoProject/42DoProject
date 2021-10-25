@@ -59,7 +59,8 @@ export default function ProfileEditHeader(props) {
             type="submit"
             className="row1__finish-edit"
             value="프로필 저장"
-            onClick={() => {
+            onClick={(e) => {
+              e.target.innerHTML = "저장중...";
               props.submit();
             }}
           />

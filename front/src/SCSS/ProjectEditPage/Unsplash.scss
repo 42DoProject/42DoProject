@@ -57,6 +57,11 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    .unsplash__body-info {
+      color: $grey;
+      margin: 1rem;
+      line-height: normal;
+    }
   }
 
   .unsplash__button {

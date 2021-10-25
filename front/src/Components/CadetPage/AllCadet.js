@@ -12,7 +12,7 @@ export default function AllCadet() {
         <CardsList />
         <CardsList />
         <CardsList />
-        <ProjectPaginate state="all" />
+        {/* <ProjectPaginate state="all" /> */}
       </div>
     </>
   );

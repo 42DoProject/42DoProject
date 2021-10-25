@@ -6,8 +6,8 @@ import axios from "axios";
 import InChat from "./InChat";
 import { useSelector } from "react-redux";
 import socket from "../../../socket";
+import Conv from "./AddConv";
 export default function Chat() {
-  console.log("chat");
   let loginState = useSelector((state) => state.loginReducer);
   const [clickFlag, setClickFlag] = useState(0);
   const [convFlag, setConvFlag] = useState(0);
@@ -32,7 +32,6 @@ export default function Chat() {
     socket.off("chat:newRoom");
 
     socket.on("chat:newRoom", () => {
-      console.log("sosososo");
       getChatRoom();
     });
   }, [loginState]);
@@ -125,10 +124,12 @@ export default function Chat() {
               </div>
             </div>
             {convFlag === 1 && (
-              <div className="chatLog__addConv">
-                <span className="addConv__placeholder">대화상대 추가 : </span>
-                <input type="text" className="addConv__input" />
-              </div>
+              <Conv
+                chatOutFlag={chatOutFlag}
+                setChatOutFlag={setChatOutFlag}
+                setConvFlag={setConvFlag}
+                clickFlag={clickFlag}
+              />
             )}
             <div className="chatLog__body">
               {chatRoom?.map((room) => (

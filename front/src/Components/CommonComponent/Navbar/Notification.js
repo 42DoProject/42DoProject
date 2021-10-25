@@ -22,7 +22,7 @@ export default function Notifiaction() {
       }
     };
     getData();
-  }, []);
+  }, [loginState]);
 
   const clickListener = function (e) {
     if (

@@ -117,8 +117,26 @@
     display: flex;
     width: 100%;
     align-items: center;
+    position: relative;
+    overflow: hidden;
     .addConv__placeholder {
       min-width: max-content;
+    }
+    .userNameList {
+      display: flex;
+      margin-left: 0.2rem;
+      .userNameCard {
+        display: flex;
+        margin-right: 0.4rem;
+        background-color: white;
+        padding: 0.1rem;
+        align-items: center;
+        border-radius: 10%;
+        position: relative;
+        .textCard-userName {
+          margin: 0 0.4rem;
+        }
+      }
     }
     .addConv__input {
       background-color: $lightestGrey;
@@ -129,6 +147,73 @@
       &:focus {
         outline: none;
       }
+    }
+  }
+  .chatLog__addUser-big {
+    width: 77.8vw;
+    position: absolute;
+    top: 6.3rem;
+    background-color: white;
+    .addUser__card {
+      display: flex;
+      align-items: center;
+      margin: 0.5rem;
+      padding-left: 1rem;
+      &:hover {
+        background-color: $lightestGrey;
+      }
+      img {
+        border-radius: 50%;
+        width: 2rem;
+        height: 2rem;
+        object-fit: cover;
+        margin-right: 0.5rem;
+      }
+      div {
+        font-size: $fontMs;
+      }
+    }
+    .chat-create {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      margin: 0 auto;
+      color: white;
+      padding: 0.1rem;
+      background-color: $mainColor;
+      cursor: pointer;
+    }
+  }
+  .chatLog__addUser {
+    width: 20rem;
+    position: absolute;
+    top: 6rem;
+    background-color: white;
+    .addUser__card {
+      display: flex;
+      align-items: center;
+      margin: 0.5rem;
+      padding-left: 1rem;
+      &:hover {
+        background-color: $lightestGrey;
+      }
+      img {
+        border-radius: 50%;
+        width: 1.5rem;
+        height: 1.5rem;
+        object-fit: cover;
+        margin-right: 0.5rem;
+      }
+    }
+    .chat-create {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      margin: 0 auto;
+      color: white;
+      padding: 0.1rem;
+      background-color: $mainColor;
+      cursor: pointer;
     }
   }
   .chatLog__body {

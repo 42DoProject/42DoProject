@@ -4,7 +4,6 @@ import axios from "axios";
 import relativeTime from "../../../relativeTime";
 import { useSelector } from "react-redux";
 import socket from "../../../socket";
-import { Icon } from "@iconify/react";
 
 function ChatRoom({ uuid, chatRoom, clickFlag, setInFlag, setConvFlag }) {
   const [chat, setChat] = useState([]);

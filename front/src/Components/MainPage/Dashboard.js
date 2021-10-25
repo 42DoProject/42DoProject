@@ -25,6 +25,7 @@ export default function Dashboard(props) {
       console.log(err);
     }
   };
+
   useEffect(() => {
     if (loginState) getData();
   }, [loginState]);
@@ -68,27 +69,35 @@ export default function Dashboard(props) {
                 </div>
                 <div className="column2__skill">
                   {loginState &&
+                    userData?.skill.length !== 0 &&
                     userData?.skill.map((e, idx) => {
                       return (
                         <img key={idx} src={skills[e][1]} alt={skills[e][0]} />
                       );
                     })}
+                  {loginState && userData?.skill.length === 0 && (
+                    <div className="not-skills"> - </div>
+                  )}
                 </div>
               </div>
             </div>
             <div className="row2__box2">
               <div className="box2__title">진행중인 프로젝트</div>
               <div className="box2__slides">
-                {loginState === null ? null : (
+                {loginState && userData?.participatingProject.length ? (
                   <ProgressSlide projectData={userData?.participatingProject} />
+                ) : (
+                  <div className="not-project">-</div>
                 )}
               </div>
             </div>
             <div className="row2__box3">
               <div className="box3__title">관심있는 프로젝트</div>
               <div className="box3__slides">
-                {loginState === null ? null : (
+                {loginState && userData?.interestedProject.length ? (
                   <FavoriteSlide projectData={userData?.interestedProject} />
+                ) : (
+                  <div className="not-project">-</div>
                 )}
               </div>
             </div>

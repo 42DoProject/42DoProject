@@ -9,6 +9,7 @@
     flex-direction: row;
     .member_count {
       font-size: $fontMs;
+      font-weight: $normal;
     }
   }
   .member_image_list {
@@ -24,21 +25,21 @@
       justify-content: center;
       svg {
         position: absolute;
-        top: -0.9rem;
+        top: -0.7rem;
       }
       img {
         border-radius: 50%;
-        width: 6rem;
-        height: 6rem;
+        width: 3.7rem;
+        height: 3.7rem;
         object-fit: cover;
       }
       .member_position {
         margin-top: 5px;
+        padding: 0.2rem 0.5rem;
         width: 5rem;
-        height: 1rem;
         border-radius: 2rem;
         color: white;
-        font-size: $fontSm;
+        font-size: $fontSs;
         text-align: center;
         background-color: $mainColor;
       }
@@ -46,7 +47,9 @@
     .empty_list {
       display: flex;
       flex-direction: row;
+      // flex-wrap: wrap;
       .empty_member {
+        width: 5rem;
         margin: 0.5rem;
         display: flex;
         flex-direction: column;
@@ -57,7 +60,7 @@
           cursor: pointer;
           transition: width 300ms ease;
           position: absolute;
-          right: 0.5rem;
+          right: -0rem;
           top: -0.5rem;
           background-color: white;
           border-radius: 50%;
@@ -73,22 +76,19 @@
           box-shadow: $shadow;
         }
         .chair_icon {
-          svg {
+          .empty_chair-icon {
             border-radius: 50%;
-            width: 6rem;
-            height: 6rem;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 1px solid #c4c4c4;
+            border: 1px solid $lightGrey;
           }
         }
         .empty_position {
           margin-top: 5px;
+          padding: 0.2rem 0.5rem;
           width: 5rem;
-          height: 1rem;
           border-radius: 2rem;
           color: white;
-          font-size: $fontSm;
+          font-size: $fontSs;
+          font-weight: $normal;
           text-align: center;
           background-color: #c4c4c4;
         }

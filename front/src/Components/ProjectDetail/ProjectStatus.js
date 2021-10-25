@@ -77,10 +77,16 @@ export default function ProjectStatus({ projectId, loginstate }) {
     <>
       <div className="status_box">
         <div className="status_title">{statusValue.title}</div>
-        <Icon icon={statusValue.icon} color="white" height="60" />
+        <Icon
+          icon={statusValue.icon}
+          style={{ fontSize: "4rem", color: "white" }}
+        />
         <div className="detail_row">
           <div className="detail_icon">
-            <InlineIcon icon="bx:bx-info-circle" color="white" height="20" />
+            <InlineIcon
+              icon="bx:bx-info-circle"
+              style={{ fontSize: "1rem", color: "white" }}
+            />
           </div>
           <div className="status_detail">{statusValue.detail}</div>
         </div>

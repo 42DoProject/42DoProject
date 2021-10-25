@@ -38,7 +38,7 @@ export default function MemberList({ data, loginState }) {
                   <Icon
                     icon="ph:crown-simple-fill"
                     color="#ffb648"
-                    height="24"
+                    fontSize="1.3rem"
                   />
                 ) : null}
                 <img
@@ -56,30 +56,22 @@ export default function MemberList({ data, loginState }) {
           <div className="empty_list">
             {data.position.map((elm, index) => (
               <div className="empty_member">
-                <div className="plus_icon">
-                  <Icon
-                    icon="akar-icons:circle-plus-fill"
-                    color="#5bbcb6"
-                    height="24"
-                    position={elm}
-                    key={index}
-                    onClick={(e) => onApply(e, elm)}
-                    style={{ cursor: "pointer" }}
-                  />
-                </div>
                 <div className="chair_icon">
-                  <svg
-                    width="39"
-                    height="50"
-                    viewBox="0 -5 41 65"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M37.7865 27.5V5C37.7865 2.2425 35.5594 0 32.8209 0H7.99317C5.25467 0 3.02762 2.2425 3.02762 5V27.5C2.36915 27.5 1.73764 27.7634 1.27203 28.2322C0.806423 28.7011 0.544846 29.337 0.544846 30V50H5.5104V37.5H35.3037V50H40.2693V30C40.2693 29.337 40.0077 28.7011 39.5421 28.2322C39.0765 27.7634 38.445 27.5 37.7865 27.5ZM32.8209 5V27.5H27.8554V5H32.8209ZM22.8898 5V27.5H17.9243V5H22.8898ZM7.99317 5H12.9587V27.5H7.99317V5Z"
-                      fill="#C4C4C4"
+                  <Icon
+                    icon="bx:bx-chair"
+                    style={{ fontSize: "3.5rem", color: "#c4c4c4" }}
+                    className="empty_chair-icon"
+                  />
+                  <div className="plus_icon">
+                    <Icon
+                      icon="akar-icons:circle-plus-fill"
+                      color="#5bbcb6"
+                      position={elm}
+                      key={index}
+                      onClick={(e) => onApply(e, elm)}
+                      style={{ fontSize: "1.7rem", cursor: "pointer" }}
                     />
-                  </svg>
+                  </div>
                 </div>
                 <div className="empty_position">{positions[elm]}</div>
               </div>

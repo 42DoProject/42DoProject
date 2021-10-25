@@ -11,11 +11,17 @@
       margin-left: 0.5rem;
       font-size: $fontMs;
       text-align: center;
+      font-weight: $normal;
     }
   }
   .md_viewer {
     // margin-left: 2rem;
 
     margin: 2rem 2rem 1rem 2rem;
+  }
+
+  .toastui-editor-contents {
+    font-size: 1rem;
+    font: inherit;
   }
 }

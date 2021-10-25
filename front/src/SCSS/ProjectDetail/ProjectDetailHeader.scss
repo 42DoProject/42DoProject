@@ -19,8 +19,8 @@
 .project_title {
   position: absolute;
   color: $lightestGrey;
-  font-weight: $bold;
-  font-size: $fontLg;
+  font-weight: $semiBold;
+  font-size: $fontMl;
   // bottom: 2rem;
 }
 
@@ -28,8 +28,9 @@
   position: absolute;
   // position: absolute;
   color: $lightestGrey;
-  font-size: 0.5rem;
-  padding: 0.5rem;
+  font-weight: $normal;
+  font-size: $fontSs;
+  padding: 0.3rem 0.7rem;
   border-radius: 1rem;
   background-color: darkcyan;
   bottom: 3rem;

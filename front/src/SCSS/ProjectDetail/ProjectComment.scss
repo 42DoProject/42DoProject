@@ -9,15 +9,15 @@
   // border: 1px solid black;
   background: white;
   .comment_main {
-    min-height: 10rem;
+    // min-height: 10rem;
     .comment-list {
       display: flex;
       flex-direction: row;
       align-items: center;
       text-align: center;
       .comment-id {
-        font-size: $fontMs;
         margin: 0.5rem;
+        font-weight: $semiBold;
       }
       .comment-content {
         margin: 0.5rem;
@@ -37,17 +37,20 @@
   .comment_text {
     margin-left: 0.5rem;
     font-size: $fontMs;
+    font-weight: $normal;
   }
   .comment-input {
     display: flex;
     flex-direction: row;
     margin-top: 2rem;
     input {
-      width: 90%;
+      width: 92%;
       height: 2rem;
     }
     button {
-      margin-left: 0.3rem;
+      margin-left: 1rem;
+      min-width: max-content;
+      padding: 0.5rem 1.2rem;
       background-color: $mainColor;
       border: none;
       border-radius: $round;

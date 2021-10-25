@@ -24,6 +24,7 @@ export default function ProfileEditPage() {
       console.log(err);
     }
   };
+
   useEffect(() => {
     getData();
   }, []);
@@ -60,9 +61,6 @@ export default function ProfileEditPage() {
       .catch((e) => console.log(e));
   };
 
-  if (loginState === null) {
-    return <Redirect to="/" />;
-  }
   return (
     <>
       <div className="profileEditPage-wrap">

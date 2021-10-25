@@ -9,12 +9,18 @@
   border-radius: $round;
   background: white;
 
+  hr {
+    height: 1px;
+    color: $lightGrey;
+  }
+
   .info_icon {
     display: flex;
     flex-direction: row;
     justify-content: right;
     // align-items: right;
     margin-bottom: 1.3rem;
+    color: $grey;
     svg {
       cursor: pointer;
       transition: width 300ms ease;
@@ -26,17 +32,15 @@
   }
 
   .info_date {
-    font-size: $fontMs;
-    font-weight: bold;
-    color: black;
+    font-weight: $semiBold;
     margin-bottom: 0.5rem;
+    min-width: max-content;
   }
 
   .info_skill {
-    font-size: $fontMs;
-    font-weight: bold;
-    color: black;
+    font-weight: $semiBold;
     margin-bottom: 0.5rem;
+    min-width: max-content;
   }
   .skill {
     display: flex;

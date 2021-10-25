@@ -9,7 +9,7 @@ import skills from "../../skills.json";
 import { positions } from "../../userData";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router";
+import { Redirect, useHistory } from "react-router";
 import ValidateModal from "./ValidateModal";
 
 export default function ProjectEditPage() {
@@ -48,7 +48,7 @@ export default function ProjectEditPage() {
     } else if (!image) {
       setValidateMsg(["프로젝트 썸네일을 추가해주세요", "cancel-only"]);
       setValidateFlag(1);
-    } else if (dateDiff && dateDiff <= 0) {
+    } else if (startDate && endDate && dateDiff <= 0) {
       setValidateMsg([
         "종료일은 시작일 이후 날짜로 설정해주세요",
         "cancel-only",
@@ -88,8 +88,6 @@ export default function ProjectEditPage() {
       if (startDate) formData.append("startDate", startDate);
       if (endDate) formData.append("endDate", endDate);
 
-      console.log(loginState.accessToken);
-
       // for (let key of formData.keys()) {
       //   console.log(key);
       // }
@@ -128,7 +126,8 @@ export default function ProjectEditPage() {
   };
 
   useEffect(() => {
-    getMyData();
+    if (loginState === null) history.push("/");
+    else getMyData();
   }, [loginState]);
 
   useEffect(() => {
@@ -140,12 +139,14 @@ export default function ProjectEditPage() {
   useEffect(() => {
     if (isValid === 1) {
       projectSave();
-      // history.push("/");
+      window.location.href = "/";
     }
   }, [isValid]);
 
   unsplashFlag && document.addEventListener("mousedown", handleClickOutside);
-
+  if (loginState === null) {
+    return <Redirect to="/" />;
+  }
   return (
     <div className="project-edit__wrapper">
       <div className="project-edit__form">
@@ -364,7 +365,7 @@ export default function ProjectEditPage() {
           onClick={() => {
             if (testValid() === 1) {
               projectSave();
-              // history.push("/");
+              window.location.href = "/";
             }
           }}>
           프로젝트 생성

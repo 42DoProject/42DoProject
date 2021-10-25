@@ -24,13 +24,14 @@
   }
   .cadet__name {
     margin-bottom: 0.5rem;
-    font-size: $fontMd;
+    font-size: $fontMs;
+    font-weight: $semiBold;
   }
   .cadet__work {
     margin-bottom: 1rem;
     color: $mainColor;
     font-size: $fontSm;
-    font-weight: $bold;
+    font-weight: $semiBold;
   }
   .cadet__word {
     border: 1px solid $lightestGrey;

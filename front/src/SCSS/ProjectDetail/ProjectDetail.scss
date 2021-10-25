@@ -27,11 +27,9 @@
 .projectdetail-body__row1 {
   display: flex;
   flex-direction: column;
-  width: 29%;
-  // padding: 10px;
-  // margin: 10px;
-  // border-radius: $round;
-  // box-shadow: $shadow;
+  width: 21%;
+  min-width: 15rem;
+  margin-right: 1rem;
   .apply-state {
     display: flex;
     padding: 100px;
@@ -54,22 +52,21 @@
     padding: 3rem;
   }
   .project-cancle_btn {
-    border: 1px solid #c4c4c4;
+    border: 2px solid $lightestGrey;
     border-radius: $round;
     display: flex;
     justify-content: center;
-    // width: 5rem;
-    margin: 1rem;
-    padding: 1rem;
-    font-size: $fontMs;
+    width: 5rem;
+    min-width: max-content;
+    margin: 1rem auto;
+    padding: 0.5rem 1.2rem;
     color: #595959;
   }
 }
 
 .projectdetail-body_row2 {
   display: flex;
-  width: 70%;
-  min-width: max-content;
+  width: 78%;
   flex-direction: column;
   margin: 0.5rem 0;
   padding: 2.5rem;
@@ -94,5 +91,9 @@
     border-radius: $round;
     // border: 1px solid black;
     background: white;
+  }
+  hr {
+    height: 1px;
+    color: $lightGrey;
   }
 }

@@ -2,28 +2,30 @@
 
 .status_box {
   display: flex;
+  min-width: max-content;
   flex-direction: column;
-  padding: 3rem;
+  padding: 1.8rem 1.8rem 1.4rem 1.8rem;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  height: 11rem;
   border-radius: $round;
   margin: 0.5rem 0;
   background: $mainColor;
   .status_title {
     color: white;
-    font-weight: $bold;
-    font-size: $fontMl;
-    margin-bottom: 1rem;
+    font-weight: $semiBold;
+    font-size: $fontMd;
+    // margin-bottom: 1rem;
   }
   .detail_row {
     display: flex;
-    margin-top: 1rem;
+    // margin-top: 1rem;
     align-items: center;
     flex-direction: row;
     .status_detail {
       color: white;
-      font-weight: $bold;
-      font-size: $fontSm;
+      font-weight: $normal;
+      font-size: $fontSs;
       margin-left: 0.2rem;
     }
   }

@@ -36,7 +36,12 @@
         }
         .row1__name {
           position: relative;
-          top: -0.5rem;
+          font-weight: $normal;
+          margin-bottom: 0.3rem;
+        }
+        .row1__time {
+          font-size: $fontSs;
+          color: $grey;
         }
       }
       .card__row2 {

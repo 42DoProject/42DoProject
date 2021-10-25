@@ -1,8 +1,11 @@
 import React from "react";
 import axios from "axios";
 import "../../SCSS/ProfilePage/UnfollowAlert.scss";
+import { useSelector } from "react-redux";
 
 export default function UnfollowAlert(props) {
+  const loginState = useSelector((state) => state.loginReducer);
+
   return (
     <div className="unfollow__alert">
       <div>
@@ -26,9 +29,7 @@ export default function UnfollowAlert(props) {
               `http://localhost:5000/user/unfollow/${props.userId}`,
               {
                 headers: {
-                  Authorization: `Bearer ${localStorage.getItem(
-                    "accessToken"
-                  )}`,
+                  Authorization: `Bearer ${loginState.accessToken}`,
                 },
               }
             );

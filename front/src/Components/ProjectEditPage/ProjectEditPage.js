@@ -29,7 +29,6 @@ export default function ProjectEditPage() {
   const [validateFlag, setValidateFlag] = useState(0); // 1일때 모달창 띄움
   const [validateMsg, setValidateMsg] = useState([]); // [validate모달창에 띄울 메시지, 버튼 종류]
   const [isValid, setIsValid] = useState(0); // validity 테스트 통과하면 1
-  const [titleLength, setTitleLength] = useState(0);
 
   let dateDiff =
     (new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24) + 1;
@@ -46,9 +45,10 @@ export default function ProjectEditPage() {
     } else if (!editorRef.current.getInstance().getMarkdown()) {
       setValidateMsg(["프로젝트 소개를 입력해주세요", "cancel-only"]);
       setValidateFlag(1);
-    }
-    // else if 이미지
-    else if (dateDiff <= 0) {
+    } else if (!image) {
+      setValidateMsg(["프로젝트 썸네일을 추가해주세요", "cancel-only"]);
+      setValidateFlag(1);
+    } else if (dateDiff && dateDiff <= 0) {
       setValidateMsg([
         "종료일은 시작일 이후 날짜로 설정해주세요",
         "cancel-only",
@@ -67,26 +67,48 @@ export default function ProjectEditPage() {
     try {
       const editorInstance = editorRef.current.getInstance();
       let skillPost = [];
-      for (let e of selectedSkill) skillPost.push(e[2]);
+      for (let e of selectedSkill) skillPost.push(+e[2]);
+      let positionPost = selectedPos
+        .filter((e) => e[2] === "enabled")
+        .map((e) => positions.indexOf(e[1]));
+
+      const textField = {
+        // totalMember: selectedPos.length,
+        title: document.querySelector(".project-edit__name").value,
+        state: "recruiting",
+        content: editorInstance.getMarkdown(),
+        position: `[${positionPost}]`,
+        skill: `[${skillPost}]`,
+      };
+      const formData = new FormData();
+      formData.append("thumbnail", image);
+      for (let key in textField) {
+        formData.append(key, textField[key]);
+      }
+      if (startDate) formData.append("startDate", startDate);
+      if (endDate) formData.append("endDate", endDate);
+
+      console.log(loginState.accessToken);
+
+      // for (let key of formData.keys()) {
+      //   console.log(key);
+      // }
+      // for (let value of formData.values()) {
+      //   console.log(value);
+      // }
 
       const res = await axios({
-        method: "POST",
+        method: "post",
         url: "http://localhost:5000/project",
         headers: {
+          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${loginState.accessToken}`,
         },
-        data: {
-          title: document.querySelector(".project-edit__name").value,
-          totalMember: selectedPos.length,
-          state: "recruiting",
-          startDate: startDate,
-          endDate: endDate,
-          content: editorInstance.getMarkdown(),
-          tag: skillPost,
-          position: ["1"],
-        },
+        // contentType: false,
+        // proecessData: false,
+        data: formData,
       });
-      console.log(res);
+      console.log("res", res);
     } catch (err) {
       console.log(err);
     }
@@ -118,7 +140,7 @@ export default function ProjectEditPage() {
   useEffect(() => {
     if (isValid === 1) {
       projectSave();
-      history.push("/");
+      // history.push("/");
     }
   }, [isValid]);
 
@@ -318,13 +340,7 @@ export default function ProjectEditPage() {
             className="project-edit__name"
             placeholder="프로젝트명을 입력해주세요. (ex. 식재료에 따른 요리 추천 앱)"
             maxLength="45"
-            onChange={(e) => {
-              if (e.target.value.length > e.target.maxLength) {
-                e.target.value.substr(0, e.target.maxLength); //한글 처리
-              } else setTitleLength(e.target.value.length);
-            }}
           />
-          <div className="title__letters-count">{titleLength} / 45</div>
           <label>
             프로젝트 소개<span className="project-edit__asterisk">*</span>
           </label>
@@ -348,7 +364,7 @@ export default function ProjectEditPage() {
           onClick={() => {
             if (testValid() === 1) {
               projectSave();
-              history.push("/");
+              // history.push("/");
             }
           }}>
           프로젝트 생성

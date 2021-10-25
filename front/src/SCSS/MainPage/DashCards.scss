@@ -12,12 +12,13 @@
     align-items: center;
     justify-content: center;
     margin-bottom: 1rem;
-    width: max-content;
+    width: 12rem;
+    height: 8rem;
     img {
       border-radius: $round;
       object-fit: cover;
       width: 100%;
-      height: 8rem;
+      height: 100%;
       filter: brightness(50%);
     }
     .DashCards__title {

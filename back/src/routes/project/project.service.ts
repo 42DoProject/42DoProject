@@ -246,7 +246,7 @@ export const getStatus = async (request: Request, response: Response) => {
 
 const arrayCondition = (array: Number[], max: Number): Number[] => {
     return array.filter(
-        (item, index) => array.indexOf(item) === index && 0 <= item && item <= max
+        (item) => 0 <= item && item <= max
     );
 };
 

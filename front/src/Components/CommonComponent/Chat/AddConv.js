@@ -53,7 +53,7 @@ export default function Conv({
   return (
     <>
       <div className="chatLog__addConv">
-        <span className="addConv__placeholder">대화상대 추가 : </span>
+        <span className="addConv__placeholder">대화 상대 추가 : </span>
         <div className="userNameList">
           {userNameList.length != 0 &&
             userNameList?.map((e, idx) => (
@@ -88,8 +88,7 @@ export default function Conv({
                   if (userNameList.length <= 1) addUserList(e.id, e.uesrname);
                   chatLogInput.value = "";
                   chatLogInput.focus();
-                }}
-              >
+                }}>
                 <img src={e.profileImage} />
                 <div>{e.uesrname}</div>
               </div>
@@ -114,8 +113,7 @@ export default function Conv({
                   addUserList(e.id, e.uesrname);
                   chatLogInput.value = "";
                   chatLogInput.focus();
-                }}
-              >
+                }}>
                 <img src={e.profileImage} />
                 <div>{e.uesrname}</div>
               </div>

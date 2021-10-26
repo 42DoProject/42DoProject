@@ -3,9 +3,12 @@
 .noProject {
   display: flex;
   justify-content: center;
-  padding: 8rem;
-  font-weight: $semiBold;
+  padding: 6rem;
+  font-weight: $normal;
   opacity: 0.5;
+  border-radius: $round;
+  background-color: $lightestGrey;
+  margin: 2rem;
 }
 .cardlist {
   display: flex;

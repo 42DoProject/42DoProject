@@ -43,7 +43,7 @@ export default function ProjectComment({ projectId, loginState }) {
   };
 
   const onSubmit = (e) => {
-    if (loginState === null) alert("로그인이 필요합니다!");
+    if (loginState === null) alert("로그인해주세요");
     else {
       console.log("submit");
       axios({
@@ -80,58 +80,62 @@ export default function ProjectComment({ projectId, loginState }) {
   return (
     <div className="body-comment">
       <div className="comment-row">
-        <Icon icon="bi:chat-left-text" color="#565656" height="25" />
+        <Icon icon="bi:chat-left-text" color="#565656" fontSize="1.5rem" />
         <div className="comment_text">응원 / 질문을 남겨주세요! </div>
       </div>
       <div className="comment_main">
         {commentList.length !== 0 ? (
-          commentList.map((el, key) => (
-            <div className="comment-list">
-              <div className="comment-id">{el.profile.user.username}</div>
-              <div className="comment-content">{el.comment}</div>
-              {el.profile.id === loginState?.id && (
-                <Icon
-                  icon="bx:bx-x"
-                  color="#ff6864"
-                  height="18"
-                  onClick={(e) => onDelete(el.id, e)}
-                  style={{ cursor: "pointer" }}
-                />
-              )}
+          <>
+            {commentList.map((el, key) => (
+              <div className="comment-list">
+                <div className="comment-id">{el.profile.user.username}</div>
+                <div className="comment-content">{el.comment}</div>
+                {el.profile.id === loginState?.id && (
+                  <Icon
+                    icon="bx:bx-x"
+                    color="#ff6864"
+                    fontSize="1rem"
+                    onClick={(e) => onDelete(el.id, e)}
+                    style={{ cursor: "pointer" }}
+                  />
+                )}
+              </div>
+            ))}
+            <div className="comment_pagination">
+              <Pagination
+                hideFirstLastPages={true}
+                activePage={page}
+                itemsCountPerPage={5}
+                totalItemsCount={totalPage}
+                pageRangeDisplayed={4}
+                prevPageText={
+                  <Icon
+                    icon="dashicons:arrow-left-alt2"
+                    color="#e5e5e5"
+                    height="1rem"
+                  />
+                }
+                nextPageText={
+                  <Icon
+                    icon="dashicons:arrow-right-alt2"
+                    color="#e5e5e5"
+                    height="1rem"
+                  />
+                }
+                onChange={handlePageChange}
+              />
             </div>
-          ))
+          </>
         ) : (
-          <div className="empty-comment">댓글이 없습니다.</div>
+          <div className="empty-comment">
+            프로젝트에 첫 댓글을 남겨주세요 😃
+          </div>
         )}
       </div>
-      <div className="comment_pagination">
-        <Pagination
-          hideFirstLastPages={true}
-          activePage={page}
-          itemsCountPerPage={5}
-          totalItemsCount={totalPage}
-          pageRangeDisplayed={4}
-          prevPageText={
-            <Icon
-              icon="dashicons:arrow-left-alt2"
-              color="#e5e5e5"
-              height="1rem"
-            />
-          }
-          nextPageText={
-            <Icon
-              icon="dashicons:arrow-right-alt2"
-              color="#e5e5e5"
-              height="1rem"
-            />
-          }
-          onChange={handlePageChange}
-        />
-      </div>
       <form className="comment-input" onSubmit={onSubmit}>
-        <input
+        <textarea
           spellCheck="false"
-          type="text"
+          // type="textarea"
           className="comment_input"
           maxLength="50"
           placeholder="ex. 너무 좋은 프로젝트입니다."
@@ -139,7 +143,7 @@ export default function ProjectComment({ projectId, loginState }) {
           // onKeyPress={this.typeEnter}
           value={newComment}
         />
-        <button type="submit">등록</button>
+        <button type="submit">댓글 등록</button>
       </form>
     </div>
   );

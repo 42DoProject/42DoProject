@@ -43,8 +43,26 @@
     }
   }
 }
-.chatRoom__bubble {
-  margin-top: 0.5rem;
+.chatRoom__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .chatRoom__bubble {
+    margin-top: 0.5rem;
+  }
+  .chatRoom__unread {
+    width: 1.2rem;
+    height: 1.2rem;
+    background-color: $pointRed;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: max-content;
+    span {
+      color: white;
+    }
+  }
 }
 .chatRoom__split {
   margin: 0;

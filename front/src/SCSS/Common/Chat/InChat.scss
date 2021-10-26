@@ -9,11 +9,8 @@
   .inChat__header {
     margin-bottom: 2rem;
     display: flex;
-    justify-content: space-around;
     align-items: center;
     .back {
-      position: absolute;
-      left: 0;
       cursor: pointer;
       &:hover {
         color: $mainColor;

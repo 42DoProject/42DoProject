@@ -32,11 +32,15 @@ function InChat({
 
   useEffect(() => {
     getChat(chatRoom.uuid);
+    socket.on("chat:leave", () => getChat(chatRoom.uuid));
     socket.on(
       "chat:receive",
       (payload) => chatRoom.uuid === payload.uuid && getChat(chatRoom.uuid)
     );
-    return () => socket.off("chat:receive");
+    return () => {
+      socket.off("chat:receive");
+      socket.off("chat:leave");
+    };
   }, [loginState]);
 
   return (
@@ -87,15 +91,8 @@ function InChat({
             chat.map((e, idx) => {
               let imgFlag = 1;
               if (idx && chat[idx - 1].userId === chat[idx].userId) imgFlag = 0;
-              const user = chatRoom.users.filter((ee) => ee.id === e.userId);
-              return (
-                <ChatCard
-                  key={idx}
-                  chatInfo={e}
-                  userInfo={user[0]}
-                  imgFlag={imgFlag}
-                />
-              );
+              if (e.userId === -1) imgFlag = 0;
+              return <ChatCard key={e.date} chatInfo={e} imgFlag={imgFlag} />;
             })}
         </div>
 

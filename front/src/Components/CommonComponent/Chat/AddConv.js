@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
@@ -50,6 +50,10 @@ export default function Conv({
     chatOutFlag ? setChatOutFlag(0) : setChatOutFlag(1);
     setConvFlag(0);
   };
+  useEffect(() => {
+    const $input = document.querySelector(".chatLog__addConv input");
+    $input.focus();
+  }, []);
   return (
     <>
       <div className="chatLog__addConv">

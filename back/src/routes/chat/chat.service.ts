@@ -59,6 +59,7 @@ export const getAllChats = async (request: Request, response: Response) => {
         type: room.type,
         unread: unreadCount,
         last: last ? last.message : "",
+        date: last ? last.date : -1,
         users: userList,
       },
     });

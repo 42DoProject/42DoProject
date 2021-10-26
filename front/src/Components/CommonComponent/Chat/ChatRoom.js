@@ -32,7 +32,11 @@ function ChatRoom({ uuid, chatRoom, clickFlag, setInFlag, setConvFlag }) {
       "chat:receive",
       (payload) => uuid === payload.uuid && getChat(uuid)
     );
-    return () => socket.off("chat:receive");
+    socket.on("chat:leave", () => getChat(uuid));
+    return () => {
+      socket.off("chat:receive");
+      socket.off("chat:leave");
+    };
   }, [loginState]);
 
   return (
@@ -40,18 +44,19 @@ function ChatRoom({ uuid, chatRoom, clickFlag, setInFlag, setConvFlag }) {
       <div
         className="chatRoom"
         onClick={() => {
-          // props.setInFlag(props.uuid);
           setInFlag(chatRoom);
           setConvFlag(0);
         }}
       >
         <div className="chatRoom__nav">
           <div className="chatRoom__profile">
-            <img
-              className="chatRoom__img"
-              src={chatRoomCP[0]?.profileImage}
-              alt="chatRoom__img"
-            ></img>
+            {chatRoomCP.length ? (
+              <img
+                className="chatRoom__img"
+                src={chatRoomCP[0]?.profileImage}
+                alt="chatRoom__img"
+              ></img>
+            ) : null}
             <div className="chatRoom__name">
               {clickFlag
                 ? chatRoomCP.map((e, idx) => (

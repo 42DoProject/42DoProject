@@ -20,7 +20,7 @@ export default function ProgressSlide({ projectData }) {
       <div className="dashCardslist">
         <div className="dashCards-wrap">
           {projectData?.map((e, idx) => {
-            return <DashCards key={e.id} projectData={e} />;
+            return <DashCards key={e.project.id} projectData={e} />;
           })}
         </div>
       </div>

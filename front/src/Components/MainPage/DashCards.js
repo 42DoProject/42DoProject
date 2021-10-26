@@ -13,9 +13,10 @@ export default function DashCards({ projectData }) {
       className="DashCards"
       onClick={(e) => {
         e.preventDefault();
-        history.push(`/project/${projectData.id}`);
+        history.push(`/project/${projectData.project.id}`);
       }}
-      style={{ cursor: "pointer" }}>
+      style={{ cursor: "pointer" }}
+    >
       <div className="DashCards__image">
         <img
           src={

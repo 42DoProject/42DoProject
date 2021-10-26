@@ -82,9 +82,11 @@
 .chatCard-noti {
   display: flex;
   justify-content: center;
+  width: 95%;
+  margin: 0 auto;
+  background-color: $lightestGrey;
   .chat-noti {
     margin: 0 auto;
-    background-color: $lightestGrey;
     padding: 0.5rem;
     font-weight: $bold;
   }

@@ -27,10 +27,10 @@ function Pop() {
       </Link>
       <div className="popover__wrap">
         <Link to="/cadet/recruit">
-          <Popover.Body> 카뎃</Popover.Body>
+          <Popover.Body>&nbsp;&nbsp;카뎃</Popover.Body>
         </Link>
         <Link to="/lounge">
-          <Popover.Body>라운지</Popover.Body>
+          <Popover.Body>&nbsp;라운지</Popover.Body>
         </Link>
       </div>
     </Popover>

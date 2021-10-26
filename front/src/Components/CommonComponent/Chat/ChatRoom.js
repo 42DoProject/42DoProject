@@ -13,15 +13,35 @@ function ChatRoom({
   refreshFlag,
   setRefreshFlag,
 }) {
-  let loginState = useSelector((state) => state.loginReducer);
+  const loginState = useSelector((state) => state.loginReducer);
+  const [outUserProfile, setOutUserProfile] = useState();
   const chatRoomCP = chatInfo.users.filter((e) => e.id !== loginState.id);
   useEffect(() => {
     socket.on("chat:receive", () => {
-      console.log("chatRoom Socket!!");
       refreshFlag ? setRefreshFlag(0) : setRefreshFlag(1);
     });
     return () => socket.off("chat:receive");
   }, [refreshFlag]);
+
+  const getProfile = async (userName) => {
+    try {
+      const {
+        data: { user },
+      } = await axios.get(`http://localhost:5000/search/${userName}`);
+      setOutUserProfile(user[0].profileImage);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  let outUserName = "";
+  if (chatInfo.users.length === 1) {
+    outUserName = chatInfo.last.split(" ")[0];
+    outUserName = outUserName.slice(0, -2);
+  }
+  useEffect(() => {
+    outUserName && getProfile(outUserName);
+  }, []);
+
   return (
     <>
       <div
@@ -33,10 +53,16 @@ function ChatRoom({
       >
         <div className="chatRoom__nav">
           <div className="chatRoom__profile">
-            {chatRoomCP.length !== 0 && (
+            {chatRoomCP.length ? (
               <img
                 className="chatRoom__img"
                 src={chatRoomCP[0]?.profileImage}
+                alt="chatRoom__img"
+              ></img>
+            ) : (
+              <img
+                className="chatRoom__img"
+                src={outUserProfile}
                 alt="chatRoom__img"
               ></img>
             )}
@@ -50,6 +76,7 @@ function ChatRoom({
                     else if (idx === 3) return <span key={idx}>...</span>;
                     else return <></>;
                   })}
+              {<span>{outUserName}</span>}
             </div>
           </div>
           <div className="chatRoom__time-stamp">

@@ -135,6 +135,7 @@ export default function Chat() {
                     let chatLogEl = document.querySelector(".chatLog");
                     chatEl.style.visibility = "visible";
                     chatLogEl.style.visibility = "hidden";
+                    setConvFlag(0);
                   }}
                 >
                   <Icon icon="bx:bx-x" height="2rem" />

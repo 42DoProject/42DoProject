@@ -27,6 +27,9 @@ function Pop(uuid, chatOutFlag, setChatOutFlag, setInFlag) {
   const loginState = useSelector((state) => state.loginReducer);
   return (
     <Popover id="popover-basic">
+      <div>
+        <Popover.Body>채팅방 초대</Popover.Body>
+      </div>
       <div
         onClick={() => {
           leaveChat(uuid, loginState, chatOutFlag, setChatOutFlag, setInFlag);
@@ -57,4 +60,16 @@ const leaveChat = async (
   } catch (err) {
     console.log(err);
   }
+};
+const inviteUser = async (uuid, userIdList, loginState) => {
+  await axios({
+    method: "POST",
+    url: `http://localhost:5000/chat${uuid}`,
+    headers: {
+      Authorization: `Bearer ${loginState.accessToken}`,
+    },
+    data: {
+      users: [...userIdList],
+    },
+  });
 };

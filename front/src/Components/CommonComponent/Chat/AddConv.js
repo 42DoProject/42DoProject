@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
@@ -50,10 +50,14 @@ export default function Conv({
     chatOutFlag ? setChatOutFlag(0) : setChatOutFlag(1);
     setConvFlag(0);
   };
+  useEffect(() => {
+    const $input = document.querySelector(".chatLog__addConv input");
+    $input.focus();
+  }, []);
   return (
     <>
       <div className="chatLog__addConv">
-        <span className="addConv__placeholder">대화상대 추가 : </span>
+        <span className="addConv__placeholder">대화 상대 추가 : </span>
         <div className="userNameList">
           {userNameList.length != 0 &&
             userNameList?.map((e, idx) => (
@@ -88,8 +92,7 @@ export default function Conv({
                   if (userNameList.length <= 1) addUserList(e.id, e.uesrname);
                   chatLogInput.value = "";
                   chatLogInput.focus();
-                }}
-              >
+                }}>
                 <img src={e.profileImage} />
                 <div>{e.uesrname}</div>
               </div>
@@ -114,8 +117,7 @@ export default function Conv({
                   addUserList(e.id, e.uesrname);
                   chatLogInput.value = "";
                   chatLogInput.focus();
-                }}
-              >
+                }}>
                 <img src={e.profileImage} />
                 <div>{e.uesrname}</div>
               </div>

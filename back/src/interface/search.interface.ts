@@ -1,7 +1,7 @@
 export interface IUser {
   index: string;
   id: number;
-  uesrname: string;
+  username: string;
   profileImage: string;
   status: number;
   position: number;

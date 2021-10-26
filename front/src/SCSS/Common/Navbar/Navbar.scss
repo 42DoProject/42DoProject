@@ -148,8 +148,7 @@
     .notiText__body {
       max-height: 19rem;
       overflow-y: scroll;
-
-      .body__card {
+      .noti .body__card {
         border-bottom: 1px solid $lightestGrey;
         padding: 0 0.5rem;
         .card__row1 {
@@ -166,6 +165,17 @@
           padding-bottom: 0.5rem;
           font-size: $fontSm;
         }
+      }
+      .notiText__none {
+        background-color: $bodyColor;
+        color: $grey;
+        font-size: $fontSs;
+        margin: 0.7rem 0 0 0.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem;
+        border-radius: $round;
       }
     }
   }

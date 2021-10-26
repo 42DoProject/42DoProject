@@ -10,11 +10,11 @@ export default function ProjectInfo({ info, loginstate }) {
   const [clickFlag, setClickFlag] = useState(0);
   let loginState = useSelector((state) => state.loginReducer);
 
-  var start = dayjs(info.startDate);
-  var end = dayjs(info.endDate);
-  var duration = end.diff(start, "day");
+  let start = dayjs(info.startDate);
+  let end = dayjs(info.endDate);
+  let duration = end.diff(start, "day") + 1;
 
-  console.log(duration);
+  // console.log("start:", info.startDate, ",end :", info.endDate);
 
   const likeData = [
     {
@@ -59,7 +59,7 @@ export default function ProjectInfo({ info, loginstate }) {
   };
 
   const onClickLike = (e) => {
-    if (loginState === null) alert("로그인이 필요합니다!");
+    if (loginState === null) alert("로그인해 주세요");
     else {
       axios({
         method: "POST",
@@ -116,12 +116,20 @@ export default function ProjectInfo({ info, loginstate }) {
         </div>
         <div className="info_date">프로젝트 기간</div>
         <div className="date">
-          {start.format("YY.MM.DD")} ~ {end.format("YY.MM.DD")} ({duration} 일)
+          {info.startDate || info.endDate ? (
+            <>
+              {info.startDate ? start.format("YY.MM.DD") : " ? "}
+              {info.endDate ? " ~ " + end.format("YY.MM.DD") : " ~ ? "}
+              {duration > 0 ? ` (${duration}일)` : ""}
+            </>
+          ) : (
+            <span className="info_not-defined">기간이 정해지지 않았습니다</span>
+          )}
         </div>
         <hr />
         <div className="info_skill">프로젝트 필요 스킬</div>
         <div className="skill">
-          {info.skill &&
+          {info.skill.length ? (
             info.skill.map((e, i) => {
               return (
                 <img
@@ -130,15 +138,20 @@ export default function ProjectInfo({ info, loginstate }) {
                   src={skills.skills[e][1]}
                 />
               );
-            })}
+            })
+          ) : (
+            <span className="info_not-defined">
+              필요한 스킬이 정해지지 않았습니다
+            </span>
+          )}
         </div>
         <div className="info_bottom">
-          관심 {info.like} ∙ 댓글 {info.commentCount} ∙ 조회 {info.viewCount}
+          관심 {info.like} ∙ 조회 {info.viewCount} ∙ 댓글 {info.commentCount}
         </div>
       </div>
       {loginstate !== null && (
         <div className="project-cancle_btn" onClick={(e) => applyCancel(e)}>
-          취소하기
+          신청 취소하기
         </div>
       )}
     </>

@@ -25,7 +25,7 @@ export default function MemberList({ data, loginState }) {
     <>
       <div className="member_list">
         <div className="list_row1">
-          <Icon icon="bi:person-fill" color="#565656" height="25" />
+          <Icon icon="bi:person-fill" color="#565656" fontSize="1.5rem" />
           <div className="member_count">
             멤버 {data.currentMember} / {data.totalMember}
           </div>

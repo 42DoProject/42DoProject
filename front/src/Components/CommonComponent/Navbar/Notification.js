@@ -24,9 +24,11 @@ export default function Notifiaction() {
     getData();
   }, [loginState]);
 
+  // console.log(notiData);
   const clickListener = function (e) {
     if (
       clickFlag &&
+      document.querySelector(".icon") &&
       e.target.offsetParent &&
       e.target.offsetParent.className !== "notiText__wrap"
     ) {
@@ -64,17 +66,21 @@ export default function Notifiaction() {
             <div className="header__text">알림</div>
           </div>
           <div className="notiText__body">
-            {notiData?.list.map((e, idx) => {
-              return (
-                <div key={idx} className="body__card">
-                  <div className="card__row1">
-                    <div className="card__title">{e.title}</div>
-                    <div className="card__date">{e.date}</div>
+            {notiData?.length ? (
+              notiData.list.map((e, idx) => {
+                return (
+                  <div key={idx} className="body__card">
+                    <div className="card__row1">
+                      <div className="card__title">{e.title}</div>
+                      <div className="card__date">{e.date}</div>
+                    </div>
+                    <div className="card__text">{e.text}</div>
                   </div>
-                  <div className="card__text">{e.text}</div>
-                </div>
-              );
-            })}
+                );
+              })
+            ) : (
+              <div className="notiText__none">알림이 없어요</div>
+            )}
           </div>
         </div>
       )}

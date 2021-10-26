@@ -70,32 +70,36 @@
     color: $pointBlue;
   }
 }
-.right__connected {
+.right__connected-wrap {
   height: 15rem;
   width: 15rem;
   background-color: white;
   border-radius: $round;
   box-shadow: $shadow;
-  padding: 2rem;
-  overflow-y: hidden;
-  &:hover {
-    overflow-y: scroll;
-  }
-
-  .connected__cadet {
-    display: flex;
-    align-items: center;
-    margin-bottom: 0.5rem;
-
-    .connected__img {
-      border-radius: 50%;
-      width: 2rem;
-      height: 2rem;
-      object-fit: cover;
-      margin-right: 0.5rem;
+  padding: 1rem;
+  .right__connected {
+    padding: 1rem;
+    border-radius: $round;
+    overflow-y: hidden;
+    height: 100%;
+    &:hover {
+      overflow-y: scroll;
     }
-    .connected__name {
-      font-size: $fontSm;
+    .connected__cadet {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5rem;
+
+      .connected__img {
+        border-radius: 50%;
+        width: 2rem;
+        height: 2rem;
+        object-fit: cover;
+        margin-right: 0.5rem;
+      }
+      .connected__name {
+        font-size: $fontSm;
+      }
     }
   }
 }

@@ -24,10 +24,11 @@
         margin: 0 1rem;
       }
       .column1-small__name {
-        font-weight: $bold;
+        font-weight: $semiBold;
       }
     }
   }
+
   .chatCard__column2 {
     right: 4rem;
     .chat-message-small {
@@ -75,5 +76,16 @@
       border-radius: $round;
       margin: 0 0.5rem;
     }
+  }
+}
+
+.chatCard-noti {
+  display: flex;
+  justify-content: center;
+  .chat-noti {
+    margin: 0 auto;
+    background-color: $lightestGrey;
+    padding: 0.5rem;
+    font-weight: $bold;
   }
 }

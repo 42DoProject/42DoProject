@@ -24,6 +24,7 @@ export default function Notifiaction() {
     getData();
   }, [loginState]);
 
+  // console.log(notiData);
   const clickListener = function (e) {
     if (
       clickFlag &&

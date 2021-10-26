@@ -1,50 +1,35 @@
-import fs from "fs";
 import { IObject, IProject, IUser } from "../interface/search.interface";
+import { Project } from "../models/project/project.model";
+import { Profile } from "../models/user/profile.model";
+import { User } from "../models/user/user.model";
 
 var object: IObject;
-var timer: NodeJS.Timeout | null = null;
 
-export function init() {
-  try {
-    object = JSON.parse(
-      fs.readFileSync(`${process.env.SEARCH_DATA_BLOCK}`, "utf8")
-    );
-    if (!object.user || !object.project)
-      throw new Error(
-        `search block file "${process.env.SEARCH_DATA_BLOCK}" is invalid`
-      );
-  } catch (e) {
-    object = { user: [], project: [] };
-    fs.writeFileSync(
-      `${process.env.SEARCH_DATA_BLOCK}`,
-      JSON.stringify(object)
-    );
-    /*
-    throw new Error(
-      `search block file "${process.env.SEARCH_DATA_BLOCK}" is invalid`
-    );
-*/
+export async function init() {
+  object = { user: [], project: [] };
+  const users = await User.findAll({ include: [Profile] });
+  const projects = await Project.findAll();
+  for (const u of users)
+    object.user.push({
+      index: u.username,
+      id: u.id,
+      username: u.username,
+      profileImage: u.profileImage,
+      status: u.profile!.status,
+      position: u.profile!.position,
+      skill: u.profile!.skill,
+      level: u.profile!.level,
+    });
+  for (const p of projects) {
+    const index = p.title.toLowerCase().split(" ");
+    object.project.push({
+      index: index,
+      id: p.id,
+      image: p.thumbnailImage,
+      title: p.title,
+    });
   }
   console.log("[search] ready");
-}
-
-export function save() {
-  if (timer) clearTimeout(timer);
-  timer = setTimeout(() => {
-    fs.writeFile(
-      `${process.env.SEARCH_DATA_BLOCK}`,
-      JSON.stringify(object),
-      (err) => {
-        if (err)
-          throw new Error(
-            `can't save search block "${process.env.SEARCH_DATA_BLOCK}"`
-          );
-        console.log(
-          `[search] save block to "${process.env.SEARCH_DATA_BLOCK}"`
-        );
-      }
-    );
-  }, 3000);
 }
 
 function compare(src: string, target: string): boolean {
@@ -144,14 +129,13 @@ export function insertUser(user: {
   object.user.push({
     index: user.username,
     id: user.id,
-    uesrname: user.username,
+    username: user.username,
     profileImage: user.profileImage,
     status: user.status,
     position: user.position,
     skill: user.skill,
     level: user.level,
   });
-  save();
 }
 
 export function insertProject(project: {
@@ -166,7 +150,6 @@ export function insertProject(project: {
     image: project.image,
     title: project.title,
   });
-  save();
 }
 
 export function updateUser(
@@ -187,7 +170,6 @@ export function updateUser(
       if (user.skill !== undefined) u.skill = user.skill;
       if (user.level !== undefined) u.level = user.level;
     }
-  save();
 }
 
 export function updateProject(
@@ -202,5 +184,4 @@ export function updateProject(
       }
       if (project.image !== undefined) u.image = project.image;
     }
-  save();
 }

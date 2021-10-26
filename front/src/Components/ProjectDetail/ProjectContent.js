@@ -10,7 +10,11 @@ export default function ProjectContent(props) {
     <>
       <div className="project_content">
         <div className="project_content_row1">
-          <InlineIcon icon="ri:file-paper-2-line" color="#565656" height="25" />
+          <InlineIcon
+            icon="ri:file-paper-2-line"
+            color="#565656"
+            fontSize="1.5rem"
+          />
           <div className="project_address">프로젝트 소개</div>
         </div>
         {props.content.content?.content && (

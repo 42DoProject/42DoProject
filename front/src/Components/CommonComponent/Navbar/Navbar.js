@@ -20,7 +20,7 @@ export default function Navbar(props) {
         </Link>
         <div className="Nav__input">
           <Icon className="input-icon" icon="fe:search" />
-          <input placeholder="카뎃 닉네임, 프로젝트명 등을 검색해보세요"></input>
+          <input placeholder="카뎃 닉네임, 프로젝트명 등을 검색해 보세요"></input>
         </div>
       </div>
       <div className="Nav-column2">

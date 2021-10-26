@@ -86,10 +86,19 @@
         color: $mainColor;
       }
     }
+
+    .nav__left-icons {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav__empty-div {
+      width: 2rem;
+    }
+
     .nav__chat-title {
       display: flex;
       align-items: center;
-      margin-left: 0.5rem;
     }
     .nav__icons {
       display: flex;
@@ -111,6 +120,7 @@
 
   .chatLog__addConv {
     background-color: $lightestGrey;
+    margin-bottom: 0.5rem;
     font-weight: $normal;
     padding: 0.5rem 1rem;
     border-radius: 0.7rem;
@@ -219,8 +229,28 @@
   .chatLog__body {
     width: 100%;
     overflow-y: auto;
+    height: 100%;
     &::-webkit-scrollbar {
       display: none;
+    }
+    .chatLog__body-empty {
+      width: 100%;
+      height: 100%;
+      padding: 1rem;
+      border-radius: $round;
+      display: flex;
+      font-weight: $normal;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      .chatLog__body-empty-info {
+        font-weight: 400;
+        color: $lightGrey;
+        margin-top: 1rem;
+        font-size: $fontSs;
+        line-height: 130%;
+      }
     }
   }
 }

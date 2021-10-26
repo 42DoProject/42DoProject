@@ -48,7 +48,7 @@ export default function Cards(props) {
             관심 <span className="interest__num">{props.projectData.like}</span>
           </div>
           <div className="info__chat">
-            조회수{" "}
+            조회{" "}
             <span className="chat__num">{props.projectData.viewCount}</span>
           </div>
           <div className="info__comment">

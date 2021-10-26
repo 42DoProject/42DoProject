@@ -74,33 +74,36 @@ export default function Chat() {
         ) : (
           <>
             <div className="chatLog__nav">
-              {clickFlag === 0 ? (
-                <Icon
-                  className="nav__resize-up"
-                  icon="si-glyph:resize-out-frame"
-                  hFlip="true"
-                  height="1.5rem"
-                  onClick={() => {
-                    let chatLogEl = document.querySelector(".chatLog");
-                    chatLogEl.style.width = "80vw";
-                    chatLogEl.style.height = "90vh";
-                    setClickFlag(1);
-                  }}
-                />
-              ) : (
-                <Icon
-                  className="nav__resize-down"
-                  icon="si-glyph:resize-in-frame"
-                  height="1.5rem"
-                  hFlip="true"
-                  onClick={() => {
-                    let chatLogEl = document.querySelector(".chatLog");
-                    chatLogEl.style.width = "22rem";
-                    chatLogEl.style.height = "40rem";
-                    setClickFlag(0);
-                  }}
-                />
-              )}
+              <div className="nav__left-icons">
+                {clickFlag === 0 ? (
+                  <Icon
+                    className="nav__resize-up"
+                    icon="si-glyph:resize-out-frame"
+                    hFlip="true"
+                    height="1.5rem"
+                    onClick={() => {
+                      let chatLogEl = document.querySelector(".chatLog");
+                      chatLogEl.style.width = "80vw";
+                      chatLogEl.style.height = "90vh";
+                      setClickFlag(1);
+                    }}
+                  />
+                ) : (
+                  <Icon
+                    className="nav__resize-down"
+                    icon="si-glyph:resize-in-frame"
+                    height="1.5rem"
+                    hFlip="true"
+                    onClick={() => {
+                      let chatLogEl = document.querySelector(".chatLog");
+                      chatLogEl.style.width = "22rem";
+                      chatLogEl.style.height = "40rem";
+                      setClickFlag(0);
+                    }}
+                  />
+                )}
+                <div className="nav__empty-div"></div>
+              </div>
               <div className="nav__chat-title">대화</div>
               <div className="nav__icons">
                 <div className="nav__plus">
@@ -134,16 +137,26 @@ export default function Chat() {
               />
             )}
             <div className="chatLog__body">
-              {chatRoom?.map((room) => (
-                <ChatRoom
-                  key={room.uuid}
-                  uuid={room.uuid}
-                  chatRoom={room}
-                  clickFlag={clickFlag}
-                  setInFlag={setInFlag}
-                  setConvFlag={setConvFlag}
-                />
-              ))}
+              {chatRoom?.length ? (
+                chatRoom?.map((room) => (
+                  <ChatRoom
+                    key={room.uuid}
+                    uuid={room.uuid}
+                    chatRoom={room}
+                    clickFlag={clickFlag}
+                    setInFlag={setInFlag}
+                    setConvFlag={setConvFlag}
+                  />
+                ))
+              ) : (
+                <div className="chatLog__body-empty">
+                  <div>대화를 시작해 보세요</div>
+                  <div className="chatLog__body-empty-info">
+                    상대방의 프로필에서 메시지를 보내거나 우측 상단에서 새로운
+                    대화 상대를 추가할 수 있어요
+                  </div>
+                </div>
+              )}
             </div>
           </>
         )}

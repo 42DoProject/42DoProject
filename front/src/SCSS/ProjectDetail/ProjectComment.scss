@@ -25,6 +25,13 @@
     }
     .empty-comment {
       margin: 0.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: $bodyColor;
+      border-radius: $round;
+      padding: 2rem;
+      color: $grey;
     }
   }
 
@@ -42,10 +49,13 @@
   .comment-input {
     display: flex;
     flex-direction: row;
-    margin-top: 2rem;
-    input {
+    align-items: flex-end;
+    margin-top: 1rem;
+    textarea {
+      padding: 1rem;
       width: 92%;
-      height: 2rem;
+      height: 5rem;
+      resize: none;
     }
     button {
       margin-left: 1rem;
@@ -60,6 +70,7 @@
 }
 
 .comment_pagination {
+  margin: 2rem 0;
   .pagination {
     display: flex;
     justify-content: center;

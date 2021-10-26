@@ -16,10 +16,10 @@ import * as cadet from "./module/cadetqueue";
 dotenv.config();
 
 async function bootstrap() {
-  search.init();
   await aws.init();
   await sequelize.sync();
   await mongoose();
+  await search.init();
   await cadet.init();
 
   const app: express.Application = express();

@@ -14,6 +14,14 @@ export default function Chat() {
   const [chatRoom, setChatRoom] = useState();
   const [inFlag, setInFlag] = useState(-1);
   const [chatOutFlag, setChatOutFlag] = useState(0);
+  const [unreadCnt, setUnreadCnt] = useState(0);
+  const [refreshFlag, setRefreshFlag] = useState(0);
+
+  const getUnreadCnt = (chatRoom) => {
+    let cnt = 0;
+    chatRoom?.forEach((e) => (cnt += e.unread));
+    setUnreadCnt(cnt);
+  };
 
   const getChatRoom = async () => {
     try {
@@ -22,23 +30,28 @@ export default function Chat() {
           Authorization: `Bearer ${loginState.accessToken}`,
         },
       });
+      getUnreadCnt(data);
       setChatRoom(data);
     } catch (err) {
       console.log(err);
     }
   };
-
   useEffect(() => {
-    socket.off("chat:newRoom");
-
     socket.on("chat:newRoom", () => {
       getChatRoom();
     });
+    socket.on("chat:leave", () => {
+      getChatRoom();
+    });
+    return () => {
+      socket.off("chat:newRoom");
+      socket.off("chat:leave");
+    };
   }, [loginState]);
 
   useEffect(() => {
     getChatRoom();
-  }, [loginState, chatOutFlag]);
+  }, [loginState, chatOutFlag, inFlag, refreshFlag]);
 
   return (
     <>
@@ -59,7 +72,7 @@ export default function Chat() {
           hFlip={true}
         />
         <div className="chat__noti">
-          <span>9</span>
+          {unreadCnt ? <span>{unreadCnt}</span> : null}
         </div>
       </div>
       <div className="chatLog">
@@ -141,11 +154,12 @@ export default function Chat() {
                 chatRoom?.map((room) => (
                   <ChatRoom
                     key={room.uuid}
-                    uuid={room.uuid}
-                    chatRoom={room}
+                    chatInfo={room}
                     clickFlag={clickFlag}
                     setInFlag={setInFlag}
                     setConvFlag={setConvFlag}
+                    refreshFlag={refreshFlag}
+                    setRefreshFlag={setRefreshFlag}
                   />
                 ))
               ) : (

@@ -5,58 +5,41 @@ import relativeTime from "../../../relativeTime";
 import { useSelector } from "react-redux";
 import socket from "../../../socket";
 
-function ChatRoom({ uuid, chatRoom, clickFlag, setInFlag, setConvFlag }) {
-  const [chat, setChat] = useState([]);
+function ChatRoom({
+  chatInfo,
+  clickFlag,
+  setInFlag,
+  setConvFlag,
+  refreshFlag,
+  setRefreshFlag,
+}) {
   let loginState = useSelector((state) => state.loginReducer);
-
-  const chatRoomCP = chatRoom.users.filter((e) => {
-    return e.id !== loginState.id;
-  });
-
-  const getChat = async (uuid) => {
-    try {
-      const { data } = await axios.get(`http://localhost:5000/chat/${uuid}`, {
-        headers: {
-          Authorization: `Bearer ${loginState.accessToken}`,
-        },
-      });
-      setChat(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
+  const chatRoomCP = chatInfo.users.filter((e) => e.id !== loginState.id);
   useEffect(() => {
-    getChat(uuid);
-    socket.on(
-      "chat:receive",
-      (payload) => uuid === payload.uuid && getChat(uuid)
-    );
-    socket.on("chat:leave", () => getChat(uuid));
-    return () => {
-      socket.off("chat:receive");
-      socket.off("chat:leave");
-    };
-  }, [loginState]);
-
+    socket.on("chat:receive", () => {
+      console.log("chatRoom Socket!!");
+      refreshFlag ? setRefreshFlag(0) : setRefreshFlag(1);
+    });
+    return () => socket.off("chat:receive");
+  }, [refreshFlag]);
   return (
     <>
       <div
         className="chatRoom"
         onClick={() => {
-          setInFlag(chatRoom);
+          setInFlag(chatInfo);
           setConvFlag(0);
         }}
       >
         <div className="chatRoom__nav">
           <div className="chatRoom__profile">
-            {chatRoomCP.length ? (
+            {chatRoomCP.length !== 0 && (
               <img
                 className="chatRoom__img"
                 src={chatRoomCP[0]?.profileImage}
                 alt="chatRoom__img"
               ></img>
-            ) : null}
+            )}
             <div className="chatRoom__name">
               {clickFlag
                 ? chatRoomCP.map((e, idx) => (
@@ -70,11 +53,18 @@ function ChatRoom({ uuid, chatRoom, clickFlag, setInFlag, setConvFlag }) {
             </div>
           </div>
           <div className="chatRoom__time-stamp">
-            {relativeTime(chat.length && chat[chat.length - 1].date)}
+            {relativeTime(chatInfo.date)}
           </div>
         </div>
-        <div className="chatRoom__bubble">
-          {chat ? chat[chat.length - 1]?.message : <br />}
+        <div className="chatRoom__footer">
+          <div className="chatRoom__bubble">
+            {chatInfo.last ? chatInfo.last : <br />}
+          </div>
+          {chatInfo.unread != 0 && (
+            <div className="chatRoom__unread">
+              <span>{chatInfo.unread}</span>
+            </div>
+          )}
         </div>
       </div>
     </>

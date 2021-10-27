@@ -1001,7 +1001,7 @@ export const deleteMember = async (request: Request, response: Response) => {
         response.status(400).json({ errMessage: 'invalid projectId or profileId param' });
         return ;
     }
-    if (request.user!.id !== projectprofile?.project.leader) {
+    if (request.user!.id !== projectprofile?.project.leader && request.user!.id !== profileId) {
         response.status(401).json({ errMessage: 'no authority' });
         return ;
     }

@@ -6,15 +6,19 @@ import dayjs from "dayjs";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
-export default function ProjectInfo({ info, loginstate }) {
+export default function ProjectInfo({
+  info,
+  userStatus,
+  setCancleFlag,
+  commentCount,
+}) {
   const [clickFlag, setClickFlag] = useState(0);
+  const [likeCount, setLikeCount] = useState(info.like);
   let loginState = useSelector((state) => state.loginReducer);
 
   let start = dayjs(info.startDate);
   let end = dayjs(info.endDate);
   let duration = end.diff(start, "day") + 1;
-
-  // console.log("start:", info.startDate, ",end :", info.endDate);
 
   const likeData = [
     {
@@ -27,11 +31,26 @@ export default function ProjectInfo({ info, loginstate }) {
     },
   ];
 
-  //userId부분 추후 변경 예정.
   const applyCancel = (e) => {
     axios({
       method: "DELETE",
-      url: `http://localhost:5000/project/apply/${info.id}/1`,
+      url: `http://localhost:5000/project/apply/${info.id}/${loginState.id}`,
+      headers: {
+        Authorization: `Bearer ${loginState.accessToken}`,
+      },
+    })
+      .then((res) => {
+        console.log(res);
+        setCancleFlag(1);
+      })
+      .catch((e) => console.log(e));
+    e.preventDefault();
+  };
+
+  const deleteMember = (e) => {
+    axios({
+      method: "DELETE",
+      url: `http://localhost:5000/project/accept/${info.id}/${loginState.id}`,
       headers: {
         Authorization: `Bearer ${loginState.accessToken}`,
       },
@@ -40,7 +59,7 @@ export default function ProjectInfo({ info, loginstate }) {
         console.log(res);
       })
       .catch((e) => console.log(e));
-    e.preventDefault();
+    // e.preventDefault();
   };
 
   const checkLike = async () => {
@@ -61,6 +80,7 @@ export default function ProjectInfo({ info, loginstate }) {
   const onClickLike = (e) => {
     if (loginState === null) alert("로그인해 주세요");
     else {
+      setClickFlag(1);
       axios({
         method: "POST",
         url: `http://localhost:5000/project/like/${info.id}`,
@@ -70,6 +90,7 @@ export default function ProjectInfo({ info, loginstate }) {
       })
         .then((res) => {
           console.log(res);
+          setLikeCount(likeCount + 1);
         })
         .catch((e) => console.log(e));
       e.preventDefault();
@@ -77,6 +98,7 @@ export default function ProjectInfo({ info, loginstate }) {
   };
 
   const onClickUnlike = (e) => {
+    setClickFlag(0);
     axios({
       method: "DELETE",
       url: `http://localhost:5000/project/like/${info.id}`,
@@ -86,15 +108,18 @@ export default function ProjectInfo({ info, loginstate }) {
     })
       .then((res) => {
         console.log(res);
+        setLikeCount(likeCount - 1);
       })
       .catch((e) => console.log(e));
     e.preventDefault();
   };
 
   useEffect(() => {
-    checkLike();
+    if (loginState !== null) {
+      console.log(loginState);
+      checkLike();
+    }
   }, []);
-
   return (
     <>
       <div className="project_info">
@@ -104,13 +129,8 @@ export default function ProjectInfo({ info, loginstate }) {
             color={likeData[clickFlag].color}
             height="25"
             onClick={(e) => {
-              if (clickFlag === 0) {
-                setClickFlag(1);
-                onClickLike(e);
-              } else {
-                setClickFlag(0);
-                onClickUnlike(e);
-              }
+              if (clickFlag === 0) onClickLike(e);
+              else onClickUnlike(e);
             }}
           />
         </div>
@@ -146,10 +166,10 @@ export default function ProjectInfo({ info, loginstate }) {
           )}
         </div>
         <div className="info_bottom">
-          관심 {info.like} ∙ 조회 {info.viewCount} ∙ 댓글 {info.commentCount}
+          관심 {likeCount} ∙ 조회 {info.viewCount} ∙ 댓글 {commentCount}
         </div>
       </div>
-      {loginstate !== null && (
+      {userStatus === "applying" && (
         <div className="project-cancle_btn" onClick={(e) => applyCancel(e)}>
           신청 취소하기
         </div>

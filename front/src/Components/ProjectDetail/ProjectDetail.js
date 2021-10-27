@@ -12,17 +12,23 @@ import { useSelector } from "react-redux";
 
 export default function ProjectDetail(props) {
   const [project, setProject] = useState();
+  const [userStatus, setUserStatus] = useState();
+  const [applyFlag, setApplyFlag] = useState(0);
+  const [cancleFlag, setCancleFlag] = useState(0);
+  const [commentCount, setCommentCount] = useState();
   const projectId = useParams()["id"];
 
   const loginState = useSelector((state) => state.loginReducer);
-  // const projectId = props.match.params.id;
 
-  console.log(loginState);
   useEffect(() => {
     getData();
   }, []);
 
-  console.log(project);
+  useEffect(() => {
+    if (loginState !== null) getUserStatus();
+    setApplyFlag(0);
+    setCancleFlag(0);
+  }, [applyFlag, cancleFlag]);
 
   const getData = async () => {
     try {
@@ -32,10 +38,28 @@ export default function ProjectDetail(props) {
         `http://localhost:5000/project/content?projectId=${projectId}`
       );
       setProject(projectContent);
+      setCommentCount(projectContent.commentCount);
     } catch (err) {
       console.log(err);
     }
   };
+
+  const getUserStatus = async () => {
+    try {
+      const { data: statusData } = await axios.get(
+        `http://localhost:5000/project/status?projectId=${projectId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${loginState.accessToken}`,
+          },
+        }
+      );
+      setUserStatus(statusData);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <>
       <div className="ProjectDetail__wrap">
@@ -44,15 +68,30 @@ export default function ProjectDetail(props) {
             <ProjectDetailHeader
               title={project.title}
               image={project.thumbnailImage}
+              projectState={project.state}
             />
             <div className="projectdetail-body">
               <div className="projectdetail-body__row1">
-                <ProjectStatus projectId={project.id} loginstate={loginState} />
-                <ProjectInfo info={project} loginstate={loginState} />
+                <ProjectStatus
+                  userStatus={userStatus?.status}
+                  project={project}
+                />
+                <ProjectInfo
+                  info={project}
+                  loginstate={loginState}
+                  userStatus={userStatus?.status}
+                  setCancleFlag={setCancleFlag}
+                  commentCount={commentCount}
+                />
               </div>
               <div className="projectdetail-body_row2">
                 <div className="project_memberlist">
-                  <MemberList data={project} loginState={loginState} />
+                  <MemberList
+                    data={project}
+                    loginState={loginState}
+                    userStatus={userStatus}
+                    setApplyFlag={setApplyFlag}
+                  />
                 </div>
                 <hr />
                 <div className="body-content">
@@ -63,6 +102,8 @@ export default function ProjectDetail(props) {
                   <ProjectComment
                     projectId={project.id}
                     loginState={loginState}
+                    commentCount={commentCount}
+                    setCommentCount={setCommentCount}
                   />
                 )}
               </div>

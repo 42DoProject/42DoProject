@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-
 import UserNameCard from "./UserNameCard";
 
 export default function Conv({
@@ -11,7 +10,6 @@ export default function Conv({
   clickFlag,
 }) {
   const [user, setUser] = useState();
-  const [dbClick, setDbClick] = useState();
   const [userIdList, setUserIdList] = useState([]);
   const [userNameList, setUserNameList] = useState([]);
   const loginState = useSelector((state) => state.loginReducer);
@@ -89,12 +87,13 @@ export default function Conv({
                 onClick={(event) => {
                   const chatLogInput =
                     document.querySelector(".addConv__input");
-                  if (userNameList.length <= 1) addUserList(e.id, e.uesrname);
+                  if (userNameList.length <= 1) addUserList(e.id, e.username);
                   chatLogInput.value = "";
                   chatLogInput.focus();
-                }}>
+                }}
+              >
                 <img src={e.profileImage} />
-                <div>{e.uesrname}</div>
+                <div>{e.username}</div>
               </div>
             );
           })}
@@ -114,12 +113,13 @@ export default function Conv({
                 onClick={(event) => {
                   const chatLogInput =
                     document.querySelector(".addConv__input");
-                  addUserList(e.id, e.uesrname);
+                  addUserList(e.id, e.username);
                   chatLogInput.value = "";
                   chatLogInput.focus();
-                }}>
+                }}
+              >
                 <img src={e.profileImage} />
-                <div>{e.uesrname}</div>
+                <div>{e.username}</div>
               </div>
             );
           })}

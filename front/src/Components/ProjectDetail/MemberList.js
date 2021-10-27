@@ -29,6 +29,9 @@ export default function MemberList({
     }
   };
 
+  console.log("data", data);
+  console.log("projectprofile", data.projectprofile);
+
   return (
     <>
       <div className="member_list">
@@ -42,7 +45,7 @@ export default function MemberList({
           <div className="filled_member">
             {data.projectprofile.map((e, key) => (
               <div className="member_image" key={key}>
-                {data.leader === e.profile.userId ? (
+                {data.leader === e.profile.id ? (
                   <Icon
                     icon="ph:crown-simple-fill"
                     color="#ffb648"
@@ -56,7 +59,7 @@ export default function MemberList({
                 />
                 <div className="member_position">
                   {e.position === null ? (
-                    <div>팀장</div>
+                    <div>백엔드</div>
                   ) : (
                     positions[e.position]
                   )}

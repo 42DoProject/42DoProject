@@ -14,11 +14,13 @@
 .project-bar-column1 {
   display: flex;
   align-items: center;
+  min-width: max-content;
 }
 
 .project-bar-column2 {
   display: flex;
   align-items: center;
+  min-width: max-content;
   // padding-right: 1rem;
 }
 
@@ -67,7 +69,7 @@
   background-color: $mainColor;
   color: white;
   font-weight: $normal;
-  margin-right: 1rem;
+  margin: 0 1rem;
   &:hover {
     color: white;
   }

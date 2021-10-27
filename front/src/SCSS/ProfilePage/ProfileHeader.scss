@@ -54,6 +54,7 @@
     padding: 1rem 2rem;
     width: 17rem;
     text-align: center;
+    line-height: 120%;
     margin: 1.2rem 0 0.7rem 0;
     border-radius: 1.8rem;
     font-size: $fontSm;
@@ -159,6 +160,7 @@
   // width: 90%;
   max-width: 35rem;
   word-wrap: break-word;
+  line-height: normal;
   white-space: pre-wrap; /* CSS3*/
   white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
   white-space: -pre-wrap; /* Opera 4-6 */

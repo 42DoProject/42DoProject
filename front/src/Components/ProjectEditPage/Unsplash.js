@@ -49,33 +49,20 @@ export default function Unsplash({
           />
           <div className="unsplash__body-info">
             <div> ✓ jpeg, jpg, png, gif, bmp 파일을 업로드할 수 있어요</div>
-            <div> ✓ 가로 1200px x 세로 3600px 이상의 이미지를 선택해주세요</div>
+            <div> ✓ 가로 1200px * 세로 3600px 이상의 이미지를 선택해주세요</div>
           </div>
         </div>
         {image ? (
           <button
             className="unsplash__button-active"
-            onClick={async () => {
-              // const formData = new FormData();
-              // formData.append("thumbnail", image);
-              // await axios({
-              //   method: "post",
-              //   url: "http://localhost:5000/project/thumbnail",
-              //   data: formData,
-              //   headers: {
-              //     "Content-Type": "form-data",
-              //   },
-              // });
-              // console.log(image);
+            onClick={() => {
               let reader = new FileReader();
 
               reader.readAsDataURL(image);
               reader.onloadend = () => {
                 const base64 = reader.result;
-
                 setImgBase64(base64.toString());
               };
-
               setImgLoadFlag(1);
               setUnsplashFlag(0);
             }}>

@@ -10,7 +10,8 @@ import { positions } from "../../userData";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { Redirect, useHistory } from "react-router";
-import ValidateModal from "./ValidateModal";
+import Modal from "./Modal";
+import ReactLoading from "../CommonComponent/Loading";
 
 export default function ProjectEditPage() {
   const loginState = useSelector((state) => state.loginReducer);
@@ -29,6 +30,7 @@ export default function ProjectEditPage() {
   const [validateFlag, setValidateFlag] = useState(0); // 1일때 모달창 띄움
   const [validateMsg, setValidateMsg] = useState([]); // [validate모달창에 띄울 메시지, 버튼 종류]
   const [isValid, setIsValid] = useState(0); // validity 테스트 통과하면 1
+  const [isLoading, setIsLoading] = useState(0); // 1일때 스피너
 
   let dateDiff =
     (new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24) + 1;
@@ -88,13 +90,6 @@ export default function ProjectEditPage() {
       if (startDate) formData.append("startDate", startDate);
       if (endDate) formData.append("endDate", endDate);
 
-      // for (let key of formData.keys()) {
-      //   console.log(key);
-      // }
-      // for (let value of formData.values()) {
-      //   console.log(value);
-      // }
-
       const res = await axios({
         method: "post",
         url: "http://localhost:5000/project",
@@ -102,11 +97,10 @@ export default function ProjectEditPage() {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${loginState.accessToken}`,
         },
-        // contentType: false,
-        // proecessData: false,
         data: formData,
       });
       console.log("res", res);
+      setIsLoading(0);
       history.push("/");
     } catch (err) {
       console.log(err);
@@ -139,6 +133,7 @@ export default function ProjectEditPage() {
 
   useEffect(() => {
     if (isValid === 1) {
+      setIsLoading(1);
       projectSave();
     }
   }, [isValid]);
@@ -147,6 +142,7 @@ export default function ProjectEditPage() {
   if (loginState === null) {
     return <Redirect to="/" />;
   }
+  if (isLoading) return <ReactLoading type="spin" color="#a7bc5b" />;
   return (
     <div className="project-edit__wrapper">
       <div className="project-edit__form">
@@ -351,11 +347,11 @@ export default function ProjectEditPage() {
         </div>
       </div>
       {validateFlag === 1 && (
-        <ValidateModal
+        <Modal
           body={validateMsg[0]}
           buttons={validateMsg[1]}
-          setValidateFlag={setValidateFlag}
-          setIsValid={setIsValid}
+          setOpenFlag={setValidateFlag}
+          setYes={setIsValid}
         />
       )}
       <div className="project-edit__buttons">
@@ -364,7 +360,7 @@ export default function ProjectEditPage() {
           className="project-edit__save"
           onClick={(e) => {
             if (testValid() === 1) {
-              e.target.innerText = "생성중...";
+              setIsLoading(1);
               projectSave();
             }
           }}>

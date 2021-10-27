@@ -238,7 +238,7 @@ export const getStatus = async (request: Request, response: Response) => {
     if (user1?.projectprofile !== undefined) {
         response.status(200).json({ connectProfileId: request.user!.id, status: 'participating' });
     } else if (user2?.applyprojectprofile !== undefined) {
-        response.status(200).json({ connectProfileId: request.user!.id, applyingPosition: user2?.applyprojectprofile, status: 'applying' });
+        response.status(200).json({ connectProfileId: request.user!.id, applyingPosition: user2?.applyprojectprofile[0].position, status: 'applying' });
     } else {
         response.status(200).json({ connectProfileId: request.user!.id, status: 'nothing' });
     }
@@ -845,7 +845,6 @@ export const applyTeam = async (request: Request, response: Response) => {
 
 export const cancelApply = async (request: Request, response: Response) => {
     const { projectId, profileId } = request.params;
-    const { position } = request.query;
 
     if (projectId === undefined || profileId === undefined) {
         response.status(400).json({ errMessage: 'please input projectId or profileId value' });
@@ -872,7 +871,7 @@ export const cancelApply = async (request: Request, response: Response) => {
     }
 
     await Applyprojectprofile.destroy({
-        where: { projectId: projectId, profileId: profileId, position: position }
+        where: { projectId: projectId, profileId: profileId }
     })
     .then(() => {
         response.status(200).json({ message: 'canceled successfully.' });

@@ -14,7 +14,7 @@ export default function ProjectStatus({ userStatus, project }) {
     full: {
       style: "full",
       title: "모집 완료",
-      icon: "ri:file-paper-2-line",
+      icon: "bx:bxs-lock",
       detail: "더이상 신청을 받고 있지 않아요.",
     },
     nothing: {

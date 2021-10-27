@@ -73,26 +73,32 @@ export default function Dashboard(props) {
             )}
           </div>
           <div className="row2">
-            <div className="row2__box1">
-              <div className="box1__column1">
-                <div className="column1__job">포지션</div>
-                <div className="column1__skill">보유 스킬</div>
-              </div>
-              <div className="box1__column2">
-                <div className="column2__job">
-                  {loginState && userData && positions[+userData.position]}
+            <div className="row2__box1-wrap">
+              <div className="row2__box1">
+                <div className="box1__column1">
+                  <div className="column1__job">포지션</div>
+                  <div className="column1__skill">보유 스킬</div>
                 </div>
-                <div className="column2__skill">
-                  {loginState &&
-                    userData?.skill.length !== 0 &&
-                    userData?.skill.map((e, idx) => {
-                      return (
-                        <img key={idx} src={skills[e][1]} alt={skills[e][0]} />
-                      );
-                    })}
-                  {loginState && userData?.skill.length === 0 && (
-                    <div className="not-skills"> - </div>
-                  )}
+                <div className="box1__column2">
+                  <div className="column2__job">
+                    {loginState && userData && positions[+userData.position]}
+                  </div>
+                  <div className="column2__skill">
+                    {loginState &&
+                      userData?.skill.length !== 0 &&
+                      userData?.skill.map((e, idx) => {
+                        return (
+                          <img
+                            key={idx}
+                            src={skills[e][1]}
+                            alt={skills[e][0]}
+                          />
+                        );
+                      })}
+                    {loginState && userData?.skill.length === 0 && (
+                      <div className="not-skills"> - </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -122,32 +128,28 @@ export default function Dashboard(props) {
               <div className="reportbox__report">
                 <Link
                   className="dashboard__project__link1"
-                  to="/projectlist/recruit"
-                >
+                  to="/projectlist/recruit">
                   {props.progressPr}
                 </Link>
                 개의 프로젝트가{" "}
                 <Link
                   className="dashboard__project__link2"
-                  to="/projectlist/recruit"
-                >
+                  to="/projectlist/recruit">
                   모집중
                 </Link>
                 이고{" "}
                 <Link
                   className="dashboard__project__link3"
-                  to="/projectlist/proceed"
-                >
+                  to="/projectlist/proceed">
                   {proceedingPrCnt}
                 </Link>
                 개의 프로젝트가{" "}
                 <Link
                   className="dashboard__project__link4"
-                  to="/projectlist/proceed"
-                >
-                  진행
+                  to="/projectlist/proceed">
+                  진행중
                 </Link>
-                중이에요
+                이에요
               </div>
             </div>
           </div>

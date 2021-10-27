@@ -559,9 +559,10 @@ export const getContent = async (request: Request, response: Response) => {
             attributes: ['id', 'content', 'createdAt', 'updatedAt']
         }, {
             model: Projectprofile,
-            attributes: ['id'],
+            attributes: ['position'],
             include: [{
                 model: Profile,
+                attributes: ['id'],
                 include: [{
                     model: User,
                     attributes: ['profileImage', 'username']
@@ -941,6 +942,7 @@ export const addMember = async (request: Request, response: Response) => {
         response.status(405).json({ errMessage: String(err) });
     });
     await Projectprofile.create({
+        position: applyprojectprofile!.position,
         projectId: projectId,
         profileId: profileId,
         createdAt: getIsoString(),
@@ -1013,10 +1015,13 @@ export const deleteMember = async (request: Request, response: Response) => {
     .catch(err => {
         response.status(405).json({ errMessage: String(err) });
     });
-    let curMembers = project?.currentMember;
-    let newMembers: number = Number(curMembers) - 1;
+    const curMembers = project?.currentMember;
+    const totalMembers = project?.totalMember;
+    const newCurMembers: number = Number(curMembers) - 1;
+    const newTotalMembers: number = Number(totalMembers) - 1;
     await Project.update({
-        currentMember: newMembers,
+        totalMember: newTotalMembers,
+        currentMember: newCurMembers,
         state: 'recruiting'
     }, { where: { id: projectId } })
     .catch(err => {

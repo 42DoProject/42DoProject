@@ -5,10 +5,11 @@ import Pagination from "react-js-pagination";
 import Cards from "../MainPage/Cards";
 import "../../SCSS/AllProjectPage/ProjectPaginate.scss";
 import "../../SCSS/AllProjectPage/ProjectGrid.scss";
+import ReactLoading from "../CommonComponent/Loading";
 
 export default function ProjectPaginate(props) {
   const [page, setPage] = useState(1);
-  const [Project, setProject] = useState([]);
+  const [Project, setProject] = useState(null);
   const [totCount, setTotCount] = useState(1);
   let stateValue = "";
 
@@ -49,7 +50,9 @@ export default function ProjectPaginate(props) {
       break;
   }
 
-  return (
+  return Project === null ? (
+    <ReactLoading type="spin" color="#a7bc5b" />
+  ) : (
     <>
       {Project.length === 0 ? (
         <div className="noProject">{stateValue} 프로젝트가 없어요</div>

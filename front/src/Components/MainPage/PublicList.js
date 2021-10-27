@@ -3,10 +3,11 @@ import "../../SCSS/MainPage/List.scss";
 import { Icon } from "@iconify/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import ReactLoading from "../CommonComponent/Loading";
 
 function PublicList(props) {
   let [slideFlag, setSlideFlag] = useState(0);
-  const [completedProject, setCompletedProject] = useState([]);
+  const [completedProject, setCompletedProject] = useState(null);
   const getData = async () => {
     try {
       const {
@@ -25,7 +26,9 @@ function PublicList(props) {
   useEffect(() => {
     getData();
   }, []);
-  return (
+  return completedProject === null ? (
+    <ReactLoading type="spin" color="#a7bc5b" />
+  ) : (
     <>
       {completedProject.length === 0 ? (
         <div className="noProject">완료된 프로젝트가 없어요</div>

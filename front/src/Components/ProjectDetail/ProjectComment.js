@@ -4,13 +4,18 @@ import { Icon } from "@iconify/react";
 import Pagination from "react-js-pagination";
 import "../../SCSS/ProjectDetail/ProjectComment.scss";
 
-export default function ProjectComment({ projectId, loginState }) {
+export default function ProjectComment({
+  projectId,
+  loginState,
+  setCommentCount,
+  commentCount,
+}) {
   const [commentList, setCommentList] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState();
   const [newComment, setNewComment] = useState("");
 
-  const getData = async () => {
+  const getCommentData = async () => {
     try {
       const {
         data: {
@@ -37,15 +42,15 @@ export default function ProjectComment({ projectId, loginState }) {
     })
       .then((res) => {
         console.log(res);
+        setCommentCount(commentCount - 1);
       })
       .catch((e) => console.log(e));
-    // e.preventDefault();
+    e.preventDefault();
   };
 
   const onSubmit = (e) => {
-    if (loginState === null) alert("로그인해주세요");
+    if (loginState === null) alert("로그인이 필요합니다.");
     else {
-      console.log("submit");
       axios({
         method: "POST",
         url: `http://localhost:5000/project/comments?contentId=${projectId}`,
@@ -58,6 +63,7 @@ export default function ProjectComment({ projectId, loginState }) {
       })
         .then((res) => {
           console.log(res);
+          setCommentCount(commentCount + 1);
           setNewComment("");
         })
         .catch((e) => console.log(e));
@@ -70,7 +76,7 @@ export default function ProjectComment({ projectId, loginState }) {
   };
 
   useEffect(() => {
-    getData();
+    getCommentData();
   }, [page, commentList]);
 
   const onChange = useCallback((e) => {
@@ -87,7 +93,7 @@ export default function ProjectComment({ projectId, loginState }) {
         {commentList.length !== 0 ? (
           <>
             {commentList.map((el, key) => (
-              <div className="comment-list">
+              <div className="comment-list" key={key}>
                 <div className="comment-id">{el.profile.user.username}</div>
                 <div className="comment-content">{el.comment}</div>
                 {el.profile.id === loginState?.id && (

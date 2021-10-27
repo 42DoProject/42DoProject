@@ -18,31 +18,35 @@
     flex-direction: row;
     margin: 1rem 1rem 1rem 1rem;
     position: relative;
-    .member_image {
-      margin: 0.5rem;
+    .filled_member {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      svg {
-        position: absolute;
-        top: -0.7rem;
-      }
-      img {
-        border-radius: 50%;
-        width: 3.7rem;
-        height: 3.7rem;
-        object-fit: cover;
-      }
-      .member_position {
-        margin-top: 5px;
-        padding: 0.2rem 0.5rem;
-        width: 5rem;
-        border-radius: 2rem;
-        color: white;
-        font-size: $fontSs;
-        text-align: center;
-        background-color: $mainColor;
+      flex-direction: row;
+      .member_image {
+        margin: 0.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        svg {
+          position: absolute;
+          top: -0.7rem;
+        }
+        img {
+          border-radius: 50%;
+          width: 3.7rem;
+          height: 3.7rem;
+          object-fit: cover;
+        }
+        .member_position {
+          margin-top: 5px;
+          padding: 0.2rem 0.5rem;
+          width: 5rem;
+          border-radius: 2rem;
+          color: white;
+          font-size: $fontSs;
+          text-align: center;
+          background-color: $mainColor;
+        }
       }
     }
     .empty_list {
@@ -70,8 +74,10 @@
         .plus_icon:hover {
           transform: scale(1.1);
         }
-        .apply_pop {
+        .check_icon {
           position: absolute;
+          right: -0rem;
+          top: -0.5rem;
           background-color: white;
           border-radius: 50%;
           box-shadow: $shadow;

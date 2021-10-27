@@ -2,36 +2,8 @@ import React, { useState, useEffect } from "react";
 import "../../SCSS/ProjectDetail/ProjectStatus.scss";
 import { Icon, InlineIcon } from "@iconify/react";
 import axios from "axios";
-import { useSelector } from "react-redux";
 
-export default function ProjectStatus({ projectId, loginstate }) {
-  const [status, setStatus] = useState();
-
-  let loginState = useSelector((state) => state.loginReducer);
-
-  const getStatusData = async () => {
-    try {
-      const {
-        data: { status: statusData },
-      } = await axios.get(
-        `http://localhost:5000/project/status?projectId=${projectId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${loginState.accessToken}`,
-          },
-        }
-      );
-      setStatus(statusData);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  console.log(loginstate);
-  useEffect(() => {
-    if (loginstate !== null) getStatusData();
-  }, [loginstate]);
-
+export default function ProjectStatus({ userStatus, project }) {
   const statusData = {
     applying: {
       style: "applying",
@@ -60,8 +32,7 @@ export default function ProjectStatus({ projectId, loginstate }) {
   };
 
   let statusValue = statusData.nothing;
-
-  switch (status) {
+  switch (userStatus) {
     case "participating":
       statusValue = statusData.participaiting;
       break;
@@ -72,7 +43,8 @@ export default function ProjectStatus({ projectId, loginstate }) {
       statusValue = statusData.full;
       break;
   }
-
+  if (!(project.currentMember < project.totalMember))
+    statusValue = statusData.full;
   return (
     <>
       <div className="status_box">

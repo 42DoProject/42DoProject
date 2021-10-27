@@ -3,10 +3,11 @@ import "../../SCSS/MainPage/List.scss";
 import { Icon } from "@iconify/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import ReactLoading from "../CommonComponent/Loading";
 
 function RecruitList(props) {
   const [slideFlag, setSlideFlag] = useState(0);
-  const [recruitingProject, setRecruitingProject] = useState([]);
+  const [recruitingProject, setRecruitingProject] = useState(null);
   const getData = async () => {
     try {
       const {
@@ -25,7 +26,9 @@ function RecruitList(props) {
   useEffect(() => {
     getData();
   }, []);
-  return (
+  return recruitingProject === null ? (
+    <ReactLoading type="spokes" color="#a7bc5b" />
+  ) : (
     <>
       {recruitingProject.length === 0 ? (
         <div className="noProject">모집중인 프로젝트가 없어요</div>
@@ -36,7 +39,8 @@ function RecruitList(props) {
               className="cardbutton prev"
               onClick={(event) => {
                 prevUtil(slideFlag, setSlideFlag);
-              }}>
+              }}
+            >
               <Icon className="prev__icon" icon="dashicons:arrow-left-alt2" />
             </button>
           )}
@@ -45,7 +49,8 @@ function RecruitList(props) {
               className="cardbutton next"
               onClick={(event) => {
                 nextUtil(slideFlag, setSlideFlag, recruitingProject.length);
-              }}>
+              }}
+            >
               <Icon className="next__icon" icon="dashicons:arrow-right-alt2" />
             </button>
           )}

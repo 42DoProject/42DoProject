@@ -72,6 +72,10 @@ router.get("/status", jwtGuards, (request: Request, response: Response) => {
   projectService.getStatus(request, response);
 });
 
+router.put("/position/:projectId/:position", jwtGuards, (request: Request, response: Response) => {
+  projectService.modifyPosition(request, response);
+});
+
 router.delete("/position/:projectId/:position", jwtGuards, (request: Request, response: Response) => {
   projectService.deletePosition(request, response);
 })

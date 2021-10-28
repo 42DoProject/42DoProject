@@ -3,7 +3,7 @@ import "../../SCSS/MainPage/List.scss";
 import { Icon } from "@iconify/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import ReactLoading from "../CommonComponent/Loading";
+import ReactLoading from "./Loading";
 
 function PublicList(props) {
   let [slideFlag, setSlideFlag] = useState(0);

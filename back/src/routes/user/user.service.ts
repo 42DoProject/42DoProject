@@ -282,11 +282,13 @@ export const profileMain = async (request: Request, response: Response) => {
     response.status(400).json({ error: "invalid user id" });
     return;
   }
+  var _profileImage;
+  if (!request.user && profile.user.blurImage !== "")
+    _profileImage = profile.user.blurImage;
+  else _profileImage = profile.user.profileImage;
   response.status(200).json({
     username: profile.user!.username,
-    profileImage: request.user
-      ? profile.user.profileImage
-      : profile.user.blurImage,
+    profileImage: _profileImage,
     location: profile.user.location,
     email: profile.user.email,
     following: profile.following.length,

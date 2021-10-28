@@ -281,12 +281,15 @@ export const postList = async (request: Request, response: Response) => {
         return ;
     }
     const { title, state, startDate, endDate, content, leaderPosition } = request.body;
-    let { skill, position } = request.body;
+    let { skill, position, reference } = request.body;
     if (skill !== undefined) {
         skill = JSON.parse(skill);
     }
     if (position !== undefined) {
         position = JSON.parse(position);
+    }
+    if (reference !== undefined) {
+        reference = JSON.parse(reference);
     }
 
     try {
@@ -340,6 +343,7 @@ export const postList = async (request: Request, response: Response) => {
     })
     const newContent = await Content.create({
         content: content,
+        reference: reference,
         projectId: project!.id,
         createdAt: getIsoString(),
         updatedAt: getIsoString()
@@ -363,13 +367,21 @@ export const updateList = async (request: Request, response: Response) => {
     }
     const { projectId } = request.query;
     const { title, state, startDate, endDate, content } = request.body;
-    let { skill, position } = request.body;
+    let { skill, position, reference } = request.body;
+    if (skill !== undefined) {
+        skill = JSON.parse(skill);
+    }
+    if (position !== undefined) {
+        position = JSON.parse(position);
+    }
+    if (reference !== undefined) {
+        reference = JSON.parse(reference);
+    }
 
     if (projectId === undefined) {
         response.status(400).json({ errMessage: 'please input projectId query' });
         return ;
     }
-    
     const project = await Project.findOne({
         attributes: ['title', 'leader', 'currentMember', 'state'],
         where: { id: projectId }
@@ -381,7 +393,6 @@ export const updateList = async (request: Request, response: Response) => {
         response.status(401).json({ errMessage: 'no authority' });
         return ;
     }
-
     try {
         if (skill) skill = arrayCondition(skill, Number(process.env.SKILL));
     } catch (e) {
@@ -394,12 +405,12 @@ export const updateList = async (request: Request, response: Response) => {
         response.status(400).json({ errMessage: 'invalid position query' });
         return ;
     }
+
     const totalMember: number = (position === undefined) ? 1 : position.length + 1;
     let inputState: string = (totalMember - project!.currentMember > 0) ? 'recruiting' : 'proceeding';
     if (state !== undefined) {
         inputState = state;
     }
-
     await Project.update({
         title: title,
         totalMember: totalMember,
@@ -421,6 +432,7 @@ export const updateList = async (request: Request, response: Response) => {
     }
     await Content.update({
         content: content,
+        reference: reference,
         updatedAt: getIsoString()
     }, { where: { projectId: projectId }})
     .then(() => {
@@ -557,7 +569,7 @@ export const getContent = async (request: Request, response: Response) => {
         ],
         include: [{
             model: Content,
-            attributes: ['id', 'content', 'createdAt', 'updatedAt']
+            attributes: ['id', 'content', 'reference', 'createdAt', 'updatedAt']
         }, {
             model: Projectprofile,
             attributes: ['position'],

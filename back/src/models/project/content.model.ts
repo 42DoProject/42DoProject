@@ -7,6 +7,9 @@ export class Content extends Model {
   @Column(DataType.TEXT)
   content!: string;
 
+  @Column(DataType.JSON)
+  reference!: String[];
+
   @ForeignKey(() => Project)
   @Column
   projectId!: number

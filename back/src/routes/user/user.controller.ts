@@ -32,6 +32,10 @@ router.post(
   }
 );
 
+router.post("/me/blur", (request: Request, response: Response) => {
+  userService.profileImageBlur(request, response);
+});
+
 router.get("/profile/:id", (request: Request, response: Response) => {
   userService.profileMain(request, response);
 });

@@ -1,7 +1,9 @@
 import * as AWS from "aws-sdk";
 import multer from "multer";
 import multerS3 from "multer-s3";
+import request from "request";
 import { v4 } from "uuid";
+import { User } from "../../models/user/user.model";
 
 const mimeToExtension: { [key: string]: string } = {
   "image/jpeg": "jpg",
@@ -43,6 +45,44 @@ export async function ready() {
   console.log("[AWS] S3 ready");
 }
 
+export async function profileToS3(userId: number, profileImage: string) {
+  const filename = `${userId}n${v4().toString().replace("-", "")}.jpg`;
+  urlToBucket(
+    `${process.env.AWS_FILE_BUCKET_NAME}`,
+    profileImage,
+    `origin/profile/${filename}`
+  );
+  await User.update(
+    {
+      profileImage: `https://${process.env.AWS_FILE_BUCKET_NAME}.s3.ap-northeast-2.amazonaws.com/500/profile/${filename}`,
+    },
+    { where: { id: userId } }
+  );
+}
+
+export function urlToBucket(bucket: string, url: string, key: string) {
+  return new Promise((resolve, reject) => {
+    request(
+      {
+        url: url,
+        encoding: null,
+      },
+      async function (err, response, body) {
+        if (err) reject(err);
+        await s3
+          .putObject({
+            Bucket: bucket,
+            Key: key,
+            ContentType: response.headers["content-type"],
+            Body: body,
+          })
+          .promise();
+        resolve(true);
+      }
+    );
+  });
+}
+
 export const profile = multer({
   storage: multerS3({
     s3: s3,
@@ -55,8 +95,8 @@ export const profile = multer({
       const filename = `${request.user!.id}n${v4()
         .toString()
         .replace("-", "")}.${mimeToExtension[file.mimetype]}`;
-      request.urls!.push(`profile/${filename}`);
-      cb(null, `profile/${filename}`);
+      request.urls!.push(`origin/profile/${filename}`);
+      cb(null, `origin/profile/${filename}`);
     },
     contentType: function (request, file, cb) {
       cb(null, file.mimetype);
@@ -79,8 +119,8 @@ export const project = multer({
       const filename = `${request.user!.id}n${v4()
         .toString()
         .replace("-", "")}.${mimeToExtension[file.mimetype]}`;
-      request.urls!.push(`project/${filename}`);
-      cb(null, `project/${filename}`);
+      request.urls!.push(`origin/project/${filename}`);
+      cb(null, `origin/project/${filename}`);
     },
     contentType: function (request, file, cb) {
       cb(null, file.mimetype);

@@ -34,6 +34,7 @@ const makeDump = async (
     name: name,
     email: email,
     profileImage: profileImage,
+    blurImage: "",
   });
   await OToken.create({
     accessToken: null,

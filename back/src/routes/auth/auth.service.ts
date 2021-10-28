@@ -9,6 +9,7 @@ import { User } from "../../models/user/user.model";
 import { getIsoString } from "../../module/time";
 import { accessToken, issueJwt, jwtToObject, tokenToUser } from "./oauth";
 import * as search from "../../module/search";
+import * as awsS3 from "../../module/aws/s3";
 import * as cadet from "../../module/cadetqueue";
 
 const userModelCheck = async (user: any): Promise<number> => {
@@ -28,6 +29,7 @@ const userModelCheck = async (user: any): Promise<number> => {
     email: user.email,
     location: user.campus[0].name,
     profileImage: user.image_url,
+    blurImage: "",
   });
   await OToken.create({
     accessToken: null,
@@ -65,6 +67,7 @@ const userModelCheck = async (user: any): Promise<number> => {
     skill: [],
     level: user.cursus_users[1].level,
   });
+  awsS3.profileToS3(row.id, user.image_url);
   cadet.push(row.id);
   return row.id;
 };

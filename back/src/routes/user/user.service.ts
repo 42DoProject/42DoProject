@@ -230,6 +230,28 @@ export const profileImage = async (request: Request, response: Response) => {
   response.status(200).json({ url: link });
 };
 
+export const profileImageBlur = async (
+  request: Request,
+  response: Response
+) => {
+  const { userId, link, code } = request.body;
+  if (code !== `${process.env.AWS_FILE_BLUR_LAMBDA_KEY}`) {
+    response.status(400).json({ error: "invalid code" });
+    return;
+  }
+  if (userId === undefined || link === undefined) {
+    response.status(400).json({ error: "bad request" });
+    return;
+  }
+  await User.update(
+    {
+      blurImage: `https://${process.env.AWS_FILE_BUCKET_NAME}.s3.ap-northeast-2.amazonaws.com/500/profile/${link}`,
+    },
+    { where: { id: userId } }
+  );
+  response.status(200).json({ message: "ok" });
+};
+
 export const profileMain = async (request: Request, response: Response) => {
   const { id } = request.params;
   if (!id) {
@@ -260,9 +282,13 @@ export const profileMain = async (request: Request, response: Response) => {
     response.status(400).json({ error: "invalid user id" });
     return;
   }
+  var _profileImage;
+  if (!request.user && profile.user.blurImage !== "")
+    _profileImage = profile.user.blurImage;
+  else _profileImage = profile.user.profileImage;
   response.status(200).json({
     username: profile.user!.username,
-    profileImage: profile.user.profileImage,
+    profileImage: _profileImage,
     location: profile.user.location,
     email: profile.user.email,
     following: profile.following.length,

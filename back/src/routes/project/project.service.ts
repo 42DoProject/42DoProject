@@ -280,7 +280,7 @@ export const postList = async (request: Request, response: Response) => {
     if (imageLink === -1) {
         return ;
     }
-    const { title, state, startDate, endDate, content } = request.body;
+    const { title, state, startDate, endDate, content, leaderPosition } = request.body;
     let { skill, position } = request.body;
     if (skill !== undefined) {
         skill = JSON.parse(skill);
@@ -329,6 +329,7 @@ export const postList = async (request: Request, response: Response) => {
     	response.status(405).json({ errMessage: String(err) });
     })
     await Projectprofile.create({
+        position: leaderPosition,
         projectId: project!.id,
         profileId: request.user?.id,
         createdAt: getIsoString(),

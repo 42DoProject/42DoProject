@@ -3,7 +3,7 @@ import "../../SCSS/MainPage/List.scss";
 import { Icon } from "@iconify/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import ReactLoading from "../CommonComponent/Loading";
+import ReactLoading from "./Loading";
 
 function RecruitList(props) {
   const [slideFlag, setSlideFlag] = useState(0);
@@ -27,7 +27,7 @@ function RecruitList(props) {
     getData();
   }, []);
   return recruitingProject === null ? (
-    <ReactLoading type="spokes" color="#a7bc5b" />
+    <ReactLoading type="spin" color="#a7bc5b" />
   ) : (
     <>
       {recruitingProject.length === 0 ? (

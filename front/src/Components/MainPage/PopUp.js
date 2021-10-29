@@ -36,8 +36,7 @@ function Pop() {
         onClick={() => {
           logOut(loginState.accessToken);
           dispatch({ type: "LOGOUT" });
-        }}
-      >
+        }}>
         <Popover.Body>SIGN OUT</Popover.Body>
       </div>
     </Popover>

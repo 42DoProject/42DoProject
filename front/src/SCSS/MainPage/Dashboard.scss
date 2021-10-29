@@ -5,7 +5,7 @@
   //부모에 상관없이 width채우는 법
   width: 100vw;
   margin-left: calc(-50vw + 50%);
-  border-radius: $round;
+  // border-radius: $round;
   margin-bottom: 3rem;
   // background-image: url(https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/109852763/original/cf07bcfb468b2823d537812be8f1640754794433/create-trendy-abstract-geometric-pattern-on-light-background.jpg);
   // background-image: url(https://cdn.pixabay.com/photo/2018/04/04/14/34/design-3289964_960_720.png);
@@ -70,6 +70,7 @@
 
 .row2 {
   display: flex;
+  justify-content: center;
   padding: 0 2.5rem;
   height: 14rem;
   .row2__box1-wrap {
@@ -219,7 +220,7 @@
     display: none;
   }
 }
-@media (max-width: 42rem) {
+@media (max-width: 38rem) {
   .row2 .row2__box1 {
     flex-grow: 1;
     .box1__column1 {
@@ -228,6 +229,9 @@
   }
   .row2 .row2__box2 {
     display: none;
+  }
+  .row2__box1-wrap {
+    width: 100%;
   }
 }
 

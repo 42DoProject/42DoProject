@@ -8,6 +8,7 @@ export default function Unsplash({
   image,
   setImgLoadFlag,
   setImgBase64,
+  imgBase64,
 }) {
   return (
     <div className="unsplash__wrapper">
@@ -48,8 +49,8 @@ export default function Unsplash({
             onChange={(e) => setImage(e.target.files[0])}
           />
           <div className="unsplash__body-info">
-            <div> ✓ jpeg, jpg, png, gif, bmp 파일을 업로드할 수 있어요</div>
-            <div> ✓ 가로 1200px * 세로 3600px 이상의 이미지를 선택해주세요</div>
+            <div> ✓ jpeg, jpg, png, gif, bmp 이미지를 업로드할 수 있어요</div>
+            <div> ✓ 저작권에 위배되지 않는 이미지를 선택해주세요</div>
           </div>
         </div>
         {image ? (
@@ -60,11 +61,17 @@ export default function Unsplash({
 
               reader.readAsDataURL(image);
               reader.onloadend = () => {
-                const base64 = reader.result;
-                setImgBase64(base64.toString());
+                const base64 = reader.result.toString();
+
+                if (imgBase64 === base64) {
+                  setImgLoadFlag(2);
+                }
+                // 선택한 이미지가 기존과 같은 이미지일 경우
+                setImgBase64(base64);
               };
               setImgLoadFlag(1);
               setUnsplashFlag(0);
+              console.log("image", image);
             }}>
             이미지 선택
           </button>

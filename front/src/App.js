@@ -59,7 +59,8 @@ function App(props) {
         <Route path="/cadet/recruit" component={RecruitCadet} />
         <Route path="/cadet/all" component={AllCadet} />
         <Route path="/lounge" component={LoungePage} />
-        <Route path="/project/edit" component={ProjectEditPage} />
+        <Route exact path="/project/edit" component={ProjectEditPage} />
+        <Route exact path="/project/edit/:id" component={ProjectEditPage} />
         <Route exact path="/project/:id" component={ProjectDetail} />
       </Switch>
     </Layout>

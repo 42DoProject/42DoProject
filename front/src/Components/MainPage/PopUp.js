@@ -46,7 +46,7 @@ function Pop() {
 
 function logOut(accessToken) {
   try {
-    axios.get(`http://localhost:5000/auth/signout`, {
+    axios.get(`http://${process.env.REACT_APP_DOMAIN_NAME}:5000/auth/signout`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },

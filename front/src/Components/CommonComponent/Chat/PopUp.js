@@ -50,11 +50,14 @@ const leaveChat = async (
   setInFlag
 ) => {
   try {
-    const data = await axios.delete(`http://localhost:5000/chat/${uuid}`, {
-      headers: {
-        Authorization: `Bearer ${loginState.accessToken}`,
-      },
-    });
+    const data = await axios.delete(
+      `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/chat/${uuid}`,
+      {
+        headers: {
+          Authorization: `Bearer ${loginState.accessToken}`,
+        },
+      }
+    );
     chatOutFlag ? setChatOutFlag(0) : setChatOutFlag(1);
     setInFlag(-1);
   } catch (err) {
@@ -64,7 +67,7 @@ const leaveChat = async (
 const inviteUser = async (uuid, userIdList, loginState) => {
   await axios({
     method: "POST",
-    url: `http://localhost:5000/chat${uuid}`,
+    url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/chat${uuid}`,
     headers: {
       Authorization: `Bearer ${loginState.accessToken}`,
     },

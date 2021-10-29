@@ -25,7 +25,9 @@ export default function Conv({
     try {
       const {
         data: { user },
-      } = await axios.get(`http://localhost:5000/search/${name}`);
+      } = await axios.get(
+        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/search/${name}`
+      );
       const userList = user.filter((e) => e.id != loginState.id);
       setUser(userList);
     } catch (err) {
@@ -37,7 +39,7 @@ export default function Conv({
   const inviteUser = async (userId) => {
     await axios({
       method: "POST",
-      url: "http://localhost:5000/chat",
+      url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/chat`,
       headers: {
         Authorization: `Bearer ${loginState.accessToken}`,
       },

@@ -2,11 +2,14 @@ import React from "react";
 import "../../SCSS/MainPage/Lounge.scss";
 import { Icon } from "@iconify/react";
 import defaultImg from "../../default_intra.png";
+import { Link } from "react-router-dom";
 
 export default function Lounge() {
   return (
     <div className="lounge">
-      <div className="lounge__title">라운지</div>
+      <Link className="lounge__title" to="/lounge">
+        라운지
+      </Link>
       <div className="lounge__list">
         <div className="lounge__card">
           <div className="card__row1">

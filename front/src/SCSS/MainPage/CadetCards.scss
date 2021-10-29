@@ -2,6 +2,7 @@
 .cadet-card {
   // width: 33%;
   margin: 0 1rem;
+  height: 16.5rem;
   background-color: white;
   box-shadow: $shadow;
   border-radius: $round;
@@ -10,12 +11,14 @@
   flex-direction: column;
   align-items: center;
   margin-bottom: 1.5rem;
+  cursor: pointer;
   .cadet__image {
     border-radius: 50%;
     width: 5rem;
     height: 5rem;
     object-fit: cover;
     margin-bottom: 1rem;
+    box-shadow: $shadow;
   }
   &:hover {
     transform: scale(1.1);
@@ -39,5 +42,6 @@
     border-radius: $round;
     padding: 1rem;
     text-align: center;
+    font-size: $fontSs;
   }
 }

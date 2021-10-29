@@ -12,6 +12,7 @@ import { User } from "../../models/user/user.model";
 import { getIsoString } from "../../module/time";
 import * as awsS3 from "../../module/aws/s3";
 import * as feed from "../../module/feed";
+import * as search from "../../module/search";
 
 const app = express();
 app.set("query parser", "extended");
@@ -277,7 +278,7 @@ const postThumbnail = async (request: Request, response: Response) => {
 
 export const postList = async (request: Request, response: Response) => {
     const imageLink = await postThumbnail(request, response);
-    if (imageLink === -1) {
+    if (imageLink === -1 || imageLink === undefined) {
         return ;
     }
     const { title, state, startDate, endDate, content, leaderPosition } = request.body;
@@ -331,6 +332,11 @@ export const postList = async (request: Request, response: Response) => {
     .catch(err => {
     	response.status(405).json({ errMessage: String(err) });
     })
+    search.insertProject({
+        id: project!.id,
+        image: imageLink,
+        title: title
+    });
     await Projectprofile.create({
         position: leaderPosition,
         projectId: project!.id,
@@ -429,6 +435,10 @@ export const updateList = async (request: Request, response: Response) => {
         await Project.update({
             thumbnailImage: imageLink
         }, { where: { id: projectId }});
+        search.updateProject(
+            { image: imageLink },
+            { id: Number(projectId) }
+        );
     }
     await Content.update({
         content: content,
@@ -441,6 +451,10 @@ export const updateList = async (request: Request, response: Response) => {
     .catch(err => {
         response.status(405).json({ errMessage: String(err) });
     });
+    search.updateProject(
+        { title: title },
+        { id: Number(projectId) }
+    );
 
     if (project!.state !== inputState) {
         const likeList = await Likeprojectprofile.findAll({

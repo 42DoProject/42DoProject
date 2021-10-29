@@ -36,7 +36,16 @@
     width: 18rem;
     height: 12rem;
     cursor: pointer;
-
+    .loading-wrap {
+      position: absolute;
+      z-index: 3;
+      width: 100%;
+      height: 100%;
+      div {
+        height: 15% !important;
+        width: 15% !important;
+      }
+    }
     .project-edit__img {
       border-radius: $round;
       object-fit: cover;
@@ -46,6 +55,7 @@
       width: 18rem;
       height: 12rem;
       background-color: $lightestGrey;
+      transition: opacity 400ms ease 0ms;
     }
     .project-edit__img-hover {
       z-index: 1;

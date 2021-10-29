@@ -9,6 +9,13 @@ export default function DashCards({ projectData }) {
   // console.log("projectData.project", projectData.project);
   const [imgIsLoaded, setImgIsLoaded] = useState(false);
 
+  const resizedImage = (key, size) => {
+    const url = key.split("/");
+
+    url[url.length - 3] = size;
+    return url.join("/");
+  };
+
   return (
     <div
       className="DashCards"
@@ -20,14 +27,10 @@ export default function DashCards({ projectData }) {
       <div
         className="DashCards__image"
         style={{
-          backgroundColor: imgIsLoaded ? "transparent" : "#808080",
+          backgroundColor: imgIsLoaded ? "#808080" : "#808080",
         }}>
         <img
-          src={
-            projectData.project.thumbnailImage
-              ? projectData.project.thumbnailImage
-              : defaultThumbnail
-          }
+          src={resizedImage(projectData.project.thumbnailImage, "500")}
           alt={projectData.id}
           onLoad={() => setImgIsLoaded(true)}
         />

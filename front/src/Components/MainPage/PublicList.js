@@ -15,7 +15,7 @@ function PublicList(props) {
           project: { count, rows: completedData },
         },
       } = await axios.get(
-        `http://localhost:5000/project?state=completed&pageSize=20&page=1`
+        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project?state=completed&pageSize=20&page=1`
       );
       props.setFinishPr(count);
       setCompletedProject(completedData);

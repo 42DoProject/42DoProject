@@ -15,7 +15,9 @@ export default function ChatCard({ chatInfo, imgFlag }) {
       try {
         const {
           data: { profileImage, username },
-        } = await axios.get(`http://localhost:5000/user/profile/${userId}`);
+        } = await axios.get(
+          `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/user/profile/${userId}`
+        );
         setProfile(profileImage);
         setUserName(username);
       } catch (err) {

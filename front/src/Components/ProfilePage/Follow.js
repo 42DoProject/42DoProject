@@ -25,7 +25,7 @@ export default function Follow(props) {
   const getFollow = async (subj) => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/user/${subj}/${
+        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/user/${subj}/${
           props.userId || loginState.id
         }?page=1`
       );
@@ -64,7 +64,8 @@ export default function Follow(props) {
                   className="follow__profile"
                   onClick={() => {
                     window.location.href = `/profile/${v.userId}`;
-                  }}>
+                  }}
+                >
                   <img className="follow__img" src={`${v.profileImage}`} />
                   <div className="follow__info">
                     <div className="follow__name">{v.username}</div>
@@ -84,7 +85,7 @@ export default function Follow(props) {
                     onClick={async () => {
                       try {
                         await axios.get(
-                          `http://localhost:5000/user/follow/${v.userId}`,
+                          `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/user/follow/${v.userId}`,
                           {
                             headers: {
                               Authorization: `Bearer ${localStorage.getItem(
@@ -100,7 +101,8 @@ export default function Follow(props) {
                       } catch (err) {
                         console.log(err);
                       }
-                    }}>
+                    }}
+                  >
                     팔로우
                   </button>
                 ) : (
@@ -110,7 +112,8 @@ export default function Follow(props) {
                       onClick={() => {
                         setUnfollowAlert(1);
                         setFollowUser(v);
-                      }}>
+                      }}
+                    >
                       <Icon
                         icon="bx:bxs-user-check"
                         className="unfollow__icon"

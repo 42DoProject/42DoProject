@@ -19,7 +19,7 @@ export default function ProfilePage() {
     try {
       if (userId) {
         const { data } = await axios.get(
-          `http://localhost:5000/user/profile/${userId}`
+          `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/user/profile/${userId}`
         );
         setUserData(data);
       }
@@ -32,7 +32,7 @@ export default function ProfilePage() {
   const getMyFollowings = async () => {
     try {
       const { data: myData } = await axios.get(
-        "http://localhost:5000/user/me",
+        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/user/me`,
         {
           headers: {
             Authorization: `Bearer ${loginState.accessToken}`,
@@ -47,11 +47,14 @@ export default function ProfilePage() {
 
   const getMyData = async () => {
     try {
-      const { data } = await axios.get("http://localhost:5000/user/me", {
-        headers: {
-          Authorization: `Bearer ${loginState.accessToken}`,
-        },
-      });
+      const { data } = await axios.get(
+        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/user/me`,
+        {
+          headers: {
+            Authorization: `Bearer ${loginState.accessToken}`,
+          },
+        }
+      );
       setUserData(data);
     } catch (err) {
       console.log(err);

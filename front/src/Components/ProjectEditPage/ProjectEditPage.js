@@ -92,7 +92,7 @@ export default function ProjectEditPage() {
 
       const res = await axios({
         method: "post",
-        url: "http://localhost:5000/project",
+        url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project`,
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${loginState.accessToken}`,
@@ -109,11 +109,14 @@ export default function ProjectEditPage() {
 
   const getMyData = async () => {
     try {
-      const { data } = await axios.get("http://localhost:5000/user/me", {
-        headers: {
-          Authorization: `Bearer ${loginState.accessToken}`,
-        },
-      });
+      const { data } = await axios.get(
+        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/user/me`,
+        {
+          headers: {
+            Authorization: `Bearer ${loginState.accessToken}`,
+          },
+        }
+      );
       setMyData(data);
     } catch (err) {
       console.log(err);
@@ -161,7 +164,8 @@ export default function ProjectEditPage() {
               document.querySelector(
                 ".project-edit__img-hover"
               ).style.visibility = "hidden";
-            }}>
+            }}
+          >
             {imgLoadFlag === 0 ? (
               <div className="project-edit__img">
                 <Icon
@@ -180,7 +184,8 @@ export default function ProjectEditPage() {
               className="project-edit__img-hover"
               onClick={() =>
                 unsplashFlag === 0 ? setUnsplashFlag(1) : setUnsplashFlag(0)
-              }>
+              }
+            >
               <div className="img-hover__add">이미지 선택</div>
             </div>
           </div>
@@ -212,7 +217,8 @@ export default function ProjectEditPage() {
                   ["noImage", posSelectEl.value, "enabled"],
                 ]);
                 posSelectEl.selectedIndex = 0;
-              }}>
+              }}
+            >
               <option value="default" disabled>
                 포지션 추가
               </option>
@@ -252,7 +258,8 @@ export default function ProjectEditPage() {
                   "project-edit__start-date"
                 );
                 setStartDate(startDateEl[0].value);
-              }}></input>
+              }}
+            ></input>
             ~ 종료일
             <input
               type="date"
@@ -262,7 +269,8 @@ export default function ProjectEditPage() {
                   "project-edit__end-date"
                 );
                 setEndDate(endDateEl[0].value);
-              }}></input>
+              }}
+            ></input>
             {/* <span className="period__day"> */}
             {startDate &&
               endDate &&
@@ -363,7 +371,8 @@ export default function ProjectEditPage() {
               setIsLoading(1);
               projectSave();
             }
-          }}>
+          }}
+        >
           프로젝트 생성
         </button>
       </div>

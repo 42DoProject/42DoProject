@@ -14,11 +14,14 @@ export default function ProfileEditPage() {
 
   const getData = async () => {
     try {
-      const { data } = await axios.get("http://localhost:5000/user/me", {
-        headers: {
-          Authorization: `Bearer ${loginState.accessToken}`,
-        },
-      });
+      const { data } = await axios.get(
+        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/user/me`,
+        {
+          headers: {
+            Authorization: `Bearer ${loginState.accessToken}`,
+          },
+        }
+      );
       setUserData(data);
     } catch (err) {
       console.log(err);
@@ -41,7 +44,7 @@ export default function ProfileEditPage() {
 
     axios({
       method: "POST",
-      url: "http://localhost:5000/user/me",
+      url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/user/me`,
       headers: {
         Authorization: `Bearer ${loginState.accessToken}`,
       },

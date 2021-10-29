@@ -17,11 +17,14 @@ export default function Dashboard(props) {
 
   const getData = async () => {
     try {
-      const { data } = await axios.get("http://localhost:5000/user/me", {
-        headers: {
-          Authorization: `Bearer ${loginState.accessToken}`,
-        },
-      });
+      const { data } = await axios.get(
+        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/user/me`,
+        {
+          headers: {
+            Authorization: `Bearer ${loginState.accessToken}`,
+          },
+        }
+      );
       setUserData(data);
     } catch (err) {
       console.log(err);
@@ -34,7 +37,9 @@ export default function Dashboard(props) {
         data: {
           project: { count },
         },
-      } = await axios.get("http://localhost:5000/project?state=proceeding");
+      } = await axios.get(
+        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project?state=proceeding`
+      );
       setProceedingPrCnt(count);
     } catch (err) {
       console.log(err);
@@ -128,25 +133,29 @@ export default function Dashboard(props) {
               <div className="reportbox__report">
                 <Link
                   className="dashboard__project__link1"
-                  to="/projectlist/recruit">
+                  to="/projectlist/recruit"
+                >
                   {props.progressPr}
                 </Link>
                 개의 프로젝트가{" "}
                 <Link
                   className="dashboard__project__link2"
-                  to="/projectlist/recruit">
+                  to="/projectlist/recruit"
+                >
                   모집중
                 </Link>
                 이고{" "}
                 <Link
                   className="dashboard__project__link3"
-                  to="/projectlist/proceed">
+                  to="/projectlist/proceed"
+                >
                   {proceedingPrCnt}
                 </Link>
                 개의 프로젝트가{" "}
                 <Link
                   className="dashboard__project__link4"
-                  to="/projectlist/proceed">
+                  to="/projectlist/proceed"
+                >
                   진행중
                 </Link>
                 이에요

@@ -12,6 +12,7 @@ import { User } from "../../models/user/user.model";
 import { getIsoString } from "../../module/time";
 import * as awsS3 from "../../module/aws/s3";
 import * as feed from "../../module/feed";
+import * as search from "../../module/search";
 
 const app = express();
 app.set("query parser", "extended");
@@ -277,7 +278,7 @@ const postThumbnail = async (request: Request, response: Response) => {
 
 export const postList = async (request: Request, response: Response) => {
     const imageLink = await postThumbnail(request, response);
-    if (imageLink === -1) {
+    if (imageLink === -1 || imageLink === undefined) {
         return ;
     }
     const { title, state, startDate, endDate, content, leaderPosition } = request.body;
@@ -331,6 +332,11 @@ export const postList = async (request: Request, response: Response) => {
     .catch(err => {
     	response.status(405).json({ errMessage: String(err) });
     })
+    search.insertProject({
+        id: project!.id,
+        image: imageLink,
+        title: title
+    });
     await Projectprofile.create({
         position: leaderPosition,
         projectId: project!.id,
@@ -429,6 +435,10 @@ export const updateList = async (request: Request, response: Response) => {
         await Project.update({
             thumbnailImage: imageLink
         }, { where: { id: projectId }});
+        search.updateProject(
+            { image: imageLink },
+            { id: Number(projectId) }
+        );
     }
     await Content.update({
         content: content,
@@ -441,6 +451,10 @@ export const updateList = async (request: Request, response: Response) => {
     .catch(err => {
         response.status(405).json({ errMessage: String(err) });
     });
+    search.updateProject(
+        { title: title },
+        { id: Number(projectId) }
+    );
 
     if (project!.state !== inputState) {
         const likeList = await Likeprojectprofile.findAll({
@@ -1148,6 +1162,24 @@ export const unlikeProject = async (request: Request, response: Response) => {
     });
 }
 
+export const modifyPosition = async (request: Request, response: Response) => {
+    const { projectId, position } = request.params;
+
+    if (projectId === undefined || position === undefined) {
+        response.status(400).json({ errMessage: 'please input projectId or position value' });
+        return ;
+    }
+    await Projectprofile.update({
+        position: position
+    }, { where: { projectId: projectId, profileId: request.user!.id } })
+    .then(() => {
+        response.status(200).json({ message: 'updated successfully.' });
+    })
+    .catch(err => {
+        response.status(405).json({ errMessage: String(err) });
+    });
+}
+
 export const deletePosition = async (request: Request, response: Response) => {
     const { projectId, position } = request.params;
 
@@ -1233,22 +1265,4 @@ export const checkInterestProject = async (request: Request, response: Response)
     } else {
         response.status(200).json({ message: 'true' });
     }
-}
-
-export const modifyPosition = async (request: Request, response: Response) => {
-    const { projectId, position } = request.params;
-
-    if (projectId === undefined || position === undefined) {
-        response.status(400).json({ errMessage: 'please input projectId or position value' });
-        return ;
-    }
-    await Projectprofile.update({
-        position: position
-    }, { where: { projectId: projectId, profileId: request.user!.id } })
-    .then(() => {
-        response.status(200).json({ message: 'updated successfully.' });
-    })
-    .catch(err => {
-        response.status(405).json({ errMessage: String(err) });
-    });
 }

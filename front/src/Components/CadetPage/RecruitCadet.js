@@ -9,9 +9,9 @@ export default function RecruitCadet() {
     <>
       <div className="recruitCadet-wrap">
         <CadetTypeBar state="recruit" />
+        {/* <CardsList />
         <CardsList />
-        <CardsList />
-        <CardsList />
+        <CardsList /> */}
         {/* <ProjectPaginate state="recruit" /> */}
       </div>
     </>

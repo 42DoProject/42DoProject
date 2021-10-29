@@ -32,7 +32,7 @@ export default function Cards(props) {
     try {
       await axios({
         method: "head",
-        url: resized,
+        url: `${resized}?timestamp=${Date.now()}`,
       });
       setResized(resized);
     } catch (err) {

@@ -52,7 +52,7 @@ const makeDump = async (
   await Profile.create({
     level: 1,
     lastAccess: getIsoString(),
-    status: 0,
+    status: Number(process.env.CADET_LOOKING_FOR_PROJECT_STATUS),
     position: 0,
     skill: [],
     statusMessage: "",
@@ -67,7 +67,7 @@ const makeDump = async (
     id: row.id,
     username: row.username,
     profileImage: row.profileImage,
-    status: 0,
+    status: Number(process.env.CADET_LOOKING_FOR_PROJECT_STATUS),
     position: 0,
     skill: [],
     level: 1,

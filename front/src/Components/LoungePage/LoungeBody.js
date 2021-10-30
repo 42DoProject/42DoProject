@@ -52,7 +52,7 @@ export default function LoungeBody() {
         </div>
         <div className="right__connected-wrap">
           <div className="right__connected">
-            {concurrents.map((v, i) => {
+            {concurrents?.map((v, i) => {
               return (
                 <div
                   className="connected__cadet"

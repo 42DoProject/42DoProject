@@ -29,8 +29,9 @@ export default function ProfileEditPage() {
   };
 
   useEffect(() => {
-    getData();
-  }, []);
+    if (loginState === null) history.push("/");
+    else getData();
+  }, [loginState]);
 
   const submit = () => {
     const skill = document.querySelectorAll(".selected-img");

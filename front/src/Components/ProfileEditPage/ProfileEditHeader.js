@@ -27,7 +27,7 @@ export default function ProfileEditHeader(props) {
         <img
           className="profileImage"
           alt="profileImage"
-          src={loginState.profileImage}
+          src={loginState?.profileImage}
         />
         <div className="bubble__wrapper">
           <textarea
@@ -54,7 +54,7 @@ export default function ProfileEditHeader(props) {
       </div>
       <div className="header__right">
         <div className="right__row1">
-          <div className="row1__name">{loginState.name}</div>
+          <div className="row1__name">{loginState?.name}</div>
           <button
             className="row1__finish-edit"
             onClick={(e) => {

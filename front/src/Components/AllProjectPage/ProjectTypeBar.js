@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router";
+import { useSelector } from "react-redux";
+import Modal from "../ProjectEditPage/Modal";
 
 export default function ProjectTypeBar(props) {
+  const loginState = useSelector((state) => state.loginReducer);
+  const [modalFlag, setModalFlag] = useState(0); // 1일때 모달창 열기
+
+  const history = useHistory();
   let recruitColor = "a-color";
   let proceedColor = "a-color";
   let completeColor = "a-color";
@@ -24,6 +31,13 @@ export default function ProjectTypeBar(props) {
   return (
     <>
       <div className="project-bar">
+        {modalFlag === 1 && (
+          <Modal
+            body={"로그인 해주세요"}
+            buttons={"cancel-only"}
+            setOpenFlag={setModalFlag}
+          />
+        )}
         <div className="project-bar-column1">
           <div className="recruit-project">
             <Link className={recruitColor} to="/projectlist/recruit">
@@ -42,9 +56,16 @@ export default function ProjectTypeBar(props) {
           </div>
         </div>
         <div className="project-bar-column2">
-          <Link className="create-project" to="/project/edit">
+          <div
+            className="create-project"
+            onClick={() => {
+              if (loginState) history.push("/project/edit");
+              else {
+                setModalFlag(1);
+              }
+            }}>
             프로젝트 생성
-          </Link>
+          </div>
           <Icon icon="mi:filter" style={{ fontSize: "2rem" }} />
         </div>
       </div>

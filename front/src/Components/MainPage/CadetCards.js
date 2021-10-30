@@ -20,7 +20,13 @@ export default function CadetCards({ cadetData }) {
       />
       <div className="cadet__name">{cadetData.username}</div>
       <div className="cadet__work">{positions[cadetData.position]}</div>
-      <div className="cadet__word">{cadetData.statusMessage || "-"}</div>
+      {cadetData.statusMessage ? (
+        <div className="cadet__word-wrap">
+          <div className="cadet__word">{cadetData.statusMessage}</div>
+        </div>
+      ) : (
+        <div className="cadet__no-word">작성된 한마디가 없습니다</div>
+      )}
     </div>
   );
 }

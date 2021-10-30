@@ -101,7 +101,7 @@ export default function ProfileEditBody(props) {
         <div className="col1__profile-card2">
           <div className="card2__location">
             <Icon icon="carbon:location-filled" height="25px" />
-            <span>{loginState.location}</span>
+            <span>{loginState?.location}</span>
           </div>
           <div className="card2__level">
             <Icon icon="simple-icons:42" width="25px" />
@@ -109,7 +109,7 @@ export default function ProfileEditBody(props) {
           </div>
           <div className="card2__email">
             <Icon icon="fluent:mail-48-filled" height="25px" />
-            <span className="email-span">{loginState.email}</span>
+            <span className="email-span">{loginState?.email}</span>
           </div>
           <div className="card2__github">
             <Icon icon="akar-icons:github-fill" height="22px" />

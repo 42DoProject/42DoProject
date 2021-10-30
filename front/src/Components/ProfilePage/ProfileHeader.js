@@ -35,8 +35,11 @@ export default function ProfileHeader(props) {
           alt={props.user.username}
           src={props.user.profileImage}
         />
-
-        <div className="profile__bubble">{props.user.statusMessage || "-"}</div>
+        {props.user.statusMessage ? (
+          <div className="profile__bubble">{props.user.statusMessage}</div>
+        ) : (
+          <div className="profile__bubble-none">작성된 한마디가 없습니다</div>
+        )}
         <div className="profile__last-access">
           {props.user.lastAccess === "online" ? (
             <span className="profile__online">접속중</span>
@@ -67,8 +70,7 @@ export default function ProfileHeader(props) {
                       props.setGetDataFlag(1);
                       setFollowButton("unfollow");
                       setRefreshFlag(1);
-                    }}
-                  >
+                    }}>
                     팔로우
                   </button>
                 ) : (
@@ -79,8 +81,7 @@ export default function ProfileHeader(props) {
                         unfollowAlert === 0
                           ? setUnfollowAlert(1)
                           : setUnfollowAlert(0);
-                      }}
-                    >
+                      }}>
                       <Icon
                         className="unfollow__icon"
                         icon="bx:bxs-user-check"
@@ -105,8 +106,7 @@ export default function ProfileHeader(props) {
                 className="row1__edit-profile"
                 onClick={() => {
                   history.push("/profile/edit");
-                }}
-              >
+                }}>
                 프로필 수정
               </button>
             ))}
@@ -117,8 +117,7 @@ export default function ProfileHeader(props) {
           ) : (
             <div
               className="row2__status"
-              style={{ backgroundColor: "#C4C4C4" }}
-            >
+              style={{ backgroundColor: "#C4C4C4" }}>
               {status[props.user.status]}
             </div>
           )}
@@ -127,8 +126,7 @@ export default function ProfileHeader(props) {
               className="row2__follower"
               onClick={(e) => {
                 followerFlag === 0 ? setFollowerFlag(1) : setFollowerFlag(0);
-              }}
-            >
+              }}>
               {`팔로워 ${props.user.follower}명`}
             </div>
             {followerFlag === 1 ? (
@@ -149,8 +147,7 @@ export default function ProfileHeader(props) {
               className="row2__following"
               onClick={(e) => {
                 followingFlag === 0 ? setFollowingFlag(1) : setFollowingFlag(0);
-              }}
-            >
+              }}>
               {`팔로우 ${props.user.following}명`}
             </div>
             {followingFlag === 1 ? (
@@ -167,9 +164,13 @@ export default function ProfileHeader(props) {
             ) : null}
           </div>
         </div>
-        <pre className="right__introduction">
-          {props.user.introduction || "-"}
-        </pre>
+        {props.user.introduction ? (
+          <pre classNmae="right__introduction">{props.user.introduction}</pre>
+        ) : (
+          <div className="right__introduction-none">
+            자기소개를 작성하지 않았습니다
+          </div>
+        )}
       </div>
     </div>
   );

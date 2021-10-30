@@ -124,8 +124,11 @@ export default function ProjectEditPage() {
   };
 
   useEffect(() => {
-    if (loginState === null) history.push("/");
-    else getMyData();
+    if (loginState === null) {
+      history.goBack();
+      // setValidateMsg(["로그인 해주세요", "cancel-only"]);
+      // setValidateFlag(1);
+    } else getMyData();
   }, [loginState]);
 
   useEffect(() => {
@@ -149,9 +152,6 @@ export default function ProjectEditPage() {
   }, [imgLoadFlag]);
 
   unsplashFlag && document.addEventListener("mousedown", handleClickOutside);
-  if (loginState === null) {
-    return <Redirect to="/" />;
-  }
   if (isLoading) return <ReactLoading type="spin" color="#a7bc5b" />;
 
   return (

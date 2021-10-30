@@ -41,8 +41,7 @@ export default function UnfollowAlert(props) {
           } catch (err) {
             console.log(err);
           }
-        }}
-      >
+        }}>
         팔로우 취소
       </div>
       <hr />
@@ -50,8 +49,7 @@ export default function UnfollowAlert(props) {
         className="unfollow__cancel"
         onClick={() => {
           props.setUnfollowAlert(0);
-        }}
-      >
+        }}>
         취소
       </div>
     </div>

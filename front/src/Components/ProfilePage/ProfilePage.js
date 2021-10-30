@@ -67,7 +67,7 @@ export default function ProfilePage() {
     if (location.pathname !== "/profile" || getDataFlag === 1) getData();
     else getMyData();
     setGetDataFlag(0);
-  }, [getDataFlag, loginState]);
+  }, [getDataFlag, loginState, location]);
 
   if (location.pathname === "/profile" && loginState === null) {
     return <Redirect to="/" />;

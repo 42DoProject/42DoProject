@@ -44,8 +44,8 @@ export default function Unsplash({
         <div>
           <input
             type="file"
-            accept=".jpeg, .png, .gif, .bmp"
             className="upload__input"
+            accept="image/jpeg, image/jpg, image/png, image/gif, image/bmp"
             onChange={(e) => setImage(e.target.files[0])}
           />
           <div className="unsplash__body-info">
@@ -71,7 +71,6 @@ export default function Unsplash({
               };
               setImgLoadFlag(1);
               setUnsplashFlag(0);
-              console.log("image", image);
             }}>
             이미지 선택
           </button>

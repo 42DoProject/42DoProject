@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Popover, OverlayTrigger, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import "../../SCSS/MainPage/PopUp.scss";
@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 
 export const Example = () => {
   let loginState = useSelector((state) => state.loginReducer);
+
   return (
     <OverlayTrigger trigger="focus" placement="bottom" overlay={Pop()}>
       <Button variant="light">

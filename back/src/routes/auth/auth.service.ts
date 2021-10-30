@@ -47,7 +47,7 @@ const userModelCheck = async (user: any): Promise<number> => {
   await Profile.create({
     level: user.cursus_users[1].level,
     lastAccess: getIsoString(),
-    status: 0,
+    status: Number(process.env.CADET_LOOKING_FOR_PROJECT_STATUS),
     position: 0,
     skill: [],
     statusMessage: "",
@@ -62,7 +62,7 @@ const userModelCheck = async (user: any): Promise<number> => {
     id: row.id,
     username: row.username,
     profileImage: row.profileImage,
-    status: 0,
+    status: Number(process.env.CADET_LOOKING_FOR_PROJECT_STATUS),
     position: 0,
     skill: [],
     level: user.cursus_users[1].level,

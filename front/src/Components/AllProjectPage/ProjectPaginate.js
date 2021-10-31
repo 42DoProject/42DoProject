@@ -31,7 +31,7 @@ export default function ProjectPaginate(props) {
 
   const handlePageChange = (page) => {
     setPage(page);
-    console.log(page);
+    // console.log(page);
   };
 
   useEffect(() => {
@@ -60,7 +60,7 @@ export default function ProjectPaginate(props) {
         <>
           <div className="project-grid">
             {Project.map((el, idx) => {
-              console.log(el);
+              // console.log(el);
               return <Cards key={el["id"]} projectData={el} />;
             })}
           </div>

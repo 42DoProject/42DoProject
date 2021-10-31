@@ -37,8 +37,11 @@ function compare(src: string, target: string): boolean {
   return true;
 }
 
-export function getUser(page: number): IUser[] {
-  return [...object.user].reverse().slice((page - 1) * 15, page * 15);
+export function getUser(page: number): { count: number; list: IUser[] } {
+  return {
+    count: object.user.length,
+    list: [...object.user].reverse().slice((page - 1) * 15, page * 15),
+  };
 }
 
 export function searchUser(name: string): IUser[] {

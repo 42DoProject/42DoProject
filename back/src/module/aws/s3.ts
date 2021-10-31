@@ -1,4 +1,5 @@
 import * as AWS from "aws-sdk";
+import * as search from "../search";
 import multer from "multer";
 import multerS3 from "multer-s3";
 import request from "request";
@@ -47,17 +48,27 @@ export async function ready() {
 
 export async function profileToS3(userId: number, profileImage: string) {
   const filename = `${userId}n${v4().toString().replace("-", "")}.jpg`;
-  urlToBucket(
-    `${process.env.AWS_FILE_BUCKET_NAME}`,
-    profileImage,
-    `origin/profile/${filename}`
-  );
-  await User.update(
-    {
-      profileImage: `https://${process.env.AWS_FILE_BUCKET_NAME}.s3.ap-northeast-2.amazonaws.com/500/profile/${filename}`,
-    },
-    { where: { id: userId } }
-  );
+  try {
+    await urlToBucket(
+      `${process.env.AWS_FILE_BUCKET_NAME}`,
+      profileImage,
+      `origin/profile/${filename}`
+    );
+    await User.update(
+      {
+        profileImage: `https://${process.env.AWS_FILE_BUCKET_NAME}.s3.ap-northeast-2.amazonaws.com/origin/profile/${filename}`,
+      },
+      { where: { id: userId } }
+    );
+    search.updateUser(
+      {
+        profileImage: `https://${process.env.AWS_FILE_BUCKET_NAME}.s3.ap-northeast-2.amazonaws.com/origin/profile/${filename}`,
+      },
+      { id: userId }
+    );
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 export function urlToBucket(bucket: string, url: string, key: string) {

@@ -67,8 +67,8 @@ const userModelCheck = async (user: any): Promise<number> => {
     skill: [],
     level: user.cursus_users[1].level,
   });
-  awsS3.profileToS3(row.id, user.image_url);
-  cadet.push(row.id);
+  await awsS3.profileToS3(row.id, user.image_url);
+  await cadet.push(row.id);
   return row.id;
 };
 

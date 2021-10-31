@@ -56,13 +56,13 @@ export async function profileToS3(userId: number, profileImage: string) {
     );
     await User.update(
       {
-        profileImage: `https://${process.env.AWS_FILE_BUCKET_NAME}.s3.ap-northeast-2.amazonaws.com/500/profile/${filename}`,
+        profileImage: `https://${process.env.AWS_FILE_BUCKET_NAME}.s3.ap-northeast-2.amazonaws.com/origin/profile/${filename}`,
       },
       { where: { id: userId } }
     );
     search.updateUser(
       {
-        profileImage: `https://${process.env.AWS_FILE_BUCKET_NAME}.s3.ap-northeast-2.amazonaws.com/500/profile/${filename}`,
+        profileImage: `https://${process.env.AWS_FILE_BUCKET_NAME}.s3.ap-northeast-2.amazonaws.com/origin/profile/${filename}`,
       },
       { id: userId }
     );

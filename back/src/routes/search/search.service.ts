@@ -17,13 +17,21 @@ export const getUser = (request: Request, response: Response) => {
 
 export const getUserFilter = (request: Request, response: Response) => {
   const { status, position, skill, level } = request.body;
+  const page = Number(request.query.page);
+  if (isNaN(page) || page < 1) {
+    response.status(400).json({ error: "invalid page" });
+    return;
+  }
   response.status(200).json(
-    search.searchUserFilter({
-      status: status,
-      position: position,
-      skill: skill,
-      level: level,
-    })
+    search.searchUserFilter(
+      {
+        status: status,
+        position: position,
+        skill: skill,
+        level: level,
+      },
+      page
+    )
   );
 };
 

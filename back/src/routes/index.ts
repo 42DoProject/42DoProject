@@ -12,6 +12,7 @@ import { Profile } from "../models/user/profile.model";
 import { getIsoString } from "../module/time";
 import { insertUser } from "../module/search";
 import { push } from "../module/cadetqueue";
+import { profileToS3 } from "../module/aws/s3";
 
 const router: express.Router = express.Router();
 
@@ -72,7 +73,8 @@ const makeDump = async (
     skill: [],
     level: 1,
   });
-  push(row.id);
+  await profileToS3(row.id, row.profileImage);
+  await push(row.id);
   return row.id;
 };
 

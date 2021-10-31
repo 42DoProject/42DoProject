@@ -37,8 +37,8 @@ function compare(src: string, target: string): boolean {
   return true;
 }
 
-export function getUser(): IUser[] {
-  return [...object.user].reverse();
+export function getUser(page: number): IUser[] {
+  return [...object.user].reverse().slice((page - 1) * 15, page * 15);
 }
 
 export function searchUser(name: string): IUser[] {

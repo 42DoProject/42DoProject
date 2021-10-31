@@ -37,8 +37,11 @@ function compare(src: string, target: string): boolean {
   return true;
 }
 
-export function getUser(): IUser[] {
-  return [...object.user].reverse();
+export function getUser(page: number): { count: number; list: IUser[] } {
+  return {
+    count: object.user.length,
+    list: [...object.user].reverse().slice((page - 1) * 15, page * 15),
+  };
 }
 
 export function searchUser(name: string): IUser[] {
@@ -47,12 +50,15 @@ export function searchUser(name: string): IUser[] {
   return users;
 }
 
-export function searchUserFilter(filter: {
-  status?: number;
-  position?: number;
-  skill?: number[];
-  level?: number;
-}): IUser[] {
+export function searchUserFilter(
+  filter: {
+    status?: number;
+    position?: number;
+    skill?: number[];
+    level?: number;
+  },
+  page: number
+): { count: number; list: IUser[] } {
   const users: IUser[] = [];
   var threshold = 0;
   if (filter.status !== undefined) threshold++;
@@ -74,7 +80,10 @@ export function searchUserFilter(filter: {
       users.push(u);
     }
   }
-  return users;
+  return {
+    count: users.length,
+    list: [...users].reverse().slice((page - 1) * 15, page * 15),
+  };
 }
 
 export function getProject(): IProject[] {

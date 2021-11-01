@@ -20,7 +20,7 @@ jobs:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
-    - name: list of files
+    - name: is pull request successed
       run: echo "deploying . . . "
 
   deploy:
@@ -31,7 +31,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        dir: ./back
+        path: ./back
     - name: list of files
       run: ls
     - name: Configure AWS credentials

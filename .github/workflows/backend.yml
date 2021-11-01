@@ -2,17 +2,17 @@ name: CI
 
 on:
   pull_request:
-    branches: [ deploy-frontend ]
+    branches: [ deploy-backend ]
     types: [ closed ]
   workflow_dispatch:
 
 env:
   AWS_REGION: ap-northeast-2
   ECR_REPOSITORY: image-repo
-  ECS_SERVICE: service-frontend
+  ECS_SERVICE: service-backend
   ECS_CLUSTER: cluster
-  ECS_TASK_DEFINITION: MY_ECS_TASK_DEFINITION # set this to the path to your Amazon ECS task definition
-  CONTAINER_NAME: frontend
+  ECS_TASK_DEFINITION: task-definition-back.json
+  CONTAINER_NAME: backend
 
 jobs:
   workdir:
@@ -24,7 +24,6 @@ jobs:
       - name: list of files
         working-directory: front
         run: ls
-        
   deploy:
     name: Deploy
     needs: workdir
@@ -48,9 +47,6 @@ jobs:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        # Build a docker container and
-        # push it to ECR so that it can
-        # be deployed to ECS.
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"

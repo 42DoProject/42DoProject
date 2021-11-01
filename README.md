@@ -23,10 +23,8 @@ deploy-* 이름을 가진 브랜치에 머지되면 자동적으로 배포를 �
 ![1](https://user-images.githubusercontent.com/12230655/139650465-b5a2e63a-a5d0-403b-985d-83b0cea10467.png)
 
 
-![2-1](https://user-images.githubusercontent.com/12230655/139650473-5f2b96b6-2d62-46d4-9915-171e32186035.png)
+![2-1](https://user-images.githubusercontent.com/12230655/139650661-a2493421-ef38-45e5-b825-d793102a48b6.png)
 ▲ 프론트의 경우
-
-
 
 ![2-2](https://user-images.githubusercontent.com/12230655/139650518-dad4573e-06f1-47d6-a037-2f9cc6925673.png)
 ▲ 백의 경우

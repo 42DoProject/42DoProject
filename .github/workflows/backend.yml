@@ -65,7 +65,10 @@ jobs:
     - name: stop working task
       run: |
         tasks=`echo $(aws --region $AWS_REGION ecs list-tasks --family $ECS_TASK_NAME --cluster $ECS_CLUSTER | jq -r '.taskArns | reduce .[] as $item (""; . + $item + " ")') | cut -d '/' -f 3`
-        aws --region $AWS_REGION ecs stop-task --task $tasks --cluster $ECS_CLUSTER
+        if [ -n "${tasks}" ];then
+          echo "stop task" $tasks
+          aws --region $AWS_REGION ecs stop-task --task $tasks --cluster $ECS_CLUSTER
+        fi
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:

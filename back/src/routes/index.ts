@@ -88,4 +88,8 @@ router.post("/dump", async (request, response) => {
   response.status(200).json(res);
 });
 
+router.get("/v", (request, response) => {
+  response.status(200).send("v1");
+});
+
 export default router;

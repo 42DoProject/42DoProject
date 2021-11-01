@@ -40,21 +40,25 @@ export default function ProfileBody(props) {
         </div>
         <div className="col1__profile-card2">
           <div className="card2__location">
-            <Icon icon="carbon:location-filled" height="25px" />
+            <Icon icon="carbon:location-filled" fontSize="1.5rem" />
             <span>{props.user.location || "-"}</span>
           </div>
           <div className="card2__level">
-            <Icon icon="simple-icons:42" width="25px" />
+            <Icon icon="simple-icons:42" fontSize="1.5rem" />
             <span>{`level ${Math.floor(props.user.level)}` || "level -"}</span>
           </div>
           <div className="card2__email">
-            <Icon icon="fluent:mail-48-filled" height="25px" />
-            <a href={`mailto:${props.user.email}`} className="email-span">
-              {props.user.email || "-"}
-            </a>
+            <Icon icon="fluent:mail-48-filled" fontSize="1.5rem" />
+            {props.user.email ? (
+              <a href={`mailto:${props.user.email}`} className="email-span">
+                {props.user.email}
+              </a>
+            ) : (
+              <span>-</span>
+            )}
           </div>
           <div className="card2__github">
-            <Icon icon="akar-icons:github-fill" height="22px" />
+            <Icon icon="akar-icons:github-fill" fontSize="1.5rem" />
             {props.user.github ? (
               <a
                 href={`https://github.com/${props.user.github}`}

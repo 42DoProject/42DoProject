@@ -179,7 +179,12 @@ export const modifyMe = async (request: Request, response: Response) => {
     { where: { userId: request.user!.id } }
   );
   search.updateUser(
-    { status: status, position: position, skill: skill },
+    {
+      status: status,
+      position: position,
+      skill: skill,
+      statusMessage: statusMessage,
+    },
     { id: request.user!.id }
   );
   if (

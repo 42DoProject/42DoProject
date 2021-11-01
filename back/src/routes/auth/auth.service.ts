@@ -66,6 +66,7 @@ const userModelCheck = async (user: any): Promise<number> => {
     position: 0,
     skill: [],
     level: user.cursus_users[1].level,
+    statusMessage: "",
   });
   await awsS3.profileToS3(row.id, user.image_url);
   await cadet.push(row.id);

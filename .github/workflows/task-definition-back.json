@@ -6,7 +6,7 @@
     "containerDefinitions": [
         {
             "name": "backend",
-            "image": "655309345553.dkr.ecr.ap-northeast-2.amazonaws.com/image-repo:backend-distribution",
+            "image": "",
             "repositoryCredentials": {
                 "credentialsParameter": ""
             },
@@ -76,7 +76,5 @@
     "ipcMode": null,
     "proxyConfiguration": null,
     "inferenceAccelerators": null,
-    "ephemeralStorage": {
-        "sizeInGiB": 0
-    }
+    "ephemeralStorage": null
 }

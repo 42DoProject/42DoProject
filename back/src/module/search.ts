@@ -19,6 +19,7 @@ export async function init() {
       position: u.profile!.position,
       skill: u.profile!.skill,
       level: u.profile!.level,
+      statusMessage: u.profile!.statusMessage,
     });
   for (const p of projects) {
     const index = p.title.toLowerCase().split(" ");
@@ -134,6 +135,7 @@ export function insertUser(user: {
   position: number;
   skill: number[];
   level: number;
+  statusMessage: string;
 }) {
   object.user.push({
     index: user.username,
@@ -144,6 +146,7 @@ export function insertUser(user: {
     position: user.position,
     skill: user.skill,
     level: user.level,
+    statusMessage: user.statusMessage,
   });
 }
 
@@ -168,6 +171,7 @@ export function updateUser(
     position?: number;
     skill?: number[];
     level?: number;
+    statusMessage?: string;
   },
   where: { id: number }
 ) {
@@ -178,6 +182,8 @@ export function updateUser(
       if (user.position !== undefined) u.position = user.position;
       if (user.skill !== undefined) u.skill = user.skill;
       if (user.level !== undefined) u.level = user.level;
+      if (user.statusMessage !== undefined)
+        u.statusMessage = user.statusMessage;
     }
 }
 

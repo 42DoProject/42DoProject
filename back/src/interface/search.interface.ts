@@ -7,6 +7,7 @@ export interface IUser {
   position: number;
   skill: number[];
   level: number;
+  statusMessage: string;
 }
 
 export interface IProject {

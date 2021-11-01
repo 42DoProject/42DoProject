@@ -19,6 +19,9 @@ jobs:
     name: Workdir
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+    steps:
+    - name: list of files
+      run: echo "deploying . . . "
 
   deploy:
     name: Deploy

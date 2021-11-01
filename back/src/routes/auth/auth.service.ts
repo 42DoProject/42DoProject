@@ -9,6 +9,7 @@ import { User } from "../../models/user/user.model";
 import { getIsoString } from "../../module/time";
 import { accessToken, issueJwt, jwtToObject, tokenToUser } from "./oauth";
 import * as search from "../../module/search";
+import * as awsS3 from "../../module/aws/s3";
 import * as cadet from "../../module/cadetqueue";
 
 const userModelCheck = async (user: any): Promise<number> => {
@@ -28,6 +29,7 @@ const userModelCheck = async (user: any): Promise<number> => {
     email: user.email,
     location: user.campus[0].name,
     profileImage: user.image_url,
+    blurImage: "",
   });
   await OToken.create({
     accessToken: null,
@@ -45,7 +47,7 @@ const userModelCheck = async (user: any): Promise<number> => {
   await Profile.create({
     level: user.cursus_users[1].level,
     lastAccess: getIsoString(),
-    status: 0,
+    status: Number(process.env.CADET_LOOKING_FOR_PROJECT_STATUS),
     position: 0,
     skill: [],
     statusMessage: "",
@@ -60,12 +62,14 @@ const userModelCheck = async (user: any): Promise<number> => {
     id: row.id,
     username: row.username,
     profileImage: row.profileImage,
-    status: 0,
+    status: Number(process.env.CADET_LOOKING_FOR_PROJECT_STATUS),
     position: 0,
     skill: [],
     level: user.cursus_users[1].level,
+    statusMessage: "",
   });
-  cadet.push(row.id);
+  await awsS3.profileToS3(row.id, user.image_url);
+  await cadet.push(row.id);
   return row.id;
 };
 

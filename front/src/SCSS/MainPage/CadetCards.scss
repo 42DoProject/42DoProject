@@ -1,7 +1,8 @@
 @import "../Base.scss";
 .cadet-card {
-  width: 33%;
+  // width: 33%;
   margin: 0 1rem;
+  height: 16.5rem;
   background-color: white;
   box-shadow: $shadow;
   border-radius: $round;
@@ -9,13 +10,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  // justify-content: space-between;
   margin-bottom: 1.5rem;
+  cursor: pointer;
   .cadet__image {
     border-radius: 50%;
     width: 5rem;
     height: 5rem;
     object-fit: cover;
     margin-bottom: 1rem;
+    box-shadow: $shadow;
   }
   &:hover {
     transform: scale(1.1);
@@ -33,11 +37,29 @@
     font-size: $fontSm;
     font-weight: $semiBold;
   }
-  .cadet__word {
-    border: 1px solid $lightestGrey;
-    // box-shadow: $shadow;
-    border-radius: $round;
-    padding: 1rem;
-    text-align: center;
+  .cadet__word-wrap {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    .cadet__word {
+      border: 1px solid $lightestGrey;
+      // box-shadow: $shadow;
+      border-radius: $round;
+      padding: 1rem;
+      text-align: center;
+      // justify-content: center;
+      // align-items: center;
+      font-size: $fontSs;
+    }
+  }
+  .cadet__no-word {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    font-size: $fontSs;
+    color: $grey;
+    flex: 1; // 남은 공간 채움
   }
 }

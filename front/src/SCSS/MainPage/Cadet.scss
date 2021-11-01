@@ -8,19 +8,35 @@
     font-size: $fontMl;
     color: $black;
     padding-left: 4rem;
+    cursor: pointer;
   }
   .cadet__list {
     margin-top: 2rem;
     padding: 0 2rem;
-    .list__row1,
-    .list__row2 {
-      display: flex;
-    }
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    // justify-items: stretch;
+    // justify-content: stretch;
+
+    // .list__row1,
+    // .list__row2 {
+    //   justify-content: center;
+    // }
   }
 }
 
 @media (max-width: 63rem) {
   .cadet {
     width: 100%;
+  }
+}
+
+@media (max-width: 38rem) {
+  .cadet {
+    .cadet__list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 }

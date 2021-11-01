@@ -46,18 +46,14 @@
       object-fit: cover; // 이미지 안찌그러지면서 꽉차게
       width: 100%;
       height: 100%;
-    }
-    img.card_img__small {
-      filter: blur(10px) brightness(50%);
-      transform: scale(1.1);
-      transition: all 0ms ease 400ms;
-      // -webkit-transition: -webkit-transform 2000ms ease-in-out 0ms;
-    }
-    img.card_img__full {
       filter: brightness(50%);
-      transition: all 400ms ease 0ms;
-      // -webkit-transition: opacity 2000ms ease-in-out 0ms;
     }
+    // img.card_img__small {
+    // filter: blur(5px) brightness(50%);
+    // transform: scale(1.1);
+    // transition: all 0ms ease 400ms;
+    // -webkit-transition: -webkit-transform 2000ms ease-in-out 0ms;
+    // }
     .image__title {
       width: 18rem;
       position: absolute;

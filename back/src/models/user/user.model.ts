@@ -30,6 +30,9 @@ export class User extends Model {
   @Column(DataType.TEXT)
   profileImage!: string;
 
+  @Column(DataType.TEXT)
+  blurImage!: string;
+
   @HasOne(() => OToken)
   otoken?: OToken;
 

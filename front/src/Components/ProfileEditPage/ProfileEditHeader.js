@@ -27,7 +27,7 @@ export default function ProfileEditHeader(props) {
         <img
           className="profileImage"
           alt="profileImage"
-          src={loginState.profileImage}
+          src={loginState?.profileImage}
         />
         <div className="bubble__wrapper">
           <textarea
@@ -54,16 +54,15 @@ export default function ProfileEditHeader(props) {
       </div>
       <div className="header__right">
         <div className="right__row1">
-          <div className="row1__name">{loginState.name}</div>
-          <input
-            type="submit"
+          <div className="row1__name">{loginState?.name}</div>
+          <button
             className="row1__finish-edit"
-            value="프로필 저장"
             onClick={(e) => {
               e.target.innerHTML = "저장중...";
               props.submit();
-            }}
-          />
+            }}>
+            프로필 저장
+          </button>
         </div>
         <div className="right__row2">
           <select

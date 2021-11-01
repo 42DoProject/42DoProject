@@ -11,11 +11,14 @@ export default function Notifiaction() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const { data } = await axios.get("http://localhost:5000/user/feed", {
-          headers: {
-            Authorization: `Bearer ${loginState.accessToken}`,
-          },
-        });
+        const { data } = await axios.get(
+          `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/user/feed`,
+          {
+            headers: {
+              Authorization: `Bearer ${loginState.accessToken}`,
+            },
+          }
+        );
         setNotiData(data);
       } catch (err) {
         console.log(err);

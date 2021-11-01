@@ -27,7 +27,9 @@ function ChatRoom({
     try {
       const {
         data: { user },
-      } = await axios.get(`http://localhost:5000/search/${userName}`);
+      } = await axios.get(
+        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/search/${userName}`
+      );
       setOutUserProfile(user[0].profileImage);
     } catch (err) {
       console.log(err);

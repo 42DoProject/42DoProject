@@ -22,37 +22,43 @@ export default function ProfileBody(props) {
           <div className="card1__skill">
             <div className="skill__label">보유 스킬</div>
             <div className="skill__content">
-              {props.user.skill && props.user.skill.length
-                ? props.user.skill.map((e, i) => {
-                    return (
-                      <img
-                        key={i}
-                        alt={skills.skills[e][0]}
-                        src={skills.skills[e][1]}
-                      />
-                    );
-                  })
-                : "-"}
+              {props.user.skill && props.user.skill.length ? (
+                props.user.skill.map((e, i) => {
+                  return (
+                    <img
+                      key={i}
+                      alt={skills.skills[e][0]}
+                      src={skills.skills[e][1]}
+                    />
+                  );
+                })
+              ) : (
+                <span className="content__none">보유한 스킬이 없습니다</span>
+              )}
             </div>
           </div>
         </div>
         <div className="col1__profile-card2">
           <div className="card2__location">
-            <Icon icon="carbon:location-filled" height="25px" />
-            <span>{props.user.location}</span>
+            <Icon icon="carbon:location-filled" fontSize="1.5rem" />
+            <span>{props.user.location || "-"}</span>
           </div>
           <div className="card2__level">
-            <Icon icon="simple-icons:42" width="25px" />
-            <span>{`level ${Math.floor(props.user.level)}`}</span>
+            <Icon icon="simple-icons:42" fontSize="1.5rem" />
+            <span>{`level ${Math.floor(props.user.level)}` || "level -"}</span>
           </div>
           <div className="card2__email">
-            <Icon icon="fluent:mail-48-filled" height="25px" />
-            <a href={`mailto:${props.user.email}`} className="email-span">
-              {props.user.email}
-            </a>
+            <Icon icon="fluent:mail-48-filled" fontSize="1.5rem" />
+            {props.user.email ? (
+              <a href={`mailto:${props.user.email}`} className="email-span">
+                {props.user.email}
+              </a>
+            ) : (
+              <span>-</span>
+            )}
           </div>
           <div className="card2__github">
-            <Icon icon="akar-icons:github-fill" height="22px" />
+            <Icon icon="akar-icons:github-fill" fontSize="1.5rem" />
             {props.user.github ? (
               <a
                 href={`https://github.com/${props.user.github}`}

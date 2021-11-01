@@ -19,11 +19,14 @@ function InChat({
   const userList = chatRoom.users.filter((e) => e.id !== loginState.id);
   const getChat = async (uuid) => {
     try {
-      const { data } = await axios.get(`http://localhost:5000/chat/${uuid}`, {
-        headers: {
-          Authorization: `Bearer ${loginState.accessToken}`,
-        },
-      });
+      const { data } = await axios.get(
+        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/chat/${uuid}`,
+        {
+          headers: {
+            Authorization: `Bearer ${loginState.accessToken}`,
+          },
+        }
+      );
       setChat(data);
     } catch (err) {
       console.log(err);

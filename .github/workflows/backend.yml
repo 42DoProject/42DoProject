@@ -2,18 +2,18 @@ name: CI
 
 on:
   pull_request:
-    branches: [ deploy-frontend ]
+    branches: [ deploy-backend ]
     types: [ closed ]
   workflow_dispatch:
 
 env:
   AWS_REGION: ap-northeast-2
   ECR_REPOSITORY: image-repo
-  ECS_SERVICE: service-frontend
+  ECS_SERVICE: service-backend
   ECS_CLUSTER: cluster
-  ECS_TASK_DEFINITION: ./.github/workflows/task-definition-front.json
-  ECS_TASK_NAME: task-frontend
-  CONTAINER_NAME: frontend
+  ECS_TASK_DEFINITION: ./.github/workflows/task-definition-back.json
+  ECS_TASK_NAME: task-backend
+  CONTAINER_NAME: backend
 
 jobs:
   workdir:
@@ -54,6 +54,7 @@ jobs:
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./back
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def
       uses: aws-actions/amazon-ecs-render-task-definition@v1

@@ -1,0 +1,80 @@
+{
+    "family": "task-backend",
+    "taskRoleArn": "arn:aws:iam::655309345553:role/AWSECSRoleForENV",
+    "executionRoleArn": "arn:aws:iam::655309345553:role/AWSECSRoleForENV",
+    "networkMode": null,
+    "containerDefinitions": [
+        {
+            "name": "backend",
+            "image": "",
+            "repositoryCredentials": {
+                "credentialsParameter": ""
+            },
+            "cpu": 0,
+            "memory": null,
+            "memoryReservation": 1024,
+            "links": null,
+            "portMappings": [
+                {
+                    "containerPort": 5000,
+                    "hostPort": 5000,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true,
+            "entryPoint": null,
+            "command": null,
+            "environment": [],
+            "environmentFiles": [
+                {
+                    "value": "arn:aws:s3:::42doproject-ecs/backend/.env",
+                    "type": "s3"
+                }
+            ],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "linuxParameters": null,
+            "secrets": null,
+            "dependsOn": null,
+            "startTimeout": null,
+            "stopTimeout": null,
+            "hostname": null,
+            "user": null,
+            "workingDirectory": null,
+            "disableNetworking": null,
+            "privileged": null,
+            "readonlyRootFilesystem": null,
+            "dnsServers": null,
+            "dnsSearchDomains": null,
+            "extraHosts": null,
+            "dockerSecurityOptions": null,
+            "interactive": null,
+            "pseudoTerminal": null,
+            "dockerLabels": null,
+            "ulimits": null,
+            "logConfiguration": null,
+            "healthCheck": null,
+            "systemControls": null,
+            "resourceRequirements": null,
+            "firelensConfiguration": null
+        }
+    ],
+    "volumes": null,
+    "placementConstraints": [],
+    "requiresCompatibilities": [
+        "EC2"
+    ],
+    "cpu": null,
+    "memory": null,
+    "tags": [
+        {
+            "key": "Name",
+            "value": "backend-distribution"
+        }
+    ],
+    "pidMode": null,
+    "ipcMode": null,
+    "proxyConfiguration": null,
+    "inferenceAccelerators": null,
+    "ephemeralStorage": null
+}

@@ -1,4 +1,4 @@
-import React, { isValidElement, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "../../SCSS/ProjectEditPage/ProjectEditPage.scss";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { Editor } from "@toast-ui/react-editor";
@@ -77,7 +77,7 @@ export default function ProjectEditPage() {
       const textField = {
         // totalMember: selectedPos.length,
         title: document.querySelector(".project-edit__name").value,
-        state: "recruiting",
+        // state: "recruiting",
         content: editorInstance.getMarkdown(),
         position: `[${positionPost}]`,
         skill: `[${skillPost}]`,
@@ -92,7 +92,7 @@ export default function ProjectEditPage() {
 
       const res = await axios({
         method: "post",
-        url: "http://localhost:5000/project",
+        url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project`,
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${loginState.accessToken}`,
@@ -101,7 +101,7 @@ export default function ProjectEditPage() {
       });
       console.log("res", res);
       setIsLoading(0);
-      history.push("/");
+      history.goBack();
     } catch (err) {
       console.log(err);
     }
@@ -109,11 +109,14 @@ export default function ProjectEditPage() {
 
   const getMyData = async () => {
     try {
-      const { data } = await axios.get("http://localhost:5000/user/me", {
-        headers: {
-          Authorization: `Bearer ${loginState.accessToken}`,
-        },
-      });
+      const { data } = await axios.get(
+        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/user/me`,
+        {
+          headers: {
+            Authorization: `Bearer ${loginState.accessToken}`,
+          },
+        }
+      );
       setMyData(data);
     } catch (err) {
       console.log(err);
@@ -121,8 +124,11 @@ export default function ProjectEditPage() {
   };
 
   useEffect(() => {
-    if (loginState === null) history.push("/");
-    else getMyData();
+    if (loginState === null) {
+      history.goBack();
+      // setValidateMsg(["로그인 해주세요", "cancel-only"]);
+      // setValidateFlag(1);
+    } else getMyData();
   }, [loginState]);
 
   useEffect(() => {
@@ -138,11 +144,16 @@ export default function ProjectEditPage() {
     }
   }, [isValid]);
 
+  useEffect(() => {
+    const spinnerEl = document.querySelector(".loading-wrap");
+
+    if (imgLoadFlag === 2) spinnerEl.style.visibility = "hidden";
+    if (imgLoadFlag === 1) spinnerEl.style.visibility = "visible";
+  }, [imgLoadFlag]);
+
   unsplashFlag && document.addEventListener("mousedown", handleClickOutside);
-  if (loginState === null) {
-    return <Redirect to="/" />;
-  }
   if (isLoading) return <ReactLoading type="spin" color="#a7bc5b" />;
+
   return (
     <div className="project-edit__wrapper">
       <div className="project-edit__form">
@@ -170,11 +181,18 @@ export default function ProjectEditPage() {
                 />
               </div>
             ) : (
-              <img
-                className="project-edit__img"
-                src={imgBase64}
-                alt="project-thumbnail"
-              />
+              <>
+                <ReactLoading type="spin" color="#a7bc5b" />
+                <img
+                  className="project-edit__img"
+                  src={imgBase64}
+                  alt="project-thumbnail"
+                  onLoad={() => {
+                    setImgLoadFlag(2);
+                  }}
+                  style={{ opacity: imgLoadFlag === 1 ? 0 : 1 }}
+                />
+              </>
             )}
             <div
               className="project-edit__img-hover"
@@ -192,6 +210,7 @@ export default function ProjectEditPage() {
                 image={image}
                 setImgLoadFlag={setImgLoadFlag}
                 setImgBase64={setImgBase64}
+                imgBase64={imgBase64}
               />
             </div>
           )}

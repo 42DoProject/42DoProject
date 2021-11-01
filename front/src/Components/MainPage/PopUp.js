@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Popover, OverlayTrigger, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import "../../SCSS/MainPage/PopUp.scss";
@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 
 export const Example = () => {
   let loginState = useSelector((state) => state.loginReducer);
+
   return (
     <OverlayTrigger trigger="focus" placement="bottom" overlay={Pop()}>
       <Button variant="light">
@@ -36,8 +37,7 @@ function Pop() {
         onClick={() => {
           logOut(loginState.accessToken);
           dispatch({ type: "LOGOUT" });
-        }}
-      >
+        }}>
         <Popover.Body>SIGN OUT</Popover.Body>
       </div>
     </Popover>
@@ -46,7 +46,7 @@ function Pop() {
 
 function logOut(accessToken) {
   try {
-    axios.get(`http://localhost:5000/auth/signout`, {
+    axios.get(`http://${process.env.REACT_APP_DOMAIN_NAME}:5000/auth/signout`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },

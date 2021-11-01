@@ -12,6 +12,7 @@ import { Profile } from "../models/user/profile.model";
 import { getIsoString } from "../module/time";
 import { insertUser } from "../module/search";
 import { push } from "../module/cadetqueue";
+import { profileToS3 } from "../module/aws/s3";
 
 const router: express.Router = express.Router();
 
@@ -34,6 +35,7 @@ const makeDump = async (
     name: name,
     email: email,
     profileImage: profileImage,
+    blurImage: "",
   });
   await OToken.create({
     accessToken: null,
@@ -51,7 +53,7 @@ const makeDump = async (
   await Profile.create({
     level: 1,
     lastAccess: getIsoString(),
-    status: 0,
+    status: Number(process.env.CADET_LOOKING_FOR_PROJECT_STATUS),
     position: 0,
     skill: [],
     statusMessage: "",
@@ -66,12 +68,14 @@ const makeDump = async (
     id: row.id,
     username: row.username,
     profileImage: row.profileImage,
-    status: 0,
+    status: Number(process.env.CADET_LOOKING_FOR_PROJECT_STATUS),
     position: 0,
     skill: [],
     level: 1,
+    statusMessage: "",
   });
-  push(row.id);
+  await profileToS3(row.id, row.profileImage);
+  await push(row.id);
   return row.id;
 };
 
@@ -82,6 +86,10 @@ router.post("/dump", async (request, response) => {
     res.push(await makeDump(u.username, u.name, u.email, u.profileImage));
   }
   response.status(200).json(res);
+});
+
+router.get("/v", (request, response) => {
+  response.status(200).send("v1");
 });
 
 export default router;

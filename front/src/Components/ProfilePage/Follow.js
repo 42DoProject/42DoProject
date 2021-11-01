@@ -25,7 +25,7 @@ export default function Follow(props) {
   const getFollow = async (subj) => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/user/${subj}/${
+        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/user/${subj}/${
           props.userId || loginState.id
         }?page=1`
       );
@@ -84,12 +84,10 @@ export default function Follow(props) {
                     onClick={async () => {
                       try {
                         await axios.get(
-                          `http://localhost:5000/user/follow/${v.userId}`,
+                          `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/user/follow/${v.userId}`,
                           {
                             headers: {
-                              Authorization: `Bearer ${localStorage.getItem(
-                                "accessToken"
-                              )}`,
+                              Authorization: `Bearer ${loginState.accessToken}`,
                             },
                           }
                         );

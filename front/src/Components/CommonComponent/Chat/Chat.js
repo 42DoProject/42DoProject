@@ -25,11 +25,14 @@ export default function Chat() {
 
   const getChatRoom = async () => {
     try {
-      const { data } = await axios.get("http://localhost:5000/chat", {
-        headers: {
-          Authorization: `Bearer ${loginState.accessToken}`,
-        },
-      });
+      const { data } = await axios.get(
+        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/chat`,
+        {
+          headers: {
+            Authorization: `Bearer ${loginState.accessToken}`,
+          },
+        }
+      );
       getUnreadCnt(data);
       setChatRoom(data);
     } catch (err) {

@@ -35,8 +35,11 @@ export default function ProfileHeader(props) {
           alt={props.user.username}
           src={props.user.profileImage}
         />
-
-        <div className="profile__bubble">{props.user.statusMessage || "-"}</div>
+        {props.user.statusMessage ? (
+          <div className="profile__bubble">{props.user.statusMessage}</div>
+        ) : (
+          <div className="profile__bubble-none">작성된 한마디가 없습니다</div>
+        )}
         <div className="profile__last-access">
           {props.user.lastAccess === "online" ? (
             <span className="profile__online">접속중</span>
@@ -57,7 +60,7 @@ export default function ProfileHeader(props) {
                     className="row1__follow"
                     onClick={async () => {
                       await axios.get(
-                        `http://localhost:5000/user/follow/${props.userId}`,
+                        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/user/follow/${props.userId}`,
                         {
                           headers: {
                             Authorization: `Bearer ${loginState.accessToken}`,
@@ -161,9 +164,13 @@ export default function ProfileHeader(props) {
             ) : null}
           </div>
         </div>
-        <pre className="right__introduction">
-          {props.user.introduction || "-"}
-        </pre>
+        {props.user.introduction ? (
+          <pre classNmae="right__introduction">{props.user.introduction}</pre>
+        ) : (
+          <div className="right__introduction-none">
+            자기소개를 작성하지 않았습니다
+          </div>
+        )}
       </div>
     </div>
   );

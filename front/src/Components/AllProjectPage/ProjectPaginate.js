@@ -20,7 +20,7 @@ export default function ProjectPaginate(props) {
           project: { rows: projectData, count },
         },
       } = await axios.get(
-        `http://localhost:5000/project?state=${props.state}&pageSize=12&page=${page}`
+        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project?state=${props.state}&pageSize=12&page=${page}`
       );
       setTotCount(count);
       setProject(projectData);
@@ -31,7 +31,7 @@ export default function ProjectPaginate(props) {
 
   const handlePageChange = (page) => {
     setPage(page);
-    console.log(page);
+    // console.log(page);
   };
 
   useEffect(() => {
@@ -60,7 +60,7 @@ export default function ProjectPaginate(props) {
         <>
           <div className="project-grid">
             {Project.map((el, idx) => {
-              console.log(el);
+              // console.log(el);
               return <Cards key={el["id"]} projectData={el} />;
             })}
           </div>

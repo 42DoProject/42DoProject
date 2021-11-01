@@ -27,7 +27,7 @@ function App(props) {
       try {
         if (loginState) {
           const { data } = await axios.get(
-            `http://localhost:5000/auth/signin?refresh_token=${loginState.refreshToken}`
+            `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/auth/signin?refresh_token=${loginState.refreshToken}`
           );
           socket.emit("authorization", {
             token: data.accessToken,
@@ -59,7 +59,8 @@ function App(props) {
         <Route path="/cadet/recruit" component={RecruitCadet} />
         <Route path="/cadet/all" component={AllCadet} />
         <Route path="/lounge" component={LoungePage} />
-        <Route path="/project/edit" component={ProjectEditPage} />
+        <Route exact path="/project/edit" component={ProjectEditPage} />
+        <Route exact path="/project/edit/:id" component={ProjectEditPage} />
         <Route exact path="/project/:id" component={ProjectDetail} />
       </Switch>
     </Layout>

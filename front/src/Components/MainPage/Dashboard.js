@@ -17,11 +17,14 @@ export default function Dashboard(props) {
 
   const getData = async () => {
     try {
-      const { data } = await axios.get("http://localhost:5000/user/me", {
-        headers: {
-          Authorization: `Bearer ${loginState.accessToken}`,
-        },
-      });
+      const { data } = await axios.get(
+        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/user/me`,
+        {
+          headers: {
+            Authorization: `Bearer ${loginState.accessToken}`,
+          },
+        }
+      );
       setUserData(data);
     } catch (err) {
       console.log(err);
@@ -34,7 +37,9 @@ export default function Dashboard(props) {
         data: {
           project: { count },
         },
-      } = await axios.get("http://localhost:5000/project?state=proceeding");
+      } = await axios.get(
+        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project?state=proceeding`
+      );
       setProceedingPrCnt(count);
     } catch (err) {
       console.log(err);
@@ -103,7 +108,7 @@ export default function Dashboard(props) {
               </div>
             </div>
             <div className="row2__box2">
-              <div className="box2__title">진행중인 프로젝트</div>
+              <div className="box2__title">참여중인 프로젝트</div>
               <div className="box2__slides">
                 {loginState && userData?.participatingProject.length ? (
                   <ProgressSlide projectData={userData?.participatingProject} />

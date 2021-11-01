@@ -3,4 +3,8 @@
 .recruitCadet-wrap {
   margin: 0 auto;
   max-width: 1440px;
+  .recruitCadet-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 3fr);
+  }
 }

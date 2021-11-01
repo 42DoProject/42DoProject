@@ -22,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: list of files
-        working-directory: front
+        working-directory: back
         run: ls
   deploy:
     name: Deploy

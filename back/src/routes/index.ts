@@ -72,6 +72,7 @@ const makeDump = async (
     position: 0,
     skill: [],
     level: 1,
+    statusMessage: "",
   });
   await profileToS3(row.id, row.profileImage);
   await push(row.id);

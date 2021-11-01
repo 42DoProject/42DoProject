@@ -2,17 +2,18 @@ name: CI
 
 on:
   pull_request:
-    branches: [ deploy-frontend ]
+    branches: [ deploy-backend ]
     types: [ closed ]
   workflow_dispatch:
 
 env:
   AWS_REGION: ap-northeast-2
   ECR_REPOSITORY: image-repo
-  ECS_SERVICE: service-frontend
+  ECS_SERVICE: service-backend
   ECS_CLUSTER: cluster
-  ECS_TASK_DEFINITION: MY_ECS_TASK_DEFINITION # set this to the path to your Amazon ECS task definition
-  CONTAINER_NAME: frontend
+  ECS_TASK_DEFINITION: ./.github/workflows/task-definition-back.json
+  ECS_TASK_NAME: task-backend
+  CONTAINER_NAME: backend
 
 jobs:
   workdir:
@@ -20,17 +21,19 @@ jobs:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: list of files
-        working-directory: front
-        run: ls
-        
+    - name: is pull request successed
+      run: echo "deploying . . . "
+
   deploy:
     name: Deploy
     needs: workdir
     runs-on: ubuntu-latest
     environment: production
     steps:
+    - name: get source
+      uses: actions/checkout@v2
+    - name: list of files
+      run: cd back && ls
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -48,10 +51,7 @@ jobs:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        # Build a docker container and
-        # push it to ECR so that it can
-        # be deployed to ECS.
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./back
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
@@ -62,7 +62,10 @@ jobs:
         task-definition: ${{ env.ECS_TASK_DEFINITION }}
         container-name: ${{ env.CONTAINER_NAME }}
         image: ${{ steps.build-image.outputs.image }}
-
+    - name: stop working task
+      run: |
+        tasks=`echo $(aws --region $AWS_REGION ecs list-tasks --family $ECS_TASK_NAME --cluster $ECS_CLUSTER | jq -r '.taskArns | reduce .[] as $item (""; . + $item + " ")') | cut -d '/' -f 3`
+        aws --region $AWS_REGION ecs stop-task --task $tasks --cluster $ECS_CLUSTER
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:

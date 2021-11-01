@@ -2,14 +2,16 @@ import React from "react";
 import "../../SCSS/MainPage/Lounge.scss";
 import { Icon } from "@iconify/react";
 import defaultImg from "../../default_intra.png";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router";
 
 export default function Lounge() {
+  const history = useHistory();
+
   return (
     <div className="lounge">
-      <Link className="lounge__title" to="/lounge">
+      <div className="lounge__title" onClick={() => history.push("/lounge")}>
         라운지
-      </Link>
+      </div>
       <div className="lounge__list">
         <div className="lounge__card">
           <div className="card__row1">

@@ -29,9 +29,8 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     steps:
-    - uses: actions/checkout@v2
-      with:
-        path: ./back
+    - name: get source
+      uses: actions/checkout@v2
     - name: list of files
       run: cd back && ls
     - name: Configure AWS credentials

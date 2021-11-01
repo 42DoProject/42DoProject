@@ -16,17 +16,9 @@ env:
   CONTAINER_NAME: frontend
 
 jobs:
-  workdir:
-    name: Workdir
-    if: github.event.pull_request.merged == true
-    runs-on: ubuntu-latest
-    steps:
-    - name: is pull request successed
-      run: echo "deploying . . . "
-
   deploy:
     name: Deploy
-    needs: workdir
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     environment: production
     steps:

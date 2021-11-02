@@ -3,6 +3,7 @@ export interface IUser {
   id: number;
   username: string;
   profileImage: string;
+  blurImage: string;
   status: number;
   position: number;
   skill: number[];

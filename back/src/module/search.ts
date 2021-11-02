@@ -15,6 +15,7 @@ export async function init() {
       id: u.id,
       username: u.username,
       profileImage: u.profileImage,
+      blurImage: u.blurImage,
       status: u.profile!.status,
       position: u.profile!.position,
       skill: u.profile!.skill,
@@ -131,6 +132,7 @@ export function insertUser(user: {
   id: number;
   username: string;
   profileImage: string;
+  blurImage: string;
   status: number;
   position: number;
   skill: number[];
@@ -142,6 +144,7 @@ export function insertUser(user: {
     id: user.id,
     username: user.username,
     profileImage: user.profileImage,
+    blurImage: user.blurImage,
     status: user.status,
     position: user.position,
     skill: user.skill,
@@ -167,6 +170,7 @@ export function insertProject(project: {
 export function updateUser(
   user: {
     profileImage?: string;
+    blurImage?: string;
     status?: number;
     position?: number;
     skill?: number[];
@@ -178,6 +182,7 @@ export function updateUser(
   for (const u of object.user)
     if (u.id === where.id) {
       if (user.profileImage !== undefined) u.profileImage = user.profileImage;
+      if (user.blurImage !== undefined) u.blurImage = user.blurImage;
       if (user.status !== undefined) u.status = user.status;
       if (user.position !== undefined) u.position = user.position;
       if (user.skill !== undefined) u.skill = user.skill;

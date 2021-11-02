@@ -248,12 +248,15 @@ export const profileImageBlur = async (
     response.status(400).json({ error: "bad request" });
     return;
   }
+  const image = `https://${process.env.AWS_FILE_BUCKET_NAME}.s3.ap-northeast-2.amazonaws.com/500/profile/${link}`;
   await User.update(
     {
-      blurImage: `https://${process.env.AWS_FILE_BUCKET_NAME}.s3.ap-northeast-2.amazonaws.com/500/profile/${link}`,
+      blurImage: image,
     },
     { where: { id: userId } }
   );
+  cadet.changeblurImage(Number(userId), image);
+  search.updateUser({ blurImage: image }, { id: Number(userId) });
   response.status(200).json({ message: "ok" });
 };
 

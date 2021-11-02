@@ -44,6 +44,7 @@ export function getUser(
   blur: boolean
 ): { count: number; list: IUser[] } {
   var userList = [...object.user].reverse().slice((page - 1) * 15, page * 15);
+  userList = JSON.parse(JSON.stringify(userList));
   if (blur) for (const u of userList) u.profileImage = u.blurImage;
   return {
     count: object.user.length,
@@ -55,7 +56,7 @@ export function searchUser(name: string, blur: boolean): IUser[] {
   const users: IUser[] = [];
   for (const u of object.user)
     if (compare(name, u.index)) {
-      const user = u;
+      const user = JSON.parse(JSON.stringify(u));
       if (blur) user.profileImage = user.blurImage;
       users.push(user);
     }
@@ -94,6 +95,7 @@ export function searchUserFilter(
     }
   }
   var userList = [...users].reverse().slice((page - 1) * 15, page * 15);
+  userList = JSON.parse(JSON.stringify(userList));
   if (blur) for (const u of userList) u.profileImage = u.blurImage;
   return {
     count: users.length,

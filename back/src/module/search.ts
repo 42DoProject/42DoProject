@@ -39,16 +39,26 @@ function compare(src: string, target: string): boolean {
   return true;
 }
 
-export function getUser(page: number): { count: number; list: IUser[] } {
+export function getUser(
+  page: number,
+  blur: boolean
+): { count: number; list: IUser[] } {
+  var userList = [...object.user].reverse().slice((page - 1) * 15, page * 15);
+  if (blur) for (const u of userList) u.profileImage = u.blurImage;
   return {
     count: object.user.length,
-    list: [...object.user].reverse().slice((page - 1) * 15, page * 15),
+    list: userList,
   };
 }
 
-export function searchUser(name: string): IUser[] {
+export function searchUser(name: string, blur: boolean): IUser[] {
   const users: IUser[] = [];
-  for (const u of object.user) if (compare(name, u.index)) users.push(u);
+  for (const u of object.user)
+    if (compare(name, u.index)) {
+      const user = u;
+      if (blur) user.profileImage = user.blurImage;
+      users.push(user);
+    }
   return users;
 }
 
@@ -59,7 +69,8 @@ export function searchUserFilter(
     skill?: number[];
     level?: number;
   },
-  page: number
+  page: number,
+  blur: boolean
 ): { count: number; list: IUser[] } {
   const users: IUser[] = [];
   var threshold = 0;
@@ -82,9 +93,11 @@ export function searchUserFilter(
       users.push(u);
     }
   }
+  var userList = [...users].reverse().slice((page - 1) * 15, page * 15);
+  if (blur) for (const u of userList) u.profileImage = u.blurImage;
   return {
     count: users.length,
-    list: [...users].reverse().slice((page - 1) * 15, page * 15),
+    list: userList,
   };
 }
 
@@ -121,9 +134,9 @@ export function searchProject(name: string[]) {
   return project;
 }
 
-export function search(name: string) {
+export function search(name: string, blur: boolean) {
   return {
-    user: searchUser(name),
+    user: searchUser(name, blur),
     project: searchProject(name.toLowerCase().split(" ")),
   };
 }

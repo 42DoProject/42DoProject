@@ -102,6 +102,8 @@ export function changeblurImage(userId: number, image: string) {
   }
 }
 
-export function getList() {
-  return [...queue].reverse();
+export function getList(blur: boolean) {
+  const list = [...queue].reverse();
+  if (blur) for (const u of list) u.profileImage = u.blurImage;
+  return list;
 }

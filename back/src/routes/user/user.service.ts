@@ -38,7 +38,7 @@ export const getConcurrentUsers = async (
 };
 
 export const getCadet = async (request: Request, response: Response) => {
-  response.status(200).send(cadet.getList());
+  response.status(200).send(cadet.getList(request.user ? false : true));
 };
 
 export const getFeed = async (request: Request, response: Response) => {

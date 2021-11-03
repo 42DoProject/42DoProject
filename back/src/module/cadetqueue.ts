@@ -6,6 +6,7 @@ const queue: {
   id: number;
   username: string;
   profileImage: string;
+  blurImage: string;
   position: number;
   statusMessage: string;
 }[] = [];
@@ -27,6 +28,7 @@ export async function init() {
       id: p.user.id,
       username: p.user.username,
       profileImage: p.user.profileImage,
+      blurImage: p.user.blurImage,
       position: p.position,
       statusMessage: p.statusMessage,
     });
@@ -41,6 +43,7 @@ export async function push(userId: number) {
       id: u!.id,
       username: u!.username,
       profileImage: u!.profileImage,
+      blurImage: u!.blurImage,
       position: u!.profile!.position,
       statusMessage: u!.profile!.statusMessage,
     });
@@ -51,6 +54,7 @@ export async function push(userId: number) {
     id: u!.id,
     username: u!.username,
     profileImage: u!.profileImage,
+    blurImage: u!.blurImage,
     position: u!.profile!.position,
     statusMessage: u!.profile!.statusMessage,
   });
@@ -80,6 +84,7 @@ export async function statusChanged(userId: number) {
         id: user.user.id,
         username: user.user.username,
         profileImage: user.user.profileImage,
+        blurImage: user.user.blurImage,
         position: user.position,
         statusMessage: user.statusMessage,
       });
@@ -88,6 +93,22 @@ export async function statusChanged(userId: number) {
   }
 }
 
-export function getList() {
-  return [...queue].reverse();
+export function changeblurImage(userId: number, image: string) {
+  for (const u of queue) {
+    if (u.id === userId) {
+      u.blurImage = image;
+      break;
+    }
+  }
+}
+
+export function getList(blur: boolean) {
+  const list = JSON.parse(JSON.stringify(queue));
+  list.reverse();
+  if (blur) {
+    for (const u of list) {
+      u.profileImage = u.blurImage;
+    }
+  }
+  return list;
 }

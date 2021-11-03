@@ -726,10 +726,7 @@ export const getApplyerList = async (request: Request, response: Response) => {
             },
             where: { projectId: projectId }
         })
-        if (applyerList.count === 0)
-            response.status(200).json({ message: 'empty applyerList' });
-        else
-            response.status(200).json({ applyerList });
+        response.status(200).json({ applyerList });
     } catch (error) {
         response.status(405).json({ errMessage: String(error) });
         return ;

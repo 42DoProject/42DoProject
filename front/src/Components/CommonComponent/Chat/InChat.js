@@ -6,16 +6,19 @@ import axios from "axios";
 import ChatCard from "./ChatCard";
 import socket from "../../../socket";
 import { Example as Popup } from "./PopUp";
+import Conv from "./INChatConv";
 
 function InChat({
   chatRoom,
   clickFlag,
+  setClickFlag,
   setInFlag,
   chatOutFlag,
   setChatOutFlag,
 }) {
   let loginState = useSelector((state) => state.loginReducer);
   const [chat, setChat] = useState();
+  const [inviteFlag, setInviteFlag] = useState(0);
   const userList = chatRoom.users.filter((e) => e.id !== loginState.id);
   const getChat = async (uuid) => {
     try {
@@ -45,7 +48,10 @@ function InChat({
       socket.off("chat:leave");
     };
   }, [loginState]);
-
+  useEffect(() => {
+    const inChat__bodyEl = document.querySelector(".inChat__body");
+    inChat__bodyEl.scrollTop = inChat__bodyEl.scrollHeight;
+  }, [chat]);
   return (
     <>
       <div className="inChat">
@@ -70,11 +76,39 @@ function InChat({
                   }
                 })}
           </div>
+          {clickFlag === 0 ? (
+            <Icon
+              className="nav__resize-up"
+              icon="si-glyph:resize-out-frame"
+              hFlip="true"
+              height="1.5rem"
+              onClick={() => {
+                let chatLogEl = document.querySelector(".chatLog");
+                chatLogEl.style.width = "80vw";
+                chatLogEl.style.height = "90vh";
+                setClickFlag(1);
+              }}
+            />
+          ) : (
+            <Icon
+              className="nav__resize-down"
+              icon="si-glyph:resize-in-frame"
+              height="1.5rem"
+              hFlip="true"
+              onClick={() => {
+                let chatLogEl = document.querySelector(".chatLog");
+                chatLogEl.style.width = "22rem";
+                chatLogEl.style.height = "40rem";
+                setClickFlag(0);
+              }}
+            />
+          )}
           <Popup
             uuid={chatRoom.uuid}
             chatOutFlag={chatOutFlag}
             setChatOutFlag={setChatOutFlag}
             setInFlag={setInFlag}
+            setInviteFlag={setInviteFlag}
           />
           <div
             className="close"
@@ -89,6 +123,16 @@ function InChat({
             <Icon icon="bx:bx-x" height="2rem" />
           </div>
         </div>
+        {inviteFlag === 1 && (
+          <Conv
+            setInviteFlag={setInviteFlag}
+            clickFlag={clickFlag}
+            chatRoom={chatRoom}
+            chatOutFlag={chatOutFlag}
+            setChatOutFlag={setChatOutFlag}
+            setInFlag={setInFlag}
+          />
+        )}
         <div className="inChat__body">
           {chat &&
             chat.map((e, idx) => {

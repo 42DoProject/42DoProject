@@ -25,7 +25,7 @@ export default function ChatCard({ chatInfo, imgFlag }) {
       }
     };
     imgFlag && getProfile(chatInfo.userId);
-  }, []);
+  }, [imgFlag]);
   return (
     <div className={`chatCard-${chatType}`}>
       <div className="chatCard__column1">

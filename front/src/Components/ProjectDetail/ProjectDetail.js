@@ -22,7 +22,8 @@ export default function ProjectDetail(props) {
 
   useEffect(() => {
     getData();
-  }, []);
+    setApplyFlag(0);
+  }, [applyFlag]);
 
   useEffect(() => {
     if (loginState !== null) getUserStatus();

@@ -68,6 +68,7 @@ const makeDump = async (
     id: row.id,
     username: row.username,
     profileImage: row.profileImage,
+    blurImage: "",
     status: Number(process.env.CADET_LOOKING_FOR_PROJECT_STATUS),
     position: 0,
     skill: [],

@@ -51,24 +51,30 @@ export default function LoungeBody() {
           <span className="right-num">{concurrents?.length}명</span>
         </div>
         <div className="right__connected-wrap">
-          <div className="right__connected">
-            {concurrents?.map((v, i) => {
-              return (
-                <div
-                  className="connected__cadet"
-                  key={i}
-                  onClick={() => {
-                    history.push(`/profile/${v.userId}`);
-                  }}>
-                  <img
-                    className="connected__img"
-                    src={v.profileImage || defaultImg}
-                    alt="connected__img"></img>
-                  <div className="connected__name">{v.username}</div>
-                </div>
-              );
-            })}
-          </div>
+          {concurrents?.length === 0 ? (
+            <div className="connected__noCadet">접속중인 카뎃이 없어요</div>
+          ) : (
+            <>
+              <div className="right__connected">
+                {concurrents?.map((v, i) => {
+                  return (
+                    <div
+                      className="connected__cadet"
+                      key={i}
+                      onClick={() => {
+                        history.push(`/profile/${v.userId}`);
+                      }}>
+                      <img
+                        className="connected__img"
+                        src={v.profileImage || defaultImg}
+                        alt="connected__img"></img>
+                      <div className="connected__name">{v.username}</div>
+                    </div>
+                  );
+                })}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

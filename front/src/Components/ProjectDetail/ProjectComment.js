@@ -14,6 +14,12 @@ export default function ProjectComment({
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState();
   const [newComment, setNewComment] = useState("");
+  const [isChange, setIsChange] = useState(0);
+
+  useEffect(() => {
+    getCommentData();
+    setIsChange(0);
+  }, [isChange, page]);
 
   const getCommentData = async () => {
     try {
@@ -24,7 +30,6 @@ export default function ProjectComment({
       } = await axios.get(
         `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project/comments?projectId=${projectId}&page=${page}&pageSize=5`
       );
-
       setCommentList(commentData);
       setTotalPage(count);
     } catch (err) {
@@ -43,6 +48,7 @@ export default function ProjectComment({
       .then((res) => {
         console.log(res);
         setCommentCount(commentCount - 1);
+        setIsChange(1);
       })
       .catch((e) => console.log(e));
     e.preventDefault();
@@ -65,6 +71,7 @@ export default function ProjectComment({
           console.log(res);
           setCommentCount(commentCount + 1);
           setNewComment("");
+          setIsChange(1);
         })
         .catch((e) => console.log(e));
       e.preventDefault();
@@ -74,10 +81,6 @@ export default function ProjectComment({
   const handlePageChange = (page) => {
     setPage(page);
   };
-
-  useEffect(() => {
-    getCommentData();
-  }, [page, commentList]);
 
   const onChange = useCallback((e) => {
     setNewComment(e.target.value);

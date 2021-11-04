@@ -77,6 +77,14 @@
   border-radius: $round;
   box-shadow: $shadow;
   padding: 1rem;
+  .connected__noCadet {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: $fontSs;
+    color: $lightGrey;
+  }
   .right__connected {
     padding: 1rem;
     border-radius: $round;

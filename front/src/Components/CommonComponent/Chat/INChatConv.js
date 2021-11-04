@@ -4,10 +4,12 @@ import { useSelector } from "react-redux";
 import UserNameCard from "./UserNameCard";
 
 export default function Conv({
+  setInviteFlag,
   chatOutFlag,
   setChatOutFlag,
-  setConvFlag,
   clickFlag,
+  chatRoom,
+  setInFlag,
 }) {
   const [user, setUser] = useState();
   const [userIdList, setUserIdList] = useState([]);
@@ -20,7 +22,7 @@ export default function Conv({
     let newNameList = [...new Set([...userNameList, userName])];
     setUserNameList(newNameList);
   };
-  console.log("search", user);
+
   const searchUser = async (name) => {
     try {
       const { data } = await axios.get(
@@ -33,11 +35,10 @@ export default function Conv({
       setUser();
     }
   };
-
   const inviteUser = async (userId) => {
     await axios({
       method: "POST",
-      url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/chat`,
+      url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/chat/${chatRoom.uuid}`,
       headers: {
         Authorization: `Bearer ${loginState.accessToken}`,
       },
@@ -46,12 +47,20 @@ export default function Conv({
       },
     });
     chatOutFlag ? setChatOutFlag(0) : setChatOutFlag(1);
-    setConvFlag(0);
+    setInFlag(-1);
   };
+
   useEffect(() => {
     const $input = document.querySelector(".chatLog__addConv input");
     $input.focus();
+    const clickListener = function (e) {
+      if (e?.target?.offsetParent?.className == "inChat") {
+        setInviteFlag(0);
+      }
+    };
+    document.body.addEventListener("click", clickListener);
   }, []);
+
   return (
     <>
       <div className="chatLog__addConv">
@@ -85,8 +94,9 @@ export default function Conv({
                 className="addUser__card"
                 key={e.id}
                 onClick={(event) => {
-                  const chatLogInput =
-                    document.querySelector(".addConv__input");
+                  const chatLogInput = document.querySelector(
+                    ".inChat .addConv__input"
+                  );
                   if (userNameList.length <= 1) addUserList(e.id, e.username);
                   chatLogInput.value = "";
                   chatLogInput.focus();
@@ -99,7 +109,7 @@ export default function Conv({
           })}
           {userNameList.length !== 0 && (
             <div className="chat-create" onClick={() => inviteUser(userIdList)}>
-              방 만들기
+              방만들기
             </div>
           )}
         </div>
@@ -125,7 +135,7 @@ export default function Conv({
           })}
           {userNameList.length !== 0 && (
             <div className="chat-create" onClick={() => inviteUser(userIdList)}>
-              방 만들기
+              초대하기
             </div>
           )}
         </div>

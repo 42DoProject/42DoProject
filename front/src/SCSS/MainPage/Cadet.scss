@@ -24,6 +24,17 @@
     //   justify-content: center;
     // }
   }
+  .noCadet {
+    display: flex;
+    justify-content: center;
+    padding: 15rem 0;
+    font-weight: $normal;
+    opacity: 0.5;
+    border-radius: $round;
+    background-color: $lightestGrey;
+    margin: 2rem;
+    // height: 100%;
+  }
 }
 
 @media (max-width: 63rem) {

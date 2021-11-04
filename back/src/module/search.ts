@@ -15,6 +15,7 @@ export async function init() {
       id: u.id,
       username: u.username,
       profileImage: u.profileImage,
+      blurImage: u.blurImage,
       status: u.profile!.status,
       position: u.profile!.position,
       skill: u.profile!.skill,
@@ -38,16 +39,27 @@ function compare(src: string, target: string): boolean {
   return true;
 }
 
-export function getUser(page: number): { count: number; list: IUser[] } {
+export function getUser(
+  page: number,
+  blur: boolean
+): { count: number; list: IUser[] } {
+  var userList = [...object.user].reverse().slice((page - 1) * 15, page * 15);
+  userList = JSON.parse(JSON.stringify(userList));
+  if (blur) for (const u of userList) u.profileImage = u.blurImage;
   return {
     count: object.user.length,
-    list: [...object.user].reverse().slice((page - 1) * 15, page * 15),
+    list: userList,
   };
 }
 
-export function searchUser(name: string): IUser[] {
+export function searchUser(name: string, blur: boolean): IUser[] {
   const users: IUser[] = [];
-  for (const u of object.user) if (compare(name, u.index)) users.push(u);
+  for (const u of object.user)
+    if (compare(name, u.index)) {
+      const user = JSON.parse(JSON.stringify(u));
+      if (blur) user.profileImage = user.blurImage;
+      users.push(user);
+    }
   return users;
 }
 
@@ -58,7 +70,8 @@ export function searchUserFilter(
     skill?: number[];
     level?: number;
   },
-  page: number
+  page: number,
+  blur: boolean
 ): { count: number; list: IUser[] } {
   const users: IUser[] = [];
   var threshold = 0;
@@ -81,9 +94,12 @@ export function searchUserFilter(
       users.push(u);
     }
   }
+  var userList = [...users].reverse().slice((page - 1) * 15, page * 15);
+  userList = JSON.parse(JSON.stringify(userList));
+  if (blur) for (const u of userList) u.profileImage = u.blurImage;
   return {
     count: users.length,
-    list: [...users].reverse().slice((page - 1) * 15, page * 15),
+    list: userList,
   };
 }
 
@@ -120,9 +136,9 @@ export function searchProject(name: string[]) {
   return project;
 }
 
-export function search(name: string) {
+export function search(name: string, blur: boolean) {
   return {
-    user: searchUser(name),
+    user: searchUser(name, blur),
     project: searchProject(name.toLowerCase().split(" ")),
   };
 }
@@ -131,6 +147,7 @@ export function insertUser(user: {
   id: number;
   username: string;
   profileImage: string;
+  blurImage: string;
   status: number;
   position: number;
   skill: number[];
@@ -142,6 +159,7 @@ export function insertUser(user: {
     id: user.id,
     username: user.username,
     profileImage: user.profileImage,
+    blurImage: user.blurImage,
     status: user.status,
     position: user.position,
     skill: user.skill,
@@ -167,6 +185,7 @@ export function insertProject(project: {
 export function updateUser(
   user: {
     profileImage?: string;
+    blurImage?: string;
     status?: number;
     position?: number;
     skill?: number[];
@@ -178,6 +197,7 @@ export function updateUser(
   for (const u of object.user)
     if (u.id === where.id) {
       if (user.profileImage !== undefined) u.profileImage = user.profileImage;
+      if (user.blurImage !== undefined) u.blurImage = user.blurImage;
       if (user.status !== undefined) u.status = user.status;
       if (user.position !== undefined) u.position = user.position;
       if (user.skill !== undefined) u.skill = user.skill;

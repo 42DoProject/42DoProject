@@ -3,7 +3,9 @@ import * as search from "../../module/search";
 
 export const searchKeyword = (request: Request, response: Response) => {
   const { keyword } = request.params;
-  response.status(200).json(search.search(keyword));
+  response
+    .status(200)
+    .json(search.search(keyword, request.user ? false : true));
 };
 
 export const getUser = (request: Request, response: Response) => {
@@ -12,7 +14,7 @@ export const getUser = (request: Request, response: Response) => {
     response.status(400).json({ error: "invalid page" });
     return;
   }
-  response.status(200).json(search.getUser(page));
+  response.status(200).json(search.getUser(page, request.user ? false : true));
 };
 
 export const getUserFilter = (request: Request, response: Response) => {
@@ -30,14 +32,17 @@ export const getUserFilter = (request: Request, response: Response) => {
         skill: skill,
         level: level,
       },
-      page
+      page,
+      request.user ? false : true
     )
   );
 };
 
 export const searchUser = (request: Request, response: Response) => {
   const { keyword } = request.params;
-  response.status(200).json(search.searchUser(keyword));
+  response
+    .status(200)
+    .json(search.searchUser(keyword, request.user ? false : true));
 };
 
 export const getProject = (request: Request, response: Response) => {

@@ -7,4 +7,14 @@
     display: grid;
     grid-template-columns: repeat(5, 3fr);
   }
+  .noCadet {
+    display: flex;
+    justify-content: center;
+    padding: 6rem;
+    font-weight: $normal;
+    opacity: 0.5;
+    border-radius: $round;
+    background-color: $lightestGrey;
+    margin: 2rem;
+  }
 }

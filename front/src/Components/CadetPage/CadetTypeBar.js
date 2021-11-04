@@ -20,7 +20,7 @@ export default function CadetTypeBar(props) {
       <div className="cadet-bar">
         <div className="cadet-bar-column1">
           <Link className={recruitColor} to="/cadet/recruit">
-            프로젝트를 찾고있는 카뎃
+            프로젝트를 찾고 있는 카뎃
           </Link>
           <Link className={allColor} to="/cadet/all">
             모든 카뎃

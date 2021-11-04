@@ -17,7 +17,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import socket from "./socket";
 import ProjectDetail from "./Components/ProjectDetail/ProjectDetail";
-
+import NotPage from "./Components/MainPage/NotPage";
 function App(props) {
   let loginState = useSelector((state) => state.loginReducer);
   let dispatch = useDispatch();
@@ -62,6 +62,7 @@ function App(props) {
         <Route exact path="/project/edit" component={ProjectEditPage} />
         <Route exact path="/project/edit/:id" component={ProjectEditPage} />
         <Route exact path="/project/:id" component={ProjectDetail} />
+        <Route path="/" component={NotPage} />
       </Switch>
     </Layout>
   );

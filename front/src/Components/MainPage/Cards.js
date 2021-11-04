@@ -52,7 +52,8 @@ export default function Cards(props) {
         e.preventDefault();
         history.push(`/project/${props.projectData.id}`);
       }}
-      style={{ cursor: "pointer" }}>
+      style={{ cursor: "pointer" }}
+    >
       {isNew(props.projectData.createdAt) === 1 && (
         <div className="card__new-tag">NEW</div>
       )}
@@ -60,7 +61,8 @@ export default function Cards(props) {
         className="card__image"
         style={{
           backgroundColor: imgIsLoaded ? "#808080" : "transparent",
-        }}>
+        }}
+      >
         {/* <img
           className="card_img__small"
           src={
@@ -98,7 +100,10 @@ export default function Cards(props) {
             <span className="chat__num">{props.projectData.viewCount}</span>
           </div>
           <div className="info__comment">
-            댓글 <span className="comment__num">0</span>
+            댓글{" "}
+            <span className="comment__num">
+              {props.projectData.commentCount}
+            </span>
           </div>
         </div>
         <div className="info__right">

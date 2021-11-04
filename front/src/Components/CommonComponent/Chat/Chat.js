@@ -7,6 +7,7 @@ import InChat from "./InChat";
 import { useSelector } from "react-redux";
 import socket from "../../../socket";
 import Conv from "./AddConv";
+
 export default function Chat() {
   let loginState = useSelector((state) => state.loginReducer);
   const [clickFlag, setClickFlag] = useState(0);
@@ -84,6 +85,7 @@ export default function Chat() {
             chatRoom={inFlag}
             setInFlag={setInFlag}
             clickFlag={clickFlag}
+            setClickFlag={setClickFlag}
             chatOutFlag={chatOutFlag}
             setChatOutFlag={setChatOutFlag}
           />

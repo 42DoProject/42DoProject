@@ -1,0 +1,104 @@
+@import "../Base.scss";
+
+.wait__list {
+  position: relative;
+  // border: solid 1px black;
+  .waitlist {
+    margin-left: 30rem;
+    .waitlist__btn {
+      border-radius: 2rem;
+      color: white;
+      font-size: $fontSm;
+      padding: 0.4rem;
+      text-align: center;
+      background-color: $mainColor;
+      cursor: pointer;
+    }
+    .waitlist__count {
+      position: absolute;
+      z-index: 1;
+      top: -0.5rem;
+      right: -0.2rem;
+      border-radius: 50%;
+      color: white;
+      font-size: $fontSs;
+      padding: 0.2rem;
+      text-align: center;
+      background-color: $pointRed;
+    }
+    .waitlist__count_zero {
+      position: absolute;
+      z-index: 1;
+      top: -0.5rem;
+      right: -0.2rem;
+      border-radius: 50%;
+      color: white;
+      font-size: $fontSs;
+      padding: 0.2rem;
+      text-align: center;
+      background-color: $lightGrey;
+    }
+  }
+  .waitlist__wrap {
+    position: absolute;
+    background-color: white;
+    // border-bottom-left-radius: 0.3rem;
+    padding: 0.7rem;
+    border-radius: $round;
+    box-shadow: $shadow;
+    top: 2rem;
+    right: -14.5rem;
+    width: 20rem;
+    z-index: 3;
+    overflow: hidden;
+    .waitlist__header {
+      padding: 0.5rem;
+      font-size: $fontSm;
+      font-weight: $bold;
+      border-bottom: 1px solid $lightestGrey;
+    }
+    .waitlist__body {
+      max-height: 19rem;
+      overflow-y: scroll;
+      .body__card {
+        border-bottom: 1px solid $lightestGrey;
+        // padding: 0 0.5rem;
+        align-items: center;
+        .card__row1 {
+          padding: 0.5rem;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          font-size: $fontSm;
+          justify-content: space-between;
+          .card__img {
+            img {
+              border-radius: 50%;
+              width: 2rem;
+              height: 2rem;
+              object-fit: cover;
+            }
+          }
+          .card__icon {
+            display: flex;
+            flex-direction: row;
+            svg {
+              margin: 5px;
+            }
+          }
+        }
+      }
+      .notiText__none {
+        background-color: $bodyColor;
+        color: $grey;
+        font-size: $fontSs;
+        margin: 0.7rem 0 0 0.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem;
+        border-radius: $round;
+      }
+    }
+  }
+}

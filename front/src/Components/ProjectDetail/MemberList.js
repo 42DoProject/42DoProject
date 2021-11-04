@@ -3,6 +3,8 @@ import "../../SCSS/ProjectDetail/MemberList.scss";
 import { Icon } from "@iconify/react";
 import axios from "axios";
 import { positions } from "../../userData";
+import WaitList from "./WaitList";
+import { useHistory } from "react-router";
 
 export default function MemberList({
   data,
@@ -10,6 +12,8 @@ export default function MemberList({
   userStatus,
   setApplyFlag,
 }) {
+  const history = useHistory();
+
   const onApply = (e, elm) => {
     if (loginState === null) alert("로그인이 필요합니다.");
     else {
@@ -29,9 +33,6 @@ export default function MemberList({
     }
   };
 
-  console.log("data", data);
-  console.log("projectprofile", data.projectprofile);
-
   return (
     <>
       <div className="member_list">
@@ -40,28 +41,44 @@ export default function MemberList({
           <div className="member_count">
             멤버 {data.currentMember} / {data.totalMember}
           </div>
+          {loginState?.id === data.leader ? (
+            <WaitList
+              data={data}
+              loginState={loginState}
+              setApplyFlag={setApplyFlag}
+              positions={positions}
+            />
+          ) : null}
         </div>
         <div className="member_image_list">
           <div className="filled_member">
-            {data.projectprofile.map((e, key) => (
+            {data?.projectprofile.map((elm, key) => (
               <div className="member_image" key={key}>
-                {data.leader === e.profile.id ? (
-                  <Icon
-                    icon="ph:crown-simple-fill"
-                    color="#ffb648"
-                    fontSize="1.3rem"
-                  />
+                {data.leader === elm.profile.id ? (
+                  <div className="leader_icon">
+                    <Icon
+                      icon="ph:crown-simple-fill"
+                      color="#ffb648"
+                      fontSize="1.3rem"
+                    />
+                  </div>
                 ) : null}
                 <img
                   key={key}
-                  alt={e.profile.userId}
-                  src={e.profile.user.profileImage}
+                  alt={elm.profile.id}
+                  src={elm.profile.user.profileImage}
+                  style={{ cursor: "pointer" }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    history.push(`/profile/${elm.profile.id}`);
+                  }}
                 />
                 <div className="member_position">
-                  {e.position === null ? (
-                    <div>백엔드</div>
+                  {elm.position === null ? (
+                    // 리더의 포지션이 정해지면 수정 필요.
+                    <div>팀장</div>
                   ) : (
-                    positions[e.position]
+                    positions[elm.position]
                   )}
                 </div>
               </div>

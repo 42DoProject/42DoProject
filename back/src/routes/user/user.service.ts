@@ -81,16 +81,19 @@ export const getMe = async (request: Request, response: Response) => {
         model: Projectprofile,
         attributes: ["id"],
         include: [{ model: Project }],
+        order: ['createdAt']
       },
       {
         model: Applyprojectprofile,
         attributes: ["id"],
         include: [{ model: Project }],
+        order: ['createdAt']
       },
       {
         model: Likeprojectprofile,
         attributes: ["id"],
         include: [{ model: Project }],
+        order: ['createdAt']
       },
     ],
   });
@@ -273,16 +276,19 @@ export const profileMain = async (request: Request, response: Response) => {
         model: Projectprofile,
         attributes: ["id"],
         include: [{ model: Project }],
+        order: ['createdAt']
       },
       {
         model: Applyprojectprofile,
         attributes: ["id"],
         include: [{ model: Project }],
+        order: ['createdAt']
       },
       {
         model: Likeprojectprofile,
         attributes: ["id"],
         include: [{ model: Project }],
+        order: ['createdAt']
       },
     ],
   });

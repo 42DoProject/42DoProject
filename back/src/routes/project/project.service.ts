@@ -1133,3 +1133,31 @@ export const deletePosition = async (request: Request, response: Response) => {
         return ;
     }
 }
+
+export const changeTeamLeader = async (request: Request, response: Response) => {
+    const { projectId, profileId } = request.params;
+    if (projectId === undefined || profileId === undefined) {
+        response.status(400).json({ errMessage: 'please input projectId or profileId value' });
+        return ;
+    }
+
+    try {
+        const project = await Project.findOne({
+            attributes: ['leader'],
+            where: { id: projectId }
+        })
+        // check authority
+        if (request.user!.id !== project?.leader) {
+            response.status(401).json({ errMessage: 'no authority' });
+            return ;
+        }
+
+        await Project.update({
+            leader: profileId
+        }, { where: { id: projectId } })
+        response.status(200).json({ message: 'changed successfully.' });
+    } catch (error) {
+        response.status(405).json({ errMessage: String(error) });
+        return ;
+    }
+}

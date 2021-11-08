@@ -4,12 +4,18 @@ import axios from "axios";
 import { Icon } from "@iconify/react";
 import { useSelector } from "react-redux";
 
-export const Example = ({ uuid, chatOutFlag, setChatOutFlag, setInFlag }) => {
+export const Example = ({
+  uuid,
+  chatOutFlag,
+  setChatOutFlag,
+  setInFlag,
+  setInviteFlag,
+}) => {
   return (
     <OverlayTrigger
       trigger="focus"
       placement="bottom"
-      overlay={Pop(uuid, chatOutFlag, setChatOutFlag, setInFlag)}
+      overlay={Pop(uuid, chatOutFlag, setChatOutFlag, setInFlag, setInviteFlag)}
     >
       <Button variant="light">
         <div>
@@ -23,11 +29,15 @@ export const Example = ({ uuid, chatOutFlag, setChatOutFlag, setInFlag }) => {
   );
 };
 
-function Pop(uuid, chatOutFlag, setChatOutFlag, setInFlag) {
+function Pop(uuid, chatOutFlag, setChatOutFlag, setInFlag, setInviteFlag) {
   const loginState = useSelector((state) => state.loginReducer);
   return (
     <Popover id="popover-basic">
-      <div>
+      <div
+        onClick={() => {
+          setInviteFlag(1);
+        }}
+      >
         <Popover.Body>채팅방 초대</Popover.Body>
       </div>
       <div

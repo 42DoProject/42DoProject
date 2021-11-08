@@ -6,6 +6,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
+
   .inChat__header {
     margin-bottom: 2rem;
     display: flex;
@@ -21,6 +22,22 @@
       font-size: 1.3rem;
       span {
         margin-right: 1rem;
+      }
+    }
+    .nav__resize-up {
+      position: absolute;
+      right: 4rem;
+      cursor: pointer;
+      &:hover {
+        color: $mainColor;
+      }
+    }
+    .nav__resize-down {
+      position: absolute;
+      right: 4rem;
+      cursor: pointer;
+      &:hover {
+        color: $mainColor;
       }
     }
     .btn {
@@ -45,12 +62,34 @@
       }
     }
   }
+
+  .chatLog__addConv {
+    // position: absolute;
+    // top: 2.5rem;
+    z-index: 3;
+    // background-color: aqua;
+    position: relative;
+    top: -1.5rem;
+  }
+
+  .chatLog__addUser {
+    position: absolute;
+    top: 5rem;
+    z-index: 3;
+  }
+  .chatLog__addUser-big {
+    position: absolute;
+    top: 5rem;
+    z-index: 3;
+  }
+
   .inChat__body {
     width: 100%;
     height: 80%;
     overflow-y: scroll;
     overflow-x: hidden;
   }
+
   .inChat__input-small {
     position: absolute;
     width: 100%;

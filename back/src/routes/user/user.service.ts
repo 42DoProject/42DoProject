@@ -81,19 +81,19 @@ export const getMe = async (request: Request, response: Response) => {
         model: Projectprofile,
         attributes: ["id"],
         include: [{ model: Project }],
-        order: ['createdAt']
+        order: ["createdAt"],
       },
       {
         model: Applyprojectprofile,
         attributes: ["id"],
         include: [{ model: Project }],
-        order: ['createdAt']
+        order: ["createdAt"],
       },
       {
         model: Likeprojectprofile,
         attributes: ["id"],
         include: [{ model: Project }],
-        order: ['createdAt']
+        order: ["createdAt"],
       },
     ],
   });
@@ -276,19 +276,19 @@ export const profileMain = async (request: Request, response: Response) => {
         model: Projectprofile,
         attributes: ["id"],
         include: [{ model: Project }],
-        order: ['createdAt']
+        order: ["createdAt"],
       },
       {
         model: Applyprojectprofile,
         attributes: ["id"],
         include: [{ model: Project }],
-        order: ['createdAt']
+        order: ["createdAt"],
       },
       {
         model: Likeprojectprofile,
         attributes: ["id"],
         include: [{ model: Project }],
-        order: ['createdAt']
+        order: ["createdAt"],
       },
     ],
   });
@@ -386,7 +386,7 @@ export const unfollow = async (request: Request, response: Response) => {
     return;
   }
   following.splice(idx, 1);
-  follower.splice(follower.indexOf(parseInt(id)), 1);
+  follower.splice(follower.indexOf(parseInt(request.user!.id)), 1);
   await Profile.update(
     { following: following },
     { where: { userId: request.user?.id } }

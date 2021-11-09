@@ -64,7 +64,6 @@ export default function Chat() {
         onClick={() => {
           let chatEl = document.querySelector(".chat");
           let chatLogEl = document.querySelector(".chatLog");
-
           chatEl.style.visibility = "hidden";
           chatLogEl.style.visibility = "visible";
         }}

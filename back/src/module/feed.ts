@@ -78,7 +78,7 @@ export async function projectLeader(
   leaderId: number
 ) {
   const block = {
-    userId: 0,
+    userId: leaderId,
     date: Date.now(),
     type: type,
     args: [
@@ -97,7 +97,7 @@ export async function changeProjectStatus(
   status: string
 ) {
   const block = {
-    userId: 0,
+    userId: userId,
     date: Date.now(),
     type: 60,
     args: [
@@ -107,4 +107,24 @@ export async function changeProjectStatus(
   };
   await new Feed(block).save();
   getUserSocket(userId)?.emit("feed:notification", block);
+}
+
+export async function replyoflounge(
+  target: number,
+  userId: number,
+  username: string,
+  loungeId: number,
+  comment: string
+) {
+  const block = {
+    userId: target,
+    date: Date.now(),
+    type: 70,
+    args: [
+      { userId: userId, username: username },
+      { loungeId: loungeId, comment: comment },
+    ],
+  };
+  await new Feed(block).save();
+  getUserSocket(target)?.emit("feed:notification", block);
 }

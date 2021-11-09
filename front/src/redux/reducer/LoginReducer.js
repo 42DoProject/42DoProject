@@ -1,3 +1,4 @@
+import socket from "./socket";
 export default function loginReducer(state, action) {
   switch (action.type) {
     case "LOGIN":
@@ -13,6 +14,7 @@ export default function loginReducer(state, action) {
       return loginState;
     case "LOGOUT":
       clearInterval(localStorage.getItem("timerId"));
+      socket.emit("signOut");
       return null;
     case "TOKEN_UPDATE":
       let updateState = {

@@ -93,4 +93,9 @@ router.delete("/position/:projectId/:position", jwtGuards, (request: Request, re
   projectService.deletePosition(request, response);
 })
 
+// project leader API
+router.put("/leader/:projectId/:profileId", jwtGuards, (request: Request, response: Response) => {
+  projectService.changeTeamLeader(request, response);
+});
+
 export default router;

@@ -9,6 +9,8 @@ import {
 } from "sequelize-typescript";
 import { ProfileChat } from "../chat/profilechat.model";
 import { User } from "./user.model";
+import { Lounge } from "../lounge/lounge.model";
+import { Replyoflounge } from "../lounge/replyoflounge.model";
 import { Comments } from "../project/comments.model";
 import { Applyprojectprofile } from "../project/applyprojectprofile.model";
 import { Likeprojectprofile } from "../project/likeprojectprofile.model";
@@ -62,11 +64,17 @@ export class Profile extends Model {
   })
   user!: User;
 
-  @HasMany(() => Projectprofile)
-  projectprofile!: Projectprofile[];
-
   @HasMany(() => Comments)
   commentsprofile!: Comments[];
+
+  @HasMany(() => Lounge)
+  lounge!: Lounge[];
+
+  @HasMany(() => Replyoflounge)
+  replyoflounge!: Replyoflounge[];
+
+  @HasMany(() => Projectprofile)
+  projectprofile!: Projectprofile[];
 
   @HasMany(() => Applyprojectprofile)
   applyprojectprofile!: Applyprojectprofile[];

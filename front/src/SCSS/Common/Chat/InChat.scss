@@ -20,20 +20,25 @@
     .name {
       font-weight: $bold;
       font-size: 1.3rem;
+      margin: 0 auto;
+      position: relative;
+      left: -1.5rem;
       span {
         margin-right: 1rem;
       }
     }
     .nav__resize-up {
-      position: absolute;
+      // position: absolute;
       right: 4rem;
       cursor: pointer;
+      margin-right: 1rem;
       &:hover {
         color: $mainColor;
       }
     }
     .nav__resize-down {
-      position: absolute;
+      margin-right: 1rem;
+      // position: absolute;
       right: 4rem;
       cursor: pointer;
       &:hover {
@@ -88,6 +93,9 @@
     height: 80%;
     overflow-y: scroll;
     overflow-x: hidden;
+    .empty {
+      padding: 0.5rem 0;
+    }
   }
 
   .inChat__input-small {

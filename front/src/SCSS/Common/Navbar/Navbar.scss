@@ -105,11 +105,12 @@
     display: flex;
     justify-content: center;
     height: 1.3rem;
+    width: 1.3rem;
     border-radius: 50%;
     font-weight: 600;
     background-color: $pointRed;
     color: white;
-    left: 0.9rem;
+    left: 0.8rem;
     top: -0.2rem;
   }
   .notNotification {
@@ -120,11 +121,12 @@
     display: flex;
     justify-content: center;
     height: 1.3rem;
+    width: 1.3rem;
     border-radius: 50%;
     font-weight: 600;
     background-color: $lightGrey;
     color: white;
-    left: 0.9rem;
+    left: 0.8rem;
     top: -0.2rem;
   }
   .notiText__wrap {

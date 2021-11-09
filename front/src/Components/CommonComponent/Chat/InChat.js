@@ -31,11 +31,31 @@ function InChat({
         }
       );
       setChat(data);
+      const inChat__bodyEl = document.querySelector(".inChat__body");
+      inChat__bodyEl.scrollTop = inChat__bodyEl.scrollHeight;
     } catch (err) {
       console.log(err);
     }
   };
-
+  const getChatBefore = async (uuid, date) => {
+    try {
+      const { data } = await axios.get(
+        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/chat/${uuid}?date=${date}`,
+        {
+          headers: {
+            Authorization: `Bearer ${loginState.accessToken}`,
+          },
+        }
+      );
+      const inChat__bodyEl = document.querySelector(".inChat__body");
+      const inChat_Before = inChat__bodyEl.scrollHeight;
+      setChat([...data, ...chat]);
+      const inchat__bodyEl2 = document.querySelector(".inChat__body");
+      inchat__bodyEl2.scrollTop = inchat__bodyEl2.scrollHeight - inChat_Before;
+    } catch (err) {
+      console.log(err);
+    }
+  };
   useEffect(() => {
     getChat(chatRoom.uuid);
     socket.on("chat:leave", () => getChat(chatRoom.uuid));
@@ -48,9 +68,18 @@ function InChat({
       socket.off("chat:leave");
     };
   }, [loginState]);
+
   useEffect(() => {
     const inChat__bodyEl = document.querySelector(".inChat__body");
-    inChat__bodyEl.scrollTop = inChat__bodyEl.scrollHeight;
+    const handleScrollTop = () => {
+      if (inChat__bodyEl.scrollTop === 0) {
+        getChatBefore(chatRoom.uuid, chat[0].date);
+      }
+    };
+    inChat__bodyEl.addEventListener("scroll", handleScrollTop);
+    return () => {
+      inChat__bodyEl.removeEventListener("scroll", handleScrollTop);
+    };
   }, [chat]);
   return (
     <>
@@ -58,23 +87,6 @@ function InChat({
         <div className="inChat__header">
           <div className="back" onClick={() => setInFlag(-1)}>
             <Icon icon="dashicons:arrow-left-alt2" height="2rem" />
-          </div>
-          <div className="name">
-            {clickFlag
-              ? userList.map((e, idx) => <span key={idx}>{e.username}</span>)
-              : userList.map((e, idx) => {
-                  if (userList.length <= 2)
-                    return <span key={idx}>{e.username}</span>;
-                  else {
-                    if (idx === 0)
-                      return (
-                        <span key={idx}>{`${e.username} - 외 ${
-                          userList.length - 1
-                        }`}</span>
-                      );
-                    return "";
-                  }
-                })}
           </div>
           {clickFlag === 0 ? (
             <Icon
@@ -103,6 +115,23 @@ function InChat({
               }}
             />
           )}
+          <div className="name">
+            {clickFlag
+              ? userList.map((e, idx) => <span key={idx}>{e.username}</span>)
+              : userList.map((e, idx) => {
+                  if (userList.length <= 2)
+                    return <span key={idx}>{e.username}</span>;
+                  else {
+                    if (idx === 0)
+                      return (
+                        <span key={idx}>{`${e.username} - 외 ${
+                          userList.length - 1
+                        }`}</span>
+                      );
+                    return "";
+                  }
+                })}
+          </div>
           <Popup
             uuid={chatRoom.uuid}
             chatOutFlag={chatOutFlag}
@@ -134,6 +163,7 @@ function InChat({
           />
         )}
         <div className="inChat__body">
+          <div className="empty"></div>
           {chat &&
             chat.map((e, idx) => {
               let imgFlag = 1;

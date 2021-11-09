@@ -1,4 +1,4 @@
-import socket from "./socket";
+import socket from "../../socket";
 export default function loginReducer(state, action) {
   switch (action.type) {
     case "LOGIN":

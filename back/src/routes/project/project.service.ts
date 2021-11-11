@@ -1059,16 +1059,26 @@ export const unlikeProject = async (request: Request, response: Response) => {
 }
 
 export const modifyPosition = async (request: Request, response: Response) => {
-    const { projectId, position } = request.params;
-    if (projectId === undefined || position === undefined) {
-        response.status(400).json({ errMessage: 'please input projectId or position value' });
+    const { projectId, profileId, position } = request.params;
+    if (projectId === undefined || projectId === undefined || position === undefined) {
+        response.status(400).json({ errMessage: 'please input projectId or profileId or position value' });
         return ;
     }
 
     try {
+        const project = await Project.findOne({
+            attributes: ['leader'],
+            where: { id: projectId }
+        })
+        // check authority
+        if (request.user!.id !== project?.leader) {
+            response.status(401).json({ errMessage: 'no authority' });
+            return ;
+        }
+
         await Projectprofile.update({
             position: position
-        }, { where: { projectId: projectId, profileId: request.user!.id } })
+        }, { where: { projectId: projectId, profileId: profileId } })
         response.status(200).json({ message: 'updated successfully.' });
     } catch (error) {
         response.status(405).json({ errMessage: String(error) });

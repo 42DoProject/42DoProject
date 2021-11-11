@@ -1066,6 +1066,16 @@ export const modifyPosition = async (request: Request, response: Response) => {
     }
 
     try {
+        const project = await Project.findOne({
+            attributes: ['leader'],
+            where: { id: projectId }
+        })
+        // check authority
+        if (request.user!.id !== project?.leader) {
+            response.status(401).json({ errMessage: 'no authority' });
+            return ;
+        }
+
         await Projectprofile.update({
             position: position
         }, { where: { projectId: projectId, profileId: profileId } })

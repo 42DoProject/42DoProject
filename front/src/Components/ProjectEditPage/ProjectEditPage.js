@@ -9,11 +9,13 @@ import skills from "../../skills.json";
 import { positions } from "../../userData";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { Redirect, useHistory } from "react-router";
+import { useParams, useHistory } from "react-router";
 import Modal from "./Modal";
 import ReactLoading from "../CommonComponent/Loading";
 
 export default function ProjectEditPage() {
+  const projectId = useParams()["id"];
+  const [projectData, setProjectData] = useState(null);
   const loginState = useSelector((state) => state.loginReducer);
   const [unsplashFlag, setUnsplashFlag] = useState(0);
   const unsplashRef = useRef();
@@ -24,7 +26,7 @@ export default function ProjectEditPage() {
   const [myData, setMyData] = useState({});
   const editorRef = useRef();
   const history = useHistory();
-  const [image, setImage] = useState();
+  const [image, setImage] = useState(); //
   const [imgLoadFlag, setImgLoadFlag] = useState(0); // 1일때 이미지 로드, 로드 완료 후 2
   const [imgBase64, setImgBase64] = useState(""); // 이미지 파일 base64 (업로드 전 미리보기 기능)
   const [validateFlag, setValidateFlag] = useState(0); // 1일때 모달창 띄움
@@ -104,6 +106,10 @@ export default function ProjectEditPage() {
       history.goBack();
     } catch (err) {
       console.log(err);
+      setIsLoading(0);
+      setImgLoadFlag(1);
+      setValidateMsg(["프로젝트 생성중 에러가 발생했어요", "cancel-only"]);
+      setValidateFlag(1);
     }
   };
 
@@ -123,6 +129,46 @@ export default function ProjectEditPage() {
     }
   };
 
+  const projectDelete = async () => {
+    try {
+      const res = await axios({
+        method: "delete",
+        url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project?projectId=${projectId}`,
+        headers: {
+          Authorization: `Bearer ${loginState.accessToken}`,
+        },
+      });
+      console.log(res);
+      setValidateMsg(["프로젝트가 정상적으로 삭제되었습니다", "cancel-only"]);
+      setValidateFlag(1);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const getProjectData = async () => {
+    try {
+      const {
+        data: { content: projectContent },
+      } = await axios.get(
+        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project/content?projectId=${projectId}`
+      );
+      setProjectData(projectContent);
+      editorRef.current
+        .getInstance()
+        .setMarkdown(projectContent.content.content);
+      if (projectContent.thumbnailImage) setImgLoadFlag(1);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  console.log("projectData", projectData);
+
+  useEffect(() => {
+    if (projectId) getProjectData();
+  }, [projectId]);
+
   useEffect(() => {
     if (loginState === null) {
       history.goBack();
@@ -135,7 +181,7 @@ export default function ProjectEditPage() {
     setSelectedPos([
       [myData.profileImage, positions[myData.position], "disabled"],
     ]);
-  }, [myData]);
+  }, [myData, projectData]);
 
   useEffect(() => {
     if (isValid === 1) {
@@ -185,7 +231,7 @@ export default function ProjectEditPage() {
                 <ReactLoading type="spin" color="#a7bc5b" />
                 <img
                   className="project-edit__img"
-                  src={imgBase64}
+                  src={imgBase64 || projectData?.thumbnailImage}
                   alt="project-thumbnail"
                   onLoad={() => {
                     setImgLoadFlag(2);
@@ -265,6 +311,7 @@ export default function ProjectEditPage() {
             시작일
             <input
               type="date"
+              value={projectData?.startDate?.substr(0, 10)}
               className="project-edit__start-date"
               onChange={() => {
                 const startDateEl = document.getElementsByClassName(
@@ -275,6 +322,7 @@ export default function ProjectEditPage() {
             ~ 종료일
             <input
               type="date"
+              value={projectData?.endDate?.substr(0, 10)}
               className="project-edit__end-date"
               onChange={() => {
                 const endDateEl = document.getElementsByClassName(
@@ -323,7 +371,7 @@ export default function ProjectEditPage() {
               </datalist>
             </div>
           </label>
-          <div className="project-eidt__selected-skill">
+          <div className="project-edit__selected-skill">
             {selectedSkill.map((e, idx) => {
               return (
                 <div key={idx} className="selected-el">
@@ -356,6 +404,7 @@ export default function ProjectEditPage() {
             className="project-edit__name"
             placeholder="프로젝트명을 입력해주세요. (ex. 식재료에 따른 요리 추천 앱)"
             maxLength="30"
+            defaultValue={projectData?.title}
           />
           <label>
             프로젝트 소개<span className="project-edit__asterisk">*</span>
@@ -374,7 +423,15 @@ export default function ProjectEditPage() {
         />
       )}
       <div className="project-edit__buttons">
-        {/* <button className="project-edit__delete">프로젝트 삭제</button> */}
+        {projectId && (
+          <button
+            className="project-edit__delete"
+            onClick={() => {
+              projectDelete();
+            }}>
+            프로젝트 삭제
+          </button>
+        )}
         <button
           className="project-edit__save"
           onClick={(e) => {
@@ -383,7 +440,7 @@ export default function ProjectEditPage() {
               projectSave();
             }
           }}>
-          프로젝트 생성
+          {projectId ? "저장" : "프로젝트 생성"}
         </button>
       </div>
     </div>

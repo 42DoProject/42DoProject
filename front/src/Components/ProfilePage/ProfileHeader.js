@@ -165,7 +165,7 @@ export default function ProfileHeader(props) {
           </div>
         </div>
         {props.user.introduction ? (
-          <pre classNmae="right__introduction">{props.user.introduction}</pre>
+          <pre className="right__introduction">{props.user.introduction}</pre>
         ) : (
           <div className="right__introduction-none">
             자기소개를 작성하지 않았습니다

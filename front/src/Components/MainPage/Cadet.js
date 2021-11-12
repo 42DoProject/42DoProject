@@ -14,7 +14,7 @@ export default function Cadet() {
         `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/user/cadet`
       );
       setCadets(data);
-      console.log("cadets", cadets);
+      // console.log("cadets", cadets);
     } catch (err) {
       console.log(err);
     }

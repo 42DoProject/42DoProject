@@ -87,7 +87,9 @@ function ChatRoom({
         </div>
         <div className="chatRoom__footer">
           <div className="chatRoom__bubble">
-            {chatInfo.last ? chatInfo.last : <br />}
+            {chatInfo.last?.length > 20
+              ? `${chatInfo.last.slice(0, 20)}...`
+              : chatInfo.last}
           </div>
           {chatInfo.unread != 0 && (
             <div className="chatRoom__unread">

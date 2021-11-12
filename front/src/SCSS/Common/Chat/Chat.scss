@@ -152,7 +152,7 @@
     }
   }
   .chatLog__addUser-big {
-    width: 77.8vw;
+    width: 100%;
     background-color: white;
     max-height: 20rem;
     overflow-y: scroll;
@@ -162,6 +162,7 @@
       align-items: center;
       margin: 0.5rem;
       padding-left: 1rem;
+      border-radius: $round;
       &:hover {
         background-color: $lightestGrey;
       }
@@ -181,7 +182,7 @@
     width: 20rem;
     // position: absolute;
     background-color: white;
-    max-height: 10rem;
+    max-height: 15rem;
     overflow-y: scroll;
     border-radius: $round;
 
@@ -190,6 +191,7 @@
       align-items: center;
       margin: 0.5rem;
       padding-left: 1rem;
+      border-radius: $round;
       &:hover {
         background-color: $lightestGrey;
       }

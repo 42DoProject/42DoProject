@@ -81,6 +81,11 @@ function InChat({
       inChat__bodyEl.removeEventListener("scroll", handleScrollTop);
     };
   }, [chat]);
+
+  useEffect(() => {
+    const $input = document.querySelector(".inChat__input-small input");
+    $input?.focus();
+  }, []);
   return (
     <>
       <div className="inChat">
@@ -172,41 +177,42 @@ function InChat({
               return <ChatCard key={e.date} chatInfo={e} imgFlag={imgFlag} />;
             })}
         </div>
-
-        <div className="inChat__input-small">
-          <input
-            placeholder="메세지 입력..."
-            spellCheck="false"
-            onKeyPress={(e) => {
-              if (e.key === "Enter") {
-                if (e.target.value.length) {
+        {userList.length !== 0 && (
+          <div className="inChat__input-small">
+            <input
+              placeholder="메세지 입력..."
+              spellCheck="false"
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  if (e.target.value.length) {
+                    socket.emit("chat:send", {
+                      uuid: chatRoom.uuid,
+                      message: e.target.value,
+                    });
+                    e.target.value = "";
+                  }
+                }
+              }}
+            ></input>
+            <div
+              className="input__send"
+              onClick={() => {
+                const input = document.querySelector(
+                  ".inChat .inChat__input-small input"
+                );
+                if (input.value.length) {
                   socket.emit("chat:send", {
                     uuid: chatRoom.uuid,
-                    message: e.target.value,
+                    message: input.value,
                   });
-                  e.target.value = "";
+                  input.value = "";
                 }
-              }
-            }}
-          ></input>
-          <div
-            className="input__send"
-            onClick={() => {
-              const input = document.querySelector(
-                ".inChat .inChat__input-small input"
-              );
-              if (input.value.length) {
-                socket.emit("chat:send", {
-                  uuid: chatRoom.uuid,
-                  message: input.value,
-                });
-                input.value = "";
-              }
-            }}
-          >
-            보내기
+              }}
+            >
+              보내기
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </>
   );

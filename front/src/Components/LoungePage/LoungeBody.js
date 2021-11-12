@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import defaultImg from "../../default_intra.png";
 import axios from "axios";
 import { useHistory } from "react-router";
+import socket from "../../socket";
 
 export default function LoungeBody() {
   let loginState = useSelector((state) => state.loginReducer);
@@ -19,7 +20,6 @@ export default function LoungeBody() {
         `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/user/concurrent`
       );
       setConcurrents(data);
-      console.log("data", data);
     } catch (err) {
       console.log(err);
     }
@@ -27,6 +27,16 @@ export default function LoungeBody() {
 
   useEffect(() => {
     getConcurrent();
+    socket.on("concurrent:connect", () => {
+      getConcurrent();
+    });
+    socket.on("concurrent:disconnect", () => {
+      getConcurrent();
+    });
+    return () => {
+      socket.off("concurrent:connect");
+      socket.off("concurrent:disconnect");
+    };
   }, []);
 
   return (

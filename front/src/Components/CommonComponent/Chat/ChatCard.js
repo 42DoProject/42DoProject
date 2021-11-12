@@ -29,21 +29,17 @@ export default function ChatCard({ chatInfo, imgFlag }) {
   return (
     <div className={`chatCard-${chatType}`}>
       <div className="chatCard__column1">
-        <div className="chatCard__column1-small">
-          {imgFlag ? (
-            <>
-              <img src={profile} alt="img"></img>
-              <div className="column1-small__name">{userName}</div>
-            </>
-          ) : (
-            <div className="empty"></div>
-          )}
-        </div>
+        {imgFlag ? (
+          <img src={profile} alt="img"></img>
+        ) : (
+          <div className="empty"></div>
+        )}
       </div>
       {chatInfo.userId === -1 ? (
         <div className="chat-noti">{chatInfo.message}</div>
       ) : (
         <div className="chatCard__column2">
+          <div className="column1-small__name">{imgFlag === 1 && userName}</div>
           <div className="chat-message-small">{chatInfo.message}</div>
         </div>
       )}

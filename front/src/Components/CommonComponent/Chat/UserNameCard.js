@@ -1,30 +1,26 @@
 import react from "react";
 import { Icon } from "@iconify/react";
+import "../../../SCSS/Common/Chat/UserNameCard.scss";
 
-export default function UserNameCard({
-  name,
-  idx,
-  userIdList,
-  userNameList,
-  setUserIdList,
-  setUserNameList,
-}) {
+export default function UserNameCard({ idx, userInfo, userList, setUserList }) {
   const deleteUserList = (idx) => {
-    userIdList.splice(idx, 1);
-    userNameList.splice(idx, 1);
-    setUserIdList([...userIdList]);
-    setUserNameList([...userNameList]);
+    userList.splice(idx, 1);
+    setUserList([...userList]);
   };
   return (
     <div className="userNameCard">
-      <div className="textCard-userName">{name}</div>
-      <Icon
-        style={{ fontSize: "1.3rem", cursor: "pointer" }}
-        icon="bx:bx-x"
-        onClick={() => {
-          deleteUserList(idx);
-        }}
-      />
+      <div className="userProfile">
+        <img src={userInfo.profile} />
+        <Icon
+          className="delete-icon"
+          style={{ fontSize: "1rem", cursor: "pointer" }}
+          icon="bi:x-circle-fill"
+          onClick={() => {
+            deleteUserList(idx);
+          }}
+        />
+      </div>
+      <div className="userName">{userInfo.name}</div>
     </div>
   );
 }

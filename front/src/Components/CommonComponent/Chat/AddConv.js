@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import UserNameCard from "./UserNameCard";
+import { Icon } from "@iconify/react";
 
 export default function Conv({
   chatOutFlag,
@@ -10,17 +11,15 @@ export default function Conv({
   clickFlag,
 }) {
   const [user, setUser] = useState();
-  const [userIdList, setUserIdList] = useState([]);
-  const [userNameList, setUserNameList] = useState([]);
+  const [userList, setUserList] = useState([]);
   const loginState = useSelector((state) => state.loginReducer);
 
-  const addUserList = (userId, userName) => {
-    let newIdList = [...new Set([...userIdList, userId])];
-    setUserIdList(newIdList);
-    let newNameList = [...new Set([...userNameList, userName])];
-    setUserNameList(newNameList);
+  const addUserList = (obj) => {
+    if (userList.filter((e) => e.id === obj.id).length === 0) {
+      let newList = [...userList, obj];
+      setUserList(newList);
+    }
   };
-  console.log("search", user);
   const searchUser = async (name) => {
     try {
       const { data } = await axios.get(
@@ -42,7 +41,7 @@ export default function Conv({
         Authorization: `Bearer ${loginState.accessToken}`,
       },
       data: {
-        users: [...userId],
+        users: userId,
       },
     });
     chatOutFlag ? setChatOutFlag(0) : setChatOutFlag(1);
@@ -54,27 +53,35 @@ export default function Conv({
   }, []);
   return (
     <>
+      {userList.length !== 0 && (
+        <div className="select__userList">
+          {userList.map((e, idx) => (
+            <UserNameCard
+              key={idx}
+              idx={idx}
+              userInfo={e}
+              userList={userList}
+              setUserList={setUserList}
+            />
+          ))}
+        </div>
+      )}
       <div className="chatLog__addConv">
         <span className="addConv__placeholder">대화 상대 추가 : </span>
-        <div className="userNameList">
-          {userNameList.length != 0 &&
-            userNameList?.map((e, idx) => (
-              <UserNameCard
-                key={idx}
-                idx={idx}
-                name={e}
-                userIdList={userIdList}
-                userNameList={userNameList}
-                setUserIdList={setUserIdList}
-                setUserNameList={setUserNameList}
-              />
-            ))}
-        </div>
         <input
           type="text"
           className="addConv__input"
           list="chat-userList"
           onChange={(e) => searchUser(e.target.value)}
+        />
+        <Icon
+          className="create-icon"
+          style={{ fontSize: "2rem", cursor: "pointer" }}
+          icon="ant-design:check-circle-filled"
+          onClick={() => {
+            const userIdList = userList.map((e) => e.id);
+            inviteUser(userIdList);
+          }}
         />
       </div>
       {clickFlag == 0 ? (
@@ -87,7 +94,11 @@ export default function Conv({
                 onClick={(event) => {
                   const chatLogInput =
                     document.querySelector(".addConv__input");
-                  if (userNameList.length <= 1) addUserList(e.id, e.username);
+                  addUserList({
+                    name: e.username,
+                    profile: e.profileImage,
+                    id: e.id,
+                  });
                   chatLogInput.value = "";
                   chatLogInput.focus();
                 }}
@@ -97,11 +108,6 @@ export default function Conv({
               </div>
             );
           })}
-          {userNameList.length !== 0 && (
-            <div className="chat-create" onClick={() => inviteUser(userIdList)}>
-              방 만들기
-            </div>
-          )}
         </div>
       ) : (
         <div className="chatLog__addUser-big">
@@ -113,7 +119,11 @@ export default function Conv({
                 onClick={(event) => {
                   const chatLogInput =
                     document.querySelector(".addConv__input");
-                  addUserList(e.id, e.username);
+                  addUserList({
+                    name: e.username,
+                    profile: e.profileImage,
+                    id: e.id,
+                  });
                   chatLogInput.value = "";
                   chatLogInput.focus();
                 }}
@@ -123,11 +133,6 @@ export default function Conv({
               </div>
             );
           })}
-          {userNameList.length !== 0 && (
-            <div className="chat-create" onClick={() => inviteUser(userIdList)}>
-              방 만들기
-            </div>
-          )}
         </div>
       )}
     </>

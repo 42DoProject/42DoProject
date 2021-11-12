@@ -1,0 +1,38 @@
+@import "../../Base.scss";
+
+.select__userList {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  width: 100%;
+  .userNameCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0.2rem 0.3rem;
+    max-width: max-content;
+
+    .userProfile {
+      position: relative;
+      img {
+        height: 2rem;
+        width: 2rem;
+        object-fit: cover;
+        border-radius: $round;
+      }
+      .delete-icon {
+        position: absolute;
+        right: -0.4rem;
+        top: -0.3rem;
+        opacity: 0.7;
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+    .userName {
+      font-size: $fontSs;
+    }
+  }
+}

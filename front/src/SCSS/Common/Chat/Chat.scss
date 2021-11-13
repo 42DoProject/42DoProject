@@ -52,7 +52,7 @@
 
 .chatLog {
   visibility: hidden;
-  //   transition: visibility 2000ms;
+  // transition: visibility 2000ms;
   position: fixed;
   right: 1.5rem;
   bottom: 1.5rem;
@@ -119,8 +119,9 @@
   }
   .chatLog__addConv {
     background-color: $lightestGrey;
-    font-weight: $normal;
-    padding: 0.5rem 1rem;
+    font-weight: $regular;
+    padding: 0.5rem;
+    font-size: $fontSm;
     border-radius: 0.7rem;
     display: flex;
     width: 100%;
@@ -130,17 +131,17 @@
     &::-webkit-scrollbar {
       display: none; /* Chrome, Safari, Opera*/
     }
-    .addConv__placeholder {
-      min-width: max-content;
-    }
     .addConv__input {
       background-color: $lightestGrey;
       border: none;
       width: auto;
       padding-left: 0.5rem;
-      width: 90%;
+      width: 100%;
       &:focus {
         outline: none;
+      }
+      &::placeholder {
+        font-size: $fontSs;
       }
     }
     .create-icon {

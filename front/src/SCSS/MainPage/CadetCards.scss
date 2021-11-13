@@ -44,6 +44,7 @@
     align-items: center;
     .cadet__word {
       border: 1px solid $lightestGrey;
+      line-height: 120%;
       // box-shadow: $shadow;
       border-radius: $round;
       padding: 1rem;
@@ -51,6 +52,7 @@
       // justify-content: center;
       // align-items: center;
       font-size: $fontSs;
+      word-break: break-all;
     }
   }
   .cadet__no-word {

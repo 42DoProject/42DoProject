@@ -34,6 +34,7 @@ deploy-* 이름을 가진 브랜치에 머지되면 자동적으로 배포를 �
 
 
 
+
 배포 브랜치는 main -> deploy-(배포 대상) 으로 merge 되어야 하며, 프론트 배포 사항을 deploy-backend 에 merge 할 경우 프론트는 배포되지 않습니다
 
 

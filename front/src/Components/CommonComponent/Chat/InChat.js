@@ -168,7 +168,7 @@ function InChat({
           />
         )}
         <div className="inChat__body">
-          <div className="empty"></div>
+          <div className="empty-msg"></div>
           {chat &&
             chat.map((e, idx) => {
               let imgFlag = 1;
@@ -176,6 +176,7 @@ function InChat({
               if (e.userId === -1) imgFlag = 0;
               return <ChatCard key={e.date} chatInfo={e} imgFlag={imgFlag} />;
             })}
+          <div className="empty-msg-bottom"></div>
         </div>
         {userList.length !== 0 && (
           <div className="inChat__input-small">

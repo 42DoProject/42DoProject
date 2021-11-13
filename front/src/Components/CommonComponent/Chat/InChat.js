@@ -37,6 +37,42 @@ function InChat({
       console.log(err);
     }
   };
+  const getChatMore = async (uuid) => {
+    try {
+      const { data } = await axios.get(
+        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/chat/${uuid}`,
+        {
+          headers: {
+            Authorization: `Bearer ${loginState.accessToken}`,
+          },
+        }
+      );
+      if (data.length) getChatBeforeMore(chatRoom.uuid, data[0].date, data);
+      const inChat__bodyEl = document.querySelector(".inChat__body");
+      inChat__bodyEl.scrollTop = inChat__bodyEl.scrollHeight;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const getChatBeforeMore = async (uuid, date, chatLog) => {
+    try {
+      const { data } = await axios.get(
+        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/chat/${uuid}?date=${date}`,
+        {
+          headers: {
+            Authorization: `Bearer ${loginState.accessToken}`,
+          },
+        }
+      );
+      const inChat__bodyEl = document.querySelector(".inChat__body");
+      const inChat_Before = inChat__bodyEl.scrollHeight;
+      setChat([...data, ...chatLog]);
+      const inchat__bodyEl2 = document.querySelector(".inChat__body");
+      inchat__bodyEl2.scrollTop = inchat__bodyEl2.scrollHeight - inChat_Before;
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const getChatBefore = async (uuid, date) => {
     try {
       const { data } = await axios.get(
@@ -57,7 +93,8 @@ function InChat({
     }
   };
   useEffect(() => {
-    getChat(chatRoom.uuid);
+    clickFlag ? getChatMore(chatRoom.uuid) : getChat(chatRoom.uuid);
+
     socket.on("chat:leave", () => getChat(chatRoom.uuid));
     socket.on(
       "chat:receive",

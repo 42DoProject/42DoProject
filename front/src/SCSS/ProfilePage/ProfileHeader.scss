@@ -60,7 +60,9 @@
     font-size: $fontSm;
     box-shadow: $shadow;
     position: relative;
-    // border: none;
+    // word-wrap: break-word;
+    word-break: break-all;
+    overflow: hidden;
   }
   .profile__bubble-none {
     margin: 2rem 0 1rem 0;
@@ -138,6 +140,8 @@
   align-items: center;
   margin-bottom: 2rem;
   .row2__status {
+    // font-size: $fontSs;
+    // font-weight: $regular;
     background-color: $pointBlue;
     padding: 0.3rem 0.7rem;
     border-radius: 0.7rem;

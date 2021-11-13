@@ -48,6 +48,73 @@
     bottom: -1.2rem;
     left: 0.1rem;
   }
+  .input__res {
+    position: absolute;
+    left: 2.4rem;
+    top: 2rem;
+    z-index: 3;
+    width: 18rem;
+    background-color: white;
+    a {
+      color: $black;
+    }
+    .res__user {
+      display: flex;
+      flex-direction: column;
+      padding: 0.3rem 0.3rem;
+      .res__title1 {
+        padding-bottom: 0.3rem;
+        color: $grey;
+        border-bottom: 1px solid $lightestGrey;
+      }
+      .res__userCard {
+        display: flex;
+        align-items: center;
+        padding-top: 0.3rem;
+        cursor: pointer;
+        &:hover {
+          background-color: $lightestGrey;
+        }
+        img {
+          width: 2rem;
+          height: 2rem;
+          border-radius: $round;
+          object-fit: cover;
+        }
+        .name {
+          margin-left: 0.5rem;
+        }
+      }
+    }
+    .res__project {
+      display: flex;
+      flex-direction: column;
+      padding: 0.3rem 0.3rem;
+      .res__title2 {
+        padding-bottom: 0.3rem;
+        color: $grey;
+        border-bottom: 1px solid $lightestGrey;
+      }
+      .res__projectCard {
+        display: flex;
+        align-items: center;
+        padding-top: 0.3rem;
+        cursor: pointer;
+        &:hover {
+          background-color: $lightestGrey;
+        }
+        img {
+          width: 2rem;
+          height: 2rem;
+          border-radius: $round;
+          object-fit: cover;
+        }
+        .title {
+          margin-left: 0.5rem;
+        }
+      }
+    }
+  }
   input {
     border-radius: 0;
     position: absolute;
@@ -68,6 +135,7 @@
     font-weight: $bold;
   }
 }
+
 .Nav__project,
 .Nav__cadet,
 .Nav__lounge {

@@ -49,9 +49,13 @@
     left: 0.1rem;
   }
   .input__res {
+    box-shadow: $shadow;
     position: absolute;
+    border-bottom-left-radius: $round;
+    border-bottom-right-radius: $round;
+    padding: 0.5rem;
     left: 2.4rem;
-    top: 2rem;
+    top: 1.5rem;
     z-index: 3;
     width: 18rem;
     background-color: white;
@@ -63,6 +67,8 @@
       flex-direction: column;
       padding: 0.3rem 0.3rem;
       .res__title1 {
+        font-size: $fontSs;
+        font-weight: $regular;
         padding-bottom: 0.3rem;
         color: $grey;
         border-bottom: 1px solid $lightestGrey;
@@ -72,8 +78,9 @@
         align-items: center;
         padding-top: 0.3rem;
         cursor: pointer;
+        border-radius: $round;
         &:hover {
-          background-color: $lightestGrey;
+          background-color: $bodyColor;
         }
         img {
           width: 2rem;
@@ -91,6 +98,8 @@
       flex-direction: column;
       padding: 0.3rem 0.3rem;
       .res__title2 {
+        font-size: $fontSs;
+        font-weight: $regular;
         padding-bottom: 0.3rem;
         color: $grey;
         border-bottom: 1px solid $lightestGrey;
@@ -116,6 +125,7 @@
     }
   }
   input {
+    font-weight: $normal;
     border-radius: 0;
     position: absolute;
     padding: 0.4rem;
@@ -132,7 +142,7 @@
   }
   ::placeholder {
     color: $lightestGrey;
-    font-weight: $bold;
+    font-weight: $normal;
   }
 }
 
@@ -168,30 +178,32 @@
   .haveNotification {
     z-index: 1;
     position: absolute;
-    font-size: 1rem;
+    font-size: $fontSs;
     padding: 0.2rem;
     display: flex;
     justify-content: center;
-    height: 1.3rem;
-    width: 1.3rem;
+    align-items: center;
+    height: 1.2rem;
+    width: 1.2rem;
     border-radius: 50%;
-    font-weight: 600;
+    font-weight: $normal;
     background-color: $pointRed;
     color: white;
     left: 0.8rem;
     top: -0.2rem;
   }
   .notNotification {
+    padding: 0.2rem;
     z-index: 1;
     position: absolute;
-    font-size: 1rem;
-    padding: 0.2rem;
+    font-size: $fontSs;
     display: flex;
     justify-content: center;
-    height: 1.3rem;
-    width: 1.3rem;
+    align-items: center;
+    height: 1.2rem;
+    width: 1.2rem;
     border-radius: 50%;
-    font-weight: 600;
+    font-weight: $normal;
     background-color: $lightGrey;
     color: white;
     left: 0.8rem;

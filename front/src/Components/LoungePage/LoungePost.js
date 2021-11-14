@@ -24,7 +24,7 @@ export default function LoungePost() {
       </div>
       <div className="lounge-post__bottom">
         <button className="bottom__open-comments">
-          댓글 열기
+          댓글 2개
           <Icon
             className="bottom__comment-icon"
             icon="dashicons:arrow-down-alt2"
@@ -32,7 +32,7 @@ export default function LoungePost() {
         </button>
         <div className="bottom__info">
           <Icon className="bottom__like-icon" icon="ant-design:like-outlined" />
-          좋아요 2 ∙ 댓글 2
+          9
         </div>
       </div>
     </div>

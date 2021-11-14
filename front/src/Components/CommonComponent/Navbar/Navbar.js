@@ -18,7 +18,12 @@ export default function Navbar(props) {
     try {
       if (input.length) {
         const { data } = await axios.get(
-          `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/search/${input}`
+          `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/search/${input}`,
+          {
+            headers: {
+              Authorization: `Bearer ${loginState?.accessToken}`,
+            },
+          }
         );
         console.log("input", data);
         setSearchRes(data);

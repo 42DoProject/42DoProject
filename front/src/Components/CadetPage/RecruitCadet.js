@@ -3,12 +3,14 @@ import CadetTypeBar from "./CadetTypeBar";
 import "../../SCSS/CadetPage/RecruitCadet.scss";
 import CadetCards from "../MainPage/CadetCards";
 import axios from "axios";
+import { useSelector } from "react-redux";
 import { Icon } from "@iconify/react";
 import Pagination from "react-js-pagination";
 import ReactLoading from "../CommonComponent/Loading";
 
 export default function RecruitCadet() {
   const [cadets, setCadets] = useState(null);
+  const loginState = useSelector((state) => state.loginReducer);
   const [page, setPage] = useState(1);
   const [totCount, setTotCount] = useState(0);
 
@@ -19,6 +21,9 @@ export default function RecruitCadet() {
       } = await axios({
         method: "post",
         url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/search/user?page=${page}`,
+        headers: {
+          Authorization: `Bearer ${loginState?.accessToken}`,
+        },
         data: {
           status: 1,
         },

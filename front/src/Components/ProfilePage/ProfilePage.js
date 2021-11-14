@@ -19,7 +19,12 @@ export default function ProfilePage() {
     try {
       if (userId) {
         const { data } = await axios.get(
-          `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/user/profile/${userId}`
+          `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/user/profile/${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${loginState?.accessToken}`,
+            },
+          }
         );
         setUserData(data);
       }

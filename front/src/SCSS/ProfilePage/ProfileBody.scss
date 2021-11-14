@@ -57,14 +57,9 @@
   min-width: 50%;
   display: flex;
   align-items: flex-start;
-  input.skill__content {
-    &::placeholder {
-      font-size: $fontSs;
-    }
-  }
   .skill__content {
     img {
-      margin: 0 0.2rem;
+      margin: 0 0.1rem;
     }
     .content__none {
       font-size: $fontSs;

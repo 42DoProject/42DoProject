@@ -20,7 +20,8 @@ export default function LoungeWrite() {
       <form className="lounge-write__space">
         <textarea
           className="lounge-write__box"
-          defaultValue="라운지 준비중입니다"></textarea>
+          defaultValue="라운지 준비중입니다"
+          spellCheck="false"></textarea>
         <button type="submit" className="lounge-write__submit" disabled>
           등록
         </button>

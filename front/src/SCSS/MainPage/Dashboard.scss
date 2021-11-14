@@ -82,7 +82,7 @@
   .row2__box1 {
     height: 100%;
     display: flex;
-    flex-grow: 0;
+    flex-grow: 1;
     overflow: hidden;
     .box1__column1 {
       color: $mainColor;
@@ -110,7 +110,7 @@
         img {
           display: inline-block;
           font-size: 5px;
-          margin: 0.5rem 0.4rem;
+          margin: 0.5rem 0.25rem;
           margin-top: 0rem;
         }
         .not-skills {
@@ -222,9 +222,14 @@
 }
 @media (max-width: 38rem) {
   .row2 .row2__box1 {
-    flex-grow: 1;
+    // flex-grow: 1;
     .box1__column1 {
       margin: 0 2rem;
+    }
+    .box1__column2 {
+      .column2__skill {
+        max-width: 100%;
+      }
     }
   }
   .row2 .row2__box2 {

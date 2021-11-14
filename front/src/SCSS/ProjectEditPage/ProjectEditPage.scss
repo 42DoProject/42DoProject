@@ -156,7 +156,7 @@
       padding: 0.2rem 0.7rem;
     }
   }
-  .project-eidt__selected-skill {
+  .project-edit__selected-skill {
     display: flex;
     flex-wrap: wrap;
     .selected-el {
@@ -172,6 +172,21 @@
   }
   .project-edit__period {
     min-width: max-content;
+  }
+
+  .project-edit__reference {
+    input {
+      width: 90%;
+      margin-right: 0.5rem;
+    }
+    .reference-icon {
+      color: $lightGrey;
+      font-size: $fontMl;
+      cursor: pointer;
+      &:hover {
+        color: $grey;
+      }
+    }
   }
 }
 .project-edit__right {

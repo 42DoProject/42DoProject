@@ -51,18 +51,34 @@
 
   .profile__bubble {
     background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 1rem 2rem;
     width: 17rem;
     text-align: center;
     line-height: 120%;
-    margin: 1.2rem 0 0.7rem 0;
+    margin: 1.5rem 0 0.7rem 0;
     border-radius: 1.8rem;
     font-size: $fontSm;
-    box-shadow: $shadow;
+    box-shadow: $shadowLight;
     position: relative;
     // word-wrap: break-word;
     word-break: break-all;
-    overflow: hidden;
+  }
+  .profile__bubble::after {
+    content: "";
+    position: absolute;
+    // width: 0;
+    // height: 0;
+    z-index: 10;
+    bottom: 100%;
+    // top: 0;
+    right: 50%;
+    transform: translateX(50%);
+    border: 10px solid;
+    // border-color: transparent transparent white transparent;
+    border-color: transparent transparent white transparent;
   }
   .profile__bubble-none {
     margin: 2rem 0 1rem 0;
@@ -72,6 +88,8 @@
   textarea.profile__bubble {
     resize: none;
     border: 2px solid $mainColor;
+    padding: 1rem 1.5rem;
+    overflow: hidden;
   }
   .profile__last-access {
     color: $lightGrey;

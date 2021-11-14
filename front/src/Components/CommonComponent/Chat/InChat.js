@@ -26,7 +26,7 @@ function InChat({
         `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/chat/${uuid}`,
         {
           headers: {
-            Authorization: `Bearer ${loginState.accessToken}`,
+            Authorization: `Bearer ${loginState?.accessToken}`,
           },
         }
       );
@@ -43,7 +43,7 @@ function InChat({
         `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/chat/${uuid}`,
         {
           headers: {
-            Authorization: `Bearer ${loginState.accessToken}`,
+            Authorization: `Bearer ${loginState?.accessToken}`,
           },
         }
       );
@@ -60,7 +60,7 @@ function InChat({
         `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/chat/${uuid}?date=${date}`,
         {
           headers: {
-            Authorization: `Bearer ${loginState.accessToken}`,
+            Authorization: `Bearer ${loginState?.accessToken}`,
           },
         }
       );
@@ -189,8 +189,7 @@ function InChat({
               chatEl.style.visibility = "visible";
               chatLogEl.style.visibility = "hidden";
               setInFlag(-1);
-            }}
-          >
+            }}>
             <Icon icon="bx:bx-x" height="2rem" />
           </div>
         </div>
@@ -230,8 +229,7 @@ function InChat({
                     e.target.value = "";
                   }
                 }
-              }}
-            ></input>
+              }}></input>
             <div
               className="input__send"
               onClick={() => {
@@ -245,8 +243,7 @@ function InChat({
                   });
                   input.value = "";
                 }
-              }}
-            >
+              }}>
               보내기
             </div>
           </div>

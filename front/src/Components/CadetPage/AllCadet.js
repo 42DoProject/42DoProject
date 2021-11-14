@@ -4,11 +4,13 @@ import "../../SCSS/CadetPage/RecruitCadet.scss";
 import CadetCards from "../MainPage/CadetCards";
 import axios from "axios";
 import Pagination from "react-js-pagination";
+import { useSelector } from "react-redux";
 import { Icon } from "@iconify/react";
 import ReactLoading from "../CommonComponent/Loading";
 
 export default function AllCadet() {
   const [cadets, setCadets] = useState(null);
+  const loginState = useSelector((state) => state.loginReducer);
   const [page, setPage] = useState(1);
   const [totCount, setTotCount] = useState(0);
 
@@ -17,7 +19,12 @@ export default function AllCadet() {
       const {
         data: { count, list },
       } = await axios.get(
-        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/search/user?page=${page}`
+        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/search/user?page=${page}`,
+        {
+          headers: {
+            Authorization: `Bearer ${loginState?.accessToken}`,
+          },
+        }
       );
       setCadets(list);
       setTotCount(count);

@@ -1,4 +1,5 @@
 import react from "react";
+import default_intra from "../../../default_intra.png";
 
 export default function UserCard({ name, profile, id, setSearchRes }) {
   return (
@@ -9,13 +10,9 @@ export default function UserCard({ name, profile, id, setSearchRes }) {
           const inputEl = document.querySelector(".Nav__input input");
           inputEl.value = "";
           setSearchRes([]);
-        }}
-      >
+        }}>
         <div className="profile">
-          <img
-            src="https://cdn.intra.42.fr/users/jiylee.jpg"
-            alt={`profile${id}`}
-          ></img>
+          <img src={profile || default_intra} alt={`profile${id}`}></img>
         </div>
         <div className="name">{name}</div>
       </div>

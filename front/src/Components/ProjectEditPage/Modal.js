@@ -7,7 +7,7 @@ export default function Modal({ body, buttons, setYes, setOpenFlag }) {
     <div className="validate__wrap">
       <div className="validate__header"></div>
       <div className="validate__body">{body}</div>
-      <hr />
+      {/* <hr /> */}
       <div className="validate__button">
         {buttons === "cancel-only" && (
           <div

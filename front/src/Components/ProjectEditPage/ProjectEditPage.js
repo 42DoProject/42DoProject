@@ -34,6 +34,8 @@ export default function ProjectEditPage() {
   const [isValid, setIsValid] = useState(0); // validity 테스트 통과하면 1
   const [isLoading, setIsLoading] = useState(0); // 1일때 스피너
 
+  console.log("editor", editorRef?.current?.getRootElement());
+
   let dateDiff =
     (new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24) + 1;
 
@@ -60,7 +62,7 @@ export default function ProjectEditPage() {
       setValidateFlag(1);
     } else if (selectedPos.filter((e) => e[2] === "enabled").length === 0) {
       setValidateMsg([
-        "빈 포지션이 없으면 프로젝트 참여 신청을 받을 수 없어요. 이대로 프로젝트를 생성할까요?",
+        "빈 포지션이 없으면 프로젝트 참여 신청을 받을 수 없어요. 이대로 프로젝트를 저장할까요?",
         "both",
       ]);
       setValidateFlag(1);
@@ -395,6 +397,16 @@ export default function ProjectEditPage() {
               );
             })}
           </div>
+          <div className="project-edit__reference">
+            <label>참고 링크</label> <span>(GitHub repository, Notion 등)</span>
+            <div>
+              <input className="reference-input" />
+              <Icon
+                icon="akar-icons:circle-plus-fill"
+                className="reference-icon"
+              />
+            </div>
+          </div>
         </div>
         <div className="project-edit__right">
           <label>
@@ -402,7 +414,7 @@ export default function ProjectEditPage() {
           </label>
           <input
             className="project-edit__name"
-            placeholder="프로젝트명을 입력해주세요. (ex. 식재료에 따른 요리 추천 앱)"
+            placeholder="ex. 식재료에 따른 요리 추천 앱"
             maxLength="30"
             defaultValue={projectData?.title}
           />
@@ -410,7 +422,7 @@ export default function ProjectEditPage() {
             프로젝트 소개<span className="project-edit__asterisk">*</span>
           </label>
           <div className="project-edit__introduction">
-            <Editor ref={editorRef} height="500px" />
+            <Editor ref={editorRef} height="40rem" useCommandShortcut={true} />
           </div>
         </div>
       </div>

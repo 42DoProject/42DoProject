@@ -53,6 +53,7 @@ export default function LoungeBody() {
           <LoungePost />
           <LoungePost />
           <LoungePost />
+          {/* <LoungePost /> */}
         </div>
       </div>
       <div className="lounge-right">

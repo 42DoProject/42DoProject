@@ -41,8 +41,9 @@
 }
 
 .lounge-post__space {
-  //   background-color: beige;
+  // background-color: beige;
   width: 80%;
+  line-height: 120%;
   margin: 2rem 4rem;
 }
 
@@ -57,18 +58,23 @@
     background-color: white;
     .bottom__comment-icon {
       position: relative;
-      bottom: 0.1rem;
+      bottom: 0.05rem;
     }
   }
   .bottom__comment-icon {
-    margin-left: 0.5rem;
+    margin-left: 0.3rem;
   }
 }
-
-.bottom__like-icon {
-  margin-right: 0.5rem;
-  position: relative;
-  bottom: 0.2rem;
-  font-size: $fontMd;
+.bottom__info {
   color: $grey;
+  cursor: pointer;
+  &:hover {
+    color: $pointRed;
+  }
+  .bottom__like-icon {
+    margin-right: 0.2rem;
+    position: relative;
+    bottom: 0.2rem;
+    font-size: $fontMs;
+  }
 }

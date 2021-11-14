@@ -106,11 +106,12 @@
       }
       .res__projectCard {
         display: flex;
+        border-radius: $round;
         align-items: center;
         padding-top: 0.3rem;
         cursor: pointer;
         &:hover {
-          background-color: $lightestGrey;
+          background-color: $bodyColor;
         }
         img {
           width: 2rem;

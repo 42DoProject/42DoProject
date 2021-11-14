@@ -45,7 +45,7 @@ export default function Navbar(props) {
           {searchRes.length !== 0 && (
             <div className="input__res">
               <div className="res__user">
-                <div className="res__title1">유저</div>
+                <div className="res__title1">카뎃</div>
                 {searchRes.user.map((e) => (
                   <UserCard
                     key={e.id}

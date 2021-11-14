@@ -43,16 +43,36 @@
     justify-content: center;
     align-items: center;
     .cadet__word {
-      border: 1px solid $lightestGrey;
-      line-height: 120%;
-      // box-shadow: $shadow;
-      border-radius: $round;
+      position: relative;
       padding: 1rem;
-      text-align: center;
-      // justify-content: center;
-      // align-items: center;
       font-size: $fontSs;
       word-break: break-all;
+      text-align: center;
+      line-height: 120%;
+      background-color: #fff;
+      border: 1px solid $lightestGrey;
+      border-radius: $round;
+      box-shadow: $shadowLight;
+    }
+    .cadet__word:before {
+      border: 9px solid;
+      border-color: transparent transparent $lightestGrey transparent;
+      content: "";
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .cadet__word:after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 0;
+      bottom: calc(100% - 1px);
+      right: 50%;
+      transform: translateX(50%);
+      border: 8.5px solid;
+      border-color: transparent transparent white transparent;
     }
   }
   .cadet__no-word {

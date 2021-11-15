@@ -32,7 +32,8 @@ function InChat({
       );
       setChat(data);
       const inChat__bodyEl = document.querySelector(".inChat__body");
-      inChat__bodyEl.scrollTop = inChat__bodyEl.scrollHeight;
+      if (inChat__bodyEl)
+        inChat__bodyEl.scrollTop = inChat__bodyEl.scrollHeight;
     } catch (err) {
       console.log(err);
     }
@@ -47,7 +48,8 @@ function InChat({
           },
         }
       );
-      if (data.length) getChatBeforeMore(chatRoom.uuid, data[0].date, data);
+      if (data.length)
+        await getChatBeforeMore(chatRoom.uuid, data[0].date, data);
       const inChat__bodyEl = document.querySelector(".inChat__body");
       inChat__bodyEl.scrollTop = inChat__bodyEl.scrollHeight;
     } catch (err) {
@@ -93,8 +95,7 @@ function InChat({
     }
   };
   useEffect(() => {
-    clickFlag ? getChatMore(chatRoom.uuid) : getChat(chatRoom.uuid);
-
+    getChatMore(chatRoom.uuid);
     socket.on("chat:leave", () => getChat(chatRoom.uuid));
     socket.on(
       "chat:receive",
@@ -189,7 +190,8 @@ function InChat({
               chatEl.style.visibility = "visible";
               chatLogEl.style.visibility = "hidden";
               setInFlag(-1);
-            }}>
+            }}
+          >
             <Icon icon="bx:bx-x" height="2rem" />
           </div>
         </div>
@@ -229,7 +231,8 @@ function InChat({
                     e.target.value = "";
                   }
                 }
-              }}></input>
+              }}
+            ></input>
             <div
               className="input__send"
               onClick={() => {
@@ -243,7 +246,8 @@ function InChat({
                   });
                   input.value = "";
                 }
-              }}>
+              }}
+            >
               보내기
             </div>
           </div>

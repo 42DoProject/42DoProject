@@ -16,7 +16,8 @@
   align-items: center;
   text-align: center;
   line-height: normal;
-  box-shadow: 0 0 0 9999px #000000b0;
+  box-shadow: $shadowAll;
+  // font-weight: $regular;
   .validate__body {
     display: flex;
     justify-content: center;
@@ -26,26 +27,28 @@
   hr {
     margin: 0;
     width: 100%;
+    height: 2px;
+    color: $lightGrey;
+    opacity: 0.25;
   }
   .validate__button {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    background-color: $mainColor;
-    border-bottom-left-radius: $round;
-    border-bottom-right-radius: $round;
+    // background-color: $mainColor;
+    // border-bottom-left-radius: $round;
+    // border-bottom-right-radius: $round;
     div {
       width: 100%;
       padding: 1rem;
       cursor: pointer;
-      color: white;
-      font-weight: $regular;
+      // color: white;
     }
     div:nth-child(2) {
-      // border-left: 1px solid white;
-      background-color: $pointRed;
-      border-bottom-right-radius: $round;
+      border-left: 2px solid #f0f0f0;
+      //   background-color: $pointRed;
+      //   border-bottom-right-radius: $round;
     }
   }
 }

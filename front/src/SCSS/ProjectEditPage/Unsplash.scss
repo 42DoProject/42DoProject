@@ -6,12 +6,14 @@
   border-radius: $round;
   width: 25rem;
   height: 35rem;
-  position: absolute;
-  top: 4rem;
-  left: 19rem;
+  position: fixed;
+  top: 50%;
+  left: 50%;
   z-index: 3;
+  margin: -17.5rem 0 0 -12.5rem;
   display: flex;
   flex-direction: column;
+  box-shadow: $shadowAll;
   .unsplash__header {
     display: flex;
     justify-content: space-between;

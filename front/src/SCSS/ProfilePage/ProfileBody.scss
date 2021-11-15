@@ -87,10 +87,14 @@ input.skill__content {
     margin: 0.1rem 0.5rem;
     position: relative;
     .selected-x {
+      cursor: pointer;
       position: absolute;
       right: -0.8rem;
       bottom: 0;
       color: $grey;
+      &:hover {
+        color: $darkGrey;
+      }
     }
   }
 }

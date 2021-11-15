@@ -15,19 +15,19 @@ export default function ProjectStatus({ userStatus, project }) {
       style: "full",
       title: "모집 완료",
       icon: "bx:bxs-lock",
-      detail: "더이상 신청을 받고 있지 않아요.",
+      detail: "더 이상 신청을 받고 있지 않아요",
     },
     nothing: {
       style: "nothing",
       title: "참여 신청 가능",
       icon: "ant-design:star-filled",
-      detail: "포지션을 선택해 신청할 수 있어요.",
+      detail: "포지션을 선택해 신청할 수 있어요",
     },
     participaiting: {
       style: "participaiting",
       title: "프로젝트 참여중",
       icon: "mdi:lightning-bolt",
-      detail: "프로젝트의 멤버가 되었어요.",
+      detail: "프로젝트의 멤버가 되었어요",
     },
   };
 

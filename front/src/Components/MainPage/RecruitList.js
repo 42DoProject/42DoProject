@@ -57,7 +57,7 @@ function RecruitList(props) {
           <div className="cardpadding">
             <div className="cards-row">
               {recruitingProject.map((el, idx) => {
-                return <Cards key={idx} projectData={el} />;
+                return <Cards key={el.id} projectData={el} />;
               })}
             </div>
           </div>

@@ -5,11 +5,28 @@ import axios from "axios";
 
 export default function ChatCard({ chatInfo, imgFlag }) {
   const loginState = useSelector((state) => state.loginReducer);
-  const [profile, setProfile] = useState();
   const [userName, setUserName] = useState();
+  const [profileUrl, setProfileUrl] = useState();
   let chatType = "";
   loginState.id === chatInfo?.userId ? (chatType = "me") : (chatType = "other");
   if (chatInfo.userId === -1) chatType = "noti";
+
+  const resizedImage = async (key, size) => {
+    // 정상적으로 가져와지면 resized url반환, 아니면 원본이미지 url반환
+    const url = key.split("/");
+    url[url.length - 3] = size;
+    const resized = url.join("/");
+    try {
+      await axios({
+        method: "head",
+        url: `${resized}?timestamp=${Date.now()}`,
+      });
+      setProfileUrl(resized);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     const getProfile = async (userId) => {
       try {
@@ -23,7 +40,7 @@ export default function ChatCard({ chatInfo, imgFlag }) {
             },
           }
         );
-        setProfile(profileImage);
+        await resizedImage(profileImage, "100");
         setUserName(username);
       } catch (err) {
         console.log(err);
@@ -31,11 +48,12 @@ export default function ChatCard({ chatInfo, imgFlag }) {
     };
     imgFlag && getProfile(chatInfo.userId);
   }, [imgFlag]);
+
   return (
     <div className={`chatCard-${chatType}`}>
       <div className="chatCard__column1">
         {imgFlag ? (
-          <img src={profile} alt="img"></img>
+          <img src={profileUrl || ""} alt="img"></img>
         ) : (
           <div className="empty"></div>
         )}

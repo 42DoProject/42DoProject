@@ -77,16 +77,16 @@ export default function Conv({
         </div>
       )}
       <div className="chatLog__addConv">
-        <span className="addConv__placeholder">대화 상대 추가 : </span>
         <input
           type="text"
           className="addConv__input"
           list="chat-userList"
           onChange={(e) => searchUser(e.target.value)}
+          placeholder="대화 상대를 검색해 추가해 보세요"
         />
         <Icon
           className="create-icon"
-          style={{ fontSize: "2rem", cursor: "pointer" }}
+          style={{ fontSize: "1.8rem", cursor: "pointer" }}
           icon="ant-design:check-circle-filled"
           onClick={() => {
             const userIdList = userList.map((e) => e.id);

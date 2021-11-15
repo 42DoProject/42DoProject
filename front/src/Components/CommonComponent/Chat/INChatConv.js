@@ -26,7 +26,12 @@ export default function Conv({
   const searchUser = async (name) => {
     try {
       const { data } = await axios.get(
-        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/search/user/${name}`
+        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/search/user/${name}`,
+        {
+          headers: {
+            Authorization: `Bearer ${loginState?.accessToken}`,
+          },
+        }
       );
       const userList = data.filter((e) => e.id != loginState.id);
       setUser(userList);

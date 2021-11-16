@@ -280,7 +280,7 @@ export const postList = async (request: Request, response: Response) => {
             image: imageLink,
             title: title
         });
-        response.status(200).json({ message: 'added successfully.' });
+        response.status(200).json({ newProject: project!.id, message: 'added successfully.' });
     } catch (error) {
         response.status(405).json({ errMessage: String(error) });
         return ;
@@ -1164,6 +1164,35 @@ export const changeTeamLeader = async (request: Request, response: Response) => 
 
         await Project.update({
             leader: profileId
+        }, { where: { id: projectId } })
+        response.status(200).json({ message: 'changed successfully.' });
+    } catch (error) {
+        response.status(405).json({ errMessage: String(error) });
+        return ;
+    }
+}
+
+export const changeState = async (request: Request, response: Response) => {
+    const { projectId } = request.params;
+    const { state } = request.query;
+    if (projectId === undefined || state == undefined) {
+        response.status(400).json({ errMessage: 'please input projectId or state value' });
+        return ;
+    }
+
+    try {
+        const project = await Project.findOne({
+            attributes: ['leader'],
+            where: { id: projectId }
+        })
+        // check authority
+        if (request.user!.id !== project?.leader) {
+            response.status(401).json({ errMessage: 'no authority' });
+            return ;
+        }
+
+        await Project.update({
+            state: state
         }, { where: { id: projectId } })
         response.status(200).json({ message: 'changed successfully.' });
     } catch (error) {

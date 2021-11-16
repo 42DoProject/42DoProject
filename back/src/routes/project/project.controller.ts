@@ -98,4 +98,9 @@ router.put("/leader/:projectId/:profileId", jwtGuards, (request: Request, respon
   projectService.changeTeamLeader(request, response);
 });
 
+// project state API
+router.put("/status/:projectId", jwtGuards, (request: Request, response: Response) => {
+  projectService.changeState(request, response);
+});
+
 export default router;

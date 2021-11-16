@@ -95,6 +95,8 @@ export default function ProjectEditPage() {
       }
       if (startDate) formData.append("startDate", startDate);
       if (endDate) formData.append("endDate", endDate);
+      if (!projectId) formData.append("leaderPosition", myData.position);
+      console.log("myData", myData);
 
       const res = await axios({
         method: `${projectId ? "put" : "post"}`,
@@ -115,7 +117,9 @@ export default function ProjectEditPage() {
       }
       setIsLoading(0);
       // history.goBack();
-      projectId ? history.push(`/project/${projectId}`) : history.goBack();
+      projectId
+        ? history.push(`/project/${projectId}`)
+        : history.push(`/project/${res.data.newProject}`);
     } catch (err) {
       console.log(err);
       setIsLoading(0);
@@ -472,7 +476,7 @@ export default function ProjectEditPage() {
                 }}
               />
             </div>
-            {refer.map((v, i) => {
+            {refer?.map((v, i) => {
               return (
                 <div className="selected-reference" key={i - 1}>
                   <div key={i} className="reference-url">

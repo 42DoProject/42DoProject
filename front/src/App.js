@@ -43,6 +43,8 @@ function App(props) {
     const timerId = setInterval(getToken, 1000 * 60 * 25);
     localStorage.setItem("timerId", timerId);
   }, []);
+  console.log(loginState?.accessToken);
+
   return (
     <Layout>
       <Switch>

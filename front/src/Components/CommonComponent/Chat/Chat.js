@@ -58,6 +58,14 @@ export default function Chat() {
   }, [loginState, chatRoom]);
 
   useEffect(() => {
+    socket.on("chat:receive", () => {
+      getChatRoom();
+    });
+    return () => {
+      socket.off("chat:receive");
+    };
+  }, [loginState]);
+  useEffect(() => {
     getChatRoom();
   }, [loginState, chatOutFlag, inFlag, refreshFlag]);
 

@@ -47,11 +47,15 @@ export default function Chat() {
     socket.on("chat:leave", () => {
       getChatRoom();
     });
+    socket.on("chat:receive", () => {
+      getChatRoom();
+    });
     return () => {
       socket.off("chat:newRoom");
       socket.off("chat:leave");
+      socket.off("chat:receive");
     };
-  }, [loginState]);
+  }, [loginState, chatRoom]);
 
   useEffect(() => {
     getChatRoom();

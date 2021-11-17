@@ -9,7 +9,8 @@ const schema = new Schema<IFeed>({
     {
       userId: Number,
       username: String,
-      status: String,
+      status: Number,
+      projectStatus: String,
       projectName: String,
       projectId: Number,
       loungeId: Number,

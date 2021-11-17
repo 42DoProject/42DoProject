@@ -122,7 +122,10 @@ export default function Follow(props) {
           })
         ) : (
           <div className="no-follow">
-            <span>아직 {props.subject}가 없어요 😯</span>
+            <span>
+              아직 {props.subject}
+              {props.subject === "팔로잉" ? "이" : "가"} 없어요 😯
+            </span>
           </div>
         )}
       </div>

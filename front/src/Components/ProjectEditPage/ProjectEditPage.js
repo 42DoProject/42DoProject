@@ -81,7 +81,6 @@ export default function ProjectEditPage() {
         .map((e) => positions.indexOf(e[1]));
 
       const textField = {
-        // totalMember: selectedPos.length,
         title: document.querySelector(".project-edit__name").value,
         content: editorInstance.getMarkdown(),
         position: JSON.stringify(positionPost),
@@ -342,7 +341,6 @@ export default function ProjectEditPage() {
             </select>
             <div>
               (멤버: {projectId ? projectData?.currentMember : "1"} /{" "}
-              {/* {projectId ? projectData?.totalMember : selectedPos.length}) */}
               {selectedPos.length})
             </div>
           </div>

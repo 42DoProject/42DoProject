@@ -233,8 +233,9 @@
       max-height: 10rem;
       overflow-y: scroll;
       .card-wrap {
+        border-radius: $round;
         &:hover {
-          background-color: $lightestGrey;
+          background-color: $bodyColor;
         }
         .type {
           border-bottom: 1px solid $lightestGrey;

@@ -47,11 +47,19 @@ export default function Chat() {
     socket.on("chat:leave", () => {
       getChatRoom();
     });
+    socket.on("chat:receive", () => {
+      getChatRoom();
+    });
     return () => {
+      console.log("chat unmount");
       socket.off("chat:newRoom");
       socket.off("chat:leave");
+      if (inFlag === -1) {
+        console.log(inFlag);
+        socket.off("chat:receive");
+      }
     };
-  }, [loginState, chatRoom]);
+  }, [loginState, chatRoom, inFlag]);
 
   useEffect(() => {
     getChatRoom();
@@ -163,8 +171,6 @@ export default function Chat() {
                     clickFlag={clickFlag}
                     setInFlag={setInFlag}
                     setConvFlag={setConvFlag}
-                    refreshFlag={refreshFlag}
-                    setRefreshFlag={setRefreshFlag}
                   />
                 ))
               ) : (

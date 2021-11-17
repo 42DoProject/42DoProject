@@ -116,7 +116,7 @@ function InChat({
       socket.off("chat:receive");
       socket.off("chat:leave");
     };
-  }, [chat, chatRoom]);
+  }, [chat, chatRoom, loginState]);
 
   useEffect(() => {
     const $input = document.querySelector(".inChat__input-small input");

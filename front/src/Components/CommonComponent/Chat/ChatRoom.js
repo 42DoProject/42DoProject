@@ -3,25 +3,11 @@ import "../../../SCSS/Common/Chat/ChatRoom.scss";
 import axios from "axios";
 import relativeTime from "../../../relativeTime";
 import { useSelector } from "react-redux";
-import socket from "../../../socket";
 
-function ChatRoom({
-  chatInfo,
-  clickFlag,
-  setInFlag,
-  setConvFlag,
-  refreshFlag,
-  setRefreshFlag,
-}) {
+function ChatRoom({ chatInfo, clickFlag, setInFlag, setConvFlag }) {
   const loginState = useSelector((state) => state.loginReducer);
   const [outUserProfile, setOutUserProfile] = useState();
   const chatRoomCP = chatInfo.users.filter((e) => e.id !== loginState.id);
-  useEffect(() => {
-    socket.on("chat:receive", () => {
-      refreshFlag ? setRefreshFlag(0) : setRefreshFlag(1);
-    });
-    return () => socket.off("chat:receive");
-  }, [refreshFlag]);
 
   let outUserName = "";
   if (chatInfo.users.length === 1) {
@@ -39,14 +25,13 @@ function ChatRoom({
             },
           }
         );
-        console.log(data);
         setOutUserProfile(data[0].profileImage);
       } catch (err) {
         console.log(err);
       }
     };
     outUserName && getProfile(outUserName);
-  }, [loginState]);
+  }, [loginState, chatInfo]);
 
   return (
     <>

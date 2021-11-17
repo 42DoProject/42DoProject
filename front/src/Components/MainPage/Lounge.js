@@ -1,6 +1,5 @@
 import React from "react";
 import "../../SCSS/MainPage/Lounge.scss";
-import { Icon } from "@iconify/react";
 import defaultImg from "../../default_intra.png";
 import { useHistory } from "react-router";
 

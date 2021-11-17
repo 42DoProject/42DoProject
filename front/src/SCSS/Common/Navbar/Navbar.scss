@@ -224,29 +224,42 @@
     overflow: hidden;
     .notiText__header {
       padding: 0.5rem;
+      margin-right: 0.7rem;
       font-size: $fontSm;
       font-weight: $bold;
       border-bottom: 1px solid $lightestGrey;
     }
     .notiText__body {
-      max-height: 19rem;
+      max-height: 10rem;
       overflow-y: scroll;
-      .noti .body__card {
-        border-bottom: 1px solid $lightestGrey;
-        padding: 0 0.5rem;
-        .card__row1 {
-          padding-top: 0.5rem;
-          display: flex;
-          font-size: $fontSm;
-          justify-content: space-between;
-          .card__title {
-            color: $mainColor;
-            margin-bottom: 1rem;
-          }
+      .card-wrap {
+        &:hover {
+          background-color: $lightestGrey;
         }
-        .card__text {
-          padding-bottom: 0.5rem;
+        .type {
+          border-bottom: 1px solid $lightestGrey;
+          padding: 0.3rem 0.5rem;
           font-size: $fontSm;
+          cursor: pointer;
+          line-height: normal;
+          .row1 {
+            padding: 0;
+            display: flex;
+            .title {
+              color: $pointRed;
+              font-weight: $bold;
+              font-size: $fontSm;
+            }
+            .date {
+              opacity: 0.5;
+            }
+          }
+          .userName {
+            color: $mainColor;
+          }
+          .projectName {
+            color: $mainColor;
+          }
         }
       }
       .notiText__none {

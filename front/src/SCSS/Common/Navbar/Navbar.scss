@@ -246,7 +246,7 @@
             padding: 0;
             display: flex;
             .title {
-              color: $pointRed;
+              color: $mainColor;
               font-weight: $bold;
               font-size: $fontSm;
             }
@@ -255,10 +255,10 @@
             }
           }
           .userName {
-            color: $mainColor;
+            font-weight: $bold;
           }
           .projectName {
-            color: $mainColor;
+            font-weight: $bold;
           }
         }
       }

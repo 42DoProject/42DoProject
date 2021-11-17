@@ -16,6 +16,12 @@ export default function loginReducer(state, action) {
       clearInterval(localStorage.getItem("timerId"));
       socket.emit("signOut");
       return null;
+    case "DM":
+      let DmState = {
+        ...state,
+        dmid: action.payload,
+      };
+      return DmState;
     case "TOKEN_UPDATE":
       let updateState = {
         ...state,

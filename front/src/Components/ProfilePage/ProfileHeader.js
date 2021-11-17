@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "../../SCSS/ProfilePage/ProfileHeader.scss";
 import Follow from "./Follow";
 import relativeTime from "../../relativeTime";
@@ -18,15 +18,31 @@ export default function ProfileHeader(props) {
   const [followButton, setFollowButton] = useState(); // "unfollow" / "follow" 버튼
   const [unfollowAlert, setUnfollowAlert] = useState(0);
   const [refreshFlag, setRefreshFlag] = useState(0); // 팔로워/팔로우 리스트 flag==1일 때 다시 가져온다.
-
+  let dispatch = useDispatch();
   const history = useHistory();
-
   useEffect(() => {
     props.myFollowings.includes(Number(props.userId))
       ? setFollowButton("unfollow")
       : setFollowButton("follow");
   }, [props.myFollowings]);
 
+  const inviteUser = async (userId) => {
+    try {
+      await axios({
+        method: "POST",
+        url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/chat`,
+        headers: {
+          Authorization: `Bearer ${loginState.accessToken}`,
+        },
+        data: {
+          users: [userId],
+        },
+      });
+      dispatch({ type: "DM", payload: props.userId });
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <div className="profileHeader">
       <div className="header__left">
@@ -57,6 +73,8 @@ export default function ProfileHeader(props) {
                 <button
                   className="row1__send-message"
                   onClick={() => {
+                    inviteUser(props.userId);
+
                     let chatEl = document.querySelector(".chat");
                     let chatLogEl = document.querySelector(".chatLog");
                     chatEl.style.visibility = "hidden";

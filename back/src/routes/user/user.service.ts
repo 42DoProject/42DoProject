@@ -197,7 +197,11 @@ export const modifyMe = async (request: Request, response: Response) => {
   )
     cadet.push(request.user!.id);
   else cadet.statusChanged(request.user!.id);
-  if (status !== undefined && status != profile!.status)
+  if (
+    status !== undefined &&
+    status != profile!.status &&
+    status === Number(process.env.CADET_LOOKING_FOR_PROJECT_STATUS)
+  )
     feed.changeStatus(request.user!.id, request.user!.username, status);
   response.status(200).json({ message: "successfully updated" });
 };

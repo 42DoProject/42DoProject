@@ -23,26 +23,30 @@ function ChatRoom({
     return () => socket.off("chat:receive");
   }, [refreshFlag]);
 
-  const getProfile = async (userName) => {
-    try {
-      const {
-        data: { user },
-      } = await axios.get(
-        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/search/${userName}`
-      );
-      setOutUserProfile(user[0].profileImage);
-    } catch (err) {
-      console.log(err);
-    }
-  };
   let outUserName = "";
   if (chatInfo.users.length === 1) {
     outUserName = chatInfo.last.split(" ")[0];
     outUserName = outUserName.slice(0, -2);
   }
   useEffect(() => {
+    const getProfile = async (userName) => {
+      try {
+        const { data } = await axios.get(
+          `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/search/user/${userName}`,
+          {
+            headers: {
+              Authorization: `Bearer ${loginState?.accessToken}`,
+            },
+          }
+        );
+        console.log(data);
+        setOutUserProfile(data[0].profileImage);
+      } catch (err) {
+        console.log(err);
+      }
+    };
     outUserName && getProfile(outUserName);
-  }, []);
+  }, [loginState]);
 
   return (
     <>

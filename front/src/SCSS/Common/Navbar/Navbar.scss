@@ -245,20 +245,22 @@
           .row1 {
             padding: 0;
             display: flex;
+
             .title {
               color: $mainColor;
-              font-weight: $bold;
+              font-weight: $semiBold;
               font-size: $fontSm;
             }
             .date {
               opacity: 0.5;
+              font-size: $fontSs;
             }
           }
           .userName {
-            font-weight: $bold;
+            font-weight: $semiBold;
           }
           .projectName {
-            font-weight: $bold;
+            font-weight: $semiBold;
           }
         }
       }

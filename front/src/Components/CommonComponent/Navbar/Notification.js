@@ -113,7 +113,7 @@ export default function Notifiaction() {
             <div className="header__text">알림</div>
           </div>
           <div className="notiText__body">
-            {notiData ? (
+            {notiData?.list.length ? (
               notiData.list.map((e, idx) => {
                 return (
                   <NotiCard

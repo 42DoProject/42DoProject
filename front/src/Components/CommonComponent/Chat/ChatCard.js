@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import "../../../SCSS/Common/Chat/ChatCard.scss";
 import axios from "axios";
+import relativeTime from "../../../relativeTime";
 
 export default function ChatCard({ chatInfo, imgFlag }) {
   const loginState = useSelector((state) => state.loginReducer);
@@ -10,6 +11,7 @@ export default function ChatCard({ chatInfo, imgFlag }) {
   let chatType = "";
   loginState.id === chatInfo?.userId ? (chatType = "me") : (chatType = "other");
   if (chatInfo.userId === -1) chatType = "noti";
+
   useEffect(() => {
     const getProfile = async (userId) => {
       try {
@@ -31,6 +33,7 @@ export default function ChatCard({ chatInfo, imgFlag }) {
     };
     imgFlag && getProfile(chatInfo.userId);
   }, [imgFlag]);
+
   return (
     <div className={`chatCard-${chatType}`}>
       <div className="chatCard__column1">
@@ -44,7 +47,15 @@ export default function ChatCard({ chatInfo, imgFlag }) {
         <div className="chat-noti">{chatInfo.message}</div>
       ) : (
         <div className="chatCard__column2">
-          <div className="column1-small__name">{imgFlag === 1 && userName}</div>
+          <div className="column1-small__name">
+            {imgFlag === 1 && chatType === "me" && (
+              <span className="chat-time">{relativeTime(chatInfo.date)}</span>
+            )}
+            <span>{imgFlag === 1 && userName}</span>
+            {imgFlag === 1 && chatType === "other" && (
+              <span className="chat-time">{relativeTime(chatInfo.date)}</span>
+            )}
+          </div>
           <div className="chat-message-small">{chatInfo.message}</div>
         </div>
       )}

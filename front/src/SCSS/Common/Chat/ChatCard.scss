@@ -25,6 +25,11 @@
       font-weight: $bold;
       font-size: $fontSs;
       padding: 0.2rem 0.4rem;
+      .chat-time {
+        font-size: 0.6rem;
+        margin-left: 0.5rem;
+        opacity: 0.5;
+      }
     }
     .chat-message-small {
       font-size: $fontSm;
@@ -63,6 +68,11 @@
       font-weight: $bold;
       font-size: $fontSs;
       padding: 0.2rem 0.4rem;
+      .chat-time {
+        font-size: 0.6rem;
+        margin-right: 0.5rem;
+        opacity: 0.5;
+      }
     }
     .chat-message-small {
       font-size: $fontSm;

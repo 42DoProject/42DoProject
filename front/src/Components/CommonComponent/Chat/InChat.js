@@ -108,16 +108,15 @@ function InChat({
       if (userList.length === 1) setUserList([]);
       getChat(chatRoom.uuid);
     });
-    socket.on(
-      "chat:receive",
-      (payload) => chatRoom.uuid === payload.uuid && getChat(chatRoom.uuid)
-    );
+    socket.on("chat:receive", (payload) => {
+      chatRoom.uuid === payload.uuid && getChat(chatRoom.uuid);
+    });
     return () => {
       inChat__bodyEl.removeEventListener("scroll", handleScrollTop);
       socket.off("chat:receive");
       socket.off("chat:leave");
     };
-  }, [chat]);
+  }, [chat, chatRoom]);
 
   useEffect(() => {
     const $input = document.querySelector(".inChat__input-small input");

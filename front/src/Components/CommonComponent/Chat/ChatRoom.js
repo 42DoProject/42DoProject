@@ -75,11 +75,16 @@ function ChatRoom({ chatInfo, clickFlag, setInFlag, setConvFlag }) {
           </div>
         </div>
         <div className="chatRoom__footer">
-          <div className="chatRoom__bubble">
-            {chatInfo.last?.length > 20
-              ? `${chatInfo.last.slice(0, 20)}...`
-              : chatInfo.last}
-          </div>
+          {chatInfo.last === "" ? (
+            <div className="chatRoom__bubble"> 대화가 시작되었어요</div>
+          ) : (
+            <div className="chatRoom__bubble">
+              {chatInfo.last?.length > 20
+                ? `${chatInfo.last.slice(0, 20)}...`
+                : chatInfo.last}
+            </div>
+          )}
+
           {chatInfo.unread != 0 && (
             <div className="chatRoom__unread">
               <span>{chatInfo.unread}</span>

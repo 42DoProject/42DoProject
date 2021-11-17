@@ -16,7 +16,6 @@ export default function Chat() {
   const [inFlag, setInFlag] = useState(-1);
   const [chatOutFlag, setChatOutFlag] = useState(0);
   const [unreadCnt, setUnreadCnt] = useState(0);
-  const [refreshFlag, setRefreshFlag] = useState(0);
 
   const getUnreadCnt = (chatRoom) => {
     let cnt = 0;
@@ -59,11 +58,11 @@ export default function Chat() {
         socket.off("chat:receive");
       }
     };
-  }, [loginState, chatRoom, inFlag]);
+  }, [loginState, chatRoom, inFlag, chatOutFlag]);
 
   useEffect(() => {
     getChatRoom();
-  }, [loginState, chatOutFlag, inFlag, refreshFlag]);
+  }, [loginState, chatOutFlag, inFlag]);
 
   return (
     <>

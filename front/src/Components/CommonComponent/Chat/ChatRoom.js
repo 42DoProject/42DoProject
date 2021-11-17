@@ -92,7 +92,7 @@ function ChatRoom({
         </div>
         <div className="chatRoom__footer">
           {chatInfo.last === "" ? (
-            <div className="chatRoom__bubble"> 대화가 시작되었어요</div>
+            <div className="chatRoom__bubble">새로운 대화가 시작되었습니다</div>
           ) : (
             <div className="chatRoom__bubble">
               {chatInfo.last?.length > 20

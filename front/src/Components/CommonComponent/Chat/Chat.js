@@ -55,7 +55,7 @@ export default function Chat() {
       socket.off("chat:leave");
       socket.off("chat:receive");
     };
-  }, [loginState]);
+  }, [loginState, chatRoom]);
 
   useEffect(() => {
     getChatRoom();

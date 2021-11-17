@@ -61,7 +61,7 @@ export default function NotiCard({ date, type, args }) {
             <div className="title">Project 신청</div>
             <div className="date">{relativeTime(date)}</div>
           </div>
-          <span className="projectName">{args[0].project}</span>에
+          <span className="projectName">{args[0].projectName}</span>에
           참여신청되었습니다.
         </div>
       )}
@@ -76,7 +76,7 @@ export default function NotiCard({ date, type, args }) {
             <div className="title">Project 승인</div>
             <div className="date">{relativeTime(date)}</div>
           </div>
-          <span className="projectName">{args[0].project}</span>에
+          <span className="projectName">{args[0].projectName}</span>에
           참여되었습니다.
         </div>
       )}
@@ -91,7 +91,7 @@ export default function NotiCard({ date, type, args }) {
             <div className="title">Project 거절</div>
             <div className="date">{relativeTime(date)}</div>
           </div>
-          <span className="projectName">{args[0].project}</span>에 참여하지
+          <span className="projectName">{args[0].projectName}</span>에 참여하지
           못했어요.
         </div>
       )}
@@ -106,7 +106,7 @@ export default function NotiCard({ date, type, args }) {
             <div className="title">Project 지원</div>
             <div className="date">{relativeTime(date)}</div>
           </div>
-          <span className="projectName">{args[1].project}</span>
+          <span className="projectName">{args[1].projectName}</span>
           {`에 `}
           <span className="projectName">{args[0].username}</span>가
           참여신청했습니다.
@@ -123,7 +123,7 @@ export default function NotiCard({ date, type, args }) {
             <div className="title">Project</div>
             <div className="date">{relativeTime(date)}</div>
           </div>
-          <span className="projectName">{args[0].project}</span>가
+          <span className="projectName">{args[0].projectName}</span>가
           {args[1].status === 0 && (
             <>
               <span className="projectName"> 모집 중</span>

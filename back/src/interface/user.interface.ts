@@ -5,9 +5,11 @@ export interface IFeed {
   args: Array<{
     userId?: Number;
     username?: String;
-    status?: Number;
-    project?: String;
+    status?: String;
+    projectName?: String;
     projectId?: Number;
+    loungeId?: Number;
+    comment?: String;
   }>;
 }
 

@@ -19,7 +19,9 @@ function InChat({
   let loginState = useSelector((state) => state.loginReducer);
   const [chat, setChat] = useState();
   const [inviteFlag, setInviteFlag] = useState(0);
-  const userList = chatRoom.users.filter((e) => e.id !== loginState.id);
+  const [userList, setUserList] = useState(
+    chatRoom.users.filter((e) => e.id !== loginState.id)
+  );
   const getChat = async (uuid) => {
     try {
       const { data } = await axios.get(
@@ -92,15 +94,6 @@ function InChat({
   };
   useEffect(() => {
     getChatMore(chatRoom.uuid);
-    socket.on("chat:leave", () => getChat(chatRoom.uuid));
-    socket.on(
-      "chat:receive",
-      (payload) => chatRoom.uuid === payload.uuid && getChat(chatRoom.uuid)
-    );
-    return () => {
-      socket.off("chat:receive");
-      socket.off("chat:leave");
-    };
   }, [loginState]);
 
   useEffect(() => {
@@ -111,8 +104,18 @@ function InChat({
       }
     };
     inChat__bodyEl.addEventListener("scroll", handleScrollTop);
+    socket.on("chat:leave", () => {
+      if (userList.length === 1) setUserList([]);
+      getChat(chatRoom.uuid);
+    });
+    socket.on(
+      "chat:receive",
+      (payload) => chatRoom.uuid === payload.uuid && getChat(chatRoom.uuid)
+    );
     return () => {
       inChat__bodyEl.removeEventListener("scroll", handleScrollTop);
+      socket.off("chat:receive");
+      socket.off("chat:leave");
     };
   }, [chat]);
 

@@ -13,7 +13,6 @@ export default function Dashboard(props) {
   const loginState = useSelector((state) => state.loginReducer);
   const [userData, setUserData] = useState();
   const [proceedingPrCnt, setProceedingPrCnt] = useState();
-  const dispatch = useDispatch();
 
   const getData = async () => {
     try {
@@ -133,25 +132,29 @@ export default function Dashboard(props) {
               <div className="reportbox__report">
                 <Link
                   className="dashboard__project__link1"
-                  to="/projectlist/recruit">
+                  to="/projectlist/recruit"
+                >
                   {props.progressPr}
                 </Link>
                 개의 프로젝트가{" "}
                 <Link
                   className="dashboard__project__link2"
-                  to="/projectlist/recruit">
+                  to="/projectlist/recruit"
+                >
                   모집중
                 </Link>
                 이고{" "}
                 <Link
                   className="dashboard__project__link3"
-                  to="/projectlist/proceed">
+                  to="/projectlist/proceed"
+                >
                   {proceedingPrCnt}
                 </Link>
                 개의 프로젝트가{" "}
                 <Link
                   className="dashboard__project__link4"
-                  to="/projectlist/proceed">
+                  to="/projectlist/proceed"
+                >
                   진행중
                 </Link>
                 이에요

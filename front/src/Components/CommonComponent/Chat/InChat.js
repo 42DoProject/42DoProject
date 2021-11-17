@@ -66,11 +66,7 @@ function InChat({
           },
         }
       );
-      const inChat__bodyEl = document.querySelector(".inChat__body");
-      const inChat_Before = inChat__bodyEl.scrollHeight;
       setChat([...data, ...chatLog]);
-      const inchat__bodyEl2 = document.querySelector(".inChat__body");
-      inchat__bodyEl2.scrollTop = inchat__bodyEl2.scrollHeight - inChat_Before;
     } catch (err) {
       console.log(err);
     }

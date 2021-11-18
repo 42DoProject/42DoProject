@@ -37,7 +37,7 @@ export default function Follow(props) {
 
   useEffect(() => {
     if (props.subject === "팔로워") getFollow("follower");
-    else if (props.subject === "팔로우") getFollow("following");
+    else if (props.subject === "팔로잉") getFollow("following");
     props.setRefreshFlag(0);
   }, [props.refreshFlag]);
 

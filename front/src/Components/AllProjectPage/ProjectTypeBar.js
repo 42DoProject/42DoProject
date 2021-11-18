@@ -51,7 +51,7 @@ export default function ProjectTypeBar(props) {
           </div>
           <div className="public-project">
             <Link className={completeColor} to="/projectlist/complete">
-              완료된 프로젝트
+              완성된 프로젝트
             </Link>
           </div>
         </div>

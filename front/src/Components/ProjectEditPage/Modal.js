@@ -28,7 +28,7 @@ export default function Modal({ body, buttons, setYes, setOpenFlag }) {
               onClick={() => {
                 setOpenFlag(0);
               }}>
-              아니요
+              취소
             </div>
             <div
               className="validate__confirm"
@@ -36,7 +36,7 @@ export default function Modal({ body, buttons, setYes, setOpenFlag }) {
                 setOpenFlag(0);
                 setYes(1);
               }}>
-              네
+              확인
             </div>
           </>
         )}

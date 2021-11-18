@@ -2,6 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import "../../SCSS/ProjectEditPage/ProjectEditPage.scss";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { Editor } from "@toast-ui/react-editor";
+import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
+import "tui-color-picker/dist/tui-color-picker.css";
+import "@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css";
+
 import { Icon } from "@iconify/react";
 import PositionCard from "./PositionCard";
 import Unsplash from "./Unsplash";
@@ -123,7 +127,10 @@ export default function ProjectEditPage() {
       console.log(err);
       setIsLoading(0);
       setImgLoadFlag(1);
-      setValidateMsg(["프로젝트 생성중 에러가 발생했어요", "cancel-only"]);
+      setValidateMsg([
+        `프로젝트 ${projectId ? "저장" : "생성"}중 에러가 발생했어요`,
+        "cancel-only",
+      ]);
       setValidateFlag(1);
     }
   };
@@ -359,7 +366,7 @@ export default function ProjectEditPage() {
               );
             })}
           </div>
-          <label>프로젝트 완료까지의 예상 소요 기간</label>
+          <label>프로젝트 기간</label>
           <div className="project-edit__period">
             시작일
             <input
@@ -512,6 +519,10 @@ export default function ProjectEditPage() {
             <Editor
               ref={editorRef}
               height="40rem"
+              plugins={[
+                colorSyntax,
+                // [codeSyntaxHighlight, { highlighter: Prism }],
+              ]}
               useCommandShortcut={true}
               placeholder={`프로젝트에 대해 자유롭게 소개해 주세요.
 (ex. 초기 아이디어 및 프로젝트의 목적, 필요성, 출시 플랫폼, 타겟 유저 등)`}

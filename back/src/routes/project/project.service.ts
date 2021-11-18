@@ -20,7 +20,7 @@ app.set("query parser", "extended");
 
 export const getList = async (request: Request, response: Response) => {
     const { state, skill, position, page, pageSize, order } = request.query;
-    let inputOrder, limit, offset, where;
+    let inputSkill, inputPosition, inputOrder, limit, offset, where;
 
     // ordering
     if (order === 'view')
@@ -45,6 +45,22 @@ export const getList = async (request: Request, response: Response) => {
     }
 
     // filtering
+    if (skill !== undefined && typeof skill === "object") {
+        inputSkill = [];
+        for (const value of Object.values(skill))
+            inputSkill.push(Number(value));
+        inputSkill = "[" + String(inputSkill) + "]";
+    }
+    else
+        inputSkill = skill;
+    if (position !== undefined && typeof position === "object") {
+        inputPosition = [];
+        for (const value of Object.values(position))
+            inputPosition.push(Number(value));
+        inputPosition = "[" + String(inputPosition) + "]";
+    }
+    else
+        inputPosition = position;
     if (state === undefined) {
         if (skill === undefined) {
             if (position === undefined)
@@ -54,7 +70,7 @@ export const getList = async (request: Request, response: Response) => {
                     sequelize.fn(
                         'JSON_CONTAINS',
                         sequelize.col('position'),
-                        sequelize.literal(JSON.stringify(position))
+                        sequelize.literal(JSON.stringify(inputPosition))
                     ),
                     sequelize.literal(String(true))
                 );
@@ -65,7 +81,7 @@ export const getList = async (request: Request, response: Response) => {
                     sequelize.fn(
                         'JSON_CONTAINS',
                         sequelize.col('skill'),
-                        sequelize.literal(JSON.stringify(skill))
+                        sequelize.literal(JSON.stringify(inputSkill))
                     ),
                     sequelize.literal(String(true))
                 );
@@ -75,7 +91,7 @@ export const getList = async (request: Request, response: Response) => {
                         sequelize.fn(
                             'JSON_CONTAINS',
                             sequelize.col('position'),
-                            sequelize.literal(JSON.stringify(position))
+                            sequelize.literal(JSON.stringify(inputPosition))
                         ),
                         sequelize.literal(String(true))
                     ),
@@ -83,7 +99,7 @@ export const getList = async (request: Request, response: Response) => {
                         sequelize.fn(
                             'JSON_CONTAINS',
                             sequelize.col('skill'),
-                            sequelize.literal(JSON.stringify(skill))
+                            sequelize.literal(JSON.stringify(inputSkill))
                         ),
                         sequelize.literal(String(true))
                     )
@@ -101,7 +117,7 @@ export const getList = async (request: Request, response: Response) => {
                         sequelize.fn(
                             'JSON_CONTAINS',
                             sequelize.col('position'),
-                            sequelize.literal(JSON.stringify(position))
+                            sequelize.literal(JSON.stringify(inputPosition))
                         ),
                         sequelize.literal(String(true))
                     )
@@ -115,7 +131,7 @@ export const getList = async (request: Request, response: Response) => {
                         sequelize.fn(
                             'JSON_CONTAINS',
                             sequelize.col('skill'),
-                            sequelize.literal(JSON.stringify(skill))
+                            sequelize.literal(JSON.stringify(inputSkill))
                         ),
                         sequelize.literal(String(true))
                     )
@@ -127,7 +143,7 @@ export const getList = async (request: Request, response: Response) => {
                         sequelize.fn(
                             'JSON_CONTAINS',
                             sequelize.col('position'),
-                            sequelize.literal(JSON.stringify(position))
+                            sequelize.literal(JSON.stringify(inputPosition))
                         ),
                         sequelize.literal(String(true))
                     ),
@@ -135,7 +151,7 @@ export const getList = async (request: Request, response: Response) => {
                         sequelize.fn(
                             'JSON_CONTAINS',
                             sequelize.col('skill'),
-                            sequelize.literal(JSON.stringify(skill))
+                            sequelize.literal(JSON.stringify(inputSkill))
                         ),
                         sequelize.literal(String(true))
                     )

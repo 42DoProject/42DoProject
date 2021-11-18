@@ -11,8 +11,13 @@ import * as feed from "../../module/feed";
 
 export const getLounge = async (request: Request, response: Response) => {
     const { page, pageSize, order } = request.query;
-    let inputOrder, limit, offset;
+    let inputOrder, image, limit, offset, flag;
 
+    // blur image or profile image
+    if (request.user === null)
+        image = "blurImage";
+    else
+        image = "profileImage";
     // ordering
     if (order === 'like')
         inputOrder = 'like';
@@ -47,14 +52,50 @@ export const getLounge = async (request: Request, response: Response) => {
                 attributes: ['id'],
                 include: [{
                     model: User,
-                    attributes: ['profileImage', 'username']
+                    attributes: [image, 'username']
                 }]
             },
             order: [[inputOrder, 'DESC']],
             offset: offset,
             limit: limit
         })
-        response.status(200).json({ lounge });
+
+        // check empty blurImage
+        if (image === "blurImage") {
+            flag = 0;
+            lounge.rows.forEach((element) => {
+                if (element.profile.user.blurImage === "")
+                    flag = 1;
+            })
+            
+            if (flag === 1) {
+                const newLounge = await Lounge.findAndCountAll({
+                    attributes: [
+                        'comment',
+                        'like',
+                        'replyCount',
+                        'createdAt',
+                        'updatedAt'
+                    ],
+                    include: {
+                        model: Profile,
+                        attributes: ['id'],
+                        include: [{
+                            model: User,
+                            attributes: ['profileImage', 'username']
+                        }]
+                    },
+                    order: [[inputOrder, 'DESC']],
+                    offset: offset,
+                    limit: limit
+                })
+                response.status(200).json({ newLounge });
+            }
+            else
+                response.status(200).json({ lounge });
+        }
+        else
+            response.status(200).json({ lounge });
     } catch (error) {
         response.status(405).json({ errMessage: String(error) });
         return ;

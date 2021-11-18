@@ -350,7 +350,7 @@ export const updateList = async (request: Request, response: Response) => {
         }
 
         // decide state
-        const totalMember: number = (position === undefined) ? 1 : position.length + 1;
+        const totalMember: number = (position === undefined) ? project!.currentMember : position.length + project!.currentMember;
         let inputState: string = (totalMember - project!.currentMember > 0) ? 'recruiting' : 'proceeding';
         if (state !== undefined)
             inputState = state;

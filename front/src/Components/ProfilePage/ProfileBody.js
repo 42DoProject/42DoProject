@@ -99,7 +99,7 @@ export default function ProfileBody(props) {
         </div>
         <hr className="hr__line" />
         <div className="col2__done-projects">
-          <span className="col2__subject-span">완료한 프로젝트</span>
+          <span className="col2__subject-span">완성한 프로젝트</span>
           {props.user.participatingProject &&
           props.user.participatingProject.filter(
             (e) => e.project.state === "completed"

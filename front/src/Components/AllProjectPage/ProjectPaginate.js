@@ -46,7 +46,7 @@ export default function ProjectPaginate(props) {
       stateValue = "진행중인";
       break;
     case "completed":
-      stateValue = "완료된";
+      stateValue = "완성된";
       break;
   }
 

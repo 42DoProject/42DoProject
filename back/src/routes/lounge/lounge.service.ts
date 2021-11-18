@@ -50,7 +50,7 @@ export const getLounge = async (request: Request, response: Response) => {
                     attributes: ['profileImage', 'username']
                 }]
             },
-            order: [inputOrder, 'DESC'],
+            order: [[inputOrder, 'DESC']],
             offset: offset,
             limit: limit
         })

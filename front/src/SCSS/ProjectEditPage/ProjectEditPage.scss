@@ -1,12 +1,13 @@
 @import "../Base.scss";
 
 .project-edit__wrapper {
+  padding: 1rem;
   overflow: auto;
   max-width: 1400px;
   background-color: white;
   border-radius: $round;
   box-shadow: $shadow;
-  margin: 1rem auto;
+  margin: 1rem auto 2rem auto;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -22,7 +23,7 @@
   button {
     padding: 0.5rem 1rem;
     border-radius: $round;
-    border: 2px solid $lightGrey;
+    // border: 2px solid $lightGrey;
     background-color: white;
     color: $grey;
     min-width: max-content;
@@ -101,7 +102,7 @@
       color: white;
       border: none;
       margin: 0 0.5rem;
-      font-weight: $normal;
+      font-weight: $regular;
     }
     .project-edit__delete {
       background-color: $pointRed;
@@ -121,10 +122,10 @@
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  margin: 0 2rem;
+  margin: 0 1rem;
 }
 .project-edit__left {
-  width: 40%;
+  width: 43%;
   // background-color: pink;
   position: relative;
   .project-edit__position-label {
@@ -152,11 +153,11 @@
 
   .project-edit__skill {
     .project-edit__add-skill {
-      width: 14rem;
-      padding: 0.2rem 0.7rem;
+      width: 14.5rem;
+      padding: 0.3rem 0.7rem;
     }
   }
-  .project-eidt__selected-skill {
+  .project-edit__selected-skill {
     display: flex;
     flex-wrap: wrap;
     .selected-el {
@@ -167,11 +168,60 @@
         right: -0.8rem;
         bottom: 0;
         color: $grey;
+        cursor: pointer;
+        &:hover {
+          color: $darkGrey;
+        }
       }
     }
   }
   .project-edit__period {
     min-width: max-content;
+  }
+
+  .project-edit__reference {
+    input {
+      width: 92%;
+      margin-right: 0.5rem;
+      background-color: $bodyColor;
+      padding: 0.3rem 1rem;
+    }
+    .reference-icon {
+      color: $lightGrey;
+      font-size: 1.5rem;
+      cursor: pointer;
+      &:hover {
+        color: $mainColor;
+      }
+    }
+    .selected-reference {
+      display: flex;
+      align-items: center;
+      margin-top: 0.5rem;
+      .reference-url {
+        width: 92%;
+        margin-right: 0.5rem;
+        border: 2px solid $lightestGrey;
+        padding: 0.5rem 1rem;
+        border-radius: $round;
+        white-space: nowrap;
+        // position: relative;
+        overflow: scroll;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        &::-webkit-scrollbar {
+          display: none;
+        }
+      }
+      .reference-x {
+        font-size: 1.5rem;
+        color: $lightGrey;
+        cursor: pointer;
+        &:hover {
+          color: $pointRed;
+        }
+      }
+    }
   }
 }
 .project-edit__right {
@@ -192,11 +242,30 @@
   border-radius: $round !important;
   overflow-x: hidden;
   button,
-  input,
-  span {
+  input {
     border-radius: $round !important;
   }
-
+  span {
+    border-radius: $round;
+  }
+  .toastui-editor-popup-add-image .toastui-editor-file-name {
+    border-radius: $round;
+  }
+  .placeholder {
+    background-color: transparent;
+    opacity: 0.6;
+    cursor: auto;
+  }
+  input.tui-colorpicker-palette-button {
+    padding: 0;
+  }
+  .toastui-editor-popup-body input[type="text"].tui-colorpicker-palette-hex {
+    height: 30px;
+    width: calc(100% - 10px);
+  }
+  .toastui-editor-md-code {
+    border-radius: 0;
+  }
   .toastui-editor-defaultUI-toolbar {
     border-top-right-radius: $round !important;
     // overflow-x: hidden;

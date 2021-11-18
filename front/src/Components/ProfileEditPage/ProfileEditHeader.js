@@ -89,7 +89,7 @@ export default function ProfileEditHeader(props) {
             })}
           </select>
           <div className="row2__follower">팔로워 {props.user.follower}명</div>
-          <div className="row2__following">팔로우 {props.user.following}명</div>
+          <div className="row2__following">팔로잉 {props.user.following}명</div>
         </div>
         <div className="right__introduction">
           <textarea

@@ -16,7 +16,6 @@ export default function Chat() {
   const [inFlag, setInFlag] = useState(-1);
   const [chatOutFlag, setChatOutFlag] = useState(0);
   const [unreadCnt, setUnreadCnt] = useState(0);
-  const [refreshFlag, setRefreshFlag] = useState(0);
 
   const getUnreadCnt = (chatRoom) => {
     let cnt = 0;
@@ -47,15 +46,23 @@ export default function Chat() {
     socket.on("chat:leave", () => {
       getChatRoom();
     });
+    socket.on("chat:receive", () => {
+      getChatRoom();
+    });
     return () => {
+      console.log("chat unmount");
       socket.off("chat:newRoom");
       socket.off("chat:leave");
+      if (inFlag === -1) {
+        console.log(inFlag);
+        socket.off("chat:receive");
+      }
     };
-  }, [loginState]);
+  }, [loginState, chatRoom, inFlag, chatOutFlag]);
 
   useEffect(() => {
     getChatRoom();
-  }, [loginState, chatOutFlag, inFlag, refreshFlag]);
+  }, [loginState, chatOutFlag, inFlag]);
 
   return (
     <>
@@ -64,7 +71,6 @@ export default function Chat() {
         onClick={() => {
           let chatEl = document.querySelector(".chat");
           let chatLogEl = document.querySelector(".chatLog");
-
           chatEl.style.visibility = "hidden";
           chatLogEl.style.visibility = "visible";
         }}
@@ -164,8 +170,6 @@ export default function Chat() {
                     clickFlag={clickFlag}
                     setInFlag={setInFlag}
                     setConvFlag={setConvFlag}
-                    refreshFlag={refreshFlag}
-                    setRefreshFlag={setRefreshFlag}
                   />
                 ))
               ) : (

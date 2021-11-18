@@ -9,10 +9,12 @@ $lightestGrey: #e5e5e5;
 $lightGrey: #c4c4c4;
 $pointRed: #ff6864;
 $pointBlue: #5bbcb6;
-//font-weight
+//font-weight 기본:400
 $bold: 800;
 $semiBold: 700;
 $normal: 600;
+$regular: 500;
+$thin: 400;
 //페이지 전체 margin 기준
 $fontXXl: 3rem; //36px
 $fontXl: 2.5rem; //30px
@@ -24,6 +26,8 @@ $fontSm: 1rem;
 $fontSs: 0.85rem; //14px ?
 $shadowDeep: 0rem 0.3rem 0.3rem 0rem rgba(0, 0, 0, 0.25);
 $shadow: 0rem 0.3rem 0.3rem 0rem rgba(0, 0, 0, 0.1);
+$shadowLight: 0rem 0.2rem 0.5rem 0rem rgba(0, 0, 0, 0.05);
+$shadowAll: 0 0 0 9999px rgba(0, 0, 0, 0.6);
 
 $round: 0.7rem; //border-radius 통일
 // $semiRound: 0.4rem; // button 등 작은 요소들

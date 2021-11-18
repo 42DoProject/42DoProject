@@ -31,7 +31,7 @@ function PublicList(props) {
   ) : (
     <>
       {completedProject.length === 0 ? (
-        <div className="noProject">완료된 프로젝트가 없어요</div>
+        <div className="noProject">완성된 프로젝트가 없어요</div>
       ) : (
         <div className="cardlist">
           {slideFlag === 0 ? null : (
@@ -39,8 +39,7 @@ function PublicList(props) {
               className="cardbutton prev"
               onClick={(event) => {
                 prevUtil(slideFlag, setSlideFlag);
-              }}
-            >
+              }}>
               <Icon className="prev__icon" icon="dashicons:arrow-left-alt2" />
             </button>
           )}
@@ -49,15 +48,14 @@ function PublicList(props) {
               className="cardbutton next"
               onClick={(event) => {
                 nextUtil(slideFlag, setSlideFlag, completedProject.length);
-              }}
-            >
+              }}>
               <Icon className="next__icon" icon="dashicons:arrow-right-alt2" />
             </button>
           )}
           <div className="cardpadding">
             <div className="cards-row">
               {completedProject.map((el, idx) => {
-                return <Cards key={idx} projectData={el} />;
+                return <Cards key={el.id} projectData={el} />;
               })}
             </div>
           </div>

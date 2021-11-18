@@ -44,6 +44,7 @@ function App(props) {
     localStorage.setItem("timerId", timerId);
   }, []);
   console.log(loginState?.accessToken);
+
   return (
     <Layout>
       <Switch>

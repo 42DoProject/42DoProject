@@ -2,6 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import "../../SCSS/ProjectEditPage/ProjectEditPage.scss";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { Editor } from "@toast-ui/react-editor";
+import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
+import "tui-color-picker/dist/tui-color-picker.css";
+import "@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css";
+
 import { Icon } from "@iconify/react";
 import PositionCard from "./PositionCard";
 import Unsplash from "./Unsplash";
@@ -9,29 +13,33 @@ import skills from "../../skills.json";
 import { positions } from "../../userData";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { Redirect, useHistory } from "react-router";
+import { useParams, useHistory } from "react-router";
 import Modal from "./Modal";
 import ReactLoading from "../CommonComponent/Loading";
 
 export default function ProjectEditPage() {
+  const projectId = useParams()["id"];
+  const [projectData, setProjectData] = useState(null);
   const loginState = useSelector((state) => state.loginReducer);
   const [unsplashFlag, setUnsplashFlag] = useState(0);
   const unsplashRef = useRef();
-  const [selectedPos, setSelectedPos] = useState([]); //[[사진, 포지션이름, x여부], [사진, 포지션이름, x여부]]
-  const [selectedSkill, setSelectedSkill] = useState([]);
+  const [selectedPos, setSelectedPos] = useState([]); //[[사진, 포지션이름, x여부], ...]
+  const [selectedSkill, setSelectedSkill] = useState([]); // [["Docker","https://img~","129"], ...]
+  const [refer, setRefer] = useState([]); // 참고링크 URI
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
   const [myData, setMyData] = useState({});
   const editorRef = useRef();
   const history = useHistory();
-  const [image, setImage] = useState();
+  const [image, setImage] = useState(); //
   const [imgLoadFlag, setImgLoadFlag] = useState(0); // 1일때 이미지 로드, 로드 완료 후 2
   const [imgBase64, setImgBase64] = useState(""); // 이미지 파일 base64 (업로드 전 미리보기 기능)
   const [validateFlag, setValidateFlag] = useState(0); // 1일때 모달창 띄움
+  const [modalFlag, setModalFlag] = useState(0); // 1일때 모달창 띄움
   const [validateMsg, setValidateMsg] = useState([]); // [validate모달창에 띄울 메시지, 버튼 종류]
   const [isValid, setIsValid] = useState(0); // validity 테스트 통과하면 1
   const [isLoading, setIsLoading] = useState(0); // 1일때 스피너
-
+  const [yes, setYes] = useState(0); // 1일 때 프로젝트 삭제
   let dateDiff =
     (new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24) + 1;
 
@@ -58,7 +66,9 @@ export default function ProjectEditPage() {
       setValidateFlag(1);
     } else if (selectedPos.filter((e) => e[2] === "enabled").length === 0) {
       setValidateMsg([
-        "빈 포지션이 없으면 프로젝트 참여 신청을 받을 수 없어요. 이대로 프로젝트를 생성할까요?",
+        `빈 포지션이 없으면 프로젝트 참여 신청을 받을 수 없어요. 이대로 프로젝트를 ${
+          projectId ? "저장" : "생성"
+        }할까요?`,
         "both",
       ]);
       setValidateFlag(1);
@@ -75,12 +85,11 @@ export default function ProjectEditPage() {
         .map((e) => positions.indexOf(e[1]));
 
       const textField = {
-        // totalMember: selectedPos.length,
         title: document.querySelector(".project-edit__name").value,
-        // state: "recruiting",
         content: editorInstance.getMarkdown(),
-        position: `[${positionPost}]`,
-        skill: `[${skillPost}]`,
+        position: JSON.stringify(positionPost),
+        skill: JSON.stringify(skillPost),
+        reference: JSON.stringify(refer),
       };
       const formData = new FormData();
       formData.append("thumbnail", image);
@@ -89,10 +98,16 @@ export default function ProjectEditPage() {
       }
       if (startDate) formData.append("startDate", startDate);
       if (endDate) formData.append("endDate", endDate);
+      if (!projectId) formData.append("leaderPosition", myData.position);
+      console.log("myData", myData);
 
       const res = await axios({
-        method: "post",
-        url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project`,
+        method: `${projectId ? "put" : "post"}`,
+        url: `${
+          projectId
+            ? `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project?projectId=${projectId}`
+            : `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project`
+        }`,
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${loginState.accessToken}`,
@@ -100,10 +115,23 @@ export default function ProjectEditPage() {
         data: formData,
       });
       console.log("res", res);
+      for (var pair of formData.entries()) {
+        console.log(pair[0] + ", " + pair[1]);
+      }
       setIsLoading(0);
-      history.goBack();
+      // history.goBack();
+      projectId
+        ? history.push(`/project/${projectId}`)
+        : history.push(`/project/${res.data.newProject}`);
     } catch (err) {
       console.log(err);
+      setIsLoading(0);
+      setImgLoadFlag(1);
+      setValidateMsg([
+        `프로젝트 ${projectId ? "저장" : "생성"}중 에러가 발생했어요`,
+        "cancel-only",
+      ]);
+      setValidateFlag(1);
     }
   };
 
@@ -123,19 +151,87 @@ export default function ProjectEditPage() {
     }
   };
 
+  const projectDelete = async () => {
+    try {
+      const res = await axios({
+        method: "delete",
+        url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project?projectId=${projectId}`,
+        headers: {
+          Authorization: `Bearer ${loginState.accessToken}`,
+        },
+      });
+      console.log(res);
+      history.push("/");
+    } catch (err) {
+      console.log(err);
+      setIsLoading(0);
+      setYes(0);
+      setValidateMsg(["존재하지 않는 프로젝트입니다", "cancel-only"]);
+      setValidateFlag(1);
+    }
+  };
+
+  const getProjectData = async () => {
+    try {
+      const {
+        data: { content: projectContent },
+      } = await axios.get(
+        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project/content?projectId=${projectId}`
+      );
+      setProjectData(projectContent);
+      if (projectContent?.thumbnailImage) setImgLoadFlag(1);
+    } catch (err) {
+      console.log(err);
+      // history.goBack();
+    }
+  };
+
+  useEffect(() => {
+    if (projectData) {
+      editorRef?.current.getInstance().setMarkdown(projectData.content.content);
+      setImage(projectData.thumbnailImage);
+      let skillSet = [];
+      for (let e of projectData.skill) {
+        skillSet.push([...skills.skills[e], e]);
+      }
+      let emptyPos = [];
+      for (let e of projectData.position) {
+        emptyPos.push(["noImage", positions[e], "enabled"]);
+      }
+      let filledPos = [];
+      for (let e of projectData.projectprofile) {
+        filledPos.push([
+          e.profile.user.profileImage,
+          `${e.position === null ? "팀장" : positions[e.position]}`,
+          "disabled",
+        ]);
+      }
+      setSelectedPos([...filledPos, ...emptyPos]);
+      setSelectedSkill(skillSet);
+      setRefer(projectData.content.reference);
+      setStartDate(projectData.startDate?.slice(0, 10));
+      setEndDate(projectData.endDate?.slice(0, 10));
+      console.log("projectData", projectData);
+    }
+  }, [projectData]);
+
+  useEffect(() => {
+    if (projectId) getProjectData();
+  }, [projectId]);
+
   useEffect(() => {
     if (loginState === null) {
       history.goBack();
-      // setValidateMsg(["로그인 해주세요", "cancel-only"]);
-      // setValidateFlag(1);
     } else getMyData();
   }, [loginState]);
 
   useEffect(() => {
-    setSelectedPos([
-      [myData.profileImage, positions[myData.position], "disabled"],
-    ]);
-  }, [myData]);
+    if (!projectId) {
+      setSelectedPos([
+        [myData.profileImage, positions[myData.position], "disabled"],
+      ]);
+    }
+  }, [myData, projectId]);
 
   useEffect(() => {
     if (isValid === 1) {
@@ -145,13 +241,20 @@ export default function ProjectEditPage() {
   }, [isValid]);
 
   useEffect(() => {
+    if (yes === 1) {
+      setIsLoading(1);
+      projectDelete();
+    }
+  }, [yes]);
+
+  useEffect(() => {
     const spinnerEl = document.querySelector(".loading-wrap");
 
     if (imgLoadFlag === 2) spinnerEl.style.visibility = "hidden";
     if (imgLoadFlag === 1) spinnerEl.style.visibility = "visible";
   }, [imgLoadFlag]);
 
-  unsplashFlag && document.addEventListener("mousedown", handleClickOutside);
+  if (unsplashFlag) document.addEventListener("mousedown", handleClickOutside);
   if (isLoading) return <ReactLoading type="spin" color="#a7bc5b" />;
 
   return (
@@ -185,7 +288,7 @@ export default function ProjectEditPage() {
                 <ReactLoading type="spin" color="#a7bc5b" />
                 <img
                   className="project-edit__img"
-                  src={imgBase64}
+                  src={imgBase64 || projectData?.thumbnailImage}
                   alt="project-thumbnail"
                   onLoad={() => {
                     setImgLoadFlag(2);
@@ -243,7 +346,10 @@ export default function ProjectEditPage() {
                 );
               })}
             </select>
-            <div>(멤버: 1 / {selectedPos.length})</div>
+            <div>
+              (멤버: {projectId ? projectData?.currentMember : "1"} /{" "}
+              {selectedPos.length})
+            </div>
           </div>
           <div className="project-edit__position">
             {selectedPos.map((v, i) => {
@@ -260,11 +366,12 @@ export default function ProjectEditPage() {
               );
             })}
           </div>
-          <label>프로젝트 완료까지의 예상 소요 기간</label>
+          <label>프로젝트 기간</label>
           <div className="project-edit__period">
             시작일
             <input
               type="date"
+              value={startDate || ""}
               className="project-edit__start-date"
               onChange={() => {
                 const startDateEl = document.getElementsByClassName(
@@ -275,6 +382,7 @@ export default function ProjectEditPage() {
             ~ 종료일
             <input
               type="date"
+              value={endDate || ""}
               className="project-edit__end-date"
               onChange={() => {
                 const endDateEl = document.getElementsByClassName(
@@ -295,7 +403,7 @@ export default function ProjectEditPage() {
             <div className="project-edit__skill">
               <input
                 className="project-edit__add-skill"
-                placeholder="스킬을 검색해 추가해보세요"
+                placeholder="스킬을 검색해 추가해 보세요"
                 list="tech-stacks"
                 onKeyPress={(e) => {
                   if (e.key === "Enter") {
@@ -323,7 +431,7 @@ export default function ProjectEditPage() {
               </datalist>
             </div>
           </label>
-          <div className="project-eidt__selected-skill">
+          <div className="project-edit__selected-skill">
             {selectedSkill.map((e, idx) => {
               return (
                 <div key={idx} className="selected-el">
@@ -347,6 +455,52 @@ export default function ProjectEditPage() {
               );
             })}
           </div>
+          <div className="project-edit__reference">
+            <label>참고 링크</label>
+            <div>
+              <input
+                className="reference-input"
+                placeholder="GitHub repository, Notion 등의 웹 주소를 추가해 주세요"
+                onKeyPress={(e) => {
+                  if (e.key === "Enter" && e.target.value) {
+                    setRefer([...refer, e.target.value]);
+                    e.target.value = "";
+                  }
+                }}
+              />
+              <Icon
+                icon="akar-icons:circle-plus-fill"
+                className="reference-icon"
+                onClick={() => {
+                  const referEl = document.querySelector(".reference-input");
+
+                  if (referEl.value) {
+                    setRefer([...refer, referEl.value]);
+                    referEl.value = "";
+                  }
+                }}
+              />
+            </div>
+            {refer?.map((v, i) => {
+              return (
+                <div className="selected-reference" key={i - 1}>
+                  <div key={i} className="reference-url">
+                    {v}
+                  </div>
+                  <Icon
+                    key={i + 1}
+                    icon="akar-icons:circle-minus-fill"
+                    className="reference-x"
+                    onClick={() => {
+                      let duplicate = [...refer];
+                      duplicate.splice(i, 1);
+                      setRefer(duplicate);
+                    }}
+                  />
+                </div>
+              );
+            })}
+          </div>
         </div>
         <div className="project-edit__right">
           <label>
@@ -354,14 +508,25 @@ export default function ProjectEditPage() {
           </label>
           <input
             className="project-edit__name"
-            placeholder="프로젝트명을 입력해주세요. (ex. 식재료에 따른 요리 추천 앱)"
+            placeholder="프로젝트명을 입력해 주세요. (ex. 식재료에 따른 요리 추천 앱)"
             maxLength="30"
+            defaultValue={projectData?.title}
           />
           <label>
             프로젝트 소개<span className="project-edit__asterisk">*</span>
           </label>
           <div className="project-edit__introduction">
-            <Editor ref={editorRef} height="500px" />
+            <Editor
+              ref={editorRef}
+              height="40rem"
+              plugins={[
+                colorSyntax,
+                // [codeSyntaxHighlight, { highlighter: Prism }],
+              ]}
+              useCommandShortcut={true}
+              placeholder={`프로젝트에 대해 자유롭게 소개해 주세요.
+(ex. 초기 아이디어 및 프로젝트의 목적, 필요성, 출시 플랫폼, 타겟 유저 등)`}
+            />
           </div>
         </div>
       </div>
@@ -373,8 +538,28 @@ export default function ProjectEditPage() {
           setYes={setIsValid}
         />
       )}
+      {modalFlag === 1 && (
+        <Modal
+          body={validateMsg[0]}
+          buttons={validateMsg[1]}
+          setOpenFlag={setModalFlag}
+          setYes={setYes}
+        />
+      )}
       <div className="project-edit__buttons">
-        {/* <button className="project-edit__delete">프로젝트 삭제</button> */}
+        {projectId && (
+          <button
+            className="project-edit__delete"
+            onClick={() => {
+              setValidateMsg([
+                `프로젝트를 정말 삭제할까요? 프로젝트의 모든 데이터가 사라지게 됩니다.`,
+                "both",
+              ]);
+              setModalFlag(1);
+            }}>
+            프로젝트 삭제
+          </button>
+        )}
         <button
           className="project-edit__save"
           onClick={(e) => {
@@ -383,7 +568,7 @@ export default function ProjectEditPage() {
               projectSave();
             }
           }}>
-          프로젝트 생성
+          {projectId ? "저장" : "프로젝트 생성"}
         </button>
       </div>
     </div>

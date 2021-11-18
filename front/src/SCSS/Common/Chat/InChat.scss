@@ -8,7 +8,7 @@
   flex-direction: column;
 
   .inChat__header {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     display: flex;
     align-items: center;
     .back {
@@ -20,20 +20,25 @@
     .name {
       font-weight: $bold;
       font-size: 1.3rem;
+      margin: 0 auto;
+      position: relative;
+      left: -1.5rem;
       span {
         margin-right: 1rem;
       }
     }
     .nav__resize-up {
-      position: absolute;
+      // position: absolute;
       right: 4rem;
       cursor: pointer;
+      margin-right: 1rem;
       &:hover {
         color: $mainColor;
       }
     }
     .nav__resize-down {
-      position: absolute;
+      margin-right: 1rem;
+      // position: absolute;
       right: 4rem;
       cursor: pointer;
       &:hover {
@@ -63,31 +68,17 @@
     }
   }
 
-  .chatLog__addConv {
-    // position: absolute;
-    // top: 2.5rem;
-    z-index: 3;
-    // background-color: aqua;
-    position: relative;
-    top: -1.5rem;
-  }
-
-  .chatLog__addUser {
-    position: absolute;
-    top: 5rem;
-    z-index: 3;
-  }
-  .chatLog__addUser-big {
-    position: absolute;
-    top: 5rem;
-    z-index: 3;
-  }
-
   .inChat__body {
     width: 100%;
     height: 80%;
     overflow-y: scroll;
     overflow-x: hidden;
+    .empty-msg {
+      padding: 0.5rem 0;
+    }
+    .empty-msg-bottom {
+      padding: 0.5rem 0;
+    }
   }
 
   .inChat__input-small {

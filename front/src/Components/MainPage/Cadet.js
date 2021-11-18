@@ -2,19 +2,26 @@ import React, { useEffect, useState } from "react";
 import "../../SCSS/MainPage/Cadet.scss";
 import CadetCards from "./CadetCards";
 import axios from "axios";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import ReactLoading from "../CommonComponent/Loading";
 
 export default function Cadet() {
   const [cadets, setCadets] = useState([]);
+  const loginState = useSelector((state) => state.loginReducer);
 
   const getData = async () => {
     try {
       const { data } = await axios.get(
-        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/user/cadet`
+        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/user/cadet`,
+        {
+          headers: {
+            Authorization: `Bearer ${loginState?.accessToken}`,
+          },
+        }
       );
       setCadets(data);
-      console.log("cadets", cadets);
+      // console.log("cadets", cadets);
     } catch (err) {
       console.log(err);
     }

@@ -85,7 +85,7 @@ router.delete("/like/:projectId", jwtGuards, (request: Request, response: Respon
 });
 
 // project position API
-router.put("/position/:projectId/:position", jwtGuards, (request: Request, response: Response) => {
+router.put("/position/:projectId/:profileId/:position", jwtGuards, (request: Request, response: Response) => {
   projectService.modifyPosition(request, response);
 });
 
@@ -96,6 +96,11 @@ router.delete("/position/:projectId/:position", jwtGuards, (request: Request, re
 // project leader API
 router.put("/leader/:projectId/:profileId", jwtGuards, (request: Request, response: Response) => {
   projectService.changeTeamLeader(request, response);
+});
+
+// project state API
+router.put("/status/:projectId", jwtGuards, (request: Request, response: Response) => {
+  projectService.changeState(request, response);
 });
 
 export default router;

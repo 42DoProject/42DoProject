@@ -6,8 +6,11 @@ export interface IFeed {
     userId?: Number;
     username?: String;
     status?: Number;
-    project?: String;
+    projectStatus?: String;
+    projectName?: String;
     projectId?: Number;
+    loungeId?: Number;
+    comment?: String;
   }>;
 }
 

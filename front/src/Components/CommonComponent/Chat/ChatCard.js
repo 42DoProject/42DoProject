@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import "../../../SCSS/Common/Chat/ChatCard.scss";
 import axios from "axios";
+import relativeTime from "../../../relativeTime";
 
 export default function ChatCard({ chatInfo, imgFlag }) {
   const loginState = useSelector((state) => state.loginReducer);
@@ -10,13 +11,19 @@ export default function ChatCard({ chatInfo, imgFlag }) {
   let chatType = "";
   loginState.id === chatInfo?.userId ? (chatType = "me") : (chatType = "other");
   if (chatInfo.userId === -1) chatType = "noti";
+
   useEffect(() => {
     const getProfile = async (userId) => {
       try {
         const {
           data: { profileImage, username },
         } = await axios.get(
-          `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/user/profile/${userId}`
+          `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/user/profile/${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${loginState?.accessToken}`,
+            },
+          }
         );
         setProfile(profileImage);
         setUserName(username);
@@ -26,24 +33,29 @@ export default function ChatCard({ chatInfo, imgFlag }) {
     };
     imgFlag && getProfile(chatInfo.userId);
   }, [imgFlag]);
+
   return (
     <div className={`chatCard-${chatType}`}>
       <div className="chatCard__column1">
-        <div className="chatCard__column1-small">
-          {imgFlag ? (
-            <>
-              <img src={profile} alt="img"></img>
-              <div className="column1-small__name">{userName}</div>
-            </>
-          ) : (
-            <div className="empty"></div>
-          )}
-        </div>
+        {imgFlag ? (
+          <img src={profile} alt="img"></img>
+        ) : (
+          <div className="empty"></div>
+        )}
       </div>
       {chatInfo.userId === -1 ? (
         <div className="chat-noti">{chatInfo.message}</div>
       ) : (
         <div className="chatCard__column2">
+          <div className="column1-small__name">
+            {imgFlag === 1 && chatType === "me" && (
+              <span className="chat-time">{relativeTime(chatInfo.date)}</span>
+            )}
+            <span>{imgFlag === 1 && userName}</span>
+            {imgFlag === 1 && chatType === "other" && (
+              <span className="chat-time">{relativeTime(chatInfo.date)}</span>
+            )}
+          </div>
           <div className="chat-message-small">{chatInfo.message}</div>
         </div>
       )}

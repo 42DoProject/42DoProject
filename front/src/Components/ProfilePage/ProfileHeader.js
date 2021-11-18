@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "../../SCSS/ProfilePage/ProfileHeader.scss";
 import Follow from "./Follow";
 import relativeTime from "../../relativeTime";
@@ -18,15 +18,31 @@ export default function ProfileHeader(props) {
   const [followButton, setFollowButton] = useState(); // "unfollow" / "follow" 버튼
   const [unfollowAlert, setUnfollowAlert] = useState(0);
   const [refreshFlag, setRefreshFlag] = useState(0); // 팔로워/팔로우 리스트 flag==1일 때 다시 가져온다.
-
+  let dispatch = useDispatch();
   const history = useHistory();
-
   useEffect(() => {
     props.myFollowings.includes(Number(props.userId))
       ? setFollowButton("unfollow")
       : setFollowButton("follow");
   }, [props.myFollowings]);
 
+  const inviteUser = async (userId) => {
+    try {
+      await axios({
+        method: "POST",
+        url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/chat`,
+        headers: {
+          Authorization: `Bearer ${loginState.accessToken}`,
+        },
+        data: {
+          users: userId,
+        },
+      });
+      dispatch({ type: "DM", payload: userId });
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <div className="profileHeader">
       <div className="header__left">
@@ -54,7 +70,18 @@ export default function ProfileHeader(props) {
           {loginState &&
             (props.location.pathname !== "/profile" ? (
               <>
-                <button className="row1__send-message">메시지 보내기</button>
+                <button
+                  className="row1__send-message"
+                  onClick={() => {
+                    inviteUser(props.userId);
+
+                    let chatEl = document.querySelector(".chat");
+                    let chatLogEl = document.querySelector(".chatLog");
+                    chatEl.style.visibility = "hidden";
+                    chatLogEl.style.visibility = "visible";
+                  }}>
+                  메시지 보내기
+                </button>
                 {followButton === "follow" ? (
                   <button
                     className="row1__follow"
@@ -148,12 +175,12 @@ export default function ProfileHeader(props) {
               onClick={(e) => {
                 followingFlag === 0 ? setFollowingFlag(1) : setFollowingFlag(0);
               }}>
-              {`팔로우 ${props.user.following}명`}
+              {`팔로잉 ${props.user.following}명`}
             </div>
             {followingFlag === 1 ? (
               <Follow
                 setFollowFlag={setFollowingFlag}
-                subject="팔로우"
+                subject="팔로잉"
                 userId={props.userId}
                 user={props.user}
                 myFollowings={props.myFollowings}
@@ -165,7 +192,7 @@ export default function ProfileHeader(props) {
           </div>
         </div>
         {props.user.introduction ? (
-          <pre classNmae="right__introduction">{props.user.introduction}</pre>
+          <pre className="right__introduction">{props.user.introduction}</pre>
         ) : (
           <div className="right__introduction-none">
             자기소개를 작성하지 않았습니다

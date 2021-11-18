@@ -9,6 +9,7 @@ import ProjectInfo from "./ProjectInfo";
 import { useParams } from "react-router-dom";
 import ProjectComment from "./ProjectComment";
 import { useSelector } from "react-redux";
+import { useLocation } from "react-router";
 
 export default function ProjectDetail(props) {
   const [project, setProject] = useState();
@@ -19,11 +20,11 @@ export default function ProjectDetail(props) {
   const projectId = useParams()["id"];
 
   const loginState = useSelector((state) => state.loginReducer);
-
+  const location = useLocation();
   useEffect(() => {
     getData();
     setApplyFlag(0);
-  }, [applyFlag]);
+  }, [applyFlag, location]);
 
   useEffect(() => {
     if (loginState !== null) getUserStatus();

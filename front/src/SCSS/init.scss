@@ -1,7 +1,31 @@
 @import "./Base.scss";
-
+@font-face {
+  font-family: "AppleSDGothicNeo";
+  font-weight: 400;
+  src: url("../fonts/AppleSDGothicNeoR.ttf");
+}
+@font-face {
+  font-family: "AppleSDGothicNeo";
+  font-weight: 500;
+  src: url("../fonts/AppleSDGothicNeoM.ttf");
+}
+@font-face {
+  font-family: "AppleSDGothicNeo";
+  font-weight: 600;
+  src: url("../fonts/AppleSDGothicNeoSB.ttf");
+}
+@font-face {
+  font-family: "AppleSDGothicNeo";
+  font-weight: 700;
+  src: url("../fonts/AppleSDGothicNeoB.ttf");
+}
+@font-face {
+  font-family: "AppleSDGothicNeo";
+  font-weight: 800;
+  src: url("../fonts/AppleSDGothicNeoEB.ttf");
+}
 body {
-  font-family: "Nunito Sans", sans-serif;
+  font-family: "Nunito Sans", "AppleSDGothicNeo", sans-serif;
   margin: 0.5rem 1rem;
   background-color: $bodyColor;
   color: $darkGrey;

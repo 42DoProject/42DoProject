@@ -1,6 +1,5 @@
 @import "../Base.scss";
 .cadet-card {
-  // width: 33%;
   margin: 0 1rem;
   height: 16.5rem;
   background-color: white;
@@ -8,14 +7,16 @@
   border-radius: $round;
   padding: 1rem;
   display: flex;
+  justify-content: flex-start;
   flex-direction: column;
   align-items: center;
-  // justify-content: space-between;
   margin-bottom: 1.5rem;
   cursor: pointer;
   .cadet__image {
     border-radius: 50%;
     width: 5rem;
+    // min-width: max-content;
+    // min-height: max-content;
     height: 5rem;
     object-fit: cover;
     margin-bottom: 1rem;
@@ -43,14 +44,36 @@
     justify-content: center;
     align-items: center;
     .cadet__word {
-      border: 1px solid $lightestGrey;
-      // box-shadow: $shadow;
-      border-radius: $round;
-      padding: 1rem;
-      text-align: center;
-      // justify-content: center;
-      // align-items: center;
+      position: relative;
+      padding: 1rem 0.7rem;
       font-size: $fontSs;
+      word-break: break-all;
+      text-align: center;
+      line-height: 120%;
+      background-color: #fff;
+      border: 1px solid $lightestGrey;
+      border-radius: $round;
+      box-shadow: $shadowLight;
+    }
+    .cadet__word:before {
+      border: 9px solid;
+      border-color: transparent transparent $lightestGrey transparent;
+      content: "";
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .cadet__word:after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 0;
+      bottom: calc(100% - 1px);
+      right: 50%;
+      transform: translateX(50%);
+      border: 8.5px solid;
+      border-color: transparent transparent white transparent;
     }
   }
   .cadet__no-word {
@@ -59,7 +82,7 @@
     align-items: center;
     height: auto;
     font-size: $fontSs;
-    color: $grey;
+    color: $lightGrey;
     flex: 1; // 남은 공간 채움
   }
 }

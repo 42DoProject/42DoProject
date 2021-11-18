@@ -20,7 +20,7 @@ app.set("query parser", "extended");
 
 export const getList = async (request: Request, response: Response) => {
     const { state, skill, position, page, pageSize, order } = request.query;
-    let inputOrder, limit, offset, where;
+    let inputSkill, inputPosition, inputOrder, limit, offset, where;
 
     // ordering
     if (order === 'view')
@@ -45,6 +45,22 @@ export const getList = async (request: Request, response: Response) => {
     }
 
     // filtering
+    if (skill !== undefined && typeof skill === "object") {
+        inputSkill = [];
+        for (const value of Object.values(skill))
+            inputSkill.push(Number(value));
+        inputSkill = "[" + String(inputSkill) + "]";
+    }
+    else
+        inputSkill = skill;
+    if (position !== undefined && typeof position === "object") {
+        inputPosition = [];
+        for (const value of Object.values(position))
+            inputPosition.push(Number(value));
+        inputPosition = "[" + String(inputPosition) + "]";
+    }
+    else
+        inputPosition = position;
     if (state === undefined) {
         if (skill === undefined) {
             if (position === undefined)
@@ -54,7 +70,7 @@ export const getList = async (request: Request, response: Response) => {
                     sequelize.fn(
                         'JSON_CONTAINS',
                         sequelize.col('position'),
-                        sequelize.literal(JSON.stringify(position))
+                        sequelize.literal(JSON.stringify(inputPosition))
                     ),
                     sequelize.literal(String(true))
                 );
@@ -65,7 +81,7 @@ export const getList = async (request: Request, response: Response) => {
                     sequelize.fn(
                         'JSON_CONTAINS',
                         sequelize.col('skill'),
-                        sequelize.literal(JSON.stringify(skill))
+                        sequelize.literal(JSON.stringify(inputSkill))
                     ),
                     sequelize.literal(String(true))
                 );
@@ -75,7 +91,7 @@ export const getList = async (request: Request, response: Response) => {
                         sequelize.fn(
                             'JSON_CONTAINS',
                             sequelize.col('position'),
-                            sequelize.literal(JSON.stringify(position))
+                            sequelize.literal(JSON.stringify(inputPosition))
                         ),
                         sequelize.literal(String(true))
                     ),
@@ -83,7 +99,7 @@ export const getList = async (request: Request, response: Response) => {
                         sequelize.fn(
                             'JSON_CONTAINS',
                             sequelize.col('skill'),
-                            sequelize.literal(JSON.stringify(skill))
+                            sequelize.literal(JSON.stringify(inputSkill))
                         ),
                         sequelize.literal(String(true))
                     )
@@ -101,7 +117,7 @@ export const getList = async (request: Request, response: Response) => {
                         sequelize.fn(
                             'JSON_CONTAINS',
                             sequelize.col('position'),
-                            sequelize.literal(JSON.stringify(position))
+                            sequelize.literal(JSON.stringify(inputPosition))
                         ),
                         sequelize.literal(String(true))
                     )
@@ -115,7 +131,7 @@ export const getList = async (request: Request, response: Response) => {
                         sequelize.fn(
                             'JSON_CONTAINS',
                             sequelize.col('skill'),
-                            sequelize.literal(JSON.stringify(skill))
+                            sequelize.literal(JSON.stringify(inputSkill))
                         ),
                         sequelize.literal(String(true))
                     )
@@ -127,7 +143,7 @@ export const getList = async (request: Request, response: Response) => {
                         sequelize.fn(
                             'JSON_CONTAINS',
                             sequelize.col('position'),
-                            sequelize.literal(JSON.stringify(position))
+                            sequelize.literal(JSON.stringify(inputPosition))
                         ),
                         sequelize.literal(String(true))
                     ),
@@ -135,7 +151,7 @@ export const getList = async (request: Request, response: Response) => {
                         sequelize.fn(
                             'JSON_CONTAINS',
                             sequelize.col('skill'),
-                            sequelize.literal(JSON.stringify(skill))
+                            sequelize.literal(JSON.stringify(inputSkill))
                         ),
                         sequelize.literal(String(true))
                     )
@@ -280,7 +296,7 @@ export const postList = async (request: Request, response: Response) => {
             image: imageLink,
             title: title
         });
-        response.status(200).json({ message: 'added successfully.' });
+        response.status(200).json({ newProject: project!.id, message: 'added successfully.' });
     } catch (error) {
         response.status(405).json({ errMessage: String(error) });
         return ;
@@ -334,7 +350,7 @@ export const updateList = async (request: Request, response: Response) => {
         }
 
         // decide state
-        const totalMember: number = (position === undefined) ? 1 : position.length + 1;
+        const totalMember: number = (position === undefined) ? project!.currentMember : position.length + project!.currentMember;
         let inputState: string = (totalMember - project!.currentMember > 0) ? 'recruiting' : 'proceeding';
         if (state !== undefined)
             inputState = state;
@@ -1059,16 +1075,26 @@ export const unlikeProject = async (request: Request, response: Response) => {
 }
 
 export const modifyPosition = async (request: Request, response: Response) => {
-    const { projectId, position } = request.params;
-    if (projectId === undefined || position === undefined) {
-        response.status(400).json({ errMessage: 'please input projectId or position value' });
+    const { projectId, profileId, position } = request.params;
+    if (projectId === undefined || projectId === undefined || position === undefined) {
+        response.status(400).json({ errMessage: 'please input projectId or profileId or position value' });
         return ;
     }
 
     try {
+        const project = await Project.findOne({
+            attributes: ['leader'],
+            where: { id: projectId }
+        })
+        // check authority
+        if (request.user!.id !== project?.leader) {
+            response.status(401).json({ errMessage: 'no authority' });
+            return ;
+        }
+
         await Projectprofile.update({
             position: position
-        }, { where: { projectId: projectId, profileId: request.user!.id } })
+        }, { where: { projectId: projectId, profileId: profileId } })
         response.status(200).json({ message: 'updated successfully.' });
     } catch (error) {
         response.status(405).json({ errMessage: String(error) });
@@ -1154,6 +1180,35 @@ export const changeTeamLeader = async (request: Request, response: Response) => 
 
         await Project.update({
             leader: profileId
+        }, { where: { id: projectId } })
+        response.status(200).json({ message: 'changed successfully.' });
+    } catch (error) {
+        response.status(405).json({ errMessage: String(error) });
+        return ;
+    }
+}
+
+export const changeState = async (request: Request, response: Response) => {
+    const { projectId } = request.params;
+    const { state } = request.query;
+    if (projectId === undefined || state == undefined) {
+        response.status(400).json({ errMessage: 'please input projectId or state value' });
+        return ;
+    }
+
+    try {
+        const project = await Project.findOne({
+            attributes: ['leader'],
+            where: { id: projectId }
+        })
+        // check authority
+        if (request.user!.id !== project?.leader) {
+            response.status(401).json({ errMessage: 'no authority' });
+            return ;
+        }
+
+        await Project.update({
+            state: state
         }, { where: { id: projectId } })
         response.status(200).json({ message: 'changed successfully.' });
     } catch (error) {

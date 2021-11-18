@@ -48,7 +48,85 @@
     bottom: -1.2rem;
     left: 0.1rem;
   }
+  .input__res {
+    box-shadow: $shadow;
+    position: absolute;
+    border-bottom-left-radius: $round;
+    border-bottom-right-radius: $round;
+    padding: 0.5rem;
+    left: 2.4rem;
+    top: 1.5rem;
+    z-index: 3;
+    width: 18rem;
+    background-color: white;
+    a {
+      color: $black;
+    }
+    .res__user {
+      display: flex;
+      flex-direction: column;
+      padding: 0.3rem 0.3rem;
+      .res__title1 {
+        font-size: $fontSs;
+        font-weight: $regular;
+        padding-bottom: 0.3rem;
+        color: $grey;
+        border-bottom: 1px solid $lightestGrey;
+      }
+      .res__userCard {
+        display: flex;
+        align-items: center;
+        padding-top: 0.3rem;
+        cursor: pointer;
+        border-radius: $round;
+        &:hover {
+          background-color: $bodyColor;
+        }
+        img {
+          width: 2rem;
+          height: 2rem;
+          border-radius: $round;
+          object-fit: cover;
+        }
+        .name {
+          margin-left: 0.5rem;
+        }
+      }
+    }
+    .res__project {
+      display: flex;
+      flex-direction: column;
+      padding: 0.3rem 0.3rem;
+      .res__title2 {
+        font-size: $fontSs;
+        font-weight: $regular;
+        padding-bottom: 0.3rem;
+        color: $grey;
+        border-bottom: 1px solid $lightestGrey;
+      }
+      .res__projectCard {
+        display: flex;
+        border-radius: $round;
+        align-items: center;
+        padding-top: 0.3rem;
+        cursor: pointer;
+        &:hover {
+          background-color: $bodyColor;
+        }
+        img {
+          width: 2rem;
+          height: 2rem;
+          border-radius: $round;
+          object-fit: cover;
+        }
+        .title {
+          margin-left: 0.5rem;
+        }
+      }
+    }
+  }
   input {
+    font-weight: $normal;
     border-radius: 0;
     position: absolute;
     padding: 0.4rem;
@@ -65,9 +143,10 @@
   }
   ::placeholder {
     color: $lightestGrey;
-    font-weight: $bold;
+    font-weight: $normal;
   }
 }
+
 .Nav__project,
 .Nav__cadet,
 .Nav__lounge {
@@ -100,31 +179,35 @@
   .haveNotification {
     z-index: 1;
     position: absolute;
-    font-size: 1rem;
+    font-size: $fontSs;
     padding: 0.2rem;
     display: flex;
     justify-content: center;
-    height: 1.3rem;
+    align-items: center;
+    height: 1.2rem;
+    width: 1.2rem;
     border-radius: 50%;
-    font-weight: 600;
+    font-weight: $normal;
     background-color: $pointRed;
     color: white;
-    left: 0.9rem;
+    left: 0.8rem;
     top: -0.2rem;
   }
   .notNotification {
+    padding: 0.2rem;
     z-index: 1;
     position: absolute;
-    font-size: 1rem;
-    padding: 0.2rem;
+    font-size: $fontSs;
     display: flex;
     justify-content: center;
-    height: 1.3rem;
+    align-items: center;
+    height: 1.2rem;
+    width: 1.2rem;
     border-radius: 50%;
-    font-weight: 600;
+    font-weight: $normal;
     background-color: $lightGrey;
     color: white;
-    left: 0.9rem;
+    left: 0.8rem;
     top: -0.2rem;
   }
   .notiText__wrap {
@@ -141,29 +224,45 @@
     overflow: hidden;
     .notiText__header {
       padding: 0.5rem;
+      margin-right: 0.7rem;
       font-size: $fontSm;
       font-weight: $bold;
       border-bottom: 1px solid $lightestGrey;
     }
     .notiText__body {
-      max-height: 19rem;
+      max-height: 10rem;
       overflow-y: scroll;
-      .noti .body__card {
-        border-bottom: 1px solid $lightestGrey;
-        padding: 0 0.5rem;
-        .card__row1 {
-          padding-top: 0.5rem;
-          display: flex;
-          font-size: $fontSm;
-          justify-content: space-between;
-          .card__title {
-            color: $mainColor;
-            margin-bottom: 1rem;
-          }
+      .card-wrap {
+        border-radius: $round;
+        &:hover {
+          background-color: $bodyColor;
         }
-        .card__text {
-          padding-bottom: 0.5rem;
+        .type {
+          border-bottom: 1px solid $lightestGrey;
+          padding: 0.3rem 0.5rem;
           font-size: $fontSm;
+          cursor: pointer;
+          line-height: normal;
+          .row1 {
+            padding: 0;
+            display: flex;
+
+            .title {
+              color: $mainColor;
+              font-weight: $semiBold;
+              font-size: $fontSm;
+            }
+            .date {
+              opacity: 0.5;
+              font-size: $fontSs;
+            }
+          }
+          .userName {
+            font-weight: $semiBold;
+          }
+          .projectName {
+            font-weight: $semiBold;
+          }
         }
       }
       .notiText__none {

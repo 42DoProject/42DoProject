@@ -1,6 +1,5 @@
 import React from "react";
 import "../../SCSS/MainPage/Lounge.scss";
-import { Icon } from "@iconify/react";
 import defaultImg from "../../default_intra.png";
 import { useHistory } from "react-router";
 
@@ -28,7 +27,7 @@ export default function Lounge() {
             </div>
           </div>
           <div className="card__row3">
-            <Icon className="row3-icon" icon="ant-design:like-outlined" />
+            {/* <Icon className="row3-icon" icon="ant-design:like-outlined" /> */}
             <span className="like">좋아요</span>
             <span className="like-num"> 3</span>
             <span className="comment">댓글</span>
@@ -50,7 +49,7 @@ export default function Lounge() {
             </div>
           </div>
           <div className="card__row3">
-            <Icon className="row3-icon" icon="ant-design:like-outlined" />
+            {/* <Icon className="row3-icon" icon="ant-design:like-outlined" /> */}
             <span className="like">좋아요</span>
             <span className="like-num"> 3</span>
             <span className="comment">댓글</span>
@@ -72,7 +71,7 @@ export default function Lounge() {
             </div>
           </div>
           <div className="card__row3">
-            <Icon className="row3-icon" icon="ant-design:like-outlined" />
+            {/* <Icon className="row3-icon" icon="ant-design:like-outlined" /> */}
             <span className="like">좋아요</span>
             <span className="like-num"> 3</span>
             <span className="comment">댓글</span>

@@ -52,7 +52,7 @@
 
 .chatLog {
   visibility: hidden;
-  //   transition: visibility 2000ms;
+  // transition: visibility 2000ms;
   position: fixed;
   right: 1.5rem;
   bottom: 1.5rem;
@@ -117,58 +117,53 @@
       }
     }
   }
-
   .chatLog__addConv {
     background-color: $lightestGrey;
-    margin-bottom: 0.5rem;
-    font-weight: $normal;
-    padding: 0.5rem 1rem;
+    font-weight: $regular;
+    padding: 0.5rem;
+    font-size: $fontSm;
     border-radius: 0.7rem;
     display: flex;
     width: 100%;
     align-items: center;
     position: relative;
-    overflow: hidden;
-    .addConv__placeholder {
-      min-width: max-content;
-    }
-    .userNameList {
-      display: flex;
-      margin-left: 0.2rem;
-      .userNameCard {
-        display: flex;
-        margin-right: 0.4rem;
-        background-color: white;
-        padding: 0.1rem;
-        align-items: center;
-        border-radius: 10%;
-        position: relative;
-        .textCard-userName {
-          margin: 0 0.4rem;
-        }
-      }
+    overflow-x: scroll;
+    &::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera*/
     }
     .addConv__input {
       background-color: $lightestGrey;
       border: none;
       width: auto;
       padding-left: 0.5rem;
-      width: 90%;
+      width: 100%;
       &:focus {
         outline: none;
+      }
+      &::placeholder {
+        font-size: $fontSs;
+      }
+    }
+    .create-icon {
+      opacity: 0.5;
+      &:hover {
+        opacity: 1;
+        color: $mainColor;
       }
     }
   }
   .chatLog__addUser-big {
-    width: 77.8vw;
-    position: absolute;
-    top: 6.3rem;
+    width: 100%;
     background-color: white;
+    max-height: 20rem;
+    overflow-y: scroll;
+    border-radius: $round;
     .addUser__card {
       display: flex;
       align-items: center;
       margin: 0.5rem;
       padding-left: 1rem;
+      border-radius: $round;
       &:hover {
         background-color: $lightestGrey;
       }
@@ -183,27 +178,21 @@
         font-size: $fontMs;
       }
     }
-    .chat-create {
-      display: flex;
-      justify-content: center;
-      width: 100%;
-      margin: 0 auto;
-      color: white;
-      padding: 0.3rem 0.1rem;
-      background-color: $mainColor;
-      cursor: pointer;
-    }
   }
   .chatLog__addUser {
     width: 20rem;
-    position: absolute;
-    top: 6rem;
+    // position: absolute;
     background-color: white;
+    max-height: 15rem;
+    overflow-y: scroll;
+    border-radius: $round;
+
     .addUser__card {
       display: flex;
       align-items: center;
       margin: 0.5rem;
       padding-left: 1rem;
+      border-radius: $round;
       &:hover {
         background-color: $lightestGrey;
       }
@@ -214,16 +203,6 @@
         object-fit: cover;
         margin-right: 0.5rem;
       }
-    }
-    .chat-create {
-      display: flex;
-      justify-content: center;
-      width: 100%;
-      margin: 0 auto;
-      color: white;
-      padding: 0.2rem 0.1rem;
-      background-color: $mainColor;
-      cursor: pointer;
     }
   }
   .chatLog__body {

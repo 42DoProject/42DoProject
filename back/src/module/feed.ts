@@ -94,7 +94,7 @@ export async function changeProjectStatus(
   userId: number,
   projectId: number,
   projectName: string,
-  status: string
+  projectStatus: string
 ) {
   const block = {
     userId: userId,
@@ -102,7 +102,7 @@ export async function changeProjectStatus(
     type: 60,
     args: [
       { projectId: projectId, projectName: projectName },
-      { status: status },
+      { projectStatus: projectStatus },
     ],
   };
   await new Feed(block).save();

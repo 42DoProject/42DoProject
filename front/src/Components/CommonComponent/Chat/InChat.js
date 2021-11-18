@@ -19,62 +19,115 @@ function InChat({
   let loginState = useSelector((state) => state.loginReducer);
   const [chat, setChat] = useState();
   const [inviteFlag, setInviteFlag] = useState(0);
-  const userList = chatRoom.users.filter((e) => e.id !== loginState.id);
+  const [userList, setUserList] = useState(
+    chatRoom.users.filter((e) => e.id !== loginState.id)
+  );
   const getChat = async (uuid) => {
     try {
       const { data } = await axios.get(
         `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/chat/${uuid}`,
         {
           headers: {
-            Authorization: `Bearer ${loginState.accessToken}`,
+            Authorization: `Bearer ${loginState?.accessToken}`,
           },
         }
       );
       setChat(data);
+      const inChat__bodyEl = document.querySelector(".inChat__body");
+      if (inChat__bodyEl)
+        inChat__bodyEl.scrollTop = inChat__bodyEl.scrollHeight;
     } catch (err) {
       console.log(err);
     }
   };
+  const getChatMore = async (uuid) => {
+    try {
+      const { data } = await axios.get(
+        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/chat/${uuid}`,
+        {
+          headers: {
+            Authorization: `Bearer ${loginState?.accessToken}`,
+          },
+        }
+      );
+      if (data.length)
+        await getChatBeforeMore(chatRoom.uuid, data[0].date, data);
+      const inChat__bodyEl = document.querySelector(".inChat__body");
+      inChat__bodyEl.scrollTop = inChat__bodyEl.scrollHeight;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const getChatBeforeMore = async (uuid, date, chatLog) => {
+    try {
+      const { data } = await axios.get(
+        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/chat/${uuid}?date=${date}`,
+        {
+          headers: {
+            Authorization: `Bearer ${loginState?.accessToken}`,
+          },
+        }
+      );
+      setChat([...data, ...chatLog]);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const getChatBefore = async (uuid, date) => {
+    try {
+      const { data } = await axios.get(
+        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/chat/${uuid}?date=${date}`,
+        {
+          headers: {
+            Authorization: `Bearer ${loginState.accessToken}`,
+          },
+        }
+      );
+      const inChat__bodyEl = document.querySelector(".inChat__body");
+      const inChat_Before = inChat__bodyEl.scrollHeight;
+      setChat([...data, ...chat]);
+      const inchat__bodyEl2 = document.querySelector(".inChat__body");
+      inchat__bodyEl2.scrollTop = inchat__bodyEl2.scrollHeight - inChat_Before;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    getChatMore(chatRoom.uuid);
+  }, [loginState]);
 
   useEffect(() => {
-    getChat(chatRoom.uuid);
-    socket.on("chat:leave", () => getChat(chatRoom.uuid));
-    socket.on(
-      "chat:receive",
-      (payload) => chatRoom.uuid === payload.uuid && getChat(chatRoom.uuid)
-    );
+    const inChat__bodyEl = document.querySelector(".inChat__body");
+    const handleScrollTop = () => {
+      if (inChat__bodyEl.scrollTop === 0) {
+        getChatBefore(chatRoom.uuid, chat[0].date);
+      }
+    };
+    inChat__bodyEl.addEventListener("scroll", handleScrollTop);
+    socket.on("chat:leave", () => {
+      if (userList.length === 1) setUserList([]);
+      getChat(chatRoom.uuid);
+    });
+    socket.on("chat:receive", (payload) => {
+      chatRoom.uuid === payload.uuid && getChat(chatRoom.uuid);
+    });
     return () => {
+      inChat__bodyEl.removeEventListener("scroll", handleScrollTop);
       socket.off("chat:receive");
       socket.off("chat:leave");
     };
-  }, [loginState]);
+  }, [chat, chatRoom, loginState]);
+
   useEffect(() => {
-    const inChat__bodyEl = document.querySelector(".inChat__body");
-    inChat__bodyEl.scrollTop = inChat__bodyEl.scrollHeight;
-  }, [chat]);
+    const $input = document.querySelector(".inChat__input-small input");
+    $input?.focus();
+  }, []);
   return (
     <>
       <div className="inChat">
         <div className="inChat__header">
           <div className="back" onClick={() => setInFlag(-1)}>
             <Icon icon="dashicons:arrow-left-alt2" height="2rem" />
-          </div>
-          <div className="name">
-            {clickFlag
-              ? userList.map((e, idx) => <span key={idx}>{e.username}</span>)
-              : userList.map((e, idx) => {
-                  if (userList.length <= 2)
-                    return <span key={idx}>{e.username}</span>;
-                  else {
-                    if (idx === 0)
-                      return (
-                        <span key={idx}>{`${e.username} - 외 ${
-                          userList.length - 1
-                        }`}</span>
-                      );
-                    return "";
-                  }
-                })}
           </div>
           {clickFlag === 0 ? (
             <Icon
@@ -103,6 +156,23 @@ function InChat({
               }}
             />
           )}
+          <div className="name">
+            {clickFlag
+              ? userList.map((e, idx) => <span key={idx}>{e.username}</span>)
+              : userList.map((e, idx) => {
+                  if (userList.length <= 2)
+                    return <span key={idx}>{e.username}</span>;
+                  else {
+                    if (idx === 0)
+                      return (
+                        <span key={idx}>{`${e.username} - 외 ${
+                          userList.length - 1
+                        }`}</span>
+                      );
+                    return "";
+                  }
+                })}
+          </div>
           <Popup
             uuid={chatRoom.uuid}
             chatOutFlag={chatOutFlag}
@@ -134,6 +204,7 @@ function InChat({
           />
         )}
         <div className="inChat__body">
+          <div className="empty-msg"></div>
           {chat &&
             chat.map((e, idx) => {
               let imgFlag = 1;
@@ -141,42 +212,44 @@ function InChat({
               if (e.userId === -1) imgFlag = 0;
               return <ChatCard key={e.date} chatInfo={e} imgFlag={imgFlag} />;
             })}
+          <div className="empty-msg-bottom"></div>
         </div>
-
-        <div className="inChat__input-small">
-          <input
-            placeholder="메세지 입력..."
-            spellCheck="false"
-            onKeyPress={(e) => {
-              if (e.key === "Enter") {
-                if (e.target.value.length) {
+        {userList.length !== 0 && (
+          <div className="inChat__input-small">
+            <input
+              placeholder="메세지 입력..."
+              spellCheck="false"
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  if (e.target.value.length) {
+                    socket.emit("chat:send", {
+                      uuid: chatRoom.uuid,
+                      message: e.target.value,
+                    });
+                    e.target.value = "";
+                  }
+                }
+              }}
+            ></input>
+            <div
+              className="input__send"
+              onClick={() => {
+                const input = document.querySelector(
+                  ".inChat .inChat__input-small input"
+                );
+                if (input.value.length) {
                   socket.emit("chat:send", {
                     uuid: chatRoom.uuid,
-                    message: e.target.value,
+                    message: input.value,
                   });
-                  e.target.value = "";
+                  input.value = "";
                 }
-              }
-            }}
-          ></input>
-          <div
-            className="input__send"
-            onClick={() => {
-              const input = document.querySelector(
-                ".inChat .inChat__input-small input"
-              );
-              if (input.value.length) {
-                socket.emit("chat:send", {
-                  uuid: chatRoom.uuid,
-                  message: input.value,
-                });
-                input.value = "";
-              }
-            }}
-          >
-            보내기
+              }}
+            >
+              보내기
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </>
   );

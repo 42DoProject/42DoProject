@@ -14,6 +14,8 @@ import { getIsoString } from "../module/time";
 import { insertUser } from "../module/search";
 import { push } from "../module/cadetqueue";
 import { profileToS3 } from "../module/aws/s3";
+import { getUserSocket } from "../socket/bridge";
+import { Feed } from "../models/user/feed.mongo";
 
 const router: express.Router = express.Router();
 
@@ -89,6 +91,19 @@ router.post("/dump", async (request, response) => {
     res.push(await makeDump(u.username, u.name, u.email, u.profileImage));
   }
   response.status(200).json(res);
+});
+
+router.post("/feeddump", async (request, response) => {
+  const { userId, type, args } = request.body;
+  const block = {
+    userId: userId,
+    date: Date.now(),
+    type: type,
+    args: args,
+  };
+  await new Feed(block).save();
+  getUserSocket(userId)?.emit("feed:notification", block);
+  response.status(200).json({ message: "0" });
 });
 
 router.get("/v", (request, response) => {

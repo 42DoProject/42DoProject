@@ -72,7 +72,7 @@ export default function LoungePost({
                 className="bottom__like-icon-fill"
                 icon="ant-design:like-fill"
               />
-              {loungeData.like}
+              <span className="like-color">{loungeData.like}</span>
             </div>
           ) : (
             <div onClick={() => likeLounge()}>
@@ -80,7 +80,7 @@ export default function LoungePost({
                 className="bottom__like-icon"
                 icon="ant-design:like-outlined"
               />
-              {loungeData.like}
+              <span>{loungeData.like}</span>
             </div>
           )}
         </div>

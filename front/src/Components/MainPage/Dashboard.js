@@ -13,6 +13,7 @@ export default function Dashboard(props) {
   const loginState = useSelector((state) => state.loginReducer);
   const [userData, setUserData] = useState();
   const [proceedingPrCnt, setProceedingPrCnt] = useState();
+  let dispatch = useDispatch();
 
   const getData = async () => {
     try {
@@ -27,6 +28,7 @@ export default function Dashboard(props) {
       setUserData(data);
     } catch (err) {
       console.log(err);
+      dispatch({ type: "LOGOUT" });
     }
   };
 

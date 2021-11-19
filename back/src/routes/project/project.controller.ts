@@ -32,6 +32,14 @@ router.get("/content", (request: Request, response: Response) => {
   projectService.getContent(request, response);
 });
 
+router.post(
+  "/content/image",
+  jwtGuards,
+  (request: Request, response: Response) => {
+    projectService.contentImage(request, response);
+  }
+);
+
 // project comments API
 router.get("/comments", (request: Request, response: Response) => {
   projectService.getComments(request, response);
@@ -45,62 +53,114 @@ router.put("/comments", jwtGuards, (request: Request, response: Response) => {
   projectService.updateComments(request, response);
 });
 
-router.delete("/comments", jwtGuards, (request: Request, response: Response) => {
-  projectService.deleteComments(request, response);
-});
+router.delete(
+  "/comments",
+  jwtGuards,
+  (request: Request, response: Response) => {
+    projectService.deleteComments(request, response);
+  }
+);
 
 // apply API
-router.get("/apply/:projectId", jwtGuards, (request: Request, response: Response) => {
-  projectService.getApplyerList(request, response);
-});
+router.get(
+  "/apply/:projectId",
+  jwtGuards,
+  (request: Request, response: Response) => {
+    projectService.getApplyerList(request, response);
+  }
+);
 
-router.post("/apply/:projectId/:position", jwtGuards, (request: Request, response: Response) => {
-  projectService.applyTeam(request, response);
-});
+router.post(
+  "/apply/:projectId/:position",
+  jwtGuards,
+  (request: Request, response: Response) => {
+    projectService.applyTeam(request, response);
+  }
+);
 
-router.delete("/apply/:projectId/:profileId", jwtGuards, (request: Request, response: Response) => {
-  projectService.cancelApply(request, response);
-});
+router.delete(
+  "/apply/:projectId/:profileId",
+  jwtGuards,
+  (request: Request, response: Response) => {
+    projectService.cancelApply(request, response);
+  }
+);
 
 // team member API
-router.post("/accept/:projectId/:profileId", jwtGuards, (request: Request, response: Response) => {
-  projectService.addMember(request, response);
-});
+router.post(
+  "/accept/:projectId/:profileId",
+  jwtGuards,
+  (request: Request, response: Response) => {
+    projectService.addMember(request, response);
+  }
+);
 
-router.delete("/accept/:projectId/:profileId", jwtGuards, (request: Request, response: Response) => {
-  projectService.deleteMember(request, response);
-});
+router.delete(
+  "/accept/:projectId/:profileId",
+  jwtGuards,
+  (request: Request, response: Response) => {
+    projectService.deleteMember(request, response);
+  }
+);
 
 // interest API
-router.get("/interest/:projectId", jwtGuards, (request: Request, response: Response) => {
-  projectService.checkInterestProject(request, response);
-});
+router.get(
+  "/interest/:projectId",
+  jwtGuards,
+  (request: Request, response: Response) => {
+    projectService.checkInterestProject(request, response);
+  }
+);
 
-router.post("/like/:projectId", jwtGuards, (request: Request, response: Response) => {
-  projectService.likeProject(request, response);
-});
+router.post(
+  "/like/:projectId",
+  jwtGuards,
+  (request: Request, response: Response) => {
+    projectService.likeProject(request, response);
+  }
+);
 
-router.delete("/like/:projectId", jwtGuards, (request: Request, response: Response) => {
-  projectService.unlikeProject(request, response);
-});
+router.delete(
+  "/like/:projectId",
+  jwtGuards,
+  (request: Request, response: Response) => {
+    projectService.unlikeProject(request, response);
+  }
+);
 
 // project position API
-router.put("/position/:projectId/:profileId/:position", jwtGuards, (request: Request, response: Response) => {
-  projectService.modifyPosition(request, response);
-});
+router.put(
+  "/position/:projectId/:profileId/:position",
+  jwtGuards,
+  (request: Request, response: Response) => {
+    projectService.modifyPosition(request, response);
+  }
+);
 
-router.delete("/position/:projectId/:position", jwtGuards, (request: Request, response: Response) => {
-  projectService.deletePosition(request, response);
-})
+router.delete(
+  "/position/:projectId/:position",
+  jwtGuards,
+  (request: Request, response: Response) => {
+    projectService.deletePosition(request, response);
+  }
+);
 
 // project leader API
-router.put("/leader/:projectId/:profileId", jwtGuards, (request: Request, response: Response) => {
-  projectService.changeTeamLeader(request, response);
-});
+router.put(
+  "/leader/:projectId/:profileId",
+  jwtGuards,
+  (request: Request, response: Response) => {
+    projectService.changeTeamLeader(request, response);
+  }
+);
 
 // project state API
-router.put("/status/:projectId", jwtGuards, (request: Request, response: Response) => {
-  projectService.changeState(request, response);
-});
+router.put(
+  "/status/:projectId",
+  jwtGuards,
+  (request: Request, response: Response) => {
+    projectService.changeState(request, response);
+  }
+);
 
 export default router;

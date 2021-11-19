@@ -14,9 +14,7 @@ export default function Lounge() {
     const getData = async () => {
       try {
         const {
-          data: {
-            lounge: { rows },
-          },
+          data: { rows },
         } = await axios.get(
           `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/lounge?page=1&pageSize=3`,
           {
@@ -25,6 +23,7 @@ export default function Lounge() {
             },
           }
         );
+        // console.log("rows", rows);
         setData(rows);
       } catch (err) {
         console.log(err);
@@ -50,11 +49,11 @@ export default function Lounge() {
             <div className="card__row1">
               <img
                 className="row1__image"
-                src={e.profile.user.profileImage || defaultImg}
+                src={e.image || defaultImg}
                 alt="profile_img"
               />
               <div className="row1__right">
-                <div className="row1__name">{e.profile.user.username}</div>
+                <div className="row1__name">{e.username || defaultImg}</div>
                 <div className="row1__time">
                   {relativeTime(new Date(e.createdAt).getTime())}
                 </div>

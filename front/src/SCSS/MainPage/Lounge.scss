@@ -19,6 +19,7 @@
       border-radius: $round;
       margin-bottom: 2rem;
       position: relative;
+      cursor: pointer;
       &:hover {
         transform: scale(1.05);
         z-index: 1;
@@ -42,7 +43,7 @@
           align-items: center;
           .row1__name {
             position: relative;
-            font-weight: $normal;
+            font-weight: $semiBold;
           }
           .row1__time {
             font-size: $fontSs;

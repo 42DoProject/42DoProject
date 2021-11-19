@@ -6,6 +6,7 @@ import ProceedProjects from "./Components/AllProjectPage/ProceedProjects";
 import CompleteProjects from "./Components/AllProjectPage/CompleteProjects";
 import RecruitCadet from "./Components/CadetPage/RecruitCadet";
 import LoungePage from "./Components/LoungePage/LoungePage";
+import LoungePopularPage from "./Components/LoungePage/LoungePopularPage";
 import AuthMain from "./Components/AuthMain/AuthMain";
 import ProfileEditPage from "./Components/ProfileEditPage/ProfileEditPage";
 import Layout from "./Components/CommonComponent/Layout";
@@ -59,6 +60,7 @@ function App(props) {
         <Route path="/projectlist/complete" component={CompleteProjects} />
         <Route path="/cadet/recruit" component={RecruitCadet} />
         <Route path="/cadet/all" component={AllCadet} />
+        <Route path="/lounge/popular" component={LoungePopularPage} />
         <Route path="/lounge" component={LoungePage} />
         <Route exact path="/project/edit" component={ProjectEditPage} />
         <Route exact path="/project/edit/:id" component={ProjectEditPage} />

@@ -4,7 +4,7 @@ import "../../../SCSS/Common/Chat/Chat.scss";
 import ChatRoom from "./ChatRoom";
 import axios from "axios";
 import InChat from "./InChat";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import socket from "../../../socket";
 import Conv from "./AddConv";
 
@@ -16,7 +16,7 @@ export default function Chat() {
   const [inFlag, setInFlag] = useState(-1);
   const [chatOutFlag, setChatOutFlag] = useState(0);
   const [unreadCnt, setUnreadCnt] = useState(0);
-
+  let dispatch = useDispatch();
   const getUnreadCnt = (chatRoom) => {
     let cnt = 0;
     chatRoom?.forEach((e) => (cnt += e.unread));
@@ -37,6 +37,7 @@ export default function Chat() {
       setChatRoom(data);
     } catch (err) {
       console.log(err);
+      dispatch({ type: "LOGOUT" });
     }
   };
   useEffect(() => {

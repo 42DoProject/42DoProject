@@ -4,7 +4,7 @@ import "../../SCSS/LoungePage/LoungePage.scss";
 import LoungePaginate from "./LoungePaginate";
 import { useLocation } from "react-router";
 
-export default function LoungePage() {
+export default function LoungePoPularPage() {
   const [loungeData, setLoungeData] = useState();
   const location = useLocation();
 
@@ -14,8 +14,8 @@ export default function LoungePage() {
 
   return (
     <div className="lounge-wrap">
-      <LoungeBody status="base" loungeData={loungeData} />
-      <LoungePaginate status="base" setLoungeData={setLoungeData} />
+      <LoungeBody status="popular" loungeData={loungeData} />
+      <LoungePaginate status="popular" setLoungeData={setLoungeData} />
     </div>
   );
 }

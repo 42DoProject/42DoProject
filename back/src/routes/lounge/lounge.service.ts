@@ -11,13 +11,8 @@ import * as feed from "../../module/feed";
 
 export const getLounge = async (request: Request, response: Response) => {
     const { page, pageSize, order } = request.query;
-    let inputOrder, image, limit, offset, flag;
+    let outputLounge, inputOrder, limit, offset;
 
-    // blur image or profile image
-    if (request.user === null)
-        image = "blurImage";
-    else
-        image = "profileImage";
     // ordering
     if (order === 'like')
         inputOrder = 'like';
@@ -52,50 +47,41 @@ export const getLounge = async (request: Request, response: Response) => {
                 attributes: ['id'],
                 include: [{
                     model: User,
-                    attributes: [image, 'username']
+                    attributes: ['profileImage', 'blurImage', 'username']
                 }]
             },
             order: [[inputOrder, 'DESC']],
             offset: offset,
             limit: limit
         })
-
-        // check empty blurImage
-        if (image === "blurImage") {
-            flag = 0;
-            lounge.rows.forEach((element) => {
+        
+        // create outputLounge array
+        outputLounge = [];
+        for (const element of lounge.rows) {
+            let inputImage;
+            // blurImage or profileImage
+            if (request.user !== null)
+                inputImage = "profileImage";
+            else if (request.user === null) {
                 if (element.profile.user.blurImage === "")
-                    flag = 1;
-            })
-            
-            if (flag === 1) {
-                const newLounge = await Lounge.findAndCountAll({
-                    attributes: [
-                        'comment',
-                        'like',
-                        'replyCount',
-                        'createdAt',
-                        'updatedAt'
-                    ],
-                    include: {
-                        model: Profile,
-                        attributes: ['id'],
-                        include: [{
-                            model: User,
-                            attributes: ['profileImage', 'username']
-                        }]
-                    },
-                    order: [[inputOrder, 'DESC']],
-                    offset: offset,
-                    limit: limit
-                })
-                response.status(200).json({ newLounge });
+                    inputImage = "profileImage";
+                else
+                    inputImage = "blurImage";
             }
-            else
-                response.status(200).json({ lounge });
+            // create object
+            const tmp = {
+                id: element.id,
+                comment: element.comment,
+                like: element.like,
+                replyCount: element.replyCount,
+                username: element.profile.user.username,
+                image: (inputImage === "profileImage") ? element.profile.user.profileImage : element.profile.user.blurImage,
+                createdAt: element.createdAt,
+                updatedAt: element.updatedAt,
+            }
+            outputLounge.push(tmp);
         }
-        else
-            response.status(200).json({ lounge });
+        response.status(200).json({ count: lounge.count, rows: outputLounge });
     } catch (error) {
         response.status(405).json({ errMessage: String(error) });
         return ;

@@ -5,7 +5,7 @@ import { Icon } from "@iconify/react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
-export default function LoungePaginate({ status, setLoungeData }) {
+export default function LoungePaginate({ status, setLoungeData, refreshFlag }) {
   const [page, setPage] = useState(1);
   const [loungeLength, setLoungeLength] = useState(0);
   const loginState = useSelector((state) => state.loginReducer);
@@ -59,7 +59,7 @@ export default function LoungePaginate({ status, setLoungeData }) {
       };
       getData();
     }
-  }, [page]);
+  }, [page, refreshFlag]);
 
   return (
     <Pagination

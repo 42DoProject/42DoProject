@@ -9,7 +9,12 @@ import axios from "axios";
 import { useHistory } from "react-router";
 import socket from "../../socket";
 
-export default function LoungeBody({ status, loungeData }) {
+export default function LoungeBody({
+  status,
+  loungeData,
+  refreshFlag,
+  setRefreshFlag,
+}) {
   let loginState = useSelector((state) => state.loginReducer);
   const [concurrents, setConcurrents] = useState([]);
   const history = useHistory();
@@ -60,7 +65,12 @@ export default function LoungeBody({ status, loungeData }) {
           )}
         </div>
         <div className="left__posts">
-          {loginState && status === "base" && <LoungeWrite />}
+          {loginState && status === "base" && (
+            <LoungeWrite
+              refreshFlag={refreshFlag}
+              setRefreshFlag={setRefreshFlag}
+            />
+          )}
           {loungeData?.map((e, idx) => (
             <LoungePost key={idx} loungeData={e} />
           ))}

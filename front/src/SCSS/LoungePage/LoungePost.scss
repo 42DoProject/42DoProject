@@ -45,6 +45,7 @@
   width: 80%;
   line-height: 120%;
   margin: 2rem 4rem;
+  word-break: break-all;
 }
 
 .lounge-post__bottom {
@@ -69,6 +70,9 @@
   color: $grey;
   cursor: pointer;
   &:hover {
+    color: $pointRed;
+  }
+  .like-color {
     color: $pointRed;
   }
   .bottom__like-icon {

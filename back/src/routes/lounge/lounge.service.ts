@@ -183,7 +183,7 @@ export const deleteLounge = async (request: Request, response: Response) => {
 export const getReplyOfLounge = async (request: Request, response: Response) => {
     const { page, pageSize } = request.query;
     const { loungeId } = request.params;
-    let limit, offset;
+    let outputReply, limit, offset;
     if (loungeId === undefined) {
         response.status(400).json({ errMessage: 'please input loungeId query' });
         return ;
@@ -214,13 +214,39 @@ export const getReplyOfLounge = async (request: Request, response: Response) => 
                 attributes: ['id'],
                 include: [{
                     model: User,
-                    attributes: ['profileImage', 'username']
+                    attributes: ['profileImage', 'blurImage', 'username']
                 }]
             },
             offset: offset,
             limit: limit
         })
-        response.status(200).json({ reply });
+
+        // create outputReply array
+        outputReply = [];
+        for (const element of reply.rows) {
+            let inputImage;
+            // blurImage or profileImage
+            if (request.user !== null)
+                inputImage = "profileImage";
+            else if (request.user === null) {
+                if (element.profile.user.blurImage === "")
+                    inputImage = "profileImage";
+                else
+                    inputImage = "blurImage";
+            }
+            // create object
+            const tmp = {
+                id: element.id,
+                comment: element.comment,
+                like: element.like,
+                username: element.profile.user.username,
+                image: (inputImage === "profileImage") ? element.profile.user.profileImage : element.profile.user.blurImage,
+                createdAt: element.createdAt,
+                updatedAt: element.updatedAt,
+            }
+            outputReply.push(tmp);
+        }
+        response.status(200).json({ count: reply.count, rows: outputReply });
     } catch (error) {
         response.status(405).json({ errMessage: String(error) });
         return ;

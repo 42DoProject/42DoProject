@@ -141,3 +141,27 @@ export const project = multer({
     fileSize: 1024 * 1024 * Number(process.env.AWS_FILE_BUCKET_ALLOW_MAX_SIZE),
   },
 });
+
+export const projectContent = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: `${process.env.AWS_FILE_BUCKET_NAME}`,
+    acl: "public-read",
+    key: function (request, file, cb) {
+      if (!mimeToExtension[file.mimetype]) {
+        cb(new Error("extension not supported"));
+      }
+      const filename = `${request.user!.id}n${v4()
+        .toString()
+        .replace("-", "")}.${mimeToExtension[file.mimetype]}`;
+      request.urls!.push(`image/${filename}`);
+      cb(null, `image/${filename}`);
+    },
+    contentType: function (request, file, cb) {
+      cb(null, file.mimetype);
+    },
+  }),
+  limits: {
+    fileSize: 1024 * 1024 * Number(process.env.AWS_FILE_BUCKET_ALLOW_MAX_SIZE),
+  },
+});

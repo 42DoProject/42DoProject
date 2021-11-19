@@ -36,6 +36,7 @@ export const getLounge = async (request: Request, response: Response) => {
     try {
         const lounge = await Lounge.findAndCountAll({
             attributes: [
+                'id',
                 'comment',
                 'like',
                 'replyCount',
@@ -59,20 +60,29 @@ export const getLounge = async (request: Request, response: Response) => {
         outputLounge = [];
         for (const element of lounge.rows) {
             let inputImage;
+            let checkLike = false;
             // blurImage or profileImage
-            if (request.user !== null)
+            if (request.user !== null) {
                 inputImage = "profileImage";
+                const interest = await Likelounge.findOne({
+                    where: { profileId: request.user!.id, loungeId: element.id }
+                })
+                if (interest)
+                    checkLike = true;
+            }
             else if (request.user === null) {
                 if (element.profile.user.blurImage === "")
                     inputImage = "profileImage";
                 else
                     inputImage = "blurImage";
             }
+            
             // create object
             const tmp = {
                 id: element.id,
                 comment: element.comment,
                 like: element.like,
+                checkLike: (checkLike === true) ? "true" : "false",
                 replyCount: element.replyCount,
                 username: element.profile.user.username,
                 image: (inputImage === "profileImage") ? element.profile.user.profileImage : element.profile.user.blurImage,
@@ -203,6 +213,7 @@ export const getReplyOfLounge = async (request: Request, response: Response) => 
     try {
         const reply = await Replyoflounge.findAndCountAll({
             attributes: [
+                'id',
                 'loungeId',
                 'comment',
                 'like',
@@ -225,20 +236,29 @@ export const getReplyOfLounge = async (request: Request, response: Response) => 
         outputReply = [];
         for (const element of reply.rows) {
             let inputImage;
+            let checkLike = false;
             // blurImage or profileImage
-            if (request.user !== null)
+            if (request.user !== null) {
                 inputImage = "profileImage";
+                const interest = await Likereply.findOne({
+                    where: { profileId: request.user!.id, replyofloungeId: element.id }
+                })
+                if (interest)
+                    checkLike = true;
+            }
             else if (request.user === null) {
                 if (element.profile.user.blurImage === "")
                     inputImage = "profileImage";
                 else
                     inputImage = "blurImage";
             }
+
             // create object
             const tmp = {
                 id: element.id,
                 comment: element.comment,
                 like: element.like,
+                checkLike: (checkLike === true) ? "true" : "false",
                 username: element.profile.user.username,
                 image: (inputImage === "profileImage") ? element.profile.user.profileImage : element.profile.user.blurImage,
                 createdAt: element.createdAt,

@@ -40,20 +40,20 @@ router.delete("/reply/:replyId", jwtGuards, (request: Request, response: Respons
 });
 
 // likelounge API
-router.put("/like/:loungeId", jwtGuards, (request: Request, response: Response) => {
+router.post("/like/:loungeId", jwtGuards, (request: Request, response: Response) => {
     loungeService.likeLounge(request, response);
 });
 
-router.put("/unlike/:loungeId", jwtGuards, (request: Request, response: Response) => {
+router.delete("/unlike/:loungeId", jwtGuards, (request: Request, response: Response) => {
     loungeService.unlikeLounge(request, response);
 });
 
 // likereply API
-router.put("/reply/like/:replyId", jwtGuards, (request: Request, response: Response) => {
+router.post("/reply/like/:replyId", jwtGuards, (request: Request, response: Response) => {
     loungeService.likeReply(request, response);
 });
 
-router.put("/reply/unlike/:replyId", jwtGuards, (request: Request, response: Response) => {
+router.delete("/reply/unlike/:replyId", jwtGuards, (request: Request, response: Response) => {
     loungeService.unlikeReply(request, response);
 });
 

@@ -51,11 +51,9 @@ export default function Chat() {
       getChatRoom();
     });
     return () => {
-      console.log("chat unmount");
       socket.off("chat:newRoom");
       socket.off("chat:leave");
       if (inFlag === -1) {
-        console.log(inFlag);
         socket.off("chat:receive");
       }
     };

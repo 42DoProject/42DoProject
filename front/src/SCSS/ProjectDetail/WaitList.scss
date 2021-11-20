@@ -6,13 +6,12 @@
   .waitlist {
     margin-left: 30rem;
     .waitlist__btn {
-      border-radius: 2rem;
-      color: white;
-      font-size: $fontSm;
-      padding: 0.4rem;
+      padding: 0.8rem;
+      border-radius: 10px;
+      border: 1px solid #e5e5e5;
       text-align: center;
-      background-color: $mainColor;
       cursor: pointer;
+      margin-left: 1rem;
     }
     .waitlist__count {
       position: absolute;
@@ -46,8 +45,9 @@
     padding: 0.7rem;
     border-radius: $round;
     box-shadow: $shadow;
-    top: 2rem;
-    right: -14.5rem;
+    top: 2.9rem;
+    right: -14rem;
+    // left: 1rem;
     width: 20rem;
     z-index: 3;
     overflow: hidden;

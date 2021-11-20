@@ -7,7 +7,11 @@ import "../../SCSS/AllProjectPage/ProjectPaginate.scss";
 import "../../SCSS/AllProjectPage/ProjectGrid.scss";
 import ReactLoading from "../CommonComponent/Loading";
 
-export default function ProjectPaginate(props) {
+export default function ProjectPaginate({
+  state,
+  filterOption,
+  setFilterOption,
+}) {
   const [page, setPage] = useState(1);
   const [Project, setProject] = useState(null);
   const [totCount, setTotCount] = useState(1);
@@ -20,7 +24,7 @@ export default function ProjectPaginate(props) {
           project: { rows: projectData, count },
         },
       } = await axios.get(
-        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project?state=${props.state}&pageSize=12&page=${page}`
+        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project?state=${state}&pageSize=12&page=${page}${filterOption}`
       );
       setTotCount(count);
       setProject(projectData);
@@ -31,14 +35,13 @@ export default function ProjectPaginate(props) {
 
   const handlePageChange = (page) => {
     setPage(page);
-    // console.log(page);
   };
 
   useEffect(() => {
     getData();
-  }, [page]);
+  }, [page, filterOption]);
 
-  switch (props.state) {
+  switch (state) {
     case "recruiting":
       stateValue = "모집중인";
       break;
@@ -49,7 +52,6 @@ export default function ProjectPaginate(props) {
       stateValue = "완성된";
       break;
   }
-
   return Project === null ? (
     <ReactLoading type="spin" color="#a7bc5b" />
   ) : (
@@ -60,7 +62,6 @@ export default function ProjectPaginate(props) {
         <>
           <div className="project-grid">
             {Project.map((el, idx) => {
-              // console.log(el);
               return <Cards key={el["id"]} projectData={el} />;
             })}
           </div>

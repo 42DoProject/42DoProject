@@ -226,7 +226,7 @@ export const getReplyOfLounge = async (request: Request, response: Response) => 
                 attributes: ['id'],
                 include: [{
                     model: User,
-                    attributes: ['profileImage', 'blurImage', 'username']
+                    attributes: ['id', 'profileImage', 'blurImage', 'username']
                 }]
             },
             offset: offset,
@@ -261,6 +261,7 @@ export const getReplyOfLounge = async (request: Request, response: Response) => 
                 like: element.like,
                 checkLike: (checkLike === true) ? "true" : "false",
                 username: element.profile.user.username,
+                userid: element.profile.user.id,
                 image: (inputImage === "profileImage") ? element.profile.user.profileImage : element.profile.user.blurImage,
                 createdAt: element.createdAt,
                 updatedAt: element.updatedAt,

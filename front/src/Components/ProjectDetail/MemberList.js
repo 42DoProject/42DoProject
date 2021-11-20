@@ -5,6 +5,8 @@ import axios from "axios";
 import { positions } from "../../userData";
 import WaitList from "./WaitList";
 import { useHistory } from "react-router";
+import MemberCard from "./MemberCard";
+import ProjectStatusChange from "./ProjectStatusChange";
 
 export default function MemberList({
   data,
@@ -37,51 +39,64 @@ export default function MemberList({
     <>
       <div className="member_list">
         <div className="list_row1">
-          <Icon icon="bi:person-fill" color="#565656" fontSize="1.5rem" />
-          <div className="member_count">
-            멤버 {data.currentMember} / {data.totalMember}
+          <div className="member-icon__wrap">
+            <Icon icon="bi:person-fill" color="#565656" fontSize="1.5rem" />
+            <div className="member_count">
+              멤버 {data.currentMember} / {data.totalMember}
+            </div>
           </div>
           {loginState?.id === data.leader ? (
-            <WaitList
-              data={data}
-              loginState={loginState}
-              setApplyFlag={setApplyFlag}
-              positions={positions}
-            />
+            <div className="project_manage">
+              <WaitList
+                data={data}
+                loginState={loginState}
+                setApplyFlag={setApplyFlag}
+                positions={positions}
+              />
+              <ProjectStatusChange
+                data={data}
+                loginState={loginState}
+                setApplyFlag={setApplyFlag}
+              />
+              <div
+                className="edit__btn"
+                onClick={(e) => {
+                  history.push(`/project/edit/${data.id}`);
+                  e.preventDefault();
+                }}
+              >
+                수정
+              </div>
+            </div>
           ) : null}
         </div>
         <div className="member_image_list">
           <div className="filled_member">
             {data?.projectprofile.map((elm, key) => (
-              <div className="member_image" key={key}>
+              <>
                 {data.leader === elm.profile.id ? (
-                  <div className="leader_icon">
-                    <Icon
-                      icon="ph:crown-simple-fill"
-                      color="#ffb648"
-                      fontSize="1.3rem"
-                    />
-                  </div>
+                  <MemberCard
+                    elm={elm}
+                    key={key}
+                    data={data}
+                    loginState={loginState}
+                    setApplyFlag={setApplyFlag}
+                  />
                 ) : null}
-                <img
-                  key={key}
-                  alt={elm.profile.id}
-                  src={elm.profile.user.profileImage}
-                  style={{ cursor: "pointer" }}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    history.push(`/profile/${elm.profile.id}`);
-                  }}
-                />
-                <div className="member_position">
-                  {elm.position === null ? (
-                    // 리더의 포지션이 정해지면 수정 필요.
-                    <div>팀장</div>
-                  ) : (
-                    positions[elm.position]
-                  )}
-                </div>
-              </div>
+              </>
+            ))}
+            {data?.projectprofile.map((elm, key) => (
+              <>
+                {data.leader !== elm.profile.id ? (
+                  <MemberCard
+                    elm={elm}
+                    key={key}
+                    data={data}
+                    loginState={loginState}
+                    setApplyFlag={setApplyFlag}
+                  />
+                ) : null}
+              </>
             ))}
           </div>
           <div className="empty_list">

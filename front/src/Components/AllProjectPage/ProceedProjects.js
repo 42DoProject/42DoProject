@@ -1,15 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import ProjectTypeBar from "./ProjectTypeBar";
 import "../../SCSS/AllProjectPage/ProjectTypeBar.scss";
 import "../../SCSS/AllProjectPage/AllProjectPage.scss";
 import ProjectPaginate from "./ProjectPaginate";
 
 export default function ProceedProjects() {
+  const [filterOption, setFilterOption] = useState("");
+
   return (
     <>
       <div className="allproject__wrap">
-        <ProjectTypeBar state="proceeding" />
-        <ProjectPaginate state="proceeding" />
+        <ProjectTypeBar state="proceeding" setFilterOption={setFilterOption} />
+        <ProjectPaginate
+          state="proceeding"
+          filterOption={filterOption}
+          setFilterOption={setFilterOption}
+        />
       </div>
     </>
   );

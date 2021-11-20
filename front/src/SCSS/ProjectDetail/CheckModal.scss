@@ -1,0 +1,50 @@
+@import "../Base.scss";
+
+.validate__wrap {
+  width: 25rem;
+  min-height: 10rem;
+  background-color: white;
+  border-radius: $round;
+  z-index: 5;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin: -5rem 0 0 -12.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  line-height: normal;
+  box-shadow: 0 0 0 9999px #000000b0;
+  .validate__body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2.5rem 2rem;
+  }
+  hr {
+    margin: 0;
+    width: 100%;
+  }
+  .validate__button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    div {
+      width: 100%;
+      padding: 1rem;
+      cursor: pointer;
+    }
+    div:nth-child(2) {
+      border-left: 1px solid rgba(86, 86, 86, 0.25);
+    }
+    .validate__cancel {
+      color: black;
+    }
+    .validate__confirm {
+      color: black;
+    }
+  }
+}

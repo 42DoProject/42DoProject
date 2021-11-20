@@ -91,7 +91,7 @@ export default function WaitList({
             <div className="waitlist__count_zero">{0}</div>
           )}
         </div>
-        {toggle !== false && (
+        {toggle && (
           <div className="waitlist__wrap">
             <div className="waitlist__header">
               <div className="waitlist__text">신청 리스트</div>

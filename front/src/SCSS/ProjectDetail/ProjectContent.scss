@@ -20,6 +20,16 @@
     margin: 2rem 2rem 1rem 2rem;
   }
 
+  // 레퍼런스 링크 부분
+  .link_list {
+    display: flex;
+    flex-direction: column;
+    .link_wrap {
+      display: flex;
+      align-items: center;
+    }
+  }
+
   /* toast UI */
   .toastui-editor-contents {
     font-size: 1rem;

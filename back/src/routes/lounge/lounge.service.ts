@@ -48,7 +48,7 @@ export const getLounge = async (request: Request, response: Response) => {
                 attributes: ['id'],
                 include: [{
                     model: User,
-                    attributes: ['profileImage', 'blurImage', 'username']
+                    attributes: ['id', 'profileImage', 'blurImage', 'username']
                 }]
             },
             order: [[inputOrder, 'DESC']],
@@ -84,6 +84,7 @@ export const getLounge = async (request: Request, response: Response) => {
                 like: element.like,
                 checkLike: (checkLike === true) ? "true" : "false",
                 replyCount: element.replyCount,
+                userid: element.profile.user.id,
                 username: element.profile.user.username,
                 image: (inputImage === "profileImage") ? element.profile.user.profileImage : element.profile.user.blurImage,
                 createdAt: element.createdAt,

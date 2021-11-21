@@ -69,11 +69,11 @@ export default function NotiCard({ date, type, args }) {
             history.push(`/project/${args[0].projectId}`);
           }}>
           <div className="row1">
-            <div className="title">프로젝트 승인</div>
+            <div className="title">프로젝트 참여 승인</div>
             <div className="date">{relativeTime(date)}</div>
           </div>
-          <span className="projectName">{args[0].projectName}</span>에
-          참여되었어요.
+          <span className="projectName">{args[0].projectName}</span>의 멤버가
+          되었어요.
         </div>
       )}
       {type === 42 && (
@@ -103,7 +103,7 @@ export default function NotiCard({ date, type, args }) {
           <span className="projectName">{args[1].projectName}</span>
           {`에 `}
           <span className="projectName">{args[0].username}</span>님이 참여를
-          신청했어요.
+          요청했어요.
         </div>
       )}
       {type === 60 && (

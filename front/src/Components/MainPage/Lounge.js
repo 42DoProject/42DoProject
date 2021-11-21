@@ -44,8 +44,7 @@ export default function Lounge() {
             key={idx}
             onClick={() => {
               history.push("/lounge");
-            }}
-          >
+            }}>
             <div className="card__row1">
               <img
                 className="row1__image"
@@ -60,7 +59,11 @@ export default function Lounge() {
               </div>
             </div>
             <div className="card__row2">
-              <div className="row2__chat">{e.comment}</div>
+              <div className="row2__chat">
+                {e.comment.length > 69
+                  ? e.comment.slice(0, 68) + "..."
+                  : e.comment}
+              </div>
             </div>
             <div className="card__row3">
               <span className="like">좋아요</span>

@@ -42,9 +42,16 @@
 
 .lounge-post__space {
   // background-color: beige;
+  min-height: 2rem;
   line-height: 120%;
   margin: 2rem 4rem;
   word-break: break-all;
+  white-space: pre-wrap; /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+  white-space: -pre-wrap; /* Opera 4-6 */
+  white-space: -o-pre-wrap; /* Opera 7 */
+  word-wrap: break-word; /* Internet Explorer 5.5+ */
+  overflow-y: hidden;
 }
 
 .lounge-post__bottom {

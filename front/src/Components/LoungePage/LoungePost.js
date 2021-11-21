@@ -48,15 +48,14 @@ export default function LoungePost({
           <img
             className="profile__img"
             src={loungeData.image || defaultImg}
-            alt="profile__img"
-          ></img>
+            alt="profile__img"></img>
           <div className="profile__name">{loungeData.username}</div>
         </div>
         <div className="lounge-post__time">
           {relativeTime(new Date(loungeData.createdAt).getTime())}
         </div>
       </div>
-      <div className="lounge-post__space">{loungeData.comment}</div>
+      <pre className="lounge-post__space">{loungeData.comment}</pre>
       <div className="lounge-post__bottom">
         <button className="bottom__open-comments">
           {`댓글 ${loungeData.replyCount}개`}

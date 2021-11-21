@@ -153,7 +153,7 @@ export default function ProjectComment({
                       onKeyDown={(e) => handleKeyDown(e, elm)}
                     />
                   ) : (
-                    <div className="comment-content">{elm.comment}</div>
+                    <pre className="comment-content">{elm.comment}</pre>
                   )}
 
                   {elm.profile.id === loginState?.id && (

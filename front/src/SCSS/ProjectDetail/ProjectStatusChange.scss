@@ -8,15 +8,13 @@
     flex-direction: column;
     position: absolute;
     background-color: white;
-    align-items: center;
-    // border-bottom-left-radius: 0.3rem;
     padding: 0.7rem;
     border-radius: $round;
     box-shadow: $shadow;
     top: 3rem;
     // right: -14.5rem;
     left: 1rem;
-    width: 13rem;
+    width: 12rem;
     z-index: 3;
     overflow: hidden;
     .toggle_header {
@@ -34,12 +32,12 @@
         background-color: white;
       }
     }
-    .change_btn {
-      margin-top: 1rem;
-      background-color: white;
-      padding: 0.5rem;
-      border-radius: 0.5rem;
-      border: 1px solid black;
-    }
+    // .change_btn {
+    //   // margin-top: 1rem;
+    //   // background-color: white;
+    //   // padding: 0.5rem;
+    //   // border-radius: 0.5rem;
+    //   // border: 1px solid black;
+    // }
   }
 }

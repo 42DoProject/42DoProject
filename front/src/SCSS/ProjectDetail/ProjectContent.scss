@@ -24,9 +24,53 @@
   .link_list {
     display: flex;
     flex-direction: column;
+    font-size: $fontMs;
+    font-weight: $normal;
+    gap: 0.5rem;
+    margin-top: 2rem;
+    .link_title {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
     .link_wrap {
+      font-size: $fontSm;
+      font-weight: $regular;
       display: flex;
       align-items: center;
+      gap: 1rem;
+      color: $grey;
+
+      .link_favicon {
+        width: 2.5rem;
+        height: 2.5rem;
+        box-shadow: $shadowLight;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid $lightestGrey;
+        img {
+          width: 1.7rem;
+          height: 1.7rem;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+        }
+      }
+
+      .link_url {
+        border-bottom: 1px solid $lightestGrey;
+        padding: 0.2rem 0;
+        max-width: 60%;
+        white-space: nowrap;
+        overflow: scroll;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        &::-webkit-scrollbar {
+          display: none;
+        }
+      }
     }
   }
 

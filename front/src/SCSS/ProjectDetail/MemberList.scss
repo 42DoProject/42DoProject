@@ -17,6 +17,7 @@
       .member_count {
         font-size: $fontMs;
         font-weight: $normal;
+        min-width: max-content;
       }
     }
     .project_manage {
@@ -24,7 +25,8 @@
       flex-direction: row;
       // margin-left: 30rem;
       .edit__btn {
-        padding: 0.8rem;
+        padding: 0.7rem 1.2rem;
+        min-width: max-content;
         border-radius: 10px;
         border: 1px solid #e5e5e5;
         cursor: pointer;
@@ -74,6 +76,9 @@
             font-size: $fontSs;
             text-align: center;
             background-color: $mainColor;
+            // .empty_div {
+            //   width: 1rem;
+            // }
           }
           .member_control {
             justify-content: right;

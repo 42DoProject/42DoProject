@@ -3,7 +3,7 @@ import "../../SCSS/AllProjectPage/Filter.scss";
 import skills from "../../skills.json";
 import { Icon } from "@iconify/react";
 import { positions } from "../../userData";
-import PositionCard from "../ProjectEditPage/PositionCard.js";
+// import PositionCard from "../ProjectEditPage/PositionCard.js";
 
 export default function Filter({ setFilterOption, setFilterFlag }) {
   const [selectedSkill, setSelectedSkill] = useState([]);
@@ -39,7 +39,7 @@ export default function Filter({ setFilterOption, setFilterFlag }) {
     <>
       <div className="filter">
         <div className="skill_filter">
-          <div className="filter_header">스킬 검색</div>
+          <div className="filter_header">스킬로 필터링</div>
           <div className="project-edit__skill">
             <input
               className="project-edit__add-skill"
@@ -96,7 +96,7 @@ export default function Filter({ setFilterOption, setFilterFlag }) {
           </div>
         </div>
         <div className="position_filter">
-          <div className="filter_header">포지션 검색</div>
+          <div className="filter_header">빈 포지션으로 필터링</div>
           <select
             id="job_select"
             className="project-edit__add-position"
@@ -117,8 +117,7 @@ export default function Filter({ setFilterOption, setFilterFlag }) {
                 posSelectEl.selectedIndex - 1,
               ]);
               posSelectEl.selectedIndex = 0;
-            }}
-          >
+            }}>
             <option value="default" disabled>
               포지션 추가
             </option>
@@ -162,7 +161,7 @@ export default function Filter({ setFilterOption, setFilterFlag }) {
               type="checkbox"
               name="sortbox"
               value="new"
-              // checked="true"
+              checked="true"
               onClick={(e) => {
                 onCheckSort(e);
               }}

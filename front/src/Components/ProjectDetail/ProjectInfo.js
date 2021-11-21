@@ -132,7 +132,7 @@ export default function ProjectInfo({
           <Icon
             icon={likeData[clickFlag].icon}
             color={likeData[clickFlag].color}
-            height="25"
+            fontSize="1.5rem"
             onClick={(e) => {
               if (clickFlag === 0) onClickLike(e);
               else onClickUnlike(e);
@@ -181,7 +181,7 @@ export default function ProjectInfo({
       )}
       {userStatus === "participating" && (
         <div className="project-cancle_btn" onClick={(e) => deleteMember(e)}>
-          프로젝트 나가기
+          프로젝트에서 나가기
         </div>
       )}
     </>

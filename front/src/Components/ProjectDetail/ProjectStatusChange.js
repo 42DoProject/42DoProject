@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../../SCSS/ProjectDetail/ProjectStatusChange.scss";
+import { Icon } from "@iconify/react";
 
 export default function ProjectStatusChange({
   data,
@@ -46,11 +47,14 @@ export default function ProjectStatusChange({
               <select className="change_select" id="change_status">
                 <option value="recruiting">모집중</option>
                 <option value="proceeding">진행중</option>
-                <option value="completed">완료</option>
+                <option value="completed">완성됨</option>
               </select>
-              <button className="change_btn" onClick={(e) => onStatusChange(e)}>
-                변경하기
-              </button>
+              <Icon
+                icon="ant-design:check-circle-filled"
+                className="change_btn"
+                onClick={(e) => onStatusChange(e)}
+                fontSize="1.5rem"
+              />
             </div>
           </div>
         )}

@@ -132,7 +132,7 @@ export default function ProjectComment({
     <div className="body-comment">
       <div className="comment-row">
         <Icon icon="bi:chat-left-text" color="#565656" fontSize="1.5rem" />
-        <div className="comment_text">응원 / 질문을 남겨주세요! </div>
+        <div className="comment_text">댓글</div>
       </div>
       <div className="comment_main">
         {commentList.length !== 0 ? (
@@ -157,14 +157,14 @@ export default function ProjectComment({
                   <>
                     <Icon
                       icon="clarity:edit-solid"
-                      color="#a7bc5b"
+                      color="#c4c4c4"
                       fontSize="1rem"
                       onClick={(e) => onEdit(e, elm, key)}
                       style={{ cursor: "pointer" }}
                     />
                     <Icon
-                      icon="bx:bx-x"
-                      color="#ff6864"
+                      icon="icomoon-free:bin"
+                      color="#c4c4c4"
                       fontSize="1rem"
                       onClick={(e) => onDelete(elm.id, e)}
                       style={{ cursor: "pointer" }}
@@ -207,10 +207,9 @@ export default function ProjectComment({
       <form className="comment-input" onSubmit={onSubmit}>
         <textarea
           spellCheck="false"
-          // type="textarea"
           className="comment_input"
-          maxLength="50"
-          placeholder="ex. 너무 좋은 프로젝트입니다."
+          maxLength="300"
+          placeholder="응원 / 질문을 남겨주세요!"
           onChange={onChange}
           // onKeyPress={this.typeEnter}
           value={newComment}

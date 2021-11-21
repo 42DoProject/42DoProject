@@ -1,13 +1,13 @@
 @import "../Base.scss";
 
 .filter {
-  z-index: 1;
+  z-index: 3;
   position: absolute;
   display: flex;
   flex-direction: column;
-  right: 3rem;
-  top: 9.4rem;
-  padding: 3rem;
+  right: 0rem;
+  top: 3rem;
+  padding: 1rem;
   width: 20rem;
   background-color: white;
   box-shadow: $shadow;
@@ -79,6 +79,9 @@
       .sort_text {
         font-size: $fontSm;
       }
+      input {
+        margin-right: 0.5rem;
+      }
     }
   }
   .filter_btn {
@@ -86,7 +89,11 @@
     background-color: white;
     padding: 0.5rem;
     border-radius: 0.5rem;
-    border: 1px solid black;
+    border: 1px solid $lightestGrey;
+    color: $darkGrey;
+  }
+  .project-edit__add-skill {
+    width: 100%;
   }
 }
 // .project-edit__left {

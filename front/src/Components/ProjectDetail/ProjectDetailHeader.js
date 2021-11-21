@@ -9,7 +9,7 @@ export default function ProjectDetailHeader({ title, image, projectState }) {
       projectstatus = "모집중";
       break;
     case "completed":
-      projectstatus = "완료";
+      projectstatus = "완성됨";
       break;
     case "proceeding":
       projectstatus = "진행중";

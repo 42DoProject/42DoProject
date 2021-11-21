@@ -39,7 +39,7 @@ export default function Filter({ setFilterOption, setFilterFlag }) {
     <>
       <div className="filter">
         <div className="skill_filter">
-          <div className="filter_header">스킬로 필터링</div>
+          <div className="filter_header">필요한 스킬로 필터링</div>
           <div className="project-edit__skill">
             <input
               className="project-edit__add-skill"
@@ -161,7 +161,7 @@ export default function Filter({ setFilterOption, setFilterFlag }) {
               type="checkbox"
               name="sortbox"
               value="new"
-              checked="true"
+              // checked="true"
               onClick={(e) => {
                 onCheckSort(e);
               }}

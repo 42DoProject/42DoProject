@@ -102,6 +102,9 @@ export default function ProjectInfo({
     }
   };
 
+  console.log("info", info);
+  console.log("loginState", loginState);
+
   const onClickUnlike = (e) => {
     setClickFlag(0);
     axios({
@@ -179,7 +182,7 @@ export default function ProjectInfo({
           신청 취소하기
         </div>
       )}
-      {userStatus === "participating" && (
+      {userStatus === "participating" && loginState.id !== info.leader && (
         <div className="project-cancle_btn" onClick={(e) => deleteMember(e)}>
           프로젝트에서 나가기
         </div>

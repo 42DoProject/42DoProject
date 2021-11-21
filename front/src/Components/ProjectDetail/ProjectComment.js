@@ -140,37 +140,41 @@ export default function ProjectComment({
             {commentList.map((elm, key) => (
               <div className="comment-list" key={key}>
                 <div className="comment-id">{elm.profile.user.username}</div>
-                {editable === key ? (
-                  <input
-                    type="text"
-                    value={editComment}
-                    onChange={(e) => {
-                      onEditChange(e);
-                    }}
-                    onKeyDown={(e) => handleKeyDown(e, elm)}
-                  />
-                ) : (
-                  <div className="comment-content">{elm.comment}</div>
-                )}
+                <div className="comment-right">
+                  {editable === key ? (
+                    <textarea
+                      // type="text"
+                      // rows="8"
+                      spellCheck="false"
+                      value={editComment}
+                      onChange={(e) => {
+                        onEditChange(e);
+                      }}
+                      onKeyDown={(e) => handleKeyDown(e, elm)}
+                    />
+                  ) : (
+                    <div className="comment-content">{elm.comment}</div>
+                  )}
 
-                {elm.profile.id === loginState?.id && (
-                  <>
-                    <Icon
-                      icon="clarity:edit-solid"
-                      color="#c4c4c4"
-                      fontSize="1rem"
-                      onClick={(e) => onEdit(e, elm, key)}
-                      style={{ cursor: "pointer" }}
-                    />
-                    <Icon
-                      icon="icomoon-free:bin"
-                      color="#c4c4c4"
-                      fontSize="1rem"
-                      onClick={(e) => onDelete(elm.id, e)}
-                      style={{ cursor: "pointer" }}
-                    />
-                  </>
-                )}
+                  {elm.profile.id === loginState?.id && (
+                    <div className="comment-icons">
+                      <Icon
+                        icon="clarity:edit-solid"
+                        color="#c4c4c4"
+                        fontSize="1rem"
+                        onClick={(e) => onEdit(e, elm, key)}
+                        style={{ cursor: "pointer" }}
+                      />
+                      <Icon
+                        icon="icomoon-free:bin"
+                        color="#c4c4c4"
+                        fontSize="1rem"
+                        onClick={(e) => onDelete(elm.id, e)}
+                        style={{ cursor: "pointer" }}
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
             ))}
             <div className="comment_pagination">
@@ -208,7 +212,7 @@ export default function ProjectComment({
         <textarea
           spellCheck="false"
           className="comment_input"
-          maxLength="300"
+          maxLength="500"
           placeholder="응원 / 질문을 남겨주세요!"
           onChange={onChange}
           // onKeyPress={this.typeEnter}

@@ -63,8 +63,7 @@ export default function MemberList({
                 onClick={(e) => {
                   history.push(`/project/edit/${data.id}`);
                   e.preventDefault();
-                }}
-              >
+                }}>
                 수정
               </div>
             </div>
@@ -105,7 +104,7 @@ export default function MemberList({
                 <div className="chair_icon">
                   <Icon
                     icon="bx:bx-chair"
-                    style={{ fontSize: "3.5rem", color: "#c4c4c4" }}
+                    style={{ fontSize: "3.7rem", color: "#c4c4c4" }}
                     className="empty_chair-icon"
                   />
                   {userStatus?.status === "nothing" && (

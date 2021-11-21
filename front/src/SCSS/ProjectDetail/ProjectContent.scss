@@ -31,9 +31,11 @@
     .link_title {
       display: flex;
       gap: 0.5rem;
+      margin-top: 1rem;
       margin-bottom: 0.5rem;
     }
     .link_wrap {
+      margin-left: 1.5rem;
       font-size: $fontSm;
       font-weight: $regular;
       display: flex;

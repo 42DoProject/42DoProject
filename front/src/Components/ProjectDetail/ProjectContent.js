@@ -35,27 +35,29 @@ export default function ProjectContent({ content }) {
             <div className="md_viewer">
               <Viewer initialValue={content.content.content} />
             </div>
-            <div className="link_list">
-              <div className="link_title">
-                <Icon icon="akar-icons:link-chain" fontSize="1.5rem" />
-                <span>참고 링크</span>
-              </div>
-              {/* TODO: http://가 없는 링크면 상대경로로 간다.  */}
-              {urlList.map((elm, idx) => (
-                <div className="link_wrap">
-                  <div className="link_favicon">
-                    <a href={elm.url} target="_blank">
-                      <img src={elm.src} />
-                    </a>
-                  </div>
-                  <div className="link_url">
-                    <a href={elm.url} target="_blank">
-                      {elm.url}
-                    </a>
-                  </div>
+            {urlList.length !== 0 ? (
+              <div className="link_list">
+                <div className="link_title">
+                  <Icon icon="akar-icons:link-chain" fontSize="1.5rem" />
+                  <span>참고 링크</span>
                 </div>
-              ))}
-            </div>
+                {/* TODO: http://가 없는 링크면 상대경로로 간다.  */}
+                {urlList.map((elm, idx) => (
+                  <div className="link_wrap">
+                    <div className="link_favicon">
+                      <a href={elm.url} target="_blank">
+                        <img src={elm.src} />
+                      </a>
+                    </div>
+                    <div className="link_url">
+                      <a href={elm.url} target="_blank">
+                        {elm.url}
+                      </a>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : null}
           </>
         )}
       </div>

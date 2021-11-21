@@ -85,21 +85,26 @@
             position: relative;
             .member_toggle {
               position: absolute;
-              background-color: #e5e5e5;
+              background-color: $bodyColor;
               font-size: $fontSs;
               padding: 0.3rem;
               border-radius: $round;
               box-shadow: $shadow;
               top: 1.3rem;
-              right: -1.7rem;
+              right: -1rem;
               width: 6.6rem;
               z-index: 1;
               overflow: hidden;
               .toggle_text {
                 color: black;
                 font-size: $fontSs;
-                margin: 0.3rem;
-                border-bottom: 1px solid #c4c4c4;
+                // margin: 0.3rem;
+                padding: 0.3rem;
+                // border-top: 1px solid $lightestGrey;
+              }
+              .toggle_text:nth-child(2),
+              .toggle_text:nth-child(3) {
+                border-top: 1px solid $lightestGrey;
               }
               .change_position {
                 // z-index: 1;

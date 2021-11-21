@@ -50,10 +50,13 @@
       flex-direction: row;
       flex-wrap: wrap;
       position: relative;
+      // margin-top: 0.2rem;
       .position__tag {
-        padding: 0.5rem;
+        padding: 0.3rem 0.7rem;
         margin: 0.5rem;
         background-color: $lightestGrey;
+        border-radius: 0.5rem;
+        font-size: $fontSs;
       }
       .tag_wrap {
         position: relative;
@@ -72,6 +75,7 @@
   .filter_sort {
     display: flex;
     flex-direction: row;
+    gap: 1rem;
     .sort_box {
       display: flex;
       flex-direction: row;
@@ -80,20 +84,27 @@
         font-size: $fontSm;
       }
       input {
-        margin-right: 0.5rem;
+        margin-right: 0.3rem;
       }
     }
+  }
+  .filter_btn__wrap {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 0.5rem;
   }
   .filter_btn {
     margin-top: 1rem;
     background-color: white;
-    padding: 0.5rem;
-    border-radius: 0.5rem;
+    padding: 0.7rem 1.2rem;
+    border-radius: $round;
     border: 1px solid $lightestGrey;
     color: $darkGrey;
   }
   .project-edit__add-skill {
     width: 100%;
+    padding: 0.3rem 0.7rem;
   }
 }
 // .project-edit__left {

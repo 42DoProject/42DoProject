@@ -223,7 +223,7 @@ export default function ProjectEditPage() {
           (async () => {
             let formData = new FormData();
             formData.append("image", blob);
-            let altText = document.getElementById("toastuiAltTextInput").value;
+            let altText = document.getElementById("toastuiAltTextInput")?.value;
 
             const res = await axios({
               method: "post",

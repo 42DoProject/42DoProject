@@ -83,7 +83,17 @@
     height: 100%;
     display: flex;
     flex-grow: 1;
-    overflow: hidden;
+    overflow: scroll;
+    &::-webkit-scrollbar {
+      background: transparent;
+      -ms-overflow-style: none;
+      scrollbar-width: 0;
+      display: none;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: transparent;
+    }
+
     .box1__column1 {
       color: $mainColor;
       font-size: 1.3rem;

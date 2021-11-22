@@ -12,11 +12,12 @@ export default function ProjectComment({
 }) {
   const [commentList, setCommentList] = useState([]);
   const [page, setPage] = useState(1);
-  const [totalPage, setTotalPage] = useState();
+  const [totalPage, setTotalPage] = useState(1);
   const [newComment, setNewComment] = useState("");
   const [editComment, setEditComment] = useState("");
   const [isChange, setIsChange] = useState(0);
   const [editable, setEditable] = useState(-1);
+  const itemPerPage = 10;
 
   useEffect(() => {
     getCommentData();
@@ -47,7 +48,7 @@ export default function ProjectComment({
           comments: { rows: commentData, count },
         },
       } = await axios.get(
-        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project/comments?projectId=${projectId}&page=${page}&pageSize=5`
+        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project/comments?projectId=${projectId}&page=${page}&pageSize=${itemPerPage}`
       );
       setCommentList(commentData);
       setTotalPage(count);
@@ -68,6 +69,10 @@ export default function ProjectComment({
         console.log(res);
         setCommentCount(commentCount - 1);
         setIsChange(1);
+        setEditable(-1);
+        //댓글 지울때 해당 댓글이 마지막일 경우 잔 페이지로 이동 처리.
+        //TODO:비어있다고 표시될때 있음.
+        setPage(Math.ceil((totalPage - 1) / itemPerPage));
       })
       .catch((e) => console.log(e));
     e.preventDefault();
@@ -90,6 +95,13 @@ export default function ProjectComment({
           console.log(res);
           setCommentCount(commentCount + 1);
           setNewComment("");
+          setEditable(-1);
+
+          //새로 댓글달때 해당 댓글이 있는 마지막 페이지로 이동 처리.
+          //TODO:11번째 댓글이 바로 렌더링되지않음.
+          console.log(Math.ceil((totalPage + 1) / itemPerPage));
+          console.log((totalPage + 1) / itemPerPage);
+          setPage(Math.ceil((totalPage + 1) / itemPerPage));
           setIsChange(1);
         })
         .catch((e) => console.log(e));
@@ -181,7 +193,7 @@ export default function ProjectComment({
               <Pagination
                 hideFirstLastPages={true}
                 activePage={page}
-                itemsCountPerPage={5}
+                itemsCountPerPage={itemPerPage}
                 totalItemsCount={totalPage}
                 pageRangeDisplayed={4}
                 prevPageText={

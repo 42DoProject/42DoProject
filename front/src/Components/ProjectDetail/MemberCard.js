@@ -49,6 +49,7 @@ export default function MemberCard({
       .catch((e) => console.log(e));
     e.preventDefault();
   };
+
   const onDeleteMember = (e, elm) => {
     axios({
       method: "DELETE",
@@ -66,92 +67,86 @@ export default function MemberCard({
   };
 
   return (
-    <div className="member_list">
-      <div className="member_image">
-        {data.leader === elm.profile.id ? (
-          <div className="leader_icon">
-            <Icon
-              icon="ph:crown-simple-fill"
-              color="#ffb648"
-              fontSize="1.3rem"
-            />
-          </div>
-        ) : null}
-        <img
-          key={key}
-          alt={elm.profile.id}
-          src={elm.profile.user.profileImage}
-          style={{ cursor: "pointer" }}
-          onClick={(e) => {
-            e.preventDefault();
-            history.push(`/profile/${elm.profile.id}`);
-          }}
-        />
-        <div className="member_position__row1">
-          <div
-            className="member_position"
-            //이부분이 setState문제!
-            // onClick={(e) => onMemberToggle(e, key)}
-          >
-            <div className="empty_div" />
-            <div className="position_text">
-              {elm.position === null ? (
-                // 리더의 포지션이 정해지면 수정 필요.
-                <div>팀장</div>
-              ) : (
-                positions[elm.position]
-              )}
-            </div>
-            {loginState?.id === data.leader ? (
-              <div className="member_control">
-                <Icon
-                  icon={iconStyle}
-                  color="white"
-                  fontSize="0.8rem"
-                  key={key}
-                  onClick={(e) => onMemberToggle(e, key)}
-                />
-                {toggleNum === 1 && (
-                  <div className="member_toggle">
-                    {elm.profile.id !== data.leader && (
-                      <div
-                        className="toggle_text"
-                        onClick={(e) => onChangeLeader(e, elm)}
-                      >
-                        팀장 위임하기
-                      </div>
-                    )}
-                    {elm.profile.id !== data.leader && (
-                      <div
-                        className="toggle_text"
-                        onClick={(e) => onDeleteMember(e, elm)}
-                      >
-                        내보내기
-                      </div>
-                    )}
-                    <div className="toggle_text" onClick={modalOpen}>
-                      포지션 변경하기
-                    </div>
-                    {modalFlag === 1 && (
-                      <CheckModal
-                        data={data}
-                        positions={positions}
-                        position={elm.position}
-                        setModalFlag={setModalFlag}
-                        setApplyFlag={setApplyFlag}
-                        loginState={loginState}
-                        userId={elm.profile.id}
-                        modalFlag={modalFlag}
-                        setToggleNum={setToggleNum}
-                      />
-                    )}
-                  </div>
-                )}
-              </div>
+    <div className="member_image">
+      {data.leader === elm.profile.id ? (
+        <div className="leader_icon">
+          <Icon icon="ph:crown-simple-fill" color="#ffb648" fontSize="1.3rem" />
+        </div>
+      ) : null}
+      <img
+        key={key}
+        alt={elm.profile.id}
+        src={elm.profile.user.profileImage}
+        style={{ cursor: "pointer" }}
+        onClick={(e) => {
+          e.preventDefault();
+          history.push(`/profile/${elm.profile.id}`);
+        }}
+      />
+      <div className="member_position__row1">
+        <div
+          className="member_position"
+          //이부분이 setState문제!
+          // onClick={(e) => onMemberToggle(e, key)}
+        >
+          <div className="empty_div" />
+          <div className="position_text">
+            {elm.position === null ? (
+              // 리더의 포지션이 정해지면 수정 필요.
+              <div>팀장</div>
             ) : (
-              <div className="empty_div" />
+              positions[elm.position]
             )}
           </div>
+          {loginState?.id === data.leader ? (
+            <div className="member_control">
+              <Icon
+                icon={iconStyle}
+                color="white"
+                fontSize="0.8rem"
+                key={key}
+                onClick={(e) => onMemberToggle(e, key)}
+              />
+              {toggleNum === 1 && (
+                <div className="member_toggle">
+                  {elm.profile.id !== data.leader && (
+                    <div
+                      className="toggle_text"
+                      onClick={(e) => onChangeLeader(e, elm)}
+                    >
+                      팀장 위임하기
+                    </div>
+                  )}
+                  {elm.profile.id !== data.leader && (
+                    <div
+                      className="toggle_text"
+                      onClick={(e) => onDeleteMember(e, elm)}
+                    >
+                      내보내기
+                    </div>
+                  )}
+                  <div className="toggle_text" onClick={modalOpen}>
+                    포지션 변경하기
+                  </div>
+                  {modalFlag === 1 && (
+                    <CheckModal
+                      data={data}
+                      positions={positions}
+                      position={elm.position}
+                      setModalFlag={setModalFlag}
+                      setApplyFlag={setApplyFlag}
+                      loginState={loginState}
+                      userId={elm.profile.id}
+                      modalFlag={modalFlag}
+                      setToggleNum={setToggleNum}
+                    />
+                  )}
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="empty_div" />
+          )}
         </div>
       </div>
     </div>

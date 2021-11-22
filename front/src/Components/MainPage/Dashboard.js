@@ -8,6 +8,7 @@ import FavoriteSlide from "./FavoriteSlide";
 import axios from "axios";
 import { positions } from "../../userData";
 import { skills } from "../../skills.json";
+import defaultImg from "../../default_intra.png";
 
 export default function Dashboard(props) {
   const loginState = useSelector((state) => state.loginReducer);
@@ -61,13 +62,13 @@ export default function Dashboard(props) {
               ) : (
                 <img
                   className="IntraImage"
-                  src={loginState.profileImage}
+                  src={loginState.profileImage || defaultImg}
                   alt="intraImage"
                 />
               )}
 
               <div className="user__name">
-                {loginState === null ? "guest" : loginState.name}
+                {loginState === null ? "guest" : loginState.name || "user"}
               </div>
             </div>
             {loginState && (
@@ -134,29 +135,25 @@ export default function Dashboard(props) {
               <div className="reportbox__report">
                 <Link
                   className="dashboard__project__link1"
-                  to="/projectlist/recruit"
-                >
+                  to="/projectlist/recruit">
                   {props.progressPr}
                 </Link>
                 개의 프로젝트가{" "}
                 <Link
                   className="dashboard__project__link2"
-                  to="/projectlist/recruit"
-                >
+                  to="/projectlist/recruit">
                   모집중
                 </Link>
                 이고{" "}
                 <Link
                   className="dashboard__project__link3"
-                  to="/projectlist/proceed"
-                >
+                  to="/projectlist/proceed">
                   {proceedingPrCnt}
                 </Link>
                 개의 프로젝트가{" "}
                 <Link
                   className="dashboard__project__link4"
-                  to="/projectlist/proceed"
-                >
+                  to="/projectlist/proceed">
                   진행중
                 </Link>
                 이에요

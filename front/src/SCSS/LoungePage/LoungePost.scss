@@ -54,6 +54,14 @@
   overflow-y: hidden;
 }
 
+.lounge-post__edit-space {
+  height: 8rem;
+  line-height: 120%;
+  padding: 1rem;
+  margin: 1rem 4rem;
+  resize: none;
+}
+
 .lounge-post__bottom {
   bottom: 2rem;
   display: flex;
@@ -73,10 +81,25 @@
   }
 }
 .bottom__info {
+  display: flex;
+  gap: 0.8rem;
   color: $grey;
+  align-items: center;
   cursor: pointer;
-  &:hover {
-    color: $pointRed;
+  .bottom__edit,
+  .bottom__delete,
+  .bottom__on-edit {
+    color: $lightGrey;
+  }
+  .bottom__on-edit {
+    display: flex;
+    gap: 0.8rem;
+  }
+  .bottom__like {
+    margin-left: 1rem;
+    &:hover {
+      color: $pointRed;
+    }
   }
   .like-color {
     color: $pointRed;

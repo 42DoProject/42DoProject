@@ -1,7 +1,7 @@
 @import "../Base.scss";
 
 .header_image {
-  margin: 10px 10px 5px 10px;
+  margin: 0 10px 5px 10px;
   border-radius: $round;
   background-color: #808080;
   position: relative;
@@ -35,6 +35,6 @@
   font-size: $fontSs;
   padding: 0.3rem 0.7rem;
   border-radius: 1rem;
-  background-color: darkcyan;
+  // background-color: darkcyan;
   bottom: 3rem;
 }

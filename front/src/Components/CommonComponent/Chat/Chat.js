@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import "../../../SCSS/Common/Chat/Chat.scss";
 import ChatRoom from "./ChatRoom";
 import axios from "axios";
 import InChat from "./InChat";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import socket from "../../../socket";
 import Conv from "./AddConv";
 
@@ -16,15 +16,14 @@ export default function Chat() {
   const [inFlag, setInFlag] = useState(-1);
   const [chatOutFlag, setChatOutFlag] = useState(0);
   const [unreadCnt, setUnreadCnt] = useState(0);
-  const [refreshFlag, setRefreshFlag] = useState(0);
-
+  let dispatch = useDispatch();
   const getUnreadCnt = (chatRoom) => {
     let cnt = 0;
     chatRoom?.forEach((e) => (cnt += e.unread));
     setUnreadCnt(cnt);
   };
 
-  const getChatRoom = async () => {
+  const getChatRoom = useCallback(async () => {
     try {
       const { data } = await axios.get(
         `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/chat`,
@@ -39,7 +38,7 @@ export default function Chat() {
     } catch (err) {
       console.log(err);
     }
-  };
+  }, [loginState.accessToken]);
   useEffect(() => {
     socket.on("chat:newRoom", () => {
       getChatRoom();
@@ -47,15 +46,21 @@ export default function Chat() {
     socket.on("chat:leave", () => {
       getChatRoom();
     });
+    socket.on("chat:receive", () => {
+      getChatRoom();
+    });
     return () => {
       socket.off("chat:newRoom");
       socket.off("chat:leave");
+      if (inFlag === -1) {
+        socket.off("chat:receive");
+      }
     };
-  }, [loginState]);
+  }, [loginState, chatRoom, inFlag, chatOutFlag]);
 
   useEffect(() => {
     getChatRoom();
-  }, [loginState, chatOutFlag, inFlag, refreshFlag]);
+  }, [loginState, chatOutFlag, inFlag]);
 
   return (
     <>
@@ -163,8 +168,6 @@ export default function Chat() {
                     clickFlag={clickFlag}
                     setInFlag={setInFlag}
                     setConvFlag={setConvFlag}
-                    refreshFlag={refreshFlag}
-                    setRefreshFlag={setRefreshFlag}
                   />
                 ))
               ) : (

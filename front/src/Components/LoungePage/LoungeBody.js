@@ -9,7 +9,12 @@ import axios from "axios";
 import { useHistory } from "react-router";
 import socket from "../../socket";
 
-export default function LoungeBody() {
+export default function LoungeBody({
+  status,
+  loungeData,
+  refreshFlag,
+  setRefreshFlag,
+}) {
   let loginState = useSelector((state) => state.loginReducer);
   const [concurrents, setConcurrents] = useState([]);
   const history = useHistory();
@@ -43,17 +48,37 @@ export default function LoungeBody() {
     <div className="lounge-body">
       <div className="lounge-left">
         <div className="left-bar">
-          <div className="left-bar__lounge">라운지</div>
-          <div className="left-bar__best">
-            <Link to="/lounge">인기글</Link>
-          </div>
+          {status === "base" ? (
+            <>
+              <div className="left-bar__lounge">라운지</div>
+              <div className="left-bar__best">
+                <Link to="/lounge/popular">인기글</Link>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="left-bar__lounge">
+                <Link to="/lounge">라운지</Link>
+              </div>
+              <div className="left-bar__best-color">인기글</div>
+            </>
+          )}
         </div>
         <div className="left__posts">
-          {loginState !== null ? <LoungeWrite /> : <LoungePost />}
-          <LoungePost />
-          <LoungePost />
-          <LoungePost />
-          {/* <LoungePost /> */}
+          {loginState && status === "base" && (
+            <LoungeWrite
+              refreshFlag={refreshFlag}
+              setRefreshFlag={setRefreshFlag}
+            />
+          )}
+          {loungeData?.map((e, idx) => (
+            <LoungePost
+              key={idx}
+              loungeData={e}
+              refreshFlag={refreshFlag}
+              setRefreshFlag={setRefreshFlag}
+            />
+          ))}
         </div>
       </div>
       <div className="lounge-right">
@@ -74,11 +99,13 @@ export default function LoungeBody() {
                       key={i}
                       onClick={() => {
                         history.push(`/profile/${v.userId}`);
-                      }}>
+                      }}
+                    >
                       <img
                         className="connected__img"
                         src={v.profileImage || defaultImg}
-                        alt="connected__img"></img>
+                        alt="connected__img"
+                      ></img>
                       <div className="connected__name">{v.username}</div>
                     </div>
                   );

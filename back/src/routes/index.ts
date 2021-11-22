@@ -73,14 +73,12 @@ const makeDump = async (
     username: row.username,
     profileImage: row.profileImage,
     blurImage: "",
-    status: Number(process.env.CADET_LOOKING_FOR_PROJECT_STATUS),
+    status: 0,
     position: 0,
     skill: [],
     level: 1,
     statusMessage: "",
   });
-  await profileToS3(row.id, row.profileImage);
-  await push(row.id);
   return row.id;
 };
 

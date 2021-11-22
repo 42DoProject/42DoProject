@@ -6,6 +6,7 @@ import ProceedProjects from "./Components/AllProjectPage/ProceedProjects";
 import CompleteProjects from "./Components/AllProjectPage/CompleteProjects";
 import RecruitCadet from "./Components/CadetPage/RecruitCadet";
 import LoungePage from "./Components/LoungePage/LoungePage";
+import LoungePopularPage from "./Components/LoungePage/LoungePopularPage";
 import AuthMain from "./Components/AuthMain/AuthMain";
 import ProfileEditPage from "./Components/ProfileEditPage/ProfileEditPage";
 import Layout from "./Components/CommonComponent/Layout";
@@ -13,7 +14,7 @@ import ProjectEditPage from "./Components/ProjectEditPage/ProjectEditPage";
 import "./SCSS/init.scss";
 import AllCadet from "./Components/CadetPage/AllCadet";
 import axios from "axios";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import socket from "./socket";
 import ProjectDetail from "./Components/ProjectDetail/ProjectDetail";
@@ -22,27 +23,31 @@ function App(props) {
   let loginState = useSelector((state) => state.loginReducer);
   let dispatch = useDispatch();
   // 새로운 Token 발급
-  useEffect(() => {
-    const getToken = async () => {
-      try {
-        if (loginState) {
-          const { data } = await axios.get(
-            `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/auth/signin?refresh_token=${loginState.refreshToken}`
-          );
-          socket.emit("authorization", {
-            token: data.accessToken,
-          });
-          dispatch({ type: "TOKEN_UPDATE", payload: data });
-        }
-      } catch (err) {
-        dispatch({ type: "LOGOUT" });
-        console.log(err);
+  const getToken = useCallback(async () => {
+    try {
+      if (loginState) {
+        const { data } = await axios.get(
+          `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/auth/signin?refresh_token=${loginState.refreshToken}`
+        );
+        socket.emit("authorization", {
+          token: data.accessToken,
+        });
+        dispatch({ type: "TOKEN_UPDATE", payload: data });
       }
-    };
+    } catch (err) {
+      dispatch({ type: "LOGOUT" });
+      console.log(err);
+    }
+  }, [loginState]);
+  useEffect(() => {
     getToken();
+  }, []);
+  useEffect(() => {
+    clearInterval(localStorage.getItem("timerId"));
     const timerId = setInterval(getToken, 1000 * 60 * 25);
     localStorage.setItem("timerId", timerId);
-  }, []);
+  }, [loginState]);
+
   console.log(loginState?.accessToken);
 
   return (
@@ -59,6 +64,7 @@ function App(props) {
         <Route path="/projectlist/complete" component={CompleteProjects} />
         <Route path="/cadet/recruit" component={RecruitCadet} />
         <Route path="/cadet/all" component={AllCadet} />
+        <Route path="/lounge/popular" component={LoungePopularPage} />
         <Route path="/lounge" component={LoungePage} />
         <Route exact path="/project/edit" component={ProjectEditPage} />
         <Route exact path="/project/edit/:id" component={ProjectEditPage} />

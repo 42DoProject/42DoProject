@@ -242,16 +242,30 @@
   border-radius: $round !important;
   overflow-x: hidden;
   button,
-  input,
-  span {
+  input {
     border-radius: $round !important;
+  }
+  span {
+    border-radius: $round;
+  }
+  .toastui-editor-popup-add-image .toastui-editor-file-name {
+    border-radius: $round;
   }
   .placeholder {
     background-color: transparent;
     opacity: 0.6;
     cursor: auto;
   }
-
+  input.tui-colorpicker-palette-button {
+    padding: 0;
+  }
+  .toastui-editor-popup-body input[type="text"].tui-colorpicker-palette-hex {
+    height: 30px;
+    width: calc(100% - 10px);
+  }
+  .toastui-editor-md-code {
+    border-radius: 0;
+  }
   .toastui-editor-defaultUI-toolbar {
     border-top-right-radius: $round !important;
     // overflow-x: hidden;

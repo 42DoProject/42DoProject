@@ -127,22 +127,18 @@ export default function ProfileEditBody(props) {
       <div className="profileBody__col2">
         <div className="col2__ongoing-projects">
           <span className="col2__subject-span">진행중인 프로젝트</span>
-          {/* <span>없음</span> */}
         </div>
         <hr className="hr__line" />
         <div className="col2__done-projects">
-          <span className="col2__subject-span">완료한 프로젝트</span>
-          {/* <span>없음</span> */}
+          <span className="col2__subject-span">완성한 프로젝트</span>
         </div>
         <hr className="hr__line" />
         <div className="col2__registered-projects">
           <span className="col2__subject-span">참여 신청중인 프로젝트</span>
-          {/* <span>없음</span> */}
         </div>
         <hr className="hr__line" />
         <div className="col2__interested-projects">
           <span className="col2__subject-span">관심있는 프로젝트</span>
-          {/* <span>없음</span> */}
         </div>
       </div>
     </div>

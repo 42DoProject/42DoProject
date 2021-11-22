@@ -5,6 +5,9 @@ import axios from "axios";
 import { positions } from "../../userData";
 import WaitList from "./WaitList";
 import { useHistory } from "react-router";
+import MemberCard from "./MemberCard";
+import ProjectStatusChange from "./ProjectStatusChange";
+import { OverlayTrigger, Tooltip, Button } from "react-bootstrap";
 
 export default function MemberList({
   data,
@@ -33,55 +36,95 @@ export default function MemberList({
     }
   };
 
+  console.log("profile", data?.projectprofile[0].profile.user.username);
+
   return (
     <>
       <div className="member_list">
         <div className="list_row1">
-          <Icon icon="bi:person-fill" color="#565656" fontSize="1.5rem" />
-          <div className="member_count">
-            멤버 {data.currentMember} / {data.totalMember}
+          <div className="member-icon__wrap">
+            <Icon icon="bi:person-fill" color="#565656" fontSize="1.5rem" />
+            <div className="member_count">
+              멤버 {data.currentMember} / {data.totalMember}
+            </div>
           </div>
           {loginState?.id === data.leader ? (
-            <WaitList
-              data={data}
-              loginState={loginState}
-              setApplyFlag={setApplyFlag}
-              positions={positions}
-            />
+            <div className="project_manage">
+              <WaitList
+                data={data}
+                loginState={loginState}
+                setApplyFlag={setApplyFlag}
+                positions={positions}
+              />
+              <ProjectStatusChange
+                data={data}
+                loginState={loginState}
+                setApplyFlag={setApplyFlag}
+              />
+              <div
+                className="edit__btn"
+                onClick={(e) => {
+                  history.push(`/project/edit/${data.id}`);
+                  e.preventDefault();
+                }}>
+                수정
+              </div>
+            </div>
           ) : null}
         </div>
         <div className="member_image_list">
           <div className="filled_member">
             {data?.projectprofile.map((elm, key) => (
-              <div className="member_image" key={key}>
+              <>
                 {data.leader === elm.profile.id ? (
-                  <div className="leader_icon">
-                    <Icon
-                      icon="ph:crown-simple-fill"
-                      color="#ffb648"
-                      fontSize="1.3rem"
-                    />
-                  </div>
+                  <>
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={
+                        <Tooltip
+                          id={`tooltip-top`}
+                          wrapperStyle={{ backgroundColor: "#4A4A4A" }}>
+                          {elm.profile.user.username}
+                        </Tooltip>
+                      }>
+                      <Button variant="none">
+                        <MemberCard
+                          elm={elm}
+                          key={key}
+                          data={data}
+                          loginState={loginState}
+                          setApplyFlag={setApplyFlag}
+                        />
+                      </Button>
+                    </OverlayTrigger>
+                  </>
                 ) : null}
-                <img
-                  key={key}
-                  alt={elm.profile.id}
-                  src={elm.profile.user.profileImage}
-                  style={{ cursor: "pointer" }}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    history.push(`/profile/${elm.profile.id}`);
-                  }}
-                />
-                <div className="member_position">
-                  {elm.position === null ? (
-                    // 리더의 포지션이 정해지면 수정 필요.
-                    <div>팀장</div>
-                  ) : (
-                    positions[elm.position]
-                  )}
-                </div>
-              </div>
+              </>
+            ))}
+            {data?.projectprofile.map((elm, key) => (
+              <>
+                {data.leader !== elm.profile.id ? (
+                  <>
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={
+                        <Tooltip id={`tooltip-top`}>
+                          {elm.profile.user.username}
+                        </Tooltip>
+                      }>
+                      <Button variant="none">
+                        <MemberCard
+                          elm={elm}
+                          key={key}
+                          data={data}
+                          loginState={loginState}
+                          setApplyFlag={setApplyFlag}
+                        />
+                      </Button>
+                    </OverlayTrigger>
+                  </>
+                ) : null}
+              </>
             ))}
           </div>
           <div className="empty_list">
@@ -90,7 +133,7 @@ export default function MemberList({
                 <div className="chair_icon">
                   <Icon
                     icon="bx:bx-chair"
-                    style={{ fontSize: "3.5rem", color: "#c4c4c4" }}
+                    style={{ fontSize: "3.7rem", color: "#c4c4c4" }}
                     className="empty_chair-icon"
                   />
                   {userStatus?.status === "nothing" && (

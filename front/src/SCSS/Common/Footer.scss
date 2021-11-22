@@ -1,0 +1,40 @@
+@import "../Base.scss";
+
+.footer {
+  background-color: $lightestGrey;
+  //   background-color: $mainColor;
+  //   margin-left: calc(-50vw + 50%);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 9rem;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+  bottom: 0;
+  gap: 1rem;
+  color: $grey;
+  font-weight: $normal;
+  .footer-icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    .footer-icons__white {
+      background-color: white;
+      width: 2.3rem;
+      height: 2.3rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      box-shadow: $shadow;
+      &:hover {
+        background-color: $bodyColor;
+        color: $lightGrey;
+        box-shadow: none;
+      }
+    }
+  }
+}

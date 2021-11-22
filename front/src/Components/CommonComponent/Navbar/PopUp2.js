@@ -6,7 +6,11 @@ import { Link } from "react-router-dom";
 
 export const Example = () => {
   return (
-    <OverlayTrigger trigger="focus" placement="bottom" overlay={Pop()}>
+    <OverlayTrigger
+      trigger={("focus", "click")}
+      placement="bottom"
+      rootClose
+      overlay={Pop()}>
       <Button variant="light">
         <div>
           <Icon

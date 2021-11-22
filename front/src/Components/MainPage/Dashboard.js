@@ -8,11 +8,13 @@ import FavoriteSlide from "./FavoriteSlide";
 import axios from "axios";
 import { positions } from "../../userData";
 import { skills } from "../../skills.json";
+import defaultImg from "../../default_intra.png";
 
 export default function Dashboard(props) {
   const loginState = useSelector((state) => state.loginReducer);
   const [userData, setUserData] = useState();
   const [proceedingPrCnt, setProceedingPrCnt] = useState();
+  let dispatch = useDispatch();
 
   const getData = async () => {
     try {
@@ -59,13 +61,13 @@ export default function Dashboard(props) {
               ) : (
                 <img
                   className="IntraImage"
-                  src={loginState.profileImage}
+                  src={loginState.profileImage || defaultImg}
                   alt="intraImage"
                 />
               )}
 
               <div className="user__name">
-                {loginState === null ? "guest" : loginState.name}
+                {loginState === null ? "guest" : loginState.name || "user"}
               </div>
             </div>
             {loginState && (

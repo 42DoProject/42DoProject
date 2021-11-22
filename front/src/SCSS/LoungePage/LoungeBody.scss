@@ -33,9 +33,19 @@
     font-size: $fontMd;
     color: $black;
     margin-left: 2rem;
+    a {
+      color: $black;
+      opacity: 0.5;
+    }
     .innerHtml:hover {
       color: $mainColor;
     }
+  }
+  .left-bar__best-color {
+    font-weight: $bold;
+    font-size: $fontMd;
+    color: $black;
+    margin-left: 2rem;
   }
   .left-bar__best {
     font-weight: $bold;

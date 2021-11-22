@@ -4,17 +4,19 @@ import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
 import { useSelector } from "react-redux";
 import Modal from "../ProjectEditPage/Modal";
+import Filter from "./Filter";
 
-export default function ProjectTypeBar(props) {
+export default function ProjectTypeBar({ state, setFilterOption }) {
   const loginState = useSelector((state) => state.loginReducer);
-  const [modalFlag, setModalFlag] = useState(0); // 1일때 모달창 열기
+  const [modalFlag, setModalFlag] = useState(0);
+  const [filterFlag, setFilterFlag] = useState(0);
 
   const history = useHistory();
   let recruitColor = "a-color";
   let proceedColor = "a-color";
   let completeColor = "a-color";
 
-  switch (props.state) {
+  switch (state) {
     case "recruiting":
       recruitColor = "b-color";
       break;
@@ -51,7 +53,7 @@ export default function ProjectTypeBar(props) {
           </div>
           <div className="public-project">
             <Link className={completeColor} to="/projectlist/complete">
-              완료된 프로젝트
+              완성된 프로젝트
             </Link>
           </div>
         </div>
@@ -63,10 +65,26 @@ export default function ProjectTypeBar(props) {
               else {
                 setModalFlag(1);
               }
-            }}>
+            }}
+          >
             프로젝트 생성
           </div>
-          <Icon icon="mi:filter" style={{ fontSize: "2rem" }} />
+          <div className="filter_wrap">
+            <Icon
+              icon="mi:filter"
+              style={{ fontSize: "2rem", cursor: "pointer" }}
+              onClick={(e) => {
+                if (filterFlag === 0) setFilterFlag(1);
+                else setFilterFlag(0);
+              }}
+            />
+            {filterFlag === 1 && (
+              <Filter
+                setFilterOption={setFilterOption}
+                setFilterFlag={setFilterFlag}
+              />
+            )}
+          </div>
         </div>
       </div>
     </>

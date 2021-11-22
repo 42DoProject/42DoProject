@@ -42,9 +42,24 @@
 
 .lounge-post__space {
   // background-color: beige;
-  width: 80%;
+  min-height: 2rem;
   line-height: 120%;
   margin: 2rem 4rem;
+  word-break: break-all;
+  white-space: pre-wrap; /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+  white-space: -pre-wrap; /* Opera 4-6 */
+  white-space: -o-pre-wrap; /* Opera 7 */
+  word-wrap: break-word; /* Internet Explorer 5.5+ */
+  overflow-y: hidden;
+}
+
+.lounge-post__edit-space {
+  height: 8rem;
+  line-height: 120%;
+  padding: 1rem;
+  margin: 1rem 4rem;
+  resize: none;
 }
 
 .lounge-post__bottom {
@@ -66,9 +81,27 @@
   }
 }
 .bottom__info {
+  display: flex;
+  gap: 0.8rem;
   color: $grey;
+  align-items: center;
   cursor: pointer;
-  &:hover {
+  .bottom__edit,
+  .bottom__delete,
+  .bottom__on-edit {
+    color: $lightGrey;
+  }
+  .bottom__on-edit {
+    display: flex;
+    gap: 0.8rem;
+  }
+  .bottom__like {
+    margin-left: 1rem;
+    &:hover {
+      color: $pointRed;
+    }
+  }
+  .like-color {
     color: $pointRed;
   }
   .bottom__like-icon {
@@ -76,5 +109,12 @@
     position: relative;
     bottom: 0.2rem;
     font-size: $fontMs;
+  }
+  .bottom__like-icon-fill {
+    margin-right: 0.2rem;
+    position: relative;
+    bottom: 0.2rem;
+    font-size: $fontMs;
+    color: $pointRed;
   }
 }

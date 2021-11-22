@@ -15,7 +15,7 @@ export default function MainBody(props) {
       </div>
       <div className="public">
         <Link className="public__title" to="projectlist/complete">
-          완료된 프로젝트
+          완성된 프로젝트
         </Link>
         <PublicList setFinishPr={props.setFinishPr} />
       </div>

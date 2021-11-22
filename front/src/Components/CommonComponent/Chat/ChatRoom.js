@@ -3,46 +3,35 @@ import "../../../SCSS/Common/Chat/ChatRoom.scss";
 import axios from "axios";
 import relativeTime from "../../../relativeTime";
 import { useSelector } from "react-redux";
-import socket from "../../../socket";
 
-function ChatRoom({
-  chatInfo,
-  clickFlag,
-  setInFlag,
-  setConvFlag,
-  refreshFlag,
-  setRefreshFlag,
-}) {
+function ChatRoom({ chatInfo, clickFlag, setInFlag, setConvFlag }) {
   const loginState = useSelector((state) => state.loginReducer);
   const [outUserProfile, setOutUserProfile] = useState();
   const chatRoomCP = chatInfo.users.filter((e) => e.id !== loginState.id);
-  useEffect(() => {
-    socket.on("chat:receive", () => {
-      refreshFlag ? setRefreshFlag(0) : setRefreshFlag(1);
-    });
-    return () => socket.off("chat:receive");
-  }, [refreshFlag]);
 
-  const getProfile = async (userName) => {
-    try {
-      const {
-        data: { user },
-      } = await axios.get(
-        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/search/${userName}`
-      );
-      setOutUserProfile(user[0].profileImage);
-    } catch (err) {
-      console.log(err);
-    }
-  };
   let outUserName = "";
   if (chatInfo.users.length === 1) {
     outUserName = chatInfo.last.split(" ")[0];
     outUserName = outUserName.slice(0, -2);
   }
   useEffect(() => {
+    const getProfile = async (userName) => {
+      try {
+        const { data } = await axios.get(
+          `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/search/user/${userName}`,
+          {
+            headers: {
+              Authorization: `Bearer ${loginState?.accessToken}`,
+            },
+          }
+        );
+        setOutUserProfile(data[0].profileImage);
+      } catch (err) {
+        console.log(err);
+      }
+    };
     outUserName && getProfile(outUserName);
-  }, []);
+  }, [loginState, chatInfo]);
 
   return (
     <>
@@ -86,11 +75,16 @@ function ChatRoom({
           </div>
         </div>
         <div className="chatRoom__footer">
-          <div className="chatRoom__bubble">
-            {chatInfo.last?.length > 20
-              ? `${chatInfo.last.slice(0, 20)}...`
-              : chatInfo.last}
-          </div>
+          {chatInfo.last === "" ? (
+            <div className="chatRoom__bubble">새로운 대화가 시작되었습니다</div>
+          ) : (
+            <div className="chatRoom__bubble">
+              {chatInfo.last?.length > 20
+                ? `${chatInfo.last.slice(0, 20)}...`
+                : chatInfo.last}
+            </div>
+          )}
+
           {chatInfo.unread != 0 && (
             <div className="chatRoom__unread">
               <span>{chatInfo.unread}</span>

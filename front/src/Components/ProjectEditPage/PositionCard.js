@@ -19,19 +19,21 @@ export default function PositionCard(props) {
       )}
 
       {props.xdelete === "enabled" ? (
-        <div className="positionCard__select">
-          <div className="positionCard__position">{props.subject}</div>
-          <Icon
-            className="positionCard__x"
-            icon="bx:bx-x"
-            style={{ fontSize: "1.2rem", cursor: "pointer" }}
-            onClick={() => {
-              let dup = [...props.selectedPos];
-              dup.splice(props.idx, 1);
-              props.setSelectedPos(dup);
-            }}
-          />
-        </div>
+        <>
+          <div className="positionCard__select">
+            {/* <div className="positionCard__empty-div"></div> */}
+            <div className="positionCard__position">{props.subject}</div>
+            <Icon
+              className="positionCard__x"
+              icon="bi:x-circle-fill"
+              onClick={() => {
+                let dup = [...props.selectedPos];
+                dup.splice(props.idx, 1);
+                props.setSelectedPos(dup);
+              }}
+            />
+          </div>
+        </>
       ) : (
         <div
           className="positionCard__select"

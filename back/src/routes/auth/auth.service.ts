@@ -63,14 +63,13 @@ const userModelCheck = async (user: any): Promise<number> => {
     username: row.username,
     profileImage: row.profileImage,
     blurImage: "",
-    status: Number(process.env.CADET_LOOKING_FOR_PROJECT_STATUS),
+    status: 0,
     position: 0,
     skill: [],
     level: user.cursus_users[1].level,
     statusMessage: "",
   });
   await awsS3.profileToS3(row.id, user.image_url);
-  await cadet.push(row.id);
   return row.id;
 };
 

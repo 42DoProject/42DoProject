@@ -5,7 +5,6 @@ import { Editor } from "@toast-ui/react-editor";
 import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
 import "tui-color-picker/dist/tui-color-picker.css";
 import "@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css";
-
 import { Icon } from "@iconify/react";
 import PositionCard from "./PositionCard";
 import Unsplash from "./Unsplash";
@@ -214,6 +213,34 @@ export default function ProjectEditPage() {
       console.log("projectData", projectData);
     }
   }, [projectData]);
+
+  useEffect(() => {
+    if (editorRef?.current) {
+      editorRef.current.getInstance().removeHook("addImageBlobHook");
+      editorRef.current
+        .getInstance()
+        .addHook("addImageBlobHook", (blob, callback) => {
+          (async () => {
+            let formData = new FormData();
+            formData.append("image", blob);
+            let altText = document.getElementById("toastuiAltTextInput")?.value;
+
+            const res = await axios({
+              method: "post",
+              url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project/content/image`,
+              headers: {
+                "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${loginState.accessToken}`,
+              },
+              data: formData,
+            });
+            callback(res.data.url, altText);
+          })();
+
+          return false;
+        });
+    }
+  }, [editorRef, loginState]);
 
   useEffect(() => {
     if (projectId) getProjectData();
@@ -551,10 +578,7 @@ export default function ProjectEditPage() {
           <button
             className="project-edit__delete"
             onClick={() => {
-              setValidateMsg([
-                `프로젝트를 정말 삭제할까요? 프로젝트의 모든 데이터가 사라지게 됩니다.`,
-                "both",
-              ]);
+              setValidateMsg([`프로젝트를 정말 삭제할까요?`, "both"]);
               setModalFlag(1);
             }}>
             프로젝트 삭제

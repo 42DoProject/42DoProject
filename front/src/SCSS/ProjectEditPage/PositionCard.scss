@@ -25,14 +25,27 @@
     height: 1.3rem;
     padding: 0 0.3rem;
     border-radius: 2rem;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     color: $grey;
-    min-width: max-content;
+    width: 5rem;
+    position: relative;
     .positionCard__position {
       margin: 0 0.2rem;
       font-size: $fontSs;
       font-weight: $regular;
+    }
+  }
+  .positionCard__x {
+    cursor: pointer;
+    position: absolute;
+    right: -0.5rem;
+    bottom: -0.3rem;
+    // bottom: 1.5rem;
+    // right: 0.6rem;
+    color: $lightGrey;
+    &:hover {
+      color: $grey;
     }
   }
 }

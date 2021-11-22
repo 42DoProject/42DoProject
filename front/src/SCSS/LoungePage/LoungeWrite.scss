@@ -30,19 +30,25 @@
 .lounge-write__space {
   //   display: flex;
   //   justify-content: center;
-  padding: 0 1rem 1rem 4rem;
+  // padding: 0 1rem 1rem 4rem;
+  margin: 0 1rem 1rem 4rem;
   // position: relative;
   display: flex;
   align-items: flex-end;
-
-  // position: relative;
-  // background-color: pink;
-}
-
-.lounge-write__box {
   background-color: $bodyColor;
   border-radius: $round;
   border: 1px solid $lightestGrey;
+  // position: relative;
+  // background-color: pink;
+  button {
+    margin: 0.5rem;
+  }
+}
+
+.lounge-write__box {
+  background-color: transparent;
+  border-radius: $round;
+  border: none;
   height: 8rem;
   width: 90%;
 }

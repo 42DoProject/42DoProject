@@ -18,9 +18,7 @@ export default function LoungePaginate({ status, setLoungeData, refreshFlag }) {
       const getData = async () => {
         try {
           const {
-            data: {
-              lounge: { rows, count },
-            },
+            data: { count, rows },
           } = await axios.get(
             `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/lounge?page=${page}&pageSize=5`,
             {
@@ -40,9 +38,7 @@ export default function LoungePaginate({ status, setLoungeData, refreshFlag }) {
       const getData = async () => {
         try {
           const {
-            data: {
-              lounge: { rows, count },
-            },
+            data: { count, rows },
           } = await axios.get(
             `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/lounge?page=${page}&pageSize=5&order=like`,
             {

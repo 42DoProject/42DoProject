@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import "../../SCSS/LoungePage/LoungeWrite.scss";
 import axios from "axios";
+import defaultImg from "../../default_intra.png";
 
 export default function LoungeWrite({ refreshFlag, setRefreshFlag }) {
   const loginState = useSelector((state) => state.loginReducer);
@@ -27,32 +28,32 @@ export default function LoungeWrite({ refreshFlag, setRefreshFlag }) {
       <div className="lounge-write__profile">
         <img
           className="profile__img"
-          src={loginState !== null ? loginState.profileImage : null}
-          alt="profile__img"
-        ></img>
+          src={
+            loginState !== null ? loginState.profileImage || defaultImg : null
+          }
+          alt="profile__img"></img>
 
         <span className="profile__name">
-          {loginState !== null ? loginState.name : null}
+          {loginState !== null ? loginState.name || "user" : null}
         </span>
       </div>
       <div className="lounge-write__space">
         <textarea
           className="lounge-write__box"
-          defaultValue="새로운 글을 작성해보세요."
+          placeholder="새로운 글을 작성해 보세요"
           spellCheck="false"
+          maxLength="800"
           onClick={(e) => {
             e.target.value = "";
-          }}
-        ></textarea>
+          }}></textarea>
         <button
           type="submit"
           className="lounge-write__submit"
           onClick={() => {
             const textEl = document.querySelector(".lounge-write__box");
             postLounge(textEl.value);
-            textEl.value = "새로운 글을 작성해보세요.";
-          }}
-        >
+            textEl.value = "";
+          }}>
           등록
         </button>
       </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import "../../../SCSS/Common/Chat/Chat.scss";
 import ChatRoom from "./ChatRoom";
@@ -23,7 +23,7 @@ export default function Chat() {
     setUnreadCnt(cnt);
   };
 
-  const getChatRoom = async () => {
+  const getChatRoom = useCallback(async () => {
     try {
       const { data } = await axios.get(
         `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/chat`,
@@ -37,9 +37,8 @@ export default function Chat() {
       setChatRoom(data);
     } catch (err) {
       console.log(err);
-      dispatch({ type: "LOGOUT" });
     }
-  };
+  }, [loginState.accessToken]);
   useEffect(() => {
     socket.on("chat:newRoom", () => {
       getChatRoom();
@@ -51,11 +50,9 @@ export default function Chat() {
       getChatRoom();
     });
     return () => {
-      console.log("chat unmount");
       socket.off("chat:newRoom");
       socket.off("chat:leave");
       if (inFlag === -1) {
-        console.log(inFlag);
         socket.off("chat:receive");
       }
     };

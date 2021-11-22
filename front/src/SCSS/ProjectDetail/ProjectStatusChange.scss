@@ -1,0 +1,43 @@
+@import "../Base.scss";
+
+.change__btn {
+  position: relative;
+
+  .change_toggle {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    background-color: white;
+    padding: 0.7rem;
+    border-radius: $round;
+    box-shadow: $shadow;
+    top: 3rem;
+    // right: -14.5rem;
+    left: 1rem;
+    width: 10rem;
+    z-index: 3;
+    overflow: hidden;
+    .toggle_header {
+      padding: 0.5rem;
+      font-size: $fontSm;
+      font-weight: $bold;
+      border-bottom: 1px solid $lightestGrey;
+    }
+    .toggle_body {
+      display: flex;
+      padding: 0.5rem;
+      padding-bottom: 0;
+      justify-content: space-between;
+      align-items: center;
+      .change_select {
+        background-color: white;
+      }
+    }
+    .change_btn {
+      margin-left: 0.3rem;
+      color: $mainColor;
+      cursor: pointer;
+      // font-size: 2rem;
+    }
+  }
+}

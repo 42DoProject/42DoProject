@@ -398,23 +398,23 @@
   .Nav {
     display: flex;
   }
-  .Nav__input {
-    input {
-      display: none;
-    }
-  }
+  // .Nav__input {
+  //   display: none;
+  // }
 }
 
 @media (max-width: 63rem) {
   .Nav__project,
   .Nav__cadet,
-  .Nav__lounge {
+  .Nav__lounge,
+  .Nav__input {
     display: none;
   }
   .Nav__menu {
     display: flex;
     .btn {
       box-shadow: none;
+      padding-left: 0;
       .Nav__menu-icon {
         font-size: $fontLg;
         &:hover {
@@ -426,7 +426,8 @@
 }
 @media (max-width: 48rem) {
   .Nav__notification,
-  .Nav__user .image {
+  .Nav__user .image,
+  .Nav__input {
     display: none;
   }
 }

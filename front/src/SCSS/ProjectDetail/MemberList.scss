@@ -3,14 +3,35 @@
 .member_list {
   display: flex;
   flex-direction: column;
+  width: 100%;
   .list_row1 {
     display: flex;
     align-items: center;
     flex-direction: row;
+    justify-content: space-between;
     margin-bottom: 0.5rem;
-    .member_count {
-      font-size: $fontMs;
-      font-weight: $normal;
+    .member-icon__wrap {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      .member_count {
+        font-size: $fontMs;
+        font-weight: $normal;
+        min-width: max-content;
+      }
+    }
+    .project_manage {
+      display: flex;
+      flex-direction: row;
+      // margin-left: 30rem;
+      .edit__btn {
+        padding: 0.7rem 1.2rem;
+        min-width: max-content;
+        border-radius: 10px;
+        border: 1px solid #e5e5e5;
+        cursor: pointer;
+        margin-left: 1rem;
+      }
     }
   }
   .member_image_list {
@@ -37,15 +58,63 @@
           height: 3.7rem;
           object-fit: cover;
         }
-        .member_position {
-          margin-top: 5px;
-          padding: 0.2rem 0.5rem;
-          width: 5rem;
-          border-radius: 2rem;
-          color: white;
-          font-size: $fontSs;
-          text-align: center;
-          background-color: $mainColor;
+        .member_position__row1 {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          .member_position {
+            display: flex;
+            flex-direction: row;
+            // cursor: pointer;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 5px;
+            padding: 0.2rem 0.5rem;
+            width: 5.5rem;
+            border-radius: 2rem;
+            color: white;
+            font-size: $fontSs;
+            text-align: center;
+            background-color: $mainColor;
+            // .empty_div {
+            //   width: 1rem;
+            // }
+          }
+          .member_control {
+            justify-content: right;
+            position: relative;
+            cursor: pointer;
+            .member_toggle {
+              position: absolute;
+              background-color: $bodyColor;
+              font-size: $fontSs;
+              padding: 0.3rem;
+              border-radius: $round;
+              box-shadow: $shadow;
+              top: 1.3rem;
+              right: -1rem;
+              width: 6.6rem;
+              z-index: 1;
+              overflow: hidden;
+              .toggle_text {
+                color: black;
+                font-size: $fontSs;
+                // margin: 0.3rem;
+                padding: 0.3rem;
+                // border-top: 1px solid $lightestGrey;
+              }
+              .toggle_text:nth-child(2),
+              .toggle_text:nth-child(3) {
+                border-top: 1px solid $lightestGrey;
+              }
+              .change_position {
+                // z-index: 1;
+                // top: 3rem;
+                // width: 6.5rem;
+                font-size: $fontSs;
+              }
+            }
+          }
         }
       }
     }
@@ -99,6 +168,14 @@
           background-color: #c4c4c4;
         }
       }
+    }
+  }
+  .btn {
+    cursor: default;
+    line-height: 1;
+    padding: 0;
+    &:focus {
+      box-shadow: none;
     }
   }
 }

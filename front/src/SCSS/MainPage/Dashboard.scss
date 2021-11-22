@@ -3,8 +3,8 @@
 .dashboard {
   // background-color: $mainColor;
   //부모에 상관없이 width채우는 법
-  width: 100vw;
-  margin-left: calc(-50vw + 50%);
+  width: 100%;
+  // margin-left: calc(-50vw + 50%);
   // border-radius: $round;
   margin-bottom: 3rem;
   // background-image: url(https://cdn.pixabay.com/photo/2018/04/04/14/34/design-3289964_960_720.png);
@@ -83,7 +83,17 @@
     height: 100%;
     display: flex;
     flex-grow: 1;
-    overflow: hidden;
+    overflow: scroll;
+    &::-webkit-scrollbar {
+      background: transparent;
+      -ms-overflow-style: none;
+      scrollbar-width: 0;
+      display: none;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: transparent;
+    }
+
     .box1__column1 {
       color: $mainColor;
       font-size: 1.3rem;

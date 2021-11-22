@@ -91,7 +91,7 @@ export default function WaitList({
             <div className="waitlist__count_zero">{0}</div>
           )}
         </div>
-        {toggle !== false && (
+        {toggle && (
           <div className="waitlist__wrap">
             <div className="waitlist__header">
               <div className="waitlist__text">신청 리스트</div>
@@ -118,9 +118,9 @@ export default function WaitList({
                         <div className="card__icon">
                           <div className="add-btn">
                             <Icon
-                              icon="el:ok-sign"
+                              icon="akar-icons:circle-check-fill"
                               color="#a7bc5b"
-                              fontSize="1rem"
+                              fontSize="1.5rem"
                               onClick={(e) =>
                                 onAddMember(e, elm.profile.userId)
                               }
@@ -131,7 +131,7 @@ export default function WaitList({
                             <Icon
                               icon="akar-icons:circle-x-fill"
                               color="#ff6864"
-                              fontSize="1rem"
+                              fontSize="1.5rem"
                               onClick={(e) =>
                                 applyCancel(e, elm.profile.userId)
                               }
@@ -144,7 +144,7 @@ export default function WaitList({
                   );
                 })
               ) : (
-                <div className="notiText__none">신청자가 없어요.</div>
+                <div className="notiText__none">참여 신청자가 없어요</div>
               )}
             </div>
           </div>

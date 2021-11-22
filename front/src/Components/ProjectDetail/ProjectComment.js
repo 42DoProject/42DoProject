@@ -14,12 +14,31 @@ export default function ProjectComment({
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState();
   const [newComment, setNewComment] = useState("");
+  const [editComment, setEditComment] = useState("");
   const [isChange, setIsChange] = useState(0);
+  const [editable, setEditable] = useState(-1);
 
   useEffect(() => {
     getCommentData();
     setIsChange(0);
   }, [isChange, page]);
+
+  //TODO:버튼을 다시 클릭한 경우는 현재 수정이 안됨. 엔터를 입력한 경우만 수정됨.
+  const onEdit = (e, elm, key) => {
+    setEditComment(elm.comment);
+    if (editable === key) {
+      setEditable(-1);
+    } else {
+      setEditable(key);
+    }
+  };
+
+  const handleKeyDown = (e, elm) => {
+    if (e.key === "Enter") {
+      onEditComment(e, elm.id);
+      setEditable(-1);
+    }
+  };
 
   const getCommentData = async () => {
     try {
@@ -78,10 +97,33 @@ export default function ProjectComment({
     }
   };
 
+  const onEditComment = (e, commentId) => {
+    axios({
+      method: "PUT",
+      url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project/comments?commentId=${commentId}`,
+      headers: {
+        Authorization: `Bearer ${loginState.accessToken}`,
+      },
+      data: {
+        comment: editComment,
+      },
+    })
+      .then((res) => {
+        console.log(res);
+        setIsChange(1);
+        setEditComment("");
+      })
+      .catch((e) => console.log(e));
+    e.preventDefault();
+  };
+
   const handlePageChange = (page) => {
     setPage(page);
   };
 
+  const onEditChange = useCallback((e) => {
+    setEditComment(e.target.value);
+  }, []);
   const onChange = useCallback((e) => {
     setNewComment(e.target.value);
   }, []);
@@ -90,24 +132,49 @@ export default function ProjectComment({
     <div className="body-comment">
       <div className="comment-row">
         <Icon icon="bi:chat-left-text" color="#565656" fontSize="1.5rem" />
-        <div className="comment_text">응원 / 질문을 남겨주세요! </div>
+        <div className="comment_text">댓글</div>
       </div>
       <div className="comment_main">
         {commentList.length !== 0 ? (
           <>
-            {commentList.map((el, key) => (
+            {commentList.map((elm, key) => (
               <div className="comment-list" key={key}>
-                <div className="comment-id">{el.profile.user.username}</div>
-                <div className="comment-content">{el.comment}</div>
-                {el.profile.id === loginState?.id && (
-                  <Icon
-                    icon="bx:bx-x"
-                    color="#ff6864"
-                    fontSize="1rem"
-                    onClick={(e) => onDelete(el.id, e)}
-                    style={{ cursor: "pointer" }}
-                  />
-                )}
+                <div className="comment-id">{elm.profile.user.username}</div>
+                <div className="comment-right">
+                  {editable === key ? (
+                    <textarea
+                      // type="text"
+                      // rows="8"
+                      spellCheck="false"
+                      value={editComment}
+                      onChange={(e) => {
+                        onEditChange(e);
+                      }}
+                      onKeyDown={(e) => handleKeyDown(e, elm)}
+                    />
+                  ) : (
+                    <pre className="comment-content">{elm.comment}</pre>
+                  )}
+
+                  {elm.profile.id === loginState?.id && (
+                    <div className="comment-icons">
+                      <Icon
+                        icon="clarity:edit-solid"
+                        color="#c4c4c4"
+                        fontSize="1rem"
+                        onClick={(e) => onEdit(e, elm, key)}
+                        style={{ cursor: "pointer" }}
+                      />
+                      <Icon
+                        icon="icomoon-free:bin"
+                        color="#c4c4c4"
+                        fontSize="1rem"
+                        onClick={(e) => onDelete(elm.id, e)}
+                        style={{ cursor: "pointer" }}
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
             ))}
             <div className="comment_pagination">
@@ -144,10 +211,9 @@ export default function ProjectComment({
       <form className="comment-input" onSubmit={onSubmit}>
         <textarea
           spellCheck="false"
-          // type="textarea"
           className="comment_input"
-          maxLength="50"
-          placeholder="ex. 너무 좋은 프로젝트입니다."
+          maxLength="500"
+          placeholder="응원 / 질문을 남겨주세요!"
           onChange={onChange}
           // onKeyPress={this.typeEnter}
           value={newComment}

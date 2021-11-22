@@ -72,7 +72,12 @@ export default function LoungeBody({
             />
           )}
           {loungeData?.map((e, idx) => (
-            <LoungePost key={idx} loungeData={e} />
+            <LoungePost
+              key={idx}
+              loungeData={e}
+              refreshFlag={refreshFlag}
+              setRefreshFlag={setRefreshFlag}
+            />
           ))}
         </div>
       </div>

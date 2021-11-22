@@ -48,10 +48,10 @@ export const getLounge = async (request: Request, response: Response) => {
                 attributes: ['id'],
                 include: [{
                     model: User,
-                    attributes: ['profileImage', 'blurImage', 'username']
+                    attributes: ['id', 'profileImage', 'blurImage', 'username']
                 }]
             },
-            order: [[inputOrder, 'DESC']],
+            order: [['createdAt', 'DESC'], [inputOrder, 'DESC']],
             offset: offset,
             limit: limit
         })
@@ -84,6 +84,7 @@ export const getLounge = async (request: Request, response: Response) => {
                 like: element.like,
                 checkLike: (checkLike === true) ? "true" : "false",
                 replyCount: element.replyCount,
+                userid: element.profile.user.id,
                 username: element.profile.user.username,
                 image: (inputImage === "profileImage") ? element.profile.user.profileImage : element.profile.user.blurImage,
                 createdAt: element.createdAt,
@@ -181,7 +182,7 @@ export const deleteLounge = async (request: Request, response: Response) => {
             where: { loungeId: loungeId }
         });
         await Lounge.destroy({
-            where: { loungeId: loungeId }
+            where: { id: loungeId }
         });
         response.status(200).json({ message: 'deleted successfully.' });
     } catch (error) {
@@ -225,9 +226,11 @@ export const getReplyOfLounge = async (request: Request, response: Response) => 
                 attributes: ['id'],
                 include: [{
                     model: User,
-                    attributes: ['profileImage', 'blurImage', 'username']
+                    attributes: ['id', 'profileImage', 'blurImage', 'username']
                 }]
             },
+            order: [['createdAt', 'DESC']],
+            where: { loungeId: loungeId },
             offset: offset,
             limit: limit
         })
@@ -260,6 +263,7 @@ export const getReplyOfLounge = async (request: Request, response: Response) => 
                 like: element.like,
                 checkLike: (checkLike === true) ? "true" : "false",
                 username: element.profile.user.username,
+                userid: element.profile.user.id,
                 image: (inputImage === "profileImage") ? element.profile.user.profileImage : element.profile.user.blurImage,
                 createdAt: element.createdAt,
                 updatedAt: element.updatedAt,

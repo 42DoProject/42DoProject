@@ -65,7 +65,7 @@
           .member_position {
             display: flex;
             flex-direction: row;
-            cursor: pointer;
+            // cursor: pointer;
             align-items: center;
             justify-content: space-between;
             margin-top: 5px;
@@ -83,6 +83,7 @@
           .member_control {
             justify-content: right;
             position: relative;
+            cursor: pointer;
             .member_toggle {
               position: absolute;
               background-color: $bodyColor;
@@ -167,6 +168,14 @@
           background-color: #c4c4c4;
         }
       }
+    }
+  }
+  .btn {
+    cursor: default;
+    line-height: 1;
+    padding: 0;
+    &:focus {
+      box-shadow: none;
     }
   }
 }

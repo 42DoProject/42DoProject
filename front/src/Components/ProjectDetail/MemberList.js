@@ -7,6 +7,7 @@ import WaitList from "./WaitList";
 import { useHistory } from "react-router";
 import MemberCard from "./MemberCard";
 import ProjectStatusChange from "./ProjectStatusChange";
+import { OverlayTrigger, Tooltip, Button } from "react-bootstrap";
 
 export default function MemberList({
   data,
@@ -34,6 +35,8 @@ export default function MemberList({
       e.preventDefault();
     }
   };
+
+  console.log("profile", data?.projectprofile[0].profile.user.username);
 
   return (
     <>
@@ -74,26 +77,52 @@ export default function MemberList({
             {data?.projectprofile.map((elm, key) => (
               <>
                 {data.leader === elm.profile.id ? (
-                  <MemberCard
-                    elm={elm}
-                    key={key}
-                    data={data}
-                    loginState={loginState}
-                    setApplyFlag={setApplyFlag}
-                  />
+                  <>
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={
+                        <Tooltip
+                          id={`tooltip-top`}
+                          wrapperStyle={{ backgroundColor: "#4A4A4A" }}>
+                          {elm.profile.user.username}
+                        </Tooltip>
+                      }>
+                      <Button variant="none">
+                        <MemberCard
+                          elm={elm}
+                          key={key}
+                          data={data}
+                          loginState={loginState}
+                          setApplyFlag={setApplyFlag}
+                        />
+                      </Button>
+                    </OverlayTrigger>
+                  </>
                 ) : null}
               </>
             ))}
             {data?.projectprofile.map((elm, key) => (
               <>
                 {data.leader !== elm.profile.id ? (
-                  <MemberCard
-                    elm={elm}
-                    key={key}
-                    data={data}
-                    loginState={loginState}
-                    setApplyFlag={setApplyFlag}
-                  />
+                  <>
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={
+                        <Tooltip id={`tooltip-top`}>
+                          {elm.profile.user.username}
+                        </Tooltip>
+                      }>
+                      <Button variant="none">
+                        <MemberCard
+                          elm={elm}
+                          key={key}
+                          data={data}
+                          loginState={loginState}
+                          setApplyFlag={setApplyFlag}
+                        />
+                      </Button>
+                    </OverlayTrigger>
+                  </>
                 ) : null}
               </>
             ))}

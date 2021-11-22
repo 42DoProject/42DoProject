@@ -188,7 +188,7 @@ export default function Filter({ setFilterOption, setFilterFlag }) {
                 onCheckSort(e);
               }}
             />
-            <div className="sort_text">인기순</div>
+            <div className="sort_text">관심순</div>
           </div>
         </div>
         <div className="filter_btn__wrap">

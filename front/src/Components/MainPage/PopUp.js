@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import "../../SCSS/MainPage/PopUp.scss";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import defaultImg from "../../default_intra.png";
 
 export const Example = () => {
   let loginState = useSelector((state) => state.loginReducer);
@@ -15,11 +16,11 @@ export const Example = () => {
       rootClose
       overlay={Pop()}>
       <Button variant="light">
-        <div>{loginState.name}</div>
+        <div>{loginState.name || "user"}</div>
         <div className="Nav__user image">
           <img
             className="IntraImage"
-            src={loginState.profileImage}
+            src={loginState.profileImage || defaultImg}
             alt="intraImage"
           />
         </div>

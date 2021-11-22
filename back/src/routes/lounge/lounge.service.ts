@@ -51,7 +51,7 @@ export const getLounge = async (request: Request, response: Response) => {
                     attributes: ['id', 'profileImage', 'blurImage', 'username']
                 }]
             },
-            order: [[inputOrder, 'DESC']],
+            order: [['createdAt', 'DESC'], [inputOrder, 'DESC']],
             offset: offset,
             limit: limit
         })
@@ -182,7 +182,7 @@ export const deleteLounge = async (request: Request, response: Response) => {
             where: { loungeId: loungeId }
         });
         await Lounge.destroy({
-            where: { loungeId: loungeId }
+            where: { id: loungeId }
         });
         response.status(200).json({ message: 'deleted successfully.' });
     } catch (error) {
@@ -229,6 +229,7 @@ export const getReplyOfLounge = async (request: Request, response: Response) => 
                     attributes: ['id', 'profileImage', 'blurImage', 'username']
                 }]
             },
+            order: [['createdAt', 'DESC']],
             offset: offset,
             limit: limit
         })

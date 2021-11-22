@@ -1198,7 +1198,7 @@ export const changeState = async (request: Request, response: Response) => {
 
     try {
         const project = await Project.findOne({
-            attributes: ['leader'],
+            attributes: ['leader', 'title'],
             where: { id: projectId }
         })
         // check authority
@@ -1211,6 +1211,17 @@ export const changeState = async (request: Request, response: Response) => {
             state: state
         }, { where: { id: projectId } })
         response.status(200).json({ message: 'changed successfully.' });
+
+        // feed notification
+        const likeList = await Likeprojectprofile.findAll({
+            attributes: ['profileId'],
+            where: { projectId: Number(projectId) }
+        })
+        if (likeList !== null) {
+            likeList!.forEach((element) => {
+                feed.changeProjectStatus(element.profileId, Number(projectId), project!.title, String(state));
+            })
+        }
     } catch (error) {
         response.status(405).json({ errMessage: String(error) });
         return ;

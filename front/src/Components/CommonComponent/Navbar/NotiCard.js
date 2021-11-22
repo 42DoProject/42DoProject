@@ -18,6 +18,7 @@ export default function NotiCard({ date, type, args }) {
     }
   };
   if (type === 30 || type === 20) searchUser(args[0].userId);
+
   return (
     <div className="card-wrap">
       {type === 30 && (
@@ -116,11 +117,34 @@ export default function NotiCard({ date, type, args }) {
             <div className="title">프로젝트 상태</div>
             <div className="date">{relativeTime(date)}</div>
           </div>
-          <span className="projectName">{args[0].projectName}</span>가
-          {args[1].status === 0 && <span className="projectName"> 모집중</span>}
-          {args[1].status === 1 && <span className="projectName"> 진행중</span>}
-          {args[1].status === 2 && <span className="projectName"> 완성됨</span>}
+          <span className="projectName">{args[0].projectName}</span>의 상태가
+          {args[1].projectStatus === 0 && (
+            <span className="projectName"> 모집중</span>
+          )}
+          {args[1].projectStatus === 1 && (
+            <span className="projectName"> 진행중</span>
+          )}
+          {args[1].projectStatus === 2 && (
+            <span className="projectName"> 완성됨</span>
+          )}
           으로 변경되었어요.
+        </div>
+      )}
+      {type === 70 && (
+        <div
+          className="type"
+          onClick={() => {
+            history.push("/lounge");
+          }}>
+          <div className="row1">
+            <div className="title">라운지 댓글</div>
+            <div className="date">{relativeTime(date)}</div>
+          </div>
+          <span>
+            내 글(
+            {args[1].comment}
+            )에 댓글이 달렸어요.
+          </span>
         </div>
       )}
     </div>

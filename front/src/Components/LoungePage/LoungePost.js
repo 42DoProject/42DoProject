@@ -90,7 +90,8 @@ export default function LoungePost({
     }
   };
 
-  // console.log("loungeData", loungeData);
+  console.log("loungeData", loungeData);
+  console.log("loginState", loginState);
 
   return (
     <div className="lounge-post">

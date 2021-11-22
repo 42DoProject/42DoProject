@@ -22,7 +22,7 @@ export default function LoungeComment({
           url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/lounge/reply/${loungeData.id}?page=1&pageSize=10
         `,
         });
-        console.log("rows", rows);
+        // console.log("rows", rows);
         setReplies(rows);
       } catch (err) {
         console.log(err);

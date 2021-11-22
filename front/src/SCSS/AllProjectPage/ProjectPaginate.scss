@@ -1,51 +1,49 @@
 @import "../Base.scss";
 
-.project-pagination {
-  .pagination {
-    display: flex;
-    justify-content: center;
-    margin-top: 15px;
-  }
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
 
-  ul {
-    list-style: none;
-    padding: 0;
-  }
+ul {
+  list-style: none;
+  padding: 0;
+}
 
-  ul.pagination li {
-    display: inline-block;
-    width: 2rem;
-    height: 2rem;
-    border-top: 1px solid #e2e2e2;
-    border-bottom: 1px solid #e2e2e2;
-    padding: 1.5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2rem;
-  }
+ul.pagination li {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  border-top: 1px solid #e2e2e2;
+  border-bottom: 1px solid #e2e2e2;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+}
 
-  ul.pagination li:first-child {
-    border-left: 1px solid #e2e2e2;
-    border-radius: 10px 0 0 10px;
-    padding-right: 4rem;
-  }
+ul.pagination li:first-child {
+  border-left: 1px solid #e2e2e2;
+  border-radius: 10px 0 0 10px;
+  padding-right: 4rem;
+}
 
-  ul.pagination li:last-child {
-    border-right: 1px solid #e2e2e2;
-    border-radius: 0 10px 10px 0;
-    padding-left: 4rem;
-  }
+ul.pagination li:last-child {
+  border-right: 1px solid #e2e2e2;
+  border-radius: 0 10px 10px 0;
+  padding-left: 4rem;
+}
 
-  ul.pagination li a {
-    text-decoration: none;
-    color: #2c2c34;
-    font-size: $fontMs;
-  }
+ul.pagination li a {
+  text-decoration: none;
+  color: #2c2c34;
+  font-size: $fontMs;
+}
 
-  ul.pagination li.active a {
-    color: #a7bc5b;
-  }
+ul.pagination li.active a {
+  color: #a7bc5b;
 }
 
 // ul.pagination li.active {

@@ -1,0 +1,57 @@
+@import "../Base.scss";
+
+.comment-wrap {
+  //   background-color: pink;
+  //   background-color: $lightestGrey;
+  margin-left: 4rem;
+
+  .comment-element {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin: 0.7rem;
+    .comment-profile {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    .comment-img {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .comment-content {
+      border-radius: 2rem;
+      background-color: $lightestGrey;
+      padding: 0.5rem 1rem;
+    }
+  }
+
+  .comment__write {
+    margin-top: 1rem;
+    background-color: $bodyColor;
+    border-radius: $round;
+    border: 1px solid $lightestGrey;
+    width: 100%;
+    display: flex;
+    padding: 0.5rem;
+    .comment__input {
+      width: 100%;
+      //   height: 1rem;
+      //   overflow-y: hidden;
+      //   padding: 0.5rem;
+      resize: none;
+      border: none;
+      background-color: transparent;
+    }
+    button {
+      background-color: $mainColor;
+      border: none;
+      border-radius: $round;
+      color: white;
+      min-width: max-content;
+      padding: 0.5rem 1rem;
+    }
+  }
+}

@@ -18,6 +18,7 @@ export default function NotiCard({ date, type, args }) {
     }
   };
   if (type === 30 || type === 20) searchUser(args[0].userId);
+
   return (
     <div className="card-wrap">
       {type === 30 && (
@@ -25,14 +26,13 @@ export default function NotiCard({ date, type, args }) {
           className="type"
           onClick={() => {
             history.push(`/profile/${args[0].userId}`);
-          }}
-        >
+          }}>
           <div className="row1">
             <div className="title">팔로우</div>
             <div className="date">{relativeTime(date)}</div>
           </div>
-          <span className="userName">{userName}</span>님이 팔로우
-          신청하였습니다.
+          <span className="userName">{userName}</span>님이 팔로우하기
+          시작했어요.
         </div>
       )}
       {type === 20 && (
@@ -40,14 +40,13 @@ export default function NotiCard({ date, type, args }) {
           className="type"
           onClick={() => {
             history.push(`/profile/${args[0].userId}`);
-          }}
-        >
+          }}>
           <div className="row1">
             <div className="title">팔로워</div>
             <div className="date">{relativeTime(date)}</div>
           </div>
-          <span className="userName">{userName}</span>님이 프로젝트 찾는 중으로
-          상태를 변경하였습니다.
+          <span className="userName">{userName}</span>님이 프로젝트를 찾기
+          시작했어요.{" "}
         </div>
       )}
       {type === 40 && (
@@ -55,14 +54,13 @@ export default function NotiCard({ date, type, args }) {
           className="type"
           onClick={() => {
             history.push(`/project/${args[0].projectId}`);
-          }}
-        >
+          }}>
           <div className="row1">
-            <div className="title">Project 신청</div>
+            <div className="title">프로젝트 신청</div>
             <div className="date">{relativeTime(date)}</div>
           </div>
-          <span className="projectName">{args[0].project}</span>에
-          참여신청되었습니다.
+          <span className="projectName">{args[0].projectName}</span>에 참여를
+          신청했어요.
         </div>
       )}
       {type === 41 && (
@@ -70,14 +68,13 @@ export default function NotiCard({ date, type, args }) {
           className="type"
           onClick={() => {
             history.push(`/project/${args[0].projectId}`);
-          }}
-        >
+          }}>
           <div className="row1">
-            <div className="title">Project 승인</div>
+            <div className="title">프로젝트 참여 승인</div>
             <div className="date">{relativeTime(date)}</div>
           </div>
-          <span className="projectName">{args[0].project}</span>에
-          참여되었습니다.
+          <span className="projectName">{args[0].projectName}</span>의 멤버가
+          되었어요.
         </div>
       )}
       {type === 42 && (
@@ -85,13 +82,12 @@ export default function NotiCard({ date, type, args }) {
           className="type"
           onClick={() => {
             history.push(`/project/${args[0].projectId}`);
-          }}
-        >
+          }}>
           <div className="row1">
-            <div className="title">Project 거절</div>
+            <div className="title">프로젝트 참여 거절</div>
             <div className="date">{relativeTime(date)}</div>
           </div>
-          <span className="projectName">{args[0].project}</span>에 참여하지
+          <span className="projectName">{args[0].projectName}</span>에 참여하지
           못했어요.
         </div>
       )}
@@ -100,16 +96,15 @@ export default function NotiCard({ date, type, args }) {
           className="type"
           onClick={() => {
             history.push(`/project/${args[1].projectId}`);
-          }}
-        >
+          }}>
           <div className="row1">
-            <div className="title">Project 지원</div>
+            <div className="title">프로젝트 참여 요청</div>
             <div className="date">{relativeTime(date)}</div>
           </div>
-          <span className="projectName">{args[1].project}</span>
+          <span className="projectName">{args[1].projectName}</span>
           {`에 `}
-          <span className="projectName">{args[0].username}</span>가
-          참여신청했습니다.
+          <span className="projectName">{args[0].username}</span>님이 참여를
+          요청했어요.
         </div>
       )}
       {type === 60 && (
@@ -117,29 +112,39 @@ export default function NotiCard({ date, type, args }) {
           className="type"
           onClick={() => {
             history.push(`/project/${args[0].projectId}`);
-          }}
-        >
+          }}>
           <div className="row1">
-            <div className="title">Project</div>
+            <div className="title">프로젝트 상태</div>
             <div className="date">{relativeTime(date)}</div>
           </div>
-          <span className="projectName">{args[0].project}</span>가
-          {args[1].status === 0 && (
-            <>
-              <span className="projectName"> 모집 중</span>
-              <span>으</span>
-            </>
+          <span className="projectName">{args[0].projectName}</span>의 상태가
+          {args[1].projectStatus === 0 && (
+            <span className="projectName"> 모집중</span>
           )}
-          {args[1].status === 1 && (
-            <>
-              <span className="projectName"> 진행 중</span>
-              <span>으</span>
-            </>
+          {args[1].projectStatus === 1 && (
+            <span className="projectName"> 진행중</span>
           )}
-          {args[1].status === 2 && (
-            <span className="projectName"> 완료 상태</span>
+          {args[1].projectStatus === 2 && (
+            <span className="projectName"> 완성됨</span>
           )}
-          로 변경되었습니다.
+          으로 변경되었어요.
+        </div>
+      )}
+      {type === 70 && (
+        <div
+          className="type"
+          onClick={() => {
+            history.push("/lounge");
+          }}>
+          <div className="row1">
+            <div className="title">라운지 댓글</div>
+            <div className="date">{relativeTime(date)}</div>
+          </div>
+          <span>
+            내 글(
+            {args[1].comment}
+            )에 댓글이 달렸어요.
+          </span>
         </div>
       )}
     </div>

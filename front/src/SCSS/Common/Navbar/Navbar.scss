@@ -233,8 +233,9 @@
       max-height: 10rem;
       overflow-y: scroll;
       .card-wrap {
+        border-radius: $round;
         &:hover {
-          background-color: $lightestGrey;
+          background-color: $bodyColor;
         }
         .type {
           border-bottom: 1px solid $lightestGrey;
@@ -245,20 +246,22 @@
           .row1 {
             padding: 0;
             display: flex;
+
             .title {
-              color: $pointRed;
-              font-weight: $bold;
+              color: $mainColor;
+              font-weight: $semiBold;
               font-size: $fontSm;
             }
             .date {
               opacity: 0.5;
+              font-size: $fontSs;
             }
           }
           .userName {
-            color: $mainColor;
+            font-weight: $semiBold;
           }
           .projectName {
-            color: $mainColor;
+            font-weight: $semiBold;
           }
         }
       }
@@ -395,23 +398,23 @@
   .Nav {
     display: flex;
   }
-  .Nav__input {
-    input {
-      display: none;
-    }
-  }
+  // .Nav__input {
+  //   display: none;
+  // }
 }
 
 @media (max-width: 63rem) {
   .Nav__project,
   .Nav__cadet,
-  .Nav__lounge {
+  .Nav__lounge,
+  .Nav__input {
     display: none;
   }
   .Nav__menu {
     display: flex;
     .btn {
       box-shadow: none;
+      padding-left: 0;
       .Nav__menu-icon {
         font-size: $fontLg;
         &:hover {
@@ -423,7 +426,8 @@
 }
 @media (max-width: 48rem) {
   .Nav__notification,
-  .Nav__user .image {
+  .Nav__user .image,
+  .Nav__input {
     display: none;
   }
 }

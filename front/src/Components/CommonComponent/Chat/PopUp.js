@@ -13,10 +13,16 @@ export const Example = ({
 }) => {
   return (
     <OverlayTrigger
-      trigger="focus"
+      trigger={("focus", "click")}
       placement="bottom"
-      overlay={Pop(uuid, chatOutFlag, setChatOutFlag, setInFlag, setInviteFlag)}
-    >
+      rootClose
+      overlay={Pop(
+        uuid,
+        chatOutFlag,
+        setChatOutFlag,
+        setInFlag,
+        setInviteFlag
+      )}>
       <Button variant="light">
         <div>
           <Icon
@@ -36,15 +42,13 @@ function Pop(uuid, chatOutFlag, setChatOutFlag, setInFlag, setInviteFlag) {
       <div
         onClick={() => {
           setInviteFlag(1);
-        }}
-      >
+        }}>
         <Popover.Body>채팅방 초대</Popover.Body>
       </div>
       <div
         onClick={() => {
           leaveChat(uuid, loginState, chatOutFlag, setChatOutFlag, setInFlag);
-        }}
-      >
+        }}>
         <Popover.Body>채팅방 나가기</Popover.Body>
       </div>
       <div className="popover__wrap"></div>

@@ -82,6 +82,7 @@ export default function ProjectDetail(props) {
                   info={project}
                   loginstate={loginState}
                   userStatus={userStatus?.status}
+                  setApplyFlag={setApplyFlag}
                   setCancleFlag={setCancleFlag}
                   commentCount={commentCount}
                 />

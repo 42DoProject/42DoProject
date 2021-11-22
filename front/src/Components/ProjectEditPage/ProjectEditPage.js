@@ -2,6 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import "../../SCSS/ProjectEditPage/ProjectEditPage.scss";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { Editor } from "@toast-ui/react-editor";
+import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
+import "tui-color-picker/dist/tui-color-picker.css";
+import "@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css";
 import { Icon } from "@iconify/react";
 import PositionCard from "./PositionCard";
 import Unsplash from "./Unsplash";
@@ -81,7 +84,6 @@ export default function ProjectEditPage() {
         .map((e) => positions.indexOf(e[1]));
 
       const textField = {
-        // totalMember: selectedPos.length,
         title: document.querySelector(".project-edit__name").value,
         content: editorInstance.getMarkdown(),
         position: JSON.stringify(positionPost),
@@ -124,7 +126,10 @@ export default function ProjectEditPage() {
       console.log(err);
       setIsLoading(0);
       setImgLoadFlag(1);
-      setValidateMsg(["프로젝트 생성중 에러가 발생했어요", "cancel-only"]);
+      setValidateMsg([
+        `프로젝트 ${projectId ? "저장" : "생성"}중 에러가 발생했어요`,
+        "cancel-only",
+      ]);
       setValidateFlag(1);
     }
   };
@@ -208,6 +213,34 @@ export default function ProjectEditPage() {
       console.log("projectData", projectData);
     }
   }, [projectData]);
+
+  useEffect(() => {
+    if (editorRef?.current) {
+      editorRef.current.getInstance().removeHook("addImageBlobHook");
+      editorRef.current
+        .getInstance()
+        .addHook("addImageBlobHook", (blob, callback) => {
+          (async () => {
+            let formData = new FormData();
+            formData.append("image", blob);
+            let altText = document.getElementById("toastuiAltTextInput")?.value;
+
+            const res = await axios({
+              method: "post",
+              url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project/content/image`,
+              headers: {
+                "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${loginState.accessToken}`,
+              },
+              data: formData,
+            });
+            callback(res.data.url, altText);
+          })();
+
+          return false;
+        });
+    }
+  }, [editorRef, loginState]);
 
   useEffect(() => {
     if (projectId) getProjectData();
@@ -342,7 +375,6 @@ export default function ProjectEditPage() {
             </select>
             <div>
               (멤버: {projectId ? projectData?.currentMember : "1"} /{" "}
-              {/* {projectId ? projectData?.totalMember : selectedPos.length}) */}
               {selectedPos.length})
             </div>
           </div>
@@ -361,7 +393,7 @@ export default function ProjectEditPage() {
               );
             })}
           </div>
-          <label>프로젝트 완료까지의 예상 소요 기간</label>
+          <label>프로젝트 기간</label>
           <div className="project-edit__period">
             시작일
             <input
@@ -514,6 +546,10 @@ export default function ProjectEditPage() {
             <Editor
               ref={editorRef}
               height="40rem"
+              plugins={[
+                colorSyntax,
+                // [codeSyntaxHighlight, { highlighter: Prism }],
+              ]}
               useCommandShortcut={true}
               placeholder={`프로젝트에 대해 자유롭게 소개해 주세요.
 (ex. 초기 아이디어 및 프로젝트의 목적, 필요성, 출시 플랫폼, 타겟 유저 등)`}
@@ -542,10 +578,7 @@ export default function ProjectEditPage() {
           <button
             className="project-edit__delete"
             onClick={() => {
-              setValidateMsg([
-                `프로젝트를 정말 삭제할까요? 프로젝트의 모든 데이터가 사라지게 됩니다.`,
-                "both",
-              ]);
+              setValidateMsg([`프로젝트를 정말 삭제할까요?`, "both"]);
               setModalFlag(1);
             }}>
             프로젝트 삭제

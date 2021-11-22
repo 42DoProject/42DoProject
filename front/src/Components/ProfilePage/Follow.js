@@ -37,7 +37,7 @@ export default function Follow(props) {
 
   useEffect(() => {
     if (props.subject === "팔로워") getFollow("follower");
-    else if (props.subject === "팔로우") getFollow("following");
+    else if (props.subject === "팔로잉") getFollow("following");
     props.setRefreshFlag(0);
   }, [props.refreshFlag]);
 
@@ -122,7 +122,10 @@ export default function Follow(props) {
           })
         ) : (
           <div className="no-follow">
-            <span>아직 {props.subject}가 없어요 😯</span>
+            <span>
+              아직 {props.subject}
+              {props.subject === "팔로잉" ? "이" : "가"} 없어요 😯
+            </span>
           </div>
         )}
       </div>

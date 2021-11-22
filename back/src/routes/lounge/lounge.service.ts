@@ -230,6 +230,7 @@ export const getReplyOfLounge = async (request: Request, response: Response) => 
                 }]
             },
             order: [['createdAt', 'DESC']],
+            where: { loungeId: loungeId },
             offset: offset,
             limit: limit
         })

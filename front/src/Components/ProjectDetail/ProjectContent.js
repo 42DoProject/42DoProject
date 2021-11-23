@@ -10,14 +10,26 @@ export default function ProjectContent({ content }) {
 
   const parseLink = () => {
     for (var i in content.content.reference) {
+      var urlTmp = content.content.reference[i];
+      var faviconUrl = "https://icons.duckduckgo.com/ip2/";
+      //http or https로 시작하는지 검사 (정규표현식)
+      let regex = new RegExp("^(http|https):");
+      if (regex.test(urlTmp) === false) urlTmp = "http://" + urlTmp;
+
+      var urlParse = new URL(urlTmp);
+      var hostName = urlParse.hostname;
+
+      //notion주소만 예외처리
+      let regexForNotion = new RegExp(".notion.site$");
+      if (regexForNotion.test(hostName) === true) hostName = "www.notion.so";
+
       urlList[i] = {
-        url: content.content.reference[i],
-        src:
-          "http://www.google.com/s2/favicons?sz=32&domain=" +
-          content.content.reference[i],
+        url: urlTmp,
+        src: faviconUrl + hostName + ".ico",
       };
     }
   };
+
   parseLink();
   return (
     <>
@@ -41,7 +53,6 @@ export default function ProjectContent({ content }) {
                   <Icon icon="akar-icons:link-chain" fontSize="1.5rem" />
                   <span>참고 링크</span>
                 </div>
-                {/* TODO: http://가 없는 링크면 상대경로로 간다.  */}
                 {urlList.map((elm, idx) => (
                   <div className="link_wrap">
                     <div className="link_favicon">

@@ -18,6 +18,7 @@ export default function NotiCard({ date, type, args }) {
     }
   };
   if (type === 30 || type === 20) searchUser(args[0].userId);
+  console.log("args", args);
 
   return (
     <div className="card-wrap">

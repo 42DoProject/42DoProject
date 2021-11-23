@@ -51,7 +51,7 @@ export default function LoungeWrite({ refreshFlag, setRefreshFlag }) {
           className="lounge-write__submit"
           onClick={() => {
             const textEl = document.querySelector(".lounge-write__box");
-            postLounge(textEl.value);
+            if (textEl.value !== "") postLounge(textEl.value);
             textEl.value = "";
           }}>
           등록

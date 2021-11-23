@@ -37,11 +37,20 @@
         white-space: -o-pre-wrap; /* Opera 7 */
         word-wrap: break-word; /* Internet Explorer 5.5+ */
       }
+
       .comment-icons {
+        // align-items: center;
+        font-size: $fontSs;
+        color: $lightGrey;
         margin-top: 0.5rem;
         display: flex;
         gap: 0.3rem;
         margin-left: 0.5rem;
+        .comment-time {
+          font-size: $fontSs;
+          color: $lightGrey;
+          margin-right: 0.5rem;
+        }
       }
     }
     .empty-comment {

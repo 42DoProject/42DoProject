@@ -3,6 +3,7 @@ import axios from "axios";
 import { Icon } from "@iconify/react";
 import Pagination from "react-js-pagination";
 import "../../SCSS/ProjectDetail/ProjectComment.scss";
+import relativeTime from "../../relativeTime";
 
 export default function ProjectComment({
   projectId,
@@ -167,25 +168,29 @@ export default function ProjectComment({
                   ) : (
                     <pre className="comment-content">{elm.comment}</pre>
                   )}
-
-                  {elm.profile.id === loginState?.id && (
-                    <div className="comment-icons">
-                      <Icon
-                        icon="clarity:edit-solid"
-                        color="#c4c4c4"
-                        fontSize="1rem"
-                        onClick={(e) => onEdit(e, elm, key)}
-                        style={{ cursor: "pointer" }}
-                      />
-                      <Icon
-                        icon="icomoon-free:bin"
-                        color="#c4c4c4"
-                        fontSize="1rem"
-                        onClick={(e) => onDelete(elm.id, e)}
-                        style={{ cursor: "pointer" }}
-                      />
-                    </div>
-                  )}
+                  <div className="comment-icons">
+                    <span className="comment-time">
+                      {relativeTime(new Date(elm.createdAt).getTime())}
+                    </span>
+                    {elm.profile.id === loginState?.id && (
+                      <>
+                        <Icon
+                          icon="clarity:edit-solid"
+                          color="#c4c4c4"
+                          fontSize="1rem"
+                          onClick={(e) => onEdit(e, elm, key)}
+                          style={{ cursor: "pointer" }}
+                        />
+                        <Icon
+                          icon="icomoon-free:bin"
+                          color="#c4c4c4"
+                          fontSize="1rem"
+                          onClick={(e) => onDelete(elm.id, e)}
+                          style={{ cursor: "pointer" }}
+                        />
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
             ))}

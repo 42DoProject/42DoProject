@@ -10,6 +10,19 @@
     color: $black;
     cursor: pointer;
   }
+  .lounge__no-lounge {
+    width: 100%;
+    background-color: $lightestGrey;
+    border-radius: $round;
+    opacity: 0.5;
+    padding: 15rem 0;
+    margin: 2rem 0;
+    display: flex;
+    justify-content: center;
+    font-weight: $normal;
+    align-items: center;
+    // color: $darkGrey;
+  }
   .lounge__list {
     padding-top: 2rem;
     .lounge__card {

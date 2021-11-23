@@ -7,15 +7,11 @@
 
   .comment-element {
     display: flex;
-    align-items: center;
-    gap: 1.5rem;
+    // align-items: center;
+    gap: 0.5rem;
     margin: 0.7rem;
-    .comment-profile {
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-    }
     .comment-img {
+      margin-top: 1rem;
       width: 2rem;
       height: 2rem;
       border-radius: 50%;
@@ -23,8 +19,35 @@
     }
     .comment-content {
       border-radius: 2rem;
-      background-color: $lightestGrey;
+      background-color: $slightGrey;
       padding: 0.5rem 1rem;
+      width: fit-content;
+    }
+    .comment-bubble {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      .comment-username {
+        margin-left: 0.5rem;
+        font-size: $fontSs;
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        font-weight: $normal;
+        span:nth-child(2) {
+          color: $mainColor;
+        }
+      }
+      .comment-icons {
+        font-size: $fontSs;
+        color: $lightGrey;
+        display: flex;
+        gap: 0.3rem;
+        margin-left: 0.5rem;
+        .comment-time {
+          margin-right: 0.5rem;
+        }
+      }
     }
   }
 
@@ -35,23 +58,25 @@
     border: 1px solid $lightestGrey;
     width: 100%;
     display: flex;
-    padding: 0.5rem;
+    height: 2.3rem;
+    display: flex;
+    align-items: center;
+    // padding: 0.5rem;
     .comment__input {
       width: 100%;
       //   height: 1rem;
       //   overflow-y: hidden;
-      //   padding: 0.5rem;
+      // padding: 0;
+      // height: 1rem;
       resize: none;
       border: none;
       background-color: transparent;
     }
-    button {
-      background-color: $mainColor;
-      border: none;
-      border-radius: $round;
-      color: white;
-      min-width: max-content;
-      padding: 0.5rem 1rem;
+    .comment-send {
+      font-size: 1.5rem;
+      color: $mainColor;
+      cursor: pointer;
+      margin-right: 0.5rem;
     }
   }
 }

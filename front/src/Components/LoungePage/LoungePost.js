@@ -76,6 +76,7 @@ export default function LoungePost({
           Authorization: `Bearer ${loginState?.accessToken}`,
         },
       });
+      refreshFlag ? setRefreshFlag(0) : setRefreshFlag(1);
     } catch (err) {
       console.log(err);
     }

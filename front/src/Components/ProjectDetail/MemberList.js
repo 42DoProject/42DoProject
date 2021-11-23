@@ -36,8 +36,6 @@ export default function MemberList({
     }
   };
 
-  console.log("profile", data?.projectprofile[0].profile.user.username);
-
   return (
     <>
       <div className="member_list">

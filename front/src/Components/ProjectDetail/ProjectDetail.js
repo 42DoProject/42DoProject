@@ -22,15 +22,11 @@ export default function ProjectDetail(props) {
   const loginState = useSelector((state) => state.loginReducer);
   const location = useLocation();
   useEffect(() => {
+    if (loginState !== null) getUserStatus();
     getData();
     setApplyFlag(0);
-  }, [applyFlag, location]);
-
-  useEffect(() => {
-    if (loginState !== null) getUserStatus();
-    setApplyFlag(0);
     setCancleFlag(0);
-  }, [applyFlag, cancleFlag]);
+  }, [applyFlag, location, cancleFlag, loginState]);
 
   const getData = async () => {
     try {
@@ -41,6 +37,7 @@ export default function ProjectDetail(props) {
       );
       setProject(projectContent);
       setCommentCount(projectContent.commentCount);
+      console.log(project);
     } catch (err) {
       console.log(err);
     }

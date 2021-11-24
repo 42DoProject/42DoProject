@@ -16,7 +16,7 @@ export default function WaitList({
 
   useEffect(() => {
     getWaitList();
-  }, [toggle, isChange]);
+  }, [toggle, isChange, loginState]);
 
   const onToggle = (e) => {
     if (toggle === false) {
@@ -25,6 +25,7 @@ export default function WaitList({
   };
 
   const getWaitList = async () => {
+    console.log(loginState);
     try {
       const {
         data: { applyerList: list },
@@ -37,6 +38,7 @@ export default function WaitList({
         }
       );
       setWaitCount(list.count);
+      console.log(waitCount);
       setWaitList(list.rows);
       setIsChange(0);
     } catch (err) {

@@ -24,6 +24,8 @@ function App(props) {
   let dispatch = useDispatch();
   // 새로운 Token 발급
   const getToken = useCallback(async () => {
+    console.log("--------------app state-------------");
+    console.log("App.js1", loginState);
     try {
       if (loginState) {
         const { data } = await axios.get(
@@ -38,6 +40,7 @@ function App(props) {
       dispatch({ type: "LOGOUT" });
       console.log(err);
     }
+    console.log("App.js2", loginState);
   }, [loginState]);
   useEffect(() => {
     getToken();

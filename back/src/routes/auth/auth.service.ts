@@ -47,7 +47,7 @@ const userModelCheck = async (user: any): Promise<number> => {
   await Profile.create({
     level: user.cursus_users[1].level,
     lastAccess: getIsoString(),
-    status: Number(process.env.CADET_LOOKING_FOR_PROJECT_STATUS),
+    status: 0,
     position: 0,
     skill: [],
     statusMessage: "",

@@ -182,7 +182,7 @@ export default function ProjectInfo({
           신청 취소하기
         </div>
       )}
-      {userStatus === "participating" && loginState.id !== info.leader && (
+      {userStatus === "participating" && loginState?.id !== info.leader && (
         <div className="project-cancle_btn" onClick={(e) => deleteMember(e)}>
           프로젝트에서 나가기
         </div>

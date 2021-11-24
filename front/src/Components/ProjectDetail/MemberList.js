@@ -36,8 +36,6 @@ export default function MemberList({
     }
   };
 
-  console.log("profile", data?.projectprofile[0].profile.user.username);
-
   return (
     <>
       <div className="member_list">
@@ -66,105 +64,105 @@ export default function MemberList({
                 onClick={(e) => {
                   history.push(`/project/edit/${data.id}`);
                   e.preventDefault();
-                }}>
+                }}
+              >
                 수정
               </div>
             </div>
           ) : null}
         </div>
         <div className="member_image_list">
-          <div className="filled_member">
-            {data?.projectprofile.map((elm, key) => (
-              <>
-                {data.leader === elm.profile.id ? (
-                  <>
-                    <OverlayTrigger
-                      placement="top"
-                      overlay={
-                        <Tooltip
-                          id={`tooltip-top`}
-                          wrapperStyle={{ backgroundColor: "#4A4A4A" }}>
-                          {elm.profile.user.username}
-                        </Tooltip>
-                      }>
-                      <Button variant="none">
-                        <MemberCard
-                          elm={elm}
-                          key={key}
-                          data={data}
-                          loginState={loginState}
-                          setApplyFlag={setApplyFlag}
-                        />
-                      </Button>
-                    </OverlayTrigger>
-                  </>
-                ) : null}
-              </>
-            ))}
-            {data?.projectprofile.map((elm, key) => (
-              <>
-                {data.leader !== elm.profile.id ? (
-                  <>
-                    <OverlayTrigger
-                      placement="top"
-                      overlay={
-                        <Tooltip id={`tooltip-top`}>
-                          {elm.profile.user.username}
-                        </Tooltip>
-                      }>
-                      <Button variant="none">
-                        <MemberCard
-                          elm={elm}
-                          key={key}
-                          data={data}
-                          loginState={loginState}
-                          setApplyFlag={setApplyFlag}
-                        />
-                      </Button>
-                    </OverlayTrigger>
-                  </>
-                ) : null}
-              </>
-            ))}
-          </div>
-          <div className="empty_list">
-            {data?.position.map((elm, key) => (
-              <div className="empty_member" key={key}>
-                <div className="chair_icon">
-                  <Icon
-                    icon="bx:bx-chair"
-                    style={{ fontSize: "3.7rem", color: "#c4c4c4" }}
-                    className="empty_chair-icon"
-                  />
-                  {userStatus?.status === "nothing" && (
-                    <div className="plus_icon">
+          {data?.projectprofile.map((elm, key) => (
+            <>
+              {data.leader === elm.profile.id ? (
+                <>
+                  <OverlayTrigger
+                    placement="top"
+                    overlay={
+                      <Tooltip
+                        id={`tooltip-top`}
+                        wrapperStyle={{ backgroundColor: "#4A4A4A" }}
+                      >
+                        {elm.profile.user.username}
+                      </Tooltip>
+                    }
+                  >
+                    <Button variant="none">
+                      <MemberCard
+                        elm={elm}
+                        key={key}
+                        data={data}
+                        loginState={loginState}
+                        setApplyFlag={setApplyFlag}
+                      />
+                    </Button>
+                  </OverlayTrigger>
+                </>
+              ) : null}
+            </>
+          ))}
+          {data?.projectprofile.map((elm, key) => (
+            <>
+              {data.leader !== elm.profile.id ? (
+                <>
+                  <OverlayTrigger
+                    placement="top"
+                    overlay={
+                      <Tooltip id={`tooltip-top`}>
+                        {elm.profile.user.username}
+                      </Tooltip>
+                    }
+                  >
+                    <Button variant="none">
+                      <MemberCard
+                        elm={elm}
+                        key={key}
+                        data={data}
+                        loginState={loginState}
+                        setApplyFlag={setApplyFlag}
+                      />
+                    </Button>
+                  </OverlayTrigger>
+                </>
+              ) : null}
+            </>
+          ))}
+          {data?.position.map((elm, key) => (
+            <div className="empty_member" key={key}>
+              <div className="chair_icon">
+                <Icon
+                  icon="bx:bx-chair"
+                  style={{ fontSize: "3.7rem", color: "#c4c4c4" }}
+                  className="empty_chair-icon"
+                />
+                {userStatus?.status === "nothing" && (
+                  <div className="plus_icon">
+                    <Icon
+                      icon="akar-icons:circle-plus-fill"
+                      color="#5bbcb6"
+                      position={elm}
+                      key={key}
+                      onClick={(e) => onApply(e, elm)}
+                      style={{ fontSize: "1.7rem", cursor: "pointer" }}
+                    />
+                  </div>
+                )}
+                {userStatus?.status === "applying" &&
+                  userStatus?.applyingPosition === elm && (
+                    <div className="check_icon">
                       <Icon
-                        icon="akar-icons:circle-plus-fill"
-                        color="#5bbcb6"
+                        icon="ant-design:check-circle-filled"
+                        color="#ffb648"
                         position={elm}
                         key={key}
-                        onClick={(e) => onApply(e, elm)}
-                        style={{ fontSize: "1.7rem", cursor: "pointer" }}
+                        style={{ fontSize: "1.7rem" }}
                       />
                     </div>
                   )}
-                  {userStatus?.status === "applying" &&
-                    userStatus?.applyingPosition === elm && (
-                      <div className="check_icon">
-                        <Icon
-                          icon="ant-design:check-circle-filled"
-                          color="#ffb648"
-                          position={elm}
-                          key={key}
-                          style={{ fontSize: "1.7rem" }}
-                        />
-                      </div>
-                    )}
-                </div>
-                <div className="empty_position">{positions[elm]}</div>
               </div>
-            ))}
-          </div>
+              <div className="empty_position">{positions[elm]}</div>
+            </div>
+          ))}
         </div>
       </div>
     </>

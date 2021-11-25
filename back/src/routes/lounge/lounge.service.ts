@@ -353,7 +353,7 @@ export const deleteReplyOfLounge = async (request: Request, response: Response) 
 
     try {
         const reply = await Replyoflounge.findOne({
-            attributes: ['profileId'],
+            attributes: ['profileId', 'loungeId'],
             include: {
                 model: Lounge,
                 attributes: ['replyCount']

@@ -229,7 +229,7 @@ export const getReplyOfLounge = async (request: Request, response: Response) => 
                     attributes: ['id', 'profileImage', 'blurImage', 'username']
                 }]
             },
-            order: [['createdAt', 'DESC']],
+            order: ['createdAt'],
             where: { loungeId: loungeId },
             offset: offset,
             limit: limit

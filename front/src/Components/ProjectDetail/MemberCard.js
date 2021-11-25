@@ -4,6 +4,7 @@ import { useHistory } from "react-router";
 import axios from "axios";
 import { Icon } from "@iconify/react";
 import { positions } from "../../userData";
+import { OverlayTrigger, Tooltip, Button } from "react-bootstrap";
 
 export default function MemberCard({
   elm,
@@ -73,16 +74,29 @@ export default function MemberCard({
           <Icon icon="ph:crown-simple-fill" color="#ffb648" fontSize="1.3rem" />
         </div>
       ) : null}
-      <img
-        key={key}
-        alt={elm.profile.id}
-        src={elm.profile.user.profileImage}
-        style={{ cursor: "pointer" }}
-        onClick={(e) => {
-          e.preventDefault();
-          history.push(`/profile/${elm.profile.id}`);
-        }}
-      />
+      <OverlayTrigger
+        placement="top"
+        overlay={
+          <Tooltip
+            id={`tooltip-top`}
+            wrapperStyle={{ backgroundColor: "#4A4A4A" }}>
+            {elm.profile.user.username}
+          </Tooltip>
+        }>
+        <Button variant="none">
+          <img
+            key={key}
+            alt={elm.profile.id}
+            src={elm.profile.user.profileImage}
+            style={{ cursor: "pointer" }}
+            onClick={(e) => {
+              e.preventDefault();
+              history.push(`/profile/${elm.profile.id}`);
+            }}
+          />
+        </Button>
+      </OverlayTrigger>
+
       <div className="member_position__row1">
         <div
           className="member_position"
@@ -112,16 +126,14 @@ export default function MemberCard({
                   {elm.profile.id !== data.leader && (
                     <div
                       className="toggle_text"
-                      onClick={(e) => onChangeLeader(e, elm)}
-                    >
+                      onClick={(e) => onChangeLeader(e, elm)}>
                       팀장 위임하기
                     </div>
                   )}
                   {elm.profile.id !== data.leader && (
                     <div
                       className="toggle_text"
-                      onClick={(e) => onDeleteMember(e, elm)}
-                    >
+                      onClick={(e) => onDeleteMember(e, elm)}>
                       내보내기
                     </div>
                   )}

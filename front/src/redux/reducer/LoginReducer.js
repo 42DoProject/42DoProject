@@ -22,14 +22,6 @@ export default function loginReducer(state, action) {
       socket.emit("signOut");
       console.log(state);
       return null;
-    case "DM":
-      console.log("state-DM");
-      let DmState = {
-        ...state,
-        dmid: action.payload,
-      };
-      console.log(state);
-      return DmState;
     case "TOKEN_UPDATE":
       console.log("state-UPDATE");
       let updateState = {
@@ -39,6 +31,8 @@ export default function loginReducer(state, action) {
       };
       console.log(state);
       return updateState;
+    case "DM":
+      return state;
     default:
       console.log("state-NULL");
       console.log(state);

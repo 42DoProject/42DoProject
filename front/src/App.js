@@ -23,32 +23,34 @@ function App(props) {
   let loginState = useSelector((state) => state.loginReducer);
   let dispatch = useDispatch();
   // 새로운 Token 발급
-  const getToken = useCallback(async () => {
-    console.log("--------------app state-------------");
-    console.log("App.js1", loginState);
-    try {
-      if (loginState) {
-        const { data } = await axios.get(
-          `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/auth/signin?refresh_token=${loginState.refreshToken}`
-        );
-        socket.emit("authorization", {
-          token: data.accessToken,
-        });
-        dispatch({ type: "TOKEN_UPDATE", payload: data });
+  useEffect(() => {
+    const getToken = async () => {
+      console.log("--------------app state-------------");
+      console.log("App.js1", loginState);
+      try {
+        if (loginState) {
+          const { data } = await axios.get(
+            `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/auth/signin?refresh_token=${loginState.refreshToken}`
+          );
+          socket.emit("authorization", {
+            token: data.accessToken,
+          });
+          dispatch({ type: "TOKEN_UPDATE", payload: data });
+        }
+      } catch (err) {
+        dispatch({ type: "LOGOUT" });
+        console.log(err);
       }
-    } catch (err) {
-      dispatch({ type: "LOGOUT" });
-      console.log(err);
+      console.log("App.js2", loginState);
+    };
+    if (loginState?.refreshTime < Date.now()) {
+      console.log("loginState", loginState.refreshTime);
+      console.log("date", Date.now());
+      getToken();
+      clearInterval(localStorage.getItem("timerId"));
+      const timerId = setInterval(getToken, 1000 * 60 * 25);
+      localStorage.setItem("timerId", timerId);
     }
-    console.log("App.js2", loginState);
-  }, [loginState]);
-  useEffect(() => {
-    getToken();
-  }, []);
-  useEffect(() => {
-    clearInterval(localStorage.getItem("timerId"));
-    const timerId = setInterval(getToken, 1000 * 60 * 25);
-    localStorage.setItem("timerId", timerId);
   }, [loginState]);
 
   console.log(loginState?.accessToken);

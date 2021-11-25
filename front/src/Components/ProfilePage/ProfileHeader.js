@@ -13,8 +13,6 @@ import axios from "axios";
 export default function ProfileHeader(props) {
   // let userState = useSelector((state) => state.userReducer);
   const loginState = useSelector((state) => state.loginReducer);
-  const DmState = useSelector((state) => state.DmReducer);
-  console.log("DmState", DmState);
   const [followerFlag, setFollowerFlag] = useState(0);
   const [followingFlag, setFollowingFlag] = useState(0);
   const [followButton, setFollowButton] = useState(); // "unfollow" / "follow" 버튼

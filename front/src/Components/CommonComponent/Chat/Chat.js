@@ -10,8 +10,6 @@ import Conv from "./AddConv";
 
 export default function Chat() {
   let loginState = useSelector((state) => state.loginReducer);
-  let DmState = useSelector((state) => state.DmReducer);
-  console.log("chatdm", DmState);
   const [clickFlag, setClickFlag] = useState(0);
   const [convFlag, setConvFlag] = useState(0);
   const [chatRoom, setChatRoom] = useState();
@@ -40,7 +38,7 @@ export default function Chat() {
     } catch (err) {
       console.log(err);
     }
-  }, [loginState.accessTokenm, DmState]);
+  }, [loginState.accessToken]);
   useEffect(() => {
     socket.on("chat:newRoom", () => {
       getChatRoom();

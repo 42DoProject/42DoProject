@@ -13,6 +13,7 @@ export default function loginReducer(state, action) {
         id: action.payload.user.id,
         accessToken: action.payload.token.accessToken,
         refreshToken: action.payload.token.refreshToken,
+        refreshTime: Date.now() + 1000 * 60 * 25,
       };
       console.log(state);
       return loginState;
@@ -26,13 +27,18 @@ export default function loginReducer(state, action) {
       console.log("state-UPDATE");
       let updateState = {
         ...state,
+        refreshTime: Date.now() + 60 * 25,
         accessToken: action.payload.accessToken,
         refreshToken: action.payload.refreshToken,
       };
       console.log(state);
       return updateState;
     case "DM":
-      return state;
+      let dmState = {
+        ...state,
+        dmid: action.payload.userId,
+      };
+      return dmState;
     default:
       console.log("state-NULL");
       console.log(state);

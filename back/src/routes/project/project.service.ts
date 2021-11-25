@@ -1075,7 +1075,7 @@ export const deleteMember = async (request: Request, response: Response) => {
     // check authority
     if (
       request.user!.id !== projectprofile?.project.leader &&
-      request.user!.id !== profileId
+      request.user!.id !== Number(profileId)
     ) {
       response.status(401).json({ errMessage: "no authority" });
       return;

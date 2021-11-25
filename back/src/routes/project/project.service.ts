@@ -401,6 +401,15 @@ export const updateList = async (request: Request, response: Response) => {
           );
         });
       }
+      const listMember = await Projectprofile.findAll({
+        attributes: ['profileId'],
+        where: { projectId: Number(projectId) }
+      })
+      if (listMember !== null) {
+        listMember!.forEach((element) => {
+          feed.changeProjectStatus(element.profileId, Number(projectId), project!.title, String(state));
+        })
+      }
     }
     response.status(200).json({ message: "updated successfully." });
   } catch (error) {
@@ -1036,6 +1045,15 @@ export const addMember = async (request: Request, response: Response) => {
           );
         });
       }
+      const listMember = await Projectprofile.findAll({
+        attributes: ['profileId'],
+        where: { projectId: Number(projectId) }
+      })
+      if (listMember !== null) {
+        listMember!.forEach((element) => {
+          feed.changeProjectStatus(element.profileId, Number(projectId), project!.title, String(inputState));
+        })
+      }
     }
   } catch (error) {
     response.status(405).json({ errMessage: String(error) });
@@ -1308,6 +1326,15 @@ export const deletePosition = async (request: Request, response: Response) => {
           );
         });
       }
+      const listMember = await Projectprofile.findAll({
+        attributes: ['profileId'],
+        where: { projectId: Number(projectId) }
+      })
+      if (listMember !== null) {
+        listMember!.forEach((element) => {
+          feed.changeProjectStatus(element.profileId, Number(projectId), project!.title, String(state));
+        })
+      }
     }
   } catch (error) {
     response.status(405).json({ errMessage: String(error) });
@@ -1373,9 +1400,18 @@ export const changeState = async (request: Request, response: Response) => {
             where: { projectId: Number(projectId) }
         })
         if (likeList !== null) {
-            likeList!.forEach((element) => {
-                feed.changeProjectStatus(element.profileId, Number(projectId), project!.title, String(state));
-            })
+          likeList!.forEach((element) => {
+            feed.changeProjectStatus(element.profileId, Number(projectId), project!.title, String(state));
+          })
+        }
+        const listMember = await Projectprofile.findAll({
+          attributes: ['profileId'],
+          where: { projectId: Number(projectId) }
+        })
+        if (listMember !== null) {
+          listMember!.forEach((element) => {
+            feed.changeProjectStatus(element.profileId, Number(projectId), project!.title, String(state));
+          })
         }
     } catch (error) {
         response.status(405).json({ errMessage: String(error) });

@@ -13,7 +13,7 @@ export default function Footer() {
           target="_blank">
           <Icon icon="akar-icons:github-fill" fontSize="1.5rem" />
         </a>
-        <a className="footer-icons__white" href="mailto:42doteam@gmail.com">
+        <a className="footer-icons__white" href="mailto:42doproject@gmail.com">
           <Icon icon="fluent:mail-48-filled" fontSize="1.7rem" />
         </a>
       </div>

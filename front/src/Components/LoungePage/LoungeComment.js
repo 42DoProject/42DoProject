@@ -4,7 +4,9 @@ import "../../SCSS/LoungePage/LoungeComment.scss";
 import { useSelector } from "react-redux";
 import { Icon } from "@iconify/react";
 import Pagination from "react-js-pagination";
-import relativeTime from "../../relativeTime";
+
+import Modal from "../ProjectEditPage/Modal";
+import CommentElement from "./CommentElement";
 
 export default function LoungeComment({
   loungeData,
@@ -17,7 +19,8 @@ export default function LoungeComment({
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
   const itemPerPage = 10;
-  const [onEdit, setOnEdit] = useState(false);
+
+  const [modalFlag, setModalFlag] = useState(false);
 
   const handlePageChange = (page) => {
     setPage(page);
@@ -37,7 +40,7 @@ export default function LoungeComment({
           },
         });
         setTotalPage(count);
-        console.log("rows", rows);
+        // console.log("rows", rows);
         setReplies(rows);
       } catch (err) {
         console.log(err);
@@ -64,96 +67,54 @@ export default function LoungeComment({
     }
   };
 
-  const editComment = async (reply) => {
-    try {
-      await axios({
-        method: "PUT",
-        url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/lounge/reply/${reply.id}`,
-        headers: {
-          Authorization: `Bearer ${loginState?.accessToken}`,
-        },
-        // data: { comment:  },
-      });
-      replyRefresh ? setReplyRefresh(0) : setReplyRefresh(1);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  const deleteComment = async (replyid) => {
-    try {
-      await axios({
-        method: "DELETE",
-        url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/lounge/reply/${replyid}`,
-        headers: {
-          Authorization: `Bearer ${loginState?.accessToken}`,
-        },
-      });
-      replyRefresh ? setReplyRefresh(0) : setReplyRefresh(1);
-      refreshFlag ? setRefreshFlag(0) : setRefreshFlag(1);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   return (
     <div className="comment-wrap">
+      {modalFlag && (
+        <Modal
+          body="로그인해 주세요"
+          buttons="cancel-only"
+          setOpenFlag={setModalFlag}
+        />
+      )}
       {replies?.map((e, i) => {
         return (
-          <div className="comment-element" key={i}>
-            <img className="comment-img" src={e.image} />
-            <div className="comment-bubble">
-              <div className="comment-username">
-                <span>{e.username}</span>
-                <span>{e.userid === loungeData.userid && "작성자"}</span>
-              </div>
-              <div className="comment-content">{e.comment}</div>
-              <div className="comment-icons">
-                <span className="comment-time">
-                  {relativeTime(new Date(e.createdAt).getTime())}
-                </span>
-                {e.userid === loginState?.id && (
-                  <>
-                    <Icon
-                      icon="clarity:edit-solid"
-                      style={{ cursor: "pointer" }}
-                      onClick={() => setOnEdit(true)}
-                    />
-                    <Icon
-                      icon="icomoon-free:bin"
-                      style={{ cursor: "pointer" }}
-                      onClick={() => deleteComment(e.id)}
-                    />
-                  </>
-                )}
-              </div>
-            </div>
-          </div>
+          <CommentElement
+            e={e}
+            key={i}
+            loungeData={loungeData}
+            replyRefresh={replyRefresh}
+            setReplyRefresh={setReplyRefresh}
+            refreshFlag={refreshFlag}
+            setRefreshFlag={setRefreshFlag}
+          />
         );
       })}
-      <div className="comment_pagination">
-        <Pagination
-          hideFirstLastPages={true}
-          activePage={page}
-          itemsCountPerPage={itemPerPage}
-          totalItemsCount={totalPage}
-          pageRangeDisplayed={4}
-          prevPageText={
-            <Icon
-              icon="dashicons:arrow-left-alt2"
-              color="#e5e5e5"
-              height="1rem"
-            />
-          }
-          nextPageText={
-            <Icon
-              icon="dashicons:arrow-right-alt2"
-              color="#e5e5e5"
-              height="1rem"
-            />
-          }
-          onChange={handlePageChange}
-        />
-      </div>
+      {replies?.length !== 0 && (
+        <div className="comment_pagination">
+          <Pagination
+            hideFirstLastPages={true}
+            activePage={page}
+            itemsCountPerPage={itemPerPage}
+            totalItemsCount={totalPage}
+            pageRangeDisplayed={4}
+            prevPageText={
+              <Icon
+                icon="dashicons:arrow-left-alt2"
+                color="#e5e5e5"
+                height="1rem"
+              />
+            }
+            nextPageText={
+              <Icon
+                icon="dashicons:arrow-right-alt2"
+                color="#e5e5e5"
+                height="1rem"
+              />
+            }
+            onChange={handlePageChange}
+          />
+        </div>
+      )}
       <div className="comment__write">
         <input
           className="comment__input"
@@ -164,6 +125,9 @@ export default function LoungeComment({
           icon="fluent:send-20-filled"
           className="comment-send"
           onClick={() => {
+            if (!loginState) {
+              setModalFlag(true);
+            }
             document.querySelector(".comment__input").value !== "" &&
               postReply();
           }}

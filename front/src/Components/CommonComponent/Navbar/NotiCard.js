@@ -119,13 +119,13 @@ export default function NotiCard({ date, type, args }) {
             <div className="date">{relativeTime(date)}</div>
           </div>
           <span className="projectName">{args[0].projectName}</span>의 상태가
-          {args[1].projectStatus === 0 && (
+          {args[1].projectStatus === "recruiting" && (
             <span className="projectName"> 모집중</span>
           )}
-          {args[1].projectStatus === 1 && (
+          {args[1].projectStatus === "proceeding" && (
             <span className="projectName"> 진행중</span>
           )}
-          {args[1].projectStatus === 2 && (
+          {args[1].projectStatus === "completed" && (
             <span className="projectName"> 완성됨</span>
           )}
           으로 변경되었어요.

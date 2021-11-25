@@ -6,6 +6,7 @@ import relativeTime from "../../relativeTime";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import LoungeComment from "./LoungeComment";
+import { useHistory } from "react-router";
 
 export default function LoungePost({
   loungeData,
@@ -13,6 +14,7 @@ export default function LoungePost({
   setRefreshFlag,
 }) {
   const loginState = useSelector((state) => state.loginReducer);
+  const history = useHistory();
   const [editFlag, setEditFlag] = useState(false);
   const [openComment, setOpenComment] = useState(false);
   const [commentIcon, setCommentIcon] = useState("dashicons:arrow-down-alt2");
@@ -49,7 +51,6 @@ export default function LoungePost({
     setEditFlag(true);
   };
   const putPost = async () => {
-    // console.log("edit");
     try {
       await axios({
         method: "PUT",
@@ -92,12 +93,13 @@ export default function LoungePost({
   };
 
   console.log("loungeData", loungeData);
-  console.log("loginState", loginState);
 
   return (
     <div className="lounge-post">
       <div className="lounge-post__row1">
-        <div className="lounge-post__profile">
+        <div
+          className="lounge-post__profile"
+          onClick={() => history.push(`/profile/${loungeData.userid}`)}>
           <img
             className="profile__img"
             src={loungeData.image || defaultImg}

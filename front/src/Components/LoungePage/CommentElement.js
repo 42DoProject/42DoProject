@@ -13,10 +13,15 @@ export default function CommentElement({
   setReplyRefresh,
   refreshFlag,
   setRefreshFlag,
+  page,
+  setPage,
+  itemPerPage,
 }) {
   const [onEdit, setOnEdit] = useState(false);
   const history = useHistory();
   const loginState = useSelector((state) => state.loginReducer);
+
+  // console.log("loungeData", loungeData);
 
   const editComment = async (replyid) => {
     try {
@@ -45,6 +50,10 @@ export default function CommentElement({
           Authorization: `Bearer ${loginState?.accessToken}`,
         },
       });
+      // 마지막 페이지에서 댓글을 삭제했을 경우
+      if (page == Math.ceil(loungeData.replyCount / itemPerPage)) {
+        setPage(Math.ceil((loungeData.replyCount - 1) / itemPerPage));
+      }
       replyRefresh ? setReplyRefresh(0) : setReplyRefresh(1);
       refreshFlag ? setRefreshFlag(0) : setRefreshFlag(1);
     } catch (err) {

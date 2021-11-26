@@ -9,10 +9,13 @@ import { Example as PopUp2 } from "./PopUp2";
 import axios from "axios";
 import UserCard from "./SearchCard";
 import ProjectCard from "./ProjectCard";
+import { useHistory, useLocation } from "react-router";
 
 export default function Navbar(props) {
   const [searchRes, setSearchRes] = useState([]);
   const loginState = useSelector((state) => state.loginReducer);
+  const location = useLocation();
+  const history = useHistory();
 
   const search = async (input) => {
     try {
@@ -35,12 +38,17 @@ export default function Navbar(props) {
   return (
     <div className="Nav">
       <div className="Nav-column1">
-        <Link to="/">
-          <div className="Nav__title">
-            <Icon className="title-icon" icon="simple-icons:42" />
-            <div className="title-text">DoProject</div>
-          </div>
-        </Link>
+        {/* <Link to="/"> */}
+        <div
+          className="Nav__title"
+          onClick={() => {
+            if (location.pathname === "/") window.location.reload(false);
+            else history.push("/");
+          }}>
+          <Icon className="title-icon" icon="simple-icons:42" />
+          <div className="title-text">DoProject</div>
+        </div>
+        {/* </Link> */}
         <div className="Nav__input">
           <Icon className="input-icon" icon="fe:search" />
           <input

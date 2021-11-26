@@ -2,13 +2,14 @@
 .lounge {
   position: relative;
   width: 40%;
-  padding: 0 4rem;
+  padding: 0 2rem;
   // padding-right: 2rem;
   .lounge__title {
     font-weight: $bold;
     font-size: $fontMl;
     color: $black;
     cursor: pointer;
+    margin-left: 2rem;
   }
   .lounge__no-lounge {
     width: 100%;
@@ -90,7 +91,7 @@
 }
 @media (max-width: 63rem) {
   .lounge {
-    margin-top: 4rem;
+    // margin-top: 4rem;
     width: 100%;
   }
   .lounge__list {

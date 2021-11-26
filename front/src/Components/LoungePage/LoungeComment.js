@@ -19,6 +19,8 @@ export default function LoungeComment({
   const itemPerPage = 10;
   const [page, setPage] = useState(
     Math.ceil(loungeData.replyCount / itemPerPage)
+    // ? Math.ceil(loungeData.replyCount / itemPerPage)
+    // : 1
   );
   const [totalPage, setTotalPage] = useState(1);
   const [modalFlag, setModalFlag] = useState(false);
@@ -53,7 +55,9 @@ export default function LoungeComment({
           data: { count, rows },
         } = await axios({
           method: "GET",
-          url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/lounge/reply/${loungeData.id}?page=${page}&pageSize=${itemPerPage}
+          url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/lounge/reply/${
+            loungeData.id
+          }?page=${page ? page : 1}&pageSize=${itemPerPage}
         `,
           headers: {
             Authorization: `Bearer ${loginState?.accessToken}`,
@@ -68,11 +72,11 @@ export default function LoungeComment({
     getReply();
   }, [replyRefresh, page]);
 
-  // console.log("replies", replies);
+  console.log("page", page);
 
   return (
     <div className="comment-wrap">
-      {modalFlag && (
+      {modalFlag === true && (
         <Modal
           body="로그인해 주세요"
           buttons="cancel-only"
@@ -126,7 +130,16 @@ export default function LoungeComment({
           className="comment__input"
           spellCheck="false"
           placeholder="댓글을 작성해 주세요"
-          maxLength="300"></input>
+          maxLength="300"
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              if (!loginState) {
+                setModalFlag(true);
+              }
+              document.querySelector(".comment__input").value !== "" &&
+                postReply();
+            }
+          }}></input>
         <Icon
           icon="fluent:send-20-filled"
           className="comment-send"

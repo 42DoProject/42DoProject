@@ -294,8 +294,7 @@ export const postReplyOfLounge = async (request: Request, response: Response) =>
         await Lounge.update({
             replyCount: (lounge!.replyCount + 1)
         }, { where: { id: loungeId } })
-        const feedComment = `${lounge!.comment.substr(0, 10)}...`
-
+        const feedComment = (lounge!.comment.length > 10) ? `${lounge!.comment.substr(0, 10)}...` : lounge!.comment;
         await Replyoflounge.create({
             comment: comment,
             like: 0,

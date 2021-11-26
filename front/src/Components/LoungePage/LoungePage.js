@@ -21,11 +21,13 @@ export default function LoungePage() {
         refreshFlag={refreshFlag}
         setRefreshFlag={setRefreshFlag}
       />
-      <LoungePaginate
-        status="base"
-        setLoungeData={setLoungeData}
-        refreshFlag={refreshFlag}
-      />
+      {loungeData?.length !== 0 && (
+        <LoungePaginate
+          status="base"
+          setLoungeData={setLoungeData}
+          refreshFlag={refreshFlag}
+        />
+      )}
     </div>
   );
 }

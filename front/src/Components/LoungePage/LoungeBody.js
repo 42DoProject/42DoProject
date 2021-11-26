@@ -65,11 +65,14 @@ export default function LoungeBody({
           )}
         </div>
         <div className="left__posts">
-          {loginState && status === "base" && (
+          {status === "base" && (
             <LoungeWrite
               refreshFlag={refreshFlag}
               setRefreshFlag={setRefreshFlag}
             />
+          )}
+          {loungeData?.length === 0 && (
+            <div className="lounge-noPost">라운지에 첫 글을 남겨주세요 😄</div>
           )}
           {loungeData?.map((e, idx) => (
             <LoungePost
@@ -99,13 +102,11 @@ export default function LoungeBody({
                       key={i}
                       onClick={() => {
                         history.push(`/profile/${v.userId}`);
-                      }}
-                    >
+                      }}>
                       <img
                         className="connected__img"
                         src={v.profileImage || defaultImg}
-                        alt="connected__img"
-                      ></img>
+                        alt="connected__img"></img>
                       <div className="connected__name">{v.username}</div>
                     </div>
                   );

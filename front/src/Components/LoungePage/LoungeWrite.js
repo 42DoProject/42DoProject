@@ -3,9 +3,12 @@ import { useSelector } from "react-redux";
 import "../../SCSS/LoungePage/LoungeWrite.scss";
 import axios from "axios";
 import defaultImg from "../../default_intra.png";
+import { Icon } from "@iconify/react";
+import Modal from "../ProjectEditPage/Modal";
 
 export default function LoungeWrite({ refreshFlag, setRefreshFlag }) {
   const loginState = useSelector((state) => state.loginReducer);
+  const [openModal, setOpenModal] = useState(false);
   const postLounge = async (textValue) => {
     try {
       await axios({
@@ -25,16 +28,25 @@ export default function LoungeWrite({ refreshFlag, setRefreshFlag }) {
   };
   return (
     <div className="lounge-write">
+      {openModal === true && (
+        <Modal
+          body="로그인해 주세요"
+          buttons={["확인"]}
+          confirmFunc={() => setOpenModal(false)}
+        />
+      )}
       <div className="lounge-write__profile">
-        <img
-          className="profile__img"
-          src={
-            loginState !== null ? loginState.profileImage || defaultImg : null
-          }
-          alt="profile__img"></img>
+        {loginState ? (
+          <img
+            className="profile__img"
+            src={loginState?.profileImage || defaultImg}
+            alt="profile__img"></img>
+        ) : (
+          <Icon className="profile__icon" icon="bi:person-circle" />
+        )}
 
         <span className="profile__name">
-          {loginState !== null ? loginState.name || "user" : null}
+          {loginState !== null ? loginState.name || "user" : "guest"}
         </span>
       </div>
       <div className="lounge-write__space">
@@ -50,9 +62,12 @@ export default function LoungeWrite({ refreshFlag, setRefreshFlag }) {
           type="submit"
           className="lounge-write__submit"
           onClick={() => {
-            const textEl = document.querySelector(".lounge-write__box");
-            if (textEl.value !== "") postLounge(textEl.value);
-            textEl.value = "";
+            if (loginState === null) setOpenModal(true);
+            else {
+              const textEl = document.querySelector(".lounge-write__box");
+              if (textEl.value !== "") postLounge(textEl.value);
+              textEl.value = "";
+            }
           }}>
           등록
         </button>

@@ -96,7 +96,8 @@ export default function ProfileEditHeader(props) {
             spellCheck="false"
             className="introduction__textarea"
             maxLength="500"
-            placeholder="자기소개를 작성해주세요. (ex. 내가 잘하는 분야, 하고 싶은 프로젝트, 배우고 싶은 스킬 등)"
+            placeholder={`자기소개를 작성해주세요.
+(ex. 내가 할 줄 아는 것, 하고 싶은 프로젝트, 배우고 싶은 스킬 등)`}
             defaultValue={props.user.introduction}
             onChange={(e) => {
               if (e.target.value.length > e.target.maxLength) {

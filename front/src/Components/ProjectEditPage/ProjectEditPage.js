@@ -185,6 +185,23 @@ export default function ProjectEditPage() {
     }
   };
 
+  const addSkill = (input) => {
+    skills.skills.forEach((e, idx) => {
+      if (input.value === e[0]) {
+        // 선택한 값이 skills에 있으면
+        for (let elem of selectedSkill) {
+          if (elem[0] === input.value) {
+            //선택한 값이 이미 selected에 있으면
+            input.value = "";
+            return; // 추가안하고 지워준 후 종료
+          }
+        }
+        setSelectedSkill([...selectedSkill, [...e, idx + ""]]); // selectedSkill에 인덱스(el[2])와 함께 추가
+        input.value = "";
+      }
+    });
+  };
+
   useEffect(() => {
     if (projectData) {
       editorRef?.current.getInstance().setMarkdown(projectData.content.content);
@@ -434,20 +451,10 @@ export default function ProjectEditPage() {
                 list="tech-stacks"
                 onKeyPress={(e) => {
                   if (e.key === "Enter") {
-                    skills.skills.forEach((el, idx) => {
-                      if (e.target.value === el[0]) {
-                        // 선택한 값이 skills에 있으면
-                        for (let elem of selectedSkill) {
-                          if (elem[0] === e.target.value) {
-                            //선택한 값이 이미 selected에 있으면
-                            e.target.value = "";
-                            return; // 추가안하고 지워준 후 종료
-                          }
-                        }
-                        setSelectedSkill([...selectedSkill, [...el, idx + ""]]); // selectedSkill에 인덱스(el[2])와 함께 추가
-                        e.target.value = "";
-                      }
-                    });
+                    const inputEl = document.querySelector(
+                      "input.project-edit__add-skill"
+                    );
+                    addSkill(inputEl);
                   }
                 }}
               />
@@ -456,6 +463,16 @@ export default function ProjectEditPage() {
                   return <option key={idx} value={v[0]} />;
                 })}
               </datalist>
+              <Icon
+                icon="akar-icons:circle-plus-fill"
+                className="add-skill__icon"
+                onClick={() => {
+                  const inputEl = document.querySelector(
+                    "input.project-edit__add-skill"
+                  );
+                  addSkill(inputEl);
+                }}
+              />
             </div>
           </label>
           <div className="project-edit__selected-skill">

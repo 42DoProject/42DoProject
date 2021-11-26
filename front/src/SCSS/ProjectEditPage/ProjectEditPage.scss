@@ -156,6 +156,15 @@
       width: 14.5rem;
       padding: 0.3rem 0.7rem;
     }
+    .add-skill__icon {
+      color: $lightGrey;
+      margin-left: 0.5rem;
+      font-size: 1.5rem;
+      cursor: pointer;
+      &:hover {
+        color: $mainColor;
+      }
+    }
   }
   .project-edit__selected-skill {
     display: flex;

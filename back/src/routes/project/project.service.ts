@@ -531,6 +531,10 @@ export const getContent = async (request: Request, response: Response) => {
       attributes: ["viewCount"],
       where: { id: projectId },
     });
+    if (!project) {
+      response.status(400).json({ errMessage: "invalid projectId" });
+      return ;
+    }
     const curViews = project?.viewCount;
     const newViews: number = Number(curViews) + 1;
     await Project.update(

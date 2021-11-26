@@ -55,7 +55,6 @@
 .card1__skill {
   display: flex;
   min-width: 50%;
-  display: flex;
   align-items: flex-start;
   .skill__content {
     img {
@@ -65,6 +64,17 @@
       font-size: $fontSs;
       color: $lightGrey;
       font-weight: 400;
+    }
+  }
+  .skill__add-icon {
+    color: $lightGrey;
+    font-size: $fontMd;
+    margin-left: 0.3rem;
+    position: relative;
+    bottom: 0.1rem;
+    cursor: pointer;
+    &:hover {
+      color: $mainColor;
     }
   }
 
@@ -79,6 +89,7 @@ input.skill__content {
   bottom: 0.4rem;
   width: 14rem;
 }
+
 .selected-skills {
   display: flex;
   flex-wrap: wrap;

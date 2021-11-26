@@ -83,18 +83,16 @@ export default function MemberCard({
             {elm.profile.user.username}
           </Tooltip>
         }>
-        <Button variant="none">
-          <img
-            key={key}
-            alt={elm.profile.id}
-            src={elm.profile.user.profileImage}
-            style={{ cursor: "pointer" }}
-            onClick={(e) => {
-              e.preventDefault();
-              history.push(`/profile/${elm.profile.id}`);
-            }}
-          />
-        </Button>
+        <img
+          key={key}
+          alt={elm.profile.id}
+          src={elm.profile.user.profileImage}
+          style={{ cursor: "pointer" }}
+          onClick={(e) => {
+            e.preventDefault();
+            history.push(`/profile/${elm.profile.id}`);
+          }}
+        />
       </OverlayTrigger>
 
       <div className="member_position__row1">

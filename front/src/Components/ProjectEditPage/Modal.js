@@ -1,44 +1,20 @@
 import React from "react";
-// import { Icon } from "@iconify/react";
 import "../../SCSS/ProjectEditPage/Modal.scss";
 
-export default function Modal({ body, buttons, setYes, setOpenFlag, history }) {
+export default function Modal({ body, buttons, confirmFunc, cancelFunc }) {
   return (
     <div className="validate__wrap">
       <div className="validate__header"></div>
       <div className="validate__body">{body}</div>
       <hr />
       <div className="validate__button">
-        {buttons === "cancel-only" && (
-          <div
-            className="validate__cancel"
-            onClick={() => {
-              setOpenFlag(0);
-              history?.goBack();
-            }}>
-            확인
-          </div>
+        {buttons.length === 1 && ( // ["확인"]
+          <div onClick={() => confirmFunc()}>{buttons[0]}</div>
         )}
-        {/* {buttons === "confirm-only" && (
-          <button className="validate__confirm">네</button>
-        )} */}
-        {buttons === "both" && (
+        {buttons.length === 2 && ( // ["취소", "확인"]
           <>
-            <div
-              className="validate__cancel"
-              onClick={() => {
-                setOpenFlag(0);
-              }}>
-              취소
-            </div>
-            <div
-              className="validate__confirm"
-              onClick={() => {
-                setOpenFlag(0);
-                setYes(1);
-              }}>
-              확인
-            </div>
+            <div onClick={() => cancelFunc()}>{buttons[0]}</div>
+            <div onClick={() => confirmFunc()}>{buttons[1]}</div>
           </>
         )}
       </div>

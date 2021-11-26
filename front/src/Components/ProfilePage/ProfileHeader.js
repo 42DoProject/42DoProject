@@ -13,8 +13,6 @@ import axios from "axios";
 export default function ProfileHeader(props) {
   // let userState = useSelector((state) => state.userReducer);
   const loginState = useSelector((state) => state.loginReducer);
-  const DmState = useSelector((state) => state.DmReducer);
-  console.log("DmState", DmState);
   const [followerFlag, setFollowerFlag] = useState(0);
   const [followingFlag, setFollowingFlag] = useState(0);
   const [followButton, setFollowButton] = useState(); // "unfollow" / "follow" 버튼
@@ -81,8 +79,7 @@ export default function ProfileHeader(props) {
                     let chatLogEl = document.querySelector(".chatLog");
                     chatEl.style.visibility = "hidden";
                     chatLogEl.style.visibility = "visible";
-                  }}
-                >
+                  }}>
                   메시지 보내기
                 </button>
                 {followButton === "follow" ? (
@@ -100,8 +97,7 @@ export default function ProfileHeader(props) {
                       props.setGetDataFlag(1);
                       setFollowButton("unfollow");
                       setRefreshFlag(1);
-                    }}
-                  >
+                    }}>
                     팔로우
                   </button>
                 ) : (
@@ -112,8 +108,7 @@ export default function ProfileHeader(props) {
                         unfollowAlert === 0
                           ? setUnfollowAlert(1)
                           : setUnfollowAlert(0);
-                      }}
-                    >
+                      }}>
                       <Icon
                         className="unfollow__icon"
                         icon="bx:bxs-user-check"
@@ -138,8 +133,7 @@ export default function ProfileHeader(props) {
                 className="row1__edit-profile"
                 onClick={() => {
                   history.push("/profile/edit");
-                }}
-              >
+                }}>
                 프로필 수정
               </button>
             ))}
@@ -150,8 +144,7 @@ export default function ProfileHeader(props) {
           ) : (
             <div
               className="row2__status"
-              style={{ backgroundColor: "#C4C4C4" }}
-            >
+              style={{ backgroundColor: "#C4C4C4" }}>
               {status[props.user.status]}
             </div>
           )}
@@ -160,8 +153,7 @@ export default function ProfileHeader(props) {
               className="row2__follower"
               onClick={(e) => {
                 followerFlag === 0 ? setFollowerFlag(1) : setFollowerFlag(0);
-              }}
-            >
+              }}>
               {`팔로워 ${props.user.follower}명`}
             </div>
             {followerFlag === 1 ? (
@@ -182,8 +174,7 @@ export default function ProfileHeader(props) {
               className="row2__following"
               onClick={(e) => {
                 followingFlag === 0 ? setFollowingFlag(1) : setFollowingFlag(0);
-              }}
-            >
+              }}>
               {`팔로잉 ${props.user.following}명`}
             </div>
             {followingFlag === 1 ? (

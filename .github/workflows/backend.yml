@@ -10,7 +10,7 @@ env:
   AWS_REGION: ap-northeast-2
   ECR_REPOSITORY: image-repo
   ECS_SERVICE: service-backend
-  ECS_CLUSTER: cluster
+  ECS_CLUSTER: doproject
   ECS_TASK_DEFINITION: ./.github/workflows/task-definition-back.json
   ECS_TASK_NAME: task-backend
   CONTAINER_NAME: backend

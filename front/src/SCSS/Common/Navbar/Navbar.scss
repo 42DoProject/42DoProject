@@ -24,6 +24,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
   .title-text {
     letter-spacing: -0.1rem;
     color: $mainColor;
@@ -226,7 +227,7 @@
       padding: 0.5rem;
       margin-right: 0.7rem;
       font-size: $fontSm;
-      font-weight: $bold;
+      font-weight: $normal;
       border-bottom: 1px solid $lightestGrey;
     }
     .notiText__body {

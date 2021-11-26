@@ -15,7 +15,7 @@
   .filter_header {
     padding: 0.5rem;
     font-size: $fontSm;
-    font-weight: $bold;
+    font-weight: $normal;
     border-bottom: 1px solid $lightestGrey;
     margin-bottom: 1rem;
     margin-top: 0.5rem;
@@ -30,6 +30,7 @@
       flex-wrap: wrap;
       .skill__wrap {
         position: relative;
+        margin: 0.15rem 0.3rem;
         .skill_x {
           position: absolute;
           background-color: white;
@@ -50,10 +51,10 @@
       flex-direction: row;
       flex-wrap: wrap;
       position: relative;
-      // margin-top: 0.2rem;
+      margin: 0.5rem;
       .position__tag {
         padding: 0.3rem 0.7rem;
-        margin: 0.5rem;
+        margin: 0.3rem;
         background-color: $lightestGrey;
         border-radius: 0.5rem;
         font-size: $fontSs;
@@ -62,10 +63,10 @@
         position: relative;
         .position_x {
           position: absolute;
-          right: 0rem;
+          right: -0.2rem;
           // bottom: 0;
           // left: 3.6rem;
-          top: 0.2rem;
+          top: -0.2rem;
           color: $grey;
           cursor: pointer;
         }

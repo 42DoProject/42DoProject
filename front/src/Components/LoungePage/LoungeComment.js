@@ -16,14 +16,34 @@ export default function LoungeComment({
   const loginState = useSelector((state) => state.loginReducer);
   const [replies, setReplies] = useState([]);
   const [replyRefresh, setReplyRefresh] = useState(0);
-  const [page, setPage] = useState(1);
-  const [totalPage, setTotalPage] = useState(1);
   const itemPerPage = 10;
-
+  const [page, setPage] = useState(
+    Math.ceil(loungeData.replyCount / itemPerPage)
+  );
+  const [totalPage, setTotalPage] = useState(1);
   const [modalFlag, setModalFlag] = useState(false);
 
   const handlePageChange = (page) => {
     setPage(page);
+  };
+
+  const postReply = async () => {
+    try {
+      await axios({
+        method: "POST",
+        url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/lounge/reply/${loungeData.id}`,
+        headers: {
+          Authorization: `Bearer ${loginState?.accessToken}`,
+        },
+        data: { comment: document.querySelector(".comment__input").value },
+      });
+      document.querySelector(".comment__input").value = "";
+      setPage(Math.ceil((loungeData.replyCount + 1) / itemPerPage));
+      refreshFlag ? setRefreshFlag(0) : setRefreshFlag(1);
+      replyRefresh ? setReplyRefresh(0) : setReplyRefresh(1);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
@@ -40,7 +60,6 @@ export default function LoungeComment({
           },
         });
         setTotalPage(count);
-        // console.log("rows", rows);
         setReplies(rows);
       } catch (err) {
         console.log(err);
@@ -49,23 +68,7 @@ export default function LoungeComment({
     getReply();
   }, [replyRefresh, page]);
 
-  const postReply = async () => {
-    try {
-      await axios({
-        method: "POST",
-        url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/lounge/reply/${loungeData.id}`,
-        headers: {
-          Authorization: `Bearer ${loginState?.accessToken}`,
-        },
-        data: { comment: document.querySelector(".comment__input").value },
-      });
-      document.querySelector(".comment__input").value = "";
-      replyRefresh ? setReplyRefresh(0) : setReplyRefresh(1);
-      refreshFlag ? setRefreshFlag(0) : setRefreshFlag(1);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // console.log("replies", replies);
 
   return (
     <div className="comment-wrap">
@@ -80,12 +83,15 @@ export default function LoungeComment({
         return (
           <CommentElement
             e={e}
-            key={i}
+            key={e.id}
             loungeData={loungeData}
             replyRefresh={replyRefresh}
             setReplyRefresh={setReplyRefresh}
             refreshFlag={refreshFlag}
             setRefreshFlag={setRefreshFlag}
+            page={page}
+            setPage={setPage}
+            itemPerPage={itemPerPage}
           />
         );
       })}

@@ -10,7 +10,7 @@ env:
   AWS_REGION: ap-northeast-2
   ECR_REPOSITORY: image-repo
   ECS_SERVICE: service-frontend
-  ECS_CLUSTER: cluster
+  ECS_CLUSTER: doproject
   ECS_TASK_DEFINITION: ./.github/workflows/task-definition-front.json
   ECS_TASK_NAME: task-frontend
   CONTAINER_NAME: frontend

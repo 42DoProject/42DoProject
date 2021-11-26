@@ -15,7 +15,7 @@ export default function AuthMain() {
     const getData = async () => {
       try {
         // 42API에서 User Data 받아오기.
-        const { data: data } = await axios.get(
+        const { data } = await axios.get(
           `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/auth/signin?code=${code}`
         );
         const {

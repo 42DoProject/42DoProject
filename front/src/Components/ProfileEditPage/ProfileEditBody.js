@@ -4,13 +4,28 @@ import "../../SCSS/ProfilePage/ProfileBody.scss";
 import { useSelector } from "react-redux";
 import skills from "../../skills.json";
 import { positions } from "../../userData";
-// import Cards from "../MainPage/Cards";
-
 export default function ProfileEditBody(props) {
-  // let userState = useSelector((state) => state.userReducer);
   const loginState = useSelector((state) => state.loginReducer);
   let existingSkills = [];
   const [selected, setSelected] = useState([]);
+
+  const addSkill = (input) => {
+    skills.skills.forEach((e, idx) => {
+      if (input.value === e[0]) {
+        // 선택한 값이 skills에 있으면
+        for (let elem of selected) {
+          if (elem[0] === input.value) {
+            //선택한 값이 이미 selected에 있으면
+            input.value = "";
+            return; // 추가안하고 지워준 후 종료
+          }
+        }
+        setSelected([...selected, [...e, idx + ""]]);
+        // selected에 인덱스(el[2])와 함께 추가
+        input.value = "";
+      }
+    });
+  };
 
   useEffect(() => {
     if (props.user.skill) {
@@ -49,21 +64,10 @@ export default function ProfileEditBody(props) {
               placeholder="스킬을 검색해 추가해보세요"
               onKeyPress={(e) => {
                 if (e.key === "Enter") {
-                  skills.skills.forEach((el, idx) => {
-                    if (e.target.value === el[0]) {
-                      // 선택한 값이 skills에 있으면
-                      for (let elem of selected) {
-                        if (elem[0] === e.target.value) {
-                          //선택한 값이 이미 selected에 있으면
-                          e.target.value = "";
-                          return; // 추가안하고 지워준 후 종료
-                        }
-                      }
-                      setSelected([...selected, [...el, idx + ""]]); // selected에 인덱스(el[2])와 함께 추가
-                      e.target.value = "";
-                      // console.log(idx);
-                    }
-                  });
+                  const inputEl = document.querySelector(
+                    "input.skill__content"
+                  );
+                  addSkill(inputEl);
                 }
               }}
             />
@@ -72,6 +76,14 @@ export default function ProfileEditBody(props) {
                 return <option key={idx} value={v[0]} />;
               })}
             </datalist>
+            <Icon
+              icon="akar-icons:circle-plus-fill"
+              className="skill__add-icon"
+              onClick={() => {
+                const inputEl = document.querySelector("input.skill__content");
+                addSkill(inputEl);
+              }}
+            />
           </div>
           <div className="selected-skills">
             {selected.map((e, idx) => {

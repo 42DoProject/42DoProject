@@ -5,15 +5,19 @@ import "../../SCSS/ProfilePage/ProfilePage.scss";
 import { useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
-import { useLocation, useParams } from "react-router";
+import { useHistory, useLocation, useParams } from "react-router";
+import ReactLoading from "../CommonComponent/Loading";
+import Modal from "../ProjectEditPage/Modal";
 
 export default function ProfilePage() {
-  const [userData, setUserData] = useState([]);
+  const [userData, setUserData] = useState(null);
   const loginState = useSelector((state) => state.loginReducer);
   const userId = useParams()["id"];
   const location = useLocation();
+  const history = useHistory();
   const [myFollowings, setMyFollowings] = useState([]);
   const [getDataFlag, setGetDataFlag] = useState(0);
+  const [openModal, setOpenModal] = useState(false);
 
   const getData = async () => {
     try {
@@ -30,6 +34,7 @@ export default function ProfilePage() {
       }
     } catch (err) {
       console.log(err);
+      setOpenModal(true);
       // history.push("/");
     }
   };
@@ -79,7 +84,19 @@ export default function ProfilePage() {
   } else if (loginState !== null && Number(userId) === loginState.id)
     return <Redirect to="/profile" />;
   else
-    return (
+    return userData === null ? (
+      <div className="proflePage-wrap">
+        {openModal && (
+          <Modal
+            body="존재하지 않는 유저입니다"
+            buttons="cancel-only"
+            setOpenFlag={setOpenModal}
+            history={history}
+          />
+        )}
+        <ReactLoading type="spin" color="#a7bc5b" />
+      </div>
+    ) : (
       <div className="profilePage-wrap">
         <ProfileHeader
           user={userData}

@@ -2,7 +2,7 @@ import React from "react";
 // import { Icon } from "@iconify/react";
 import "../../SCSS/ProjectEditPage/Modal.scss";
 
-export default function Modal({ body, buttons, setYes, setOpenFlag }) {
+export default function Modal({ body, buttons, setYes, setOpenFlag, history }) {
   return (
     <div className="validate__wrap">
       <div className="validate__header"></div>
@@ -14,6 +14,7 @@ export default function Modal({ body, buttons, setYes, setOpenFlag }) {
             className="validate__cancel"
             onClick={() => {
               setOpenFlag(0);
+              history?.goBack();
             }}>
             확인
           </div>

@@ -5,7 +5,7 @@ import LoungePaginate from "./LoungePaginate";
 import { useLocation } from "react-router";
 
 export default function LoungePage() {
-  const [loungeData, setLoungeData] = useState();
+  const [loungeData, setLoungeData] = useState(null);
   const [refreshFlag, setRefreshFlag] = useState(0);
   const location = useLocation();
 
@@ -21,13 +21,13 @@ export default function LoungePage() {
         refreshFlag={refreshFlag}
         setRefreshFlag={setRefreshFlag}
       />
-      {loungeData?.length !== 0 && (
+      <div style={{ opacity: loungeData && loungeData?.length ? 1 : 0 }}>
         <LoungePaginate
           status="base"
           setLoungeData={setLoungeData}
           refreshFlag={refreshFlag}
         />
-      )}
+      </div>
     </div>
   );
 }

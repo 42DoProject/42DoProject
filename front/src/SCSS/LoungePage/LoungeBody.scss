@@ -135,3 +135,12 @@
     }
   }
 }
+
+@media (max-width: 700px) {
+  .lounge-body {
+    .lounge-left {
+      width: 100%;
+      margin-left: 2rem;
+    }
+  }
+}

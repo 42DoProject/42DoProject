@@ -59,11 +59,11 @@
     padding: 0.3rem 0.7rem;
     border-radius: 0.7rem;
     background-color: rgba(0, 0, 0, 0.53);
-    .icon__link {
-      color: $lightestGrey;
-      &:hover {
-        color: $mainColor;
-      }
+  }
+  .icon__link {
+    color: $lightestGrey;
+    &:hover {
+      color: $mainColor;
     }
   }
 }

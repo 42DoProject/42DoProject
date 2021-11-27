@@ -7,7 +7,7 @@ import defaultImg from "../../default_intra.png";
 import { useSelector } from "react-redux";
 
 export default function Lounge() {
-  const [data, setData] = useState();
+  const [data, setData] = useState(null);
   const history = useHistory();
   const loginState = useSelector((state) => state.loginReducer);
   useEffect(() => {
@@ -37,7 +37,7 @@ export default function Lounge() {
       <div className="lounge__title" onClick={() => history.push("/lounge")}>
         라운지
       </div>
-      {data?.length === 0 ? (
+      {data === null || data?.length === 0 ? (
         <div className="lounge__no-lounge">라운지 글이 없어요</div>
       ) : (
         <div className="lounge__list">

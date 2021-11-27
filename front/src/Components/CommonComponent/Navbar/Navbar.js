@@ -21,7 +21,7 @@ export default function Navbar(props) {
     try {
       if (input.length) {
         const { data } = await axios.get(
-          `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/search/${input}`,
+          `https://${process.env.REACT_APP_BACKEND_DOMAIN}/search/${input}`,
           {
             headers: {
               Authorization: `Bearer ${loginState?.accessToken}`,
@@ -44,7 +44,8 @@ export default function Navbar(props) {
           onClick={() => {
             if (location.pathname === "/") window.location.reload(false);
             else history.push("/");
-          }}>
+          }}
+        >
           <Icon className="title-icon" icon="simple-icons:42" />
           <div className="title-text">DoProject</div>
         </div>
@@ -54,7 +55,8 @@ export default function Navbar(props) {
           <input
             placeholder="카뎃 닉네임, 프로젝트명 등을 검색해 보세요"
             spellCheck="false"
-            onChange={(e) => search(e.target.value)}></input>
+            onChange={(e) => search(e.target.value)}
+          ></input>
           {searchRes.length !== 0 && (
             <div className="input__res">
               <div className="res__user">
@@ -106,7 +108,8 @@ export default function Navbar(props) {
           <button className="Nav__user__login">
             <a
               className="login__link"
-              href={`https://api.intra.42.fr/oauth/authorize?client_id=${process.env.REACT_APP_API_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_API_REDIRECT_URI}&response_type=code`}>
+              href={`https://api.intra.42.fr/oauth/authorize?client_id=${process.env.REACT_APP_API_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_API_REDIRECT_URI}&response_type=code`}
+            >
               SIGN IN
             </a>
           </button>

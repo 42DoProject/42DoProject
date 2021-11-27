@@ -22,7 +22,7 @@ export default function LoungeBody({
   const getConcurrent = async () => {
     try {
       const { data } = await axios.get(
-        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/user/concurrent`
+        `https://${process.env.REACT_APP_BACKEND_DOMAIN}/user/concurrent`
       );
       setConcurrents(data);
     } catch (err) {
@@ -102,11 +102,13 @@ export default function LoungeBody({
                       key={i}
                       onClick={() => {
                         history.push(`/profile/${v.userId}`);
-                      }}>
+                      }}
+                    >
                       <img
                         className="connected__img"
                         src={v.profileImage || defaultImg}
-                        alt="connected__img"></img>
+                        alt="connected__img"
+                      ></img>
                       <div className="connected__name">{v.username}</div>
                     </div>
                   );

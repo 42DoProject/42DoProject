@@ -20,7 +20,7 @@ export default function LoungePaginate({ status, setLoungeData, refreshFlag }) {
           const {
             data: { count, rows },
           } = await axios.get(
-            `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/lounge?page=${page}&pageSize=5`,
+            `https://${process.env.REACT_APP_BACKEND_DOMAIN}/lounge?page=${page}&pageSize=5`,
             {
               headers: {
                 Authorization: `Bearer ${loginState?.accessToken}`,
@@ -40,7 +40,7 @@ export default function LoungePaginate({ status, setLoungeData, refreshFlag }) {
           const {
             data: { count, rows },
           } = await axios.get(
-            `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/lounge?page=${page}&pageSize=5&order=like`,
+            `https://${process.env.REACT_APP_BACKEND_DOMAIN}/lounge?page=${page}&pageSize=5&order=like`,
             {
               headers: {
                 Authorization: `Bearer ${loginState?.accessToken}`,

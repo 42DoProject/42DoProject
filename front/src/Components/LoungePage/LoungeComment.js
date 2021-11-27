@@ -33,7 +33,7 @@ export default function LoungeComment({
     try {
       await axios({
         method: "POST",
-        url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/lounge/reply/${loungeData.id}`,
+        url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/lounge/reply/${loungeData.id}`,
         headers: {
           Authorization: `Bearer ${loginState?.accessToken}`,
         },
@@ -55,9 +55,11 @@ export default function LoungeComment({
           data: { count, rows },
         } = await axios({
           method: "GET",
-          url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/lounge/reply/${
-            loungeData.id
-          }?page=${page ? page : 1}&pageSize=${itemPerPage}
+          url: `http://${
+            process.env.REACT_APP_BACKEND_DOMAIN
+          }:5000/lounge/reply/${loungeData.id}?page=${
+            page ? page : 1
+          }&pageSize=${itemPerPage}
         `,
           headers: {
             Authorization: `Bearer ${loginState?.accessToken}`,
@@ -139,7 +141,8 @@ export default function LoungeComment({
               document.querySelector(".comment__input").value !== "" &&
                 postReply();
             }
-          }}></input>
+          }}
+        ></input>
         <Icon
           icon="fluent:send-20-filled"
           className="comment-send"

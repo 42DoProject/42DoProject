@@ -23,7 +23,7 @@ export default function Conv({
   const searchUser = async (name) => {
     try {
       const { data } = await axios.get(
-        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/search/user/${name}`,
+        `https://${process.env.REACT_APP_BACKEND_DOMAIN}/search/user/${name}`,
         {
           headers: {
             Authorization: `Bearer ${loginState?.accessToken}`,
@@ -41,7 +41,7 @@ export default function Conv({
   const inviteUser = async (userId) => {
     await axios({
       method: "POST",
-      url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/chat`,
+      url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/chat`,
       headers: {
         Authorization: `Bearer ${loginState.accessToken}`,
       },
@@ -107,7 +107,8 @@ export default function Conv({
                   });
                   chatLogInput.value = "";
                   chatLogInput.focus();
-                }}>
+                }}
+              >
                 <img src={e.profileImage} />
                 <div>{e.username}</div>
               </div>
@@ -131,7 +132,8 @@ export default function Conv({
                   });
                   chatLogInput.value = "";
                   chatLogInput.focus();
-                }}>
+                }}
+              >
                 <img src={e.profileImage} />
                 <div>{e.username}</div>
               </div>

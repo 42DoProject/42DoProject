@@ -13,7 +13,7 @@ export default function LoungeWrite({ refreshFlag, setRefreshFlag }) {
     try {
       await axios({
         method: "POST",
-        url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/lounge`,
+        url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/lounge`,
         headers: {
           Authorization: `Bearer ${loginState.accessToken}`,
         },
@@ -40,7 +40,8 @@ export default function LoungeWrite({ refreshFlag, setRefreshFlag }) {
           <img
             className="profile__img"
             src={loginState?.profileImage || defaultImg}
-            alt="profile__img"></img>
+            alt="profile__img"
+          ></img>
         ) : (
           <Icon className="profile__icon" icon="bi:person-circle" />
         )}
@@ -57,7 +58,8 @@ export default function LoungeWrite({ refreshFlag, setRefreshFlag }) {
           maxLength="800"
           onClick={(e) => {
             e.target.value = "";
-          }}></textarea>
+          }}
+        ></textarea>
         <button
           type="submit"
           className="lounge-write__submit"
@@ -68,7 +70,8 @@ export default function LoungeWrite({ refreshFlag, setRefreshFlag }) {
               if (textEl.value !== "") postLounge(textEl.value);
               textEl.value = "";
             }
-          }}>
+          }}
+        >
           등록
         </button>
       </div>

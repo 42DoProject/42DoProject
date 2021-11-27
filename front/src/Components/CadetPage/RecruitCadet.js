@@ -20,7 +20,7 @@ export default function RecruitCadet() {
         data: { count, list },
       } = await axios({
         method: "post",
-        url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/search/user?page=${page}`,
+        url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/search/user?page=${page}`,
         headers: {
           Authorization: `Bearer ${loginState?.accessToken}`,
         },

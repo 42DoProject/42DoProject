@@ -38,7 +38,7 @@ export default function MemberCard({
   const onChangeLeader = (e, elm) => {
     axios({
       method: "PUT",
-      url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project/leader/${data.id}/${elm.profile.id}`,
+      url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/project/leader/${data.id}/${elm.profile.id}`,
       headers: {
         Authorization: `Bearer ${loginState.accessToken}`,
       },
@@ -54,7 +54,7 @@ export default function MemberCard({
   const onDeleteMember = (e, elm) => {
     axios({
       method: "DELETE",
-      url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project/accept/${data.id}/${elm.profile.id}`,
+      url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/project/accept/${data.id}/${elm.profile.id}`,
       headers: {
         Authorization: `Bearer ${loginState.accessToken}`,
       },
@@ -79,10 +79,12 @@ export default function MemberCard({
         overlay={
           <Tooltip
             id={`tooltip-top`}
-            wrapperStyle={{ backgroundColor: "#4A4A4A" }}>
+            wrapperStyle={{ backgroundColor: "#4A4A4A" }}
+          >
             {elm.profile.user.username}
           </Tooltip>
-        }>
+        }
+      >
         <img
           key={key}
           alt={elm.profile.id}
@@ -124,14 +126,16 @@ export default function MemberCard({
                   {elm.profile.id !== data.leader && (
                     <div
                       className="toggle_text"
-                      onClick={(e) => onChangeLeader(e, elm)}>
+                      onClick={(e) => onChangeLeader(e, elm)}
+                    >
                       팀장 위임하기
                     </div>
                   )}
                   {elm.profile.id !== data.leader && (
                     <div
                       className="toggle_text"
-                      onClick={(e) => onDeleteMember(e, elm)}>
+                      onClick={(e) => onDeleteMember(e, elm)}
+                    >
                       내보내기
                     </div>
                   )}

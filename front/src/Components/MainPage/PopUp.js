@@ -14,7 +14,8 @@ export const Example = () => {
       trigger={("focus", "click")}
       placement="bottom"
       rootClose
-      overlay={Pop()}>
+      overlay={Pop()}
+    >
       <Button variant="light">
         <div>{loginState.name || "user"}</div>
         <div className="Nav__user image">
@@ -42,7 +43,8 @@ function Pop() {
         onClick={() => {
           logOut(loginState.accessToken);
           dispatch({ type: "LOGOUT" });
-        }}>
+        }}
+      >
         <Popover.Body>SIGN OUT</Popover.Body>
       </div>
     </Popover>
@@ -51,7 +53,7 @@ function Pop() {
 
 function logOut(accessToken) {
   try {
-    axios.get(`http://${process.env.REACT_APP_DOMAIN_NAME}:5000/auth/signout`, {
+    axios.get(`https://${process.env.REACT_APP_BACKEND_DOMAIN}/auth/signout`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },

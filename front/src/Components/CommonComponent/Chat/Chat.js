@@ -26,7 +26,7 @@ export default function Chat() {
   const getChatRoom = useCallback(async () => {
     try {
       const { data } = await axios.get(
-        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/chat`,
+        `https://${process.env.REACT_APP_BACKEND_DOMAIN}/chat`,
         {
           headers: {
             Authorization: `Bearer ${loginState.accessToken}`,

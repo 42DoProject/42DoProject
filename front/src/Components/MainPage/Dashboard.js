@@ -19,7 +19,7 @@ export default function Dashboard(props) {
   const getData = async () => {
     try {
       const { data } = await axios.get(
-        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/user/me`,
+        `https://${process.env.REACT_APP_BACKEND_DOMAIN}/user/me`,
         {
           headers: {
             Authorization: `Bearer ${loginState.accessToken}`,
@@ -39,7 +39,7 @@ export default function Dashboard(props) {
           project: { count },
         },
       } = await axios.get(
-        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project?state=proceeding`
+        `https://${process.env.REACT_APP_BACKEND_DOMAIN}/project?state=proceeding`
       );
       setProceedingPrCnt(count);
     } catch (err) {

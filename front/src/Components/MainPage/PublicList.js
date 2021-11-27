@@ -15,7 +15,7 @@ function PublicList(props) {
           project: { count, rows: completedData },
         },
       } = await axios.get(
-        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project?state=completed&pageSize=20&page=1`
+        `https://${process.env.REACT_APP_BACKEND_DOMAIN}/project?state=completed&pageSize=20&page=1`
       );
       props.setFinishPr(count);
       setCompletedProject(completedData);
@@ -39,7 +39,8 @@ function PublicList(props) {
               className="cardbutton prev"
               onClick={(event) => {
                 prevUtil(slideFlag, setSlideFlag);
-              }}>
+              }}
+            >
               <Icon className="prev__icon" icon="dashicons:arrow-left-alt2" />
             </button>
           )}
@@ -48,7 +49,8 @@ function PublicList(props) {
               className="cardbutton next"
               onClick={(event) => {
                 nextUtil(slideFlag, setSlideFlag, completedProject.length);
-              }}>
+              }}
+            >
               <Icon className="next__icon" icon="dashicons:arrow-right-alt2" />
             </button>
           )}

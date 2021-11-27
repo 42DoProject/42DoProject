@@ -16,7 +16,7 @@ export default function Lounge() {
         const {
           data: { rows },
         } = await axios.get(
-          `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/lounge?page=1&pageSize=3`,
+          `https://${process.env.REACT_APP_BACKEND_DOMAIN}/lounge?page=1&pageSize=3`,
           {
             headers: {
               Authorization: `Bearer ${loginState?.accessToken}`,
@@ -47,7 +47,8 @@ export default function Lounge() {
               key={idx}
               onClick={() => {
                 history.push("/lounge");
-              }}>
+              }}
+            >
               <div className="card__row1">
                 <img
                   className="row1__image"

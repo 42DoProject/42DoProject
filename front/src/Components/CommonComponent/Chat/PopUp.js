@@ -16,13 +16,8 @@ export const Example = ({
       trigger={("focus", "click")}
       placement="bottom"
       rootClose
-      overlay={Pop(
-        uuid,
-        chatOutFlag,
-        setChatOutFlag,
-        setInFlag,
-        setInviteFlag
-      )}>
+      overlay={Pop(uuid, chatOutFlag, setChatOutFlag, setInFlag, setInviteFlag)}
+    >
       <Button variant="light">
         <div>
           <Icon
@@ -42,13 +37,15 @@ function Pop(uuid, chatOutFlag, setChatOutFlag, setInFlag, setInviteFlag) {
       <div
         onClick={() => {
           setInviteFlag(1);
-        }}>
+        }}
+      >
         <Popover.Body>채팅방 초대</Popover.Body>
       </div>
       <div
         onClick={() => {
           leaveChat(uuid, loginState, chatOutFlag, setChatOutFlag, setInFlag);
-        }}>
+        }}
+      >
         <Popover.Body>채팅방 나가기</Popover.Body>
       </div>
       <div className="popover__wrap"></div>
@@ -65,7 +62,7 @@ const leaveChat = async (
 ) => {
   try {
     const data = await axios.delete(
-      `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/chat/${uuid}`,
+      `https://${process.env.REACT_APP_BACKEND_DOMAIN}/chat/${uuid}`,
       {
         headers: {
           Authorization: `Bearer ${loginState.accessToken}`,
@@ -81,7 +78,7 @@ const leaveChat = async (
 const inviteUser = async (uuid, userIdList, loginState) => {
   await axios({
     method: "POST",
-    url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/chat${uuid}`,
+    url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/chat${uuid}`,
     headers: {
       Authorization: `Bearer ${loginState.accessToken}`,
     },

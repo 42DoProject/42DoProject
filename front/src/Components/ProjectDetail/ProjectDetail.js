@@ -33,7 +33,7 @@ export default function ProjectDetail(props) {
       const {
         data: { content: projectContent },
       } = await axios.get(
-        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project/content?projectId=${projectId}`
+        `https://${process.env.REACT_APP_BACKEND_DOMAIN}/project/content?projectId=${projectId}`
       );
       setProject(projectContent);
       setCommentCount(projectContent.commentCount);
@@ -46,7 +46,7 @@ export default function ProjectDetail(props) {
   const getUserStatus = async () => {
     try {
       const { data: statusData } = await axios.get(
-        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project/status?projectId=${projectId}`,
+        `https://${process.env.REACT_APP_BACKEND_DOMAIN}/project/status?projectId=${projectId}`,
         {
           headers: {
             Authorization: `Bearer ${loginState.accessToken}`,

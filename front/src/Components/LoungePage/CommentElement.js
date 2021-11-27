@@ -27,7 +27,7 @@ export default function CommentElement({
     try {
       await axios({
         method: "PUT",
-        url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/lounge/reply/${replyid}`,
+        url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/lounge/reply/${replyid}`,
         headers: {
           Authorization: `Bearer ${loginState?.accessToken}`,
         },
@@ -45,7 +45,7 @@ export default function CommentElement({
     try {
       await axios({
         method: "DELETE",
-        url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/lounge/reply/${replyid}`,
+        url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/lounge/reply/${replyid}`,
         headers: {
           Authorization: `Bearer ${loginState?.accessToken}`,
         },
@@ -81,7 +81,8 @@ export default function CommentElement({
           <input
             className="comment-content"
             defaultValue={e.comment}
-            spellCheck="false"></input>
+            spellCheck="false"
+          ></input>
         ) : (
           <div className="comment-content">{e.comment}</div>
         )}
@@ -95,12 +96,14 @@ export default function CommentElement({
                 <div className="comment__on-edit">
                   <div
                     onClick={() => editComment(e.id)}
-                    style={{ cursor: "pointer" }}>
+                    style={{ cursor: "pointer" }}
+                  >
                     완료
                   </div>
                   <div
                     onClick={() => setOnEdit(false)}
-                    style={{ cursor: "pointer" }}>
+                    style={{ cursor: "pointer" }}
+                  >
                     취소
                   </div>
                 </div>

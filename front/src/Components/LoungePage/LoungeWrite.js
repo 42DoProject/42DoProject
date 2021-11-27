@@ -9,6 +9,7 @@ import Modal from "../ProjectEditPage/Modal";
 export default function LoungeWrite({ refreshFlag, setRefreshFlag }) {
   const loginState = useSelector((state) => state.loginReducer);
   const [openModal, setOpenModal] = useState(false);
+
   const postLounge = async (textValue) => {
     try {
       await axios({
@@ -26,6 +27,7 @@ export default function LoungeWrite({ refreshFlag, setRefreshFlag }) {
       console.log(err);
     }
   };
+
   return (
     <div className="lounge-write">
       {openModal === true && (

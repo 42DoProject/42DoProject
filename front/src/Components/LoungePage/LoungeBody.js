@@ -44,6 +44,8 @@ export default function LoungeBody({
     };
   }, []);
 
+  console.log("loungeData", loungeData);
+
   return (
     <div className="lounge-body">
       <div className="lounge-left">
@@ -71,12 +73,15 @@ export default function LoungeBody({
               setRefreshFlag={setRefreshFlag}
             />
           )}
-          {loungeData?.length === 0 && (
-            <div className="lounge-noPost">라운지에 첫 글을 남겨주세요 😄</div>
-          )}
+          {loungeData === null ||
+            (loungeData?.length === 0 && (
+              <div className="lounge-noPost">
+                라운지에 첫 글을 남겨주세요 😄
+              </div>
+            ))}
           {loungeData?.map((e, idx) => (
             <LoungePost
-              key={idx}
+              key={e.id}
               loungeData={e}
               refreshFlag={refreshFlag}
               setRefreshFlag={setRefreshFlag}

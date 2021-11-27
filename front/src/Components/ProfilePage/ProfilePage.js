@@ -89,9 +89,11 @@ export default function ProfilePage() {
         {openModal && (
           <Modal
             body="존재하지 않는 유저입니다"
-            buttons="cancel-only"
-            setOpenFlag={setOpenModal}
-            history={history}
+            buttons={["확인"]}
+            confirmFunc={() => {
+              setOpenModal(false);
+              history.goBack();
+            }}
           />
         )}
         <ReactLoading type="spin" color="#a7bc5b" />

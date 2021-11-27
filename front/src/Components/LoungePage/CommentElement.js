@@ -1,10 +1,11 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "../../SCSS/LoungePage/LoungeComment.scss";
 import { useSelector } from "react-redux";
 import relativeTime from "../../relativeTime";
 import { Icon } from "@iconify/react";
 import { useHistory } from "react-router";
+import Modal from "../ProjectEditPage/Modal";
 
 export default function CommentElement({
   e,
@@ -20,8 +21,7 @@ export default function CommentElement({
   const [onEdit, setOnEdit] = useState(false);
   const history = useHistory();
   const loginState = useSelector((state) => state.loginReducer);
-
-  // console.log("loungeData", loungeData);
+  const editRef = useRef();
 
   const editComment = async (replyid) => {
     try {
@@ -32,7 +32,7 @@ export default function CommentElement({
           Authorization: `Bearer ${loginState?.accessToken}`,
         },
         data: {
-          comment: document.querySelector("input.comment-content").value,
+          comment: editRef.current.value,
         },
       });
       replyRefresh ? setReplyRefresh(0) : setReplyRefresh(1);
@@ -79,6 +79,7 @@ export default function CommentElement({
         </div>
         {onEdit ? (
           <input
+            ref={editRef}
             className="comment-content"
             defaultValue={e.comment}
             spellCheck="false"></input>

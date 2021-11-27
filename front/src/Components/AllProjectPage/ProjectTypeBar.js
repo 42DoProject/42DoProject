@@ -35,7 +35,7 @@ export default function ProjectTypeBar({ state, setFilterOption }) {
       <div className="project-bar">
         {modalFlag === 1 && (
           <Modal
-            body="로그인 해주세요"
+            body="로그인해 주세요"
             buttons={["확인"]}
             confirmFunc={() => setModalFlag(false)}
           />

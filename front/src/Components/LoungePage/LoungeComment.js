@@ -1,10 +1,9 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "../../SCSS/LoungePage/LoungeComment.scss";
 import { useSelector } from "react-redux";
 import { Icon } from "@iconify/react";
 import Pagination from "react-js-pagination";
-
 import Modal from "../ProjectEditPage/Modal";
 import CommentElement from "./CommentElement";
 
@@ -19,11 +18,10 @@ export default function LoungeComment({
   const itemPerPage = 10;
   const [page, setPage] = useState(
     Math.ceil(loungeData.replyCount / itemPerPage)
-    // ? Math.ceil(loungeData.replyCount / itemPerPage)
-    // : 1
   );
   const [totalPage, setTotalPage] = useState(1);
   const [modalFlag, setModalFlag] = useState(false);
+  const inputRef = useRef();
 
   const handlePageChange = (page) => {
     setPage(page);
@@ -37,9 +35,9 @@ export default function LoungeComment({
         headers: {
           Authorization: `Bearer ${loginState?.accessToken}`,
         },
-        data: { comment: document.querySelector(".comment__input").value },
+        data: { comment: inputRef.current.value },
       });
-      document.querySelector(".comment__input").value = "";
+      inputRef.current.value = "";
       setPage(Math.ceil((loungeData.replyCount + 1) / itemPerPage));
       refreshFlag ? setRefreshFlag(0) : setRefreshFlag(1);
       replyRefresh ? setReplyRefresh(0) : setReplyRefresh(1);
@@ -72,18 +70,18 @@ export default function LoungeComment({
     getReply();
   }, [replyRefresh, page]);
 
-  console.log("page", page);
+  // console.log("page", page);
 
   return (
     <div className="comment-wrap">
       {modalFlag === true && (
         <Modal
           body="로그인해 주세요"
-          buttons="cancel-only"
-          setOpenFlag={setModalFlag}
+          buttons={["확인"]}
+          confirmFunc={() => setModalFlag(false)}
         />
       )}
-      {replies?.map((e, i) => {
+      {replies?.map((e) => {
         return (
           <CommentElement
             e={e}
@@ -127,6 +125,7 @@ export default function LoungeComment({
       )}
       <div className="comment__write">
         <input
+          ref={inputRef}
           className="comment__input"
           spellCheck="false"
           placeholder="댓글을 작성해 주세요"
@@ -135,9 +134,9 @@ export default function LoungeComment({
             if (e.key === "Enter") {
               if (!loginState) {
                 setModalFlag(true);
+              } else {
+                inputRef.current.value !== "" && postReply();
               }
-              document.querySelector(".comment__input").value !== "" &&
-                postReply();
             }
           }}></input>
         <Icon
@@ -146,9 +145,9 @@ export default function LoungeComment({
           onClick={() => {
             if (!loginState) {
               setModalFlag(true);
+            } else {
+              inputRef.current.value !== "" && postReply();
             }
-            document.querySelector(".comment__input").value !== "" &&
-              postReply();
           }}
         />
       </div>

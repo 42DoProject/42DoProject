@@ -1,7 +1,7 @@
 import React from "react";
 import "../../SCSS/ProjectEditPage/Unsplash.scss";
 import { Icon } from "@iconify/react";
-import { OverlayTrigger, Tooltip, Button } from "react-bootstrap";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 export default function Unsplash({
   setUnsplashFlag,

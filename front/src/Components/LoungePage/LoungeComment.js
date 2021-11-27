@@ -53,11 +53,9 @@ export default function LoungeComment({
           data: { count, rows },
         } = await axios({
           method: "GET",
-          url: `https://${
-            process.env.REACT_APP_BACKEND_DOMAIN
-          }:5000/lounge/reply/${loungeData.id}?page=${
-            page ? page : 1
-          }&pageSize=${itemPerPage}
+          url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/lounge/reply/${
+            loungeData.id
+          }?page=${page ? page : 1}&pageSize=${itemPerPage}
         `,
           headers: {
             Authorization: `Bearer ${loginState?.accessToken}`,

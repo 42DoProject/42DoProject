@@ -53,7 +53,7 @@ export default function LoungeComment({
           data: { count, rows },
         } = await axios({
           method: "GET",
-          url: `http://${
+          url: `https://${
             process.env.REACT_APP_BACKEND_DOMAIN
           }:5000/lounge/reply/${loungeData.id}?page=${
             page ? page : 1
@@ -140,8 +140,7 @@ export default function LoungeComment({
                 inputRef.current.value !== "" && postReply();
               }
             }
-          }}
-        ></input>
+          }}></input>
         <Icon
           icon="fluent:send-20-filled"
           className="comment-send"

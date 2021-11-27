@@ -9,6 +9,7 @@ import axios from "axios";
 import { positions } from "../../userData";
 import { skills } from "../../skills.json";
 import defaultImg from "../../default_intra.png";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 export default function Dashboard(props) {
   const loginState = useSelector((state) => state.loginReducer);
@@ -19,7 +20,7 @@ export default function Dashboard(props) {
   const getData = async () => {
     try {
       const { data } = await axios.get(
-        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/user/me`,
+        `https://${process.env.REACT_APP_BACKEND_DOMAIN}/user/me`,
         {
           headers: {
             Authorization: `Bearer ${loginState.accessToken}`,
@@ -39,7 +40,7 @@ export default function Dashboard(props) {
           project: { count },
         },
       } = await axios.get(
-        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project?state=proceeding`
+        `https://${process.env.REACT_APP_BACKEND_DOMAIN}/project?state=proceeding`
       );
       setProceedingPrCnt(count);
     } catch (err) {
@@ -71,11 +72,15 @@ export default function Dashboard(props) {
               </div>
             </div>
             {loginState && (
-              <div className="row1__button">
-                <Link className="icon__link" to="/profile/edit">
-                  <Icon icon="akar-icons:edit" />
-                </Link>
-              </div>
+              <OverlayTrigger
+                placement="bottom"
+                overlay={<Tooltip id={`tooltip-bottom`}>프로필 수정</Tooltip>}>
+                <div className="row1__button">
+                  <Link className="icon__link" to="/profile/edit">
+                    <Icon icon="akar-icons:edit" />
+                  </Link>
+                </div>
+              </OverlayTrigger>
             )}
           </div>
           <div className="row2">
@@ -134,29 +139,25 @@ export default function Dashboard(props) {
               <div className="reportbox__report">
                 <Link
                   className="dashboard__project__link1"
-                  to="/projectlist/recruit"
-                >
+                  to="/projectlist/recruit">
                   {props.progressPr}
                 </Link>
                 개의 프로젝트가{" "}
                 <Link
                   className="dashboard__project__link2"
-                  to="/projectlist/recruit"
-                >
+                  to="/projectlist/recruit">
                   모집중
                 </Link>
                 이고{" "}
                 <Link
                   className="dashboard__project__link3"
-                  to="/projectlist/proceed"
-                >
+                  to="/projectlist/proceed">
                   {proceedingPrCnt}
                 </Link>
                 개의 프로젝트가{" "}
                 <Link
                   className="dashboard__project__link4"
-                  to="/projectlist/proceed"
-                >
+                  to="/projectlist/proceed">
                   진행중
                 </Link>
                 이에요

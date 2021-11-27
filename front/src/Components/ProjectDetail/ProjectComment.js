@@ -49,7 +49,7 @@ export default function ProjectComment({
           comments: { rows: commentData, count },
         },
       } = await axios.get(
-        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project/comments?projectId=${projectId}&page=${page}&pageSize=${itemPerPage}`
+        `https://${process.env.REACT_APP_BACKEND_DOMAIN}/project/comments?projectId=${projectId}&page=${page}&pageSize=${itemPerPage}`
       );
       setCommentList(commentData);
       setTotalPage(count);
@@ -61,7 +61,7 @@ export default function ProjectComment({
   const onDelete = (commentId, e) => {
     axios({
       method: "DELETE",
-      url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project/comments?commentId=${commentId}`,
+      url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/project/comments?commentId=${commentId}`,
       headers: {
         Authorization: `Bearer ${loginState.accessToken}`,
       },
@@ -84,7 +84,7 @@ export default function ProjectComment({
     else {
       axios({
         method: "POST",
-        url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project/comments?contentId=${projectId}`,
+        url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/project/comments?contentId=${projectId}`,
         headers: {
           Authorization: `Bearer ${loginState.accessToken}`,
         },
@@ -113,7 +113,7 @@ export default function ProjectComment({
   const onEditComment = (e, commentId) => {
     axios({
       method: "PUT",
-      url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project/comments?commentId=${commentId}`,
+      url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/project/comments?commentId=${commentId}`,
       headers: {
         Authorization: `Bearer ${loginState.accessToken}`,
       },

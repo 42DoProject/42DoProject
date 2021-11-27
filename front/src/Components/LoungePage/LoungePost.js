@@ -23,7 +23,7 @@ export default function LoungePost({
     try {
       await axios({
         method: "POST",
-        url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/lounge/like/${loungeData.id}`,
+        url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/lounge/like/${loungeData.id}`,
         headers: {
           Authorization: `Bearer ${loginState?.accessToken}`,
         },
@@ -37,7 +37,7 @@ export default function LoungePost({
     try {
       await axios({
         method: "DELETE",
-        url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/lounge/unlike/${loungeData.id}`,
+        url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/lounge/unlike/${loungeData.id}`,
         headers: {
           Authorization: `Bearer ${loginState?.accessToken}`,
         },
@@ -54,7 +54,7 @@ export default function LoungePost({
     try {
       await axios({
         method: "PUT",
-        url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/lounge/${loungeData.id}`,
+        url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/lounge/${loungeData.id}`,
         headers: {
           Authorization: `Bearer ${loginState?.accessToken}`,
         },
@@ -72,7 +72,7 @@ export default function LoungePost({
     try {
       await axios({
         method: "DELETE",
-        url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/lounge/${loungeData.id}`,
+        url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/lounge/${loungeData.id}`,
         headers: {
           Authorization: `Bearer ${loginState?.accessToken}`,
         },
@@ -97,11 +97,13 @@ export default function LoungePost({
       <div className="lounge-post__row1">
         <div
           className="lounge-post__profile"
-          onClick={() => history.push(`/profile/${loungeData.userid}`)}>
+          onClick={() => history.push(`/profile/${loungeData.userid}`)}
+        >
           <img
             className="profile__img"
             src={loungeData.image || defaultImg}
-            alt="profile__img"></img>
+            alt="profile__img"
+          ></img>
           <div className="profile__name">{loungeData.username || "user"}</div>
         </div>
         <div className="lounge-post__time">
@@ -115,12 +117,14 @@ export default function LoungePost({
           className="lounge-post__edit-space"
           spellCheck="false"
           defaultValue={loungeData.comment}
-          maxLength="800"></textarea>
+          maxLength="800"
+        ></textarea>
       )}
       <div className="lounge-post__bottom">
         <button
           className="bottom__open-comments"
-          onClick={() => toggleComment()}>
+          onClick={() => toggleComment()}
+        >
           {`댓글 ${loungeData.replyCount}개`}
           <Icon className="bottom__comment-icon" icon={commentIcon} />
         </button>

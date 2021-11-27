@@ -18,7 +18,7 @@ function ChatRoom({ chatInfo, clickFlag, setInFlag, setConvFlag }) {
     const getProfile = async (userName) => {
       try {
         const { data } = await axios.get(
-          `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/search/user/${userName}`,
+          `https://${process.env.REACT_APP_BACKEND_DOMAIN}/search/user/${userName}`,
           {
             headers: {
               Authorization: `Bearer ${loginState?.accessToken}`,

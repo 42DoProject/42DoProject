@@ -20,7 +20,7 @@ export default function ProjectStatusChange({
     var status = document.getElementById("change_status").value;
     axios({
       method: "PUT",
-      url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project/status/${data.id}?state=${status}`,
+      url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/project/status/${data.id}?state=${status}`,
       headers: {
         Authorization: `Bearer ${loginState.accessToken}`,
       },

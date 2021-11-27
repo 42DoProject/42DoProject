@@ -26,7 +26,7 @@ export default function UnfollowAlert(props) {
         onClick={async (e) => {
           try {
             await axios.get(
-              `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/user/unfollow/${props.userId}`,
+              `https://${process.env.REACT_APP_BACKEND_DOMAIN}/user/unfollow/${props.userId}`,
               {
                 headers: {
                   Authorization: `Bearer ${loginState.accessToken}`,

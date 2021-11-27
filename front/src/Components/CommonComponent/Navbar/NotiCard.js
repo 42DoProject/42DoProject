@@ -10,7 +10,7 @@ export default function NotiCard({ date, type, args }) {
   const searchUser = async (userId) => {
     try {
       const { data } = await axios.get(
-        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/user/profile/${userId}`
+        `https://${process.env.REACT_APP_BACKEND_DOMAIN}/user/profile/${userId}`
       );
       setUserName(data.username);
     } catch (err) {
@@ -27,7 +27,8 @@ export default function NotiCard({ date, type, args }) {
           className="type"
           onClick={() => {
             history.push(`/profile/${args[0].userId}`);
-          }}>
+          }}
+        >
           <div className="row1">
             <div className="title">팔로우</div>
             <div className="date">{relativeTime(date)}</div>
@@ -41,7 +42,8 @@ export default function NotiCard({ date, type, args }) {
           className="type"
           onClick={() => {
             history.push(`/profile/${args[0].userId}`);
-          }}>
+          }}
+        >
           <div className="row1">
             <div className="title">팔로워</div>
             <div className="date">{relativeTime(date)}</div>
@@ -55,7 +57,8 @@ export default function NotiCard({ date, type, args }) {
           className="type"
           onClick={() => {
             history.push(`/project/${args[0].projectId}`);
-          }}>
+          }}
+        >
           <div className="row1">
             <div className="title">프로젝트 신청</div>
             <div className="date">{relativeTime(date)}</div>
@@ -69,7 +72,8 @@ export default function NotiCard({ date, type, args }) {
           className="type"
           onClick={() => {
             history.push(`/project/${args[0].projectId}`);
-          }}>
+          }}
+        >
           <div className="row1">
             <div className="title">프로젝트 참여 승인</div>
             <div className="date">{relativeTime(date)}</div>
@@ -83,7 +87,8 @@ export default function NotiCard({ date, type, args }) {
           className="type"
           onClick={() => {
             history.push(`/project/${args[0].projectId}`);
-          }}>
+          }}
+        >
           <div className="row1">
             <div className="title">프로젝트 참여 거절</div>
             <div className="date">{relativeTime(date)}</div>
@@ -97,7 +102,8 @@ export default function NotiCard({ date, type, args }) {
           className="type"
           onClick={() => {
             history.push(`/project/${args[1].projectId}`);
-          }}>
+          }}
+        >
           <div className="row1">
             <div className="title">프로젝트 참여 요청</div>
             <div className="date">{relativeTime(date)}</div>
@@ -113,7 +119,8 @@ export default function NotiCard({ date, type, args }) {
           className="type"
           onClick={() => {
             history.push(`/project/${args[0].projectId}`);
-          }}>
+          }}
+        >
           <div className="row1">
             <div className="title">프로젝트 상태</div>
             <div className="date">{relativeTime(date)}</div>
@@ -136,7 +143,8 @@ export default function NotiCard({ date, type, args }) {
           className="type"
           onClick={() => {
             history.push("/lounge");
-          }}>
+          }}
+        >
           <div className="row1">
             <div className="title">라운지 댓글</div>
             <div className="date">{relativeTime(date)}</div>

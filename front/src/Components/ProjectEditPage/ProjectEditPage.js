@@ -36,9 +36,9 @@ export default function ProjectEditPage() {
   const [validateFlag, setValidateFlag] = useState(0); // 1일때 모달창 띄움
   const [modalFlag, setModalFlag] = useState(0); // 1일때 모달창 띄움
   const [validateMsg, setValidateMsg] = useState([]); // [validate모달창에 띄울 메시지, 버튼 종류]
-  const [isValid, setIsValid] = useState(0); // validity 테스트 통과하면 1
-  const [isLoading, setIsLoading] = useState(0); // 1일때 스피너
-  const [yes, setYes] = useState(0); // 1일 때 프로젝트 삭제
+  const [isValid, setIsValid] = useState(false); // validity 테스트 통과하면 true
+  const [isLoading, setIsLoading] = useState(false); // true일때 스피너
+  const [deleteConfirmed, setDeleteConfirmed] = useState(false); // true일 때 프로젝트 삭제
   let dateDiff =
     (new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24) + 1;
 
@@ -49,32 +49,29 @@ export default function ProjectEditPage() {
 
   const testValid = () => {
     if (!document.querySelector(".project-edit__name").value) {
-      setValidateMsg(["프로젝트명을 입력해주세요", "cancel-only"]);
+      setValidateMsg(["프로젝트명을 입력해주세요", ["확인"]]);
       setValidateFlag(1);
     } else if (!editorRef.current.getInstance().getMarkdown()) {
-      setValidateMsg(["프로젝트 소개를 입력해주세요", "cancel-only"]);
+      setValidateMsg(["프로젝트 소개를 입력해주세요", ["확인"]]);
       setValidateFlag(1);
     } else if (!image) {
-      setValidateMsg(["프로젝트 썸네일을 추가해주세요", "cancel-only"]);
+      setValidateMsg(["프로젝트 썸네일을 추가해주세요", ["확인"]]);
       setValidateFlag(1);
     } else if (startDate && endDate && dateDiff <= 0) {
-      setValidateMsg([
-        "종료일은 시작일 이후 날짜로 설정해주세요",
-        "cancel-only",
-      ]);
+      setValidateMsg(["종료일은 시작일 이후 날짜로 설정해주세요", ["확인"]]);
       setValidateFlag(1);
     } else if (selectedPos.filter((e) => e[2] === "enabled").length === 0) {
       setValidateMsg([
         `빈 포지션이 없으면 프로젝트 참여 신청을 받을 수 없어요. 이대로 프로젝트를 ${
           projectId ? "저장" : "생성"
         }할까요?`,
-        "both",
+        ["취소", "확인"],
       ]);
       setValidateFlag(1);
     } else return 1;
   }; // 제출 전 입력값들 유효한지 확인하는 함수
 
-  const projectSave = async () => {
+  const saveProject = async () => {
     try {
       const editorInstance = editorRef.current.getInstance();
       let skillPost = [];
@@ -104,8 +101,8 @@ export default function ProjectEditPage() {
         method: `${projectId ? "put" : "post"}`,
         url: `${
           projectId
-            ? `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project?projectId=${projectId}`
-            : `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project`
+            ? `https://${process.env.REACT_APP_BACKEND_DOMAIN}/project?projectId=${projectId}`
+            : `https://${process.env.REACT_APP_BACKEND_DOMAIN}/project`
         }`,
         headers: {
           "Content-Type": "multipart/form-data",
@@ -128,7 +125,7 @@ export default function ProjectEditPage() {
       setImgLoadFlag(1);
       setValidateMsg([
         `프로젝트 ${projectId ? "저장" : "생성"}중 에러가 발생했어요`,
-        "cancel-only",
+        ["확인"],
       ]);
       setValidateFlag(1);
     }
@@ -137,7 +134,7 @@ export default function ProjectEditPage() {
   const getMyData = async () => {
     try {
       const { data } = await axios.get(
-        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/user/me`,
+        `https://${process.env.REACT_APP_BACKEND_DOMAIN}/user/me`,
         {
           headers: {
             Authorization: `Bearer ${loginState.accessToken}`,
@@ -154,7 +151,7 @@ export default function ProjectEditPage() {
     try {
       const res = await axios({
         method: "delete",
-        url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project?projectId=${projectId}`,
+        url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/project?projectId=${projectId}`,
         headers: {
           Authorization: `Bearer ${loginState.accessToken}`,
         },
@@ -163,10 +160,10 @@ export default function ProjectEditPage() {
       history.push("/");
     } catch (err) {
       console.log(err);
-      setIsLoading(0);
-      setYes(0);
-      setValidateMsg(["존재하지 않는 프로젝트입니다", "cancel-only"]);
-      setValidateFlag(1);
+      setIsLoading(false);
+      setDeleteConfirmed(false);
+      setValidateMsg(["존재하지 않는 프로젝트입니다", ["확인"]]);
+      setValidateFlag(true);
     }
   };
 
@@ -175,7 +172,7 @@ export default function ProjectEditPage() {
       const {
         data: { content: projectContent },
       } = await axios.get(
-        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project/content?projectId=${projectId}`
+        `https://${process.env.REACT_APP_BACKEND_DOMAIN}/project/content?projectId=${projectId}`
       );
       setProjectData(projectContent);
       if (projectContent?.thumbnailImage) setImgLoadFlag(1);
@@ -244,7 +241,7 @@ export default function ProjectEditPage() {
 
             const res = await axios({
               method: "post",
-              url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project/content/image`,
+              url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/project/content/image`,
               headers: {
                 "Content-Type": "multipart/form-data",
                 Authorization: `Bearer ${loginState.accessToken}`,
@@ -278,18 +275,18 @@ export default function ProjectEditPage() {
   }, [myData, projectId]);
 
   useEffect(() => {
-    if (isValid === 1) {
-      setIsLoading(1);
-      projectSave();
+    if (isValid === true) {
+      setIsLoading(true);
+      saveProject();
     }
   }, [isValid]);
 
   useEffect(() => {
-    if (yes === 1) {
-      setIsLoading(1);
+    if (deleteConfirmed === true) {
+      setIsLoading(true);
       projectDelete();
     }
-  }, [yes]);
+  }, [deleteConfirmed]);
 
   useEffect(() => {
     const spinnerEl = document.querySelector(".loading-wrap");
@@ -319,7 +316,8 @@ export default function ProjectEditPage() {
               document.querySelector(
                 ".project-edit__img-hover"
               ).style.visibility = "hidden";
-            }}>
+            }}
+          >
             {imgLoadFlag === 0 ? (
               <div className="project-edit__img">
                 <Icon
@@ -345,7 +343,8 @@ export default function ProjectEditPage() {
               className="project-edit__img-hover"
               onClick={() =>
                 unsplashFlag === 0 ? setUnsplashFlag(1) : setUnsplashFlag(0)
-              }>
+              }
+            >
               <div className="img-hover__add">이미지 선택</div>
             </div>
           </div>
@@ -378,7 +377,8 @@ export default function ProjectEditPage() {
                   ["noImage", posSelectEl.value, "enabled"],
                 ]);
                 posSelectEl.selectedIndex = 0;
-              }}>
+              }}
+            >
               <option value="default" disabled>
                 포지션 추가
               </option>
@@ -422,7 +422,8 @@ export default function ProjectEditPage() {
                   "project-edit__start-date"
                 );
                 setStartDate(startDateEl[0].value);
-              }}></input>
+              }}
+            ></input>
             ~ 종료일
             <input
               type="date"
@@ -433,7 +434,8 @@ export default function ProjectEditPage() {
                   "project-edit__end-date"
                 );
                 setEndDate(endDateEl[0].value);
-              }}></input>
+              }}
+            ></input>
             {/* <span className="period__day"> */}
             {startDate &&
               endDate &&
@@ -563,10 +565,7 @@ export default function ProjectEditPage() {
             <Editor
               ref={editorRef}
               height="40rem"
-              plugins={[
-                colorSyntax,
-                // [codeSyntaxHighlight, { highlighter: Prism }],
-              ]}
+              plugins={[colorSyntax]}
               useCommandShortcut={true}
               placeholder={`프로젝트에 대해 자유롭게 소개해 주세요.
 (ex. 초기 아이디어 및 프로젝트의 목적, 필요성, 출시 플랫폼, 타겟 유저 등)`}
@@ -578,16 +577,19 @@ export default function ProjectEditPage() {
         <Modal
           body={validateMsg[0]}
           buttons={validateMsg[1]}
-          setOpenFlag={setValidateFlag}
-          setYes={setIsValid}
+          cancelFunc={() => setValidateFlag(false)}
+          confirmFunc={() => {
+            setValidateFlag(false);
+            setIsValid(true);
+          }}
         />
       )}
-      {modalFlag === 1 && (
+      {modalFlag === true && (
         <Modal
           body={validateMsg[0]}
           buttons={validateMsg[1]}
-          setOpenFlag={setModalFlag}
-          setYes={setYes}
+          cancelFunc={() => setModalFlag(false)}
+          confirmFunc={() => setDeleteConfirmed(true)}
         />
       )}
       <div className="project-edit__buttons">
@@ -595,9 +597,10 @@ export default function ProjectEditPage() {
           <button
             className="project-edit__delete"
             onClick={() => {
-              setValidateMsg([`프로젝트를 정말 삭제할까요?`, "both"]);
-              setModalFlag(1);
-            }}>
+              setValidateMsg([`프로젝트를 정말 삭제할까요?`, ["취소", "확인"]]);
+              setModalFlag(true);
+            }}
+          >
             프로젝트 삭제
           </button>
         )}
@@ -606,9 +609,10 @@ export default function ProjectEditPage() {
           onClick={(e) => {
             if (testValid() === 1) {
               setIsLoading(1);
-              projectSave();
+              saveProject();
             }
-          }}>
+          }}
+        >
           {projectId ? "저장" : "프로젝트 생성"}
         </button>
       </div>

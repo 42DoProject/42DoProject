@@ -24,7 +24,7 @@ export default function ProjectPaginate({
           project: { rows: projectData, count },
         },
       } = await axios.get(
-        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project?state=${state}&pageSize=12&page=${page}${filterOption}`
+        `https://${process.env.REACT_APP_BACKEND_DOMAIN}/project?state=${state}&pageSize=12&page=${page}${filterOption}`
       );
       setTotCount(count);
       setProject(projectData);

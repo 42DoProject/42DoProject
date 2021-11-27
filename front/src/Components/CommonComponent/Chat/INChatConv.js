@@ -26,7 +26,7 @@ export default function Conv({
   const searchUser = async (name) => {
     try {
       const { data } = await axios.get(
-        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/search/user/${name}`,
+        `https://${process.env.REACT_APP_BACKEND_DOMAIN}/search/user/${name}`,
         {
           headers: {
             Authorization: `Bearer ${loginState?.accessToken}`,
@@ -43,7 +43,7 @@ export default function Conv({
   const inviteUser = async (userId) => {
     await axios({
       method: "POST",
-      url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/chat/${chatRoom.uuid}`,
+      url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/chat/${chatRoom.uuid}`,
       headers: {
         Authorization: `Bearer ${loginState.accessToken}`,
       },

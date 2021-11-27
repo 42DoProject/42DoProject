@@ -1,6 +1,7 @@
 import React from "react";
 import "../../SCSS/ProjectEditPage/Unsplash.scss";
 import { Icon } from "@iconify/react";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 export default function Unsplash({
   setUnsplashFlag,
@@ -26,14 +27,35 @@ export default function Unsplash({
       </div>
       <hr />
       <div className="unsplash__tab">
-        <div className="tab__presets">
-          <Icon icon="bx:bx-bookmark" className="presets-icon" />
-          프리셋
-        </div>
-        <div className="tab__search">
-          <Icon icon="fe:search" className="search-icon" />
-          검색
-        </div>
+        <OverlayTrigger
+          placement="top"
+          overlay={
+            <Tooltip
+              id={`tooltip-top`}
+              wrapperStyle={{ backgroundColor: "#4A4A4A" }}>
+              준비중
+            </Tooltip>
+          }>
+          <div className="tab__presets">
+            <Icon icon="bx:bx-bookmark" className="presets-icon" />
+            프리셋
+          </div>
+        </OverlayTrigger>
+        <OverlayTrigger
+          placement="top"
+          overlay={
+            <Tooltip
+              id={`tooltip-top`}
+              wrapperStyle={{ backgroundColor: "#4A4A4A" }}>
+              준비중
+            </Tooltip>
+          }>
+          <div className="tab__search">
+            <Icon icon="fe:search" className="search-icon" />
+            검색
+          </div>
+        </OverlayTrigger>
+
         <div className="tab__upload">
           <Icon icon="bx:bx-upload" className="upload-icon" />
           이미지 업로드

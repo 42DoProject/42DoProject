@@ -22,7 +22,7 @@ export default function LoungeBody({
   const getConcurrent = async () => {
     try {
       const { data } = await axios.get(
-        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/user/concurrent`
+        `https://${process.env.REACT_APP_BACKEND_DOMAIN}/user/concurrent`
       );
       setConcurrents(data);
     } catch (err) {
@@ -43,6 +43,8 @@ export default function LoungeBody({
       socket.off("concurrent:disconnect");
     };
   }, []);
+
+  console.log("loungeData", loungeData);
 
   return (
     <div className="lounge-body">
@@ -65,15 +67,21 @@ export default function LoungeBody({
           )}
         </div>
         <div className="left__posts">
-          {loginState && status === "base" && (
+          {status === "base" && (
             <LoungeWrite
               refreshFlag={refreshFlag}
               setRefreshFlag={setRefreshFlag}
             />
           )}
+          {loungeData === null ||
+            (loungeData?.length === 0 && (
+              <div className="lounge-noPost">
+                라운지에 첫 글을 남겨주세요 😄
+              </div>
+            ))}
           {loungeData?.map((e, idx) => (
             <LoungePost
-              key={idx}
+              key={e.id}
               loungeData={e}
               refreshFlag={refreshFlag}
               setRefreshFlag={setRefreshFlag}

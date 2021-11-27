@@ -25,12 +25,10 @@ function App(props) {
   // 새로운 Token 발급
   useEffect(() => {
     const getToken = async () => {
-      console.log("--------------app state-------------");
-      console.log("App.js1", loginState);
       try {
         if (loginState) {
           const { data } = await axios.get(
-            `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/auth/signin?refresh_token=${loginState.refreshToken}`
+            `https://${process.env.REACT_APP_BACKEND_DOMAIN}/auth/signin?refresh_token=${loginState.refreshToken}`
           );
           socket.emit("authorization", {
             token: data.accessToken,

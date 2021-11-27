@@ -21,6 +21,20 @@
   }
 }
 
+.left__posts {
+  .lounge-noPost {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 15rem;
+    background-color: $slightGrey;
+    // opacity: 0.5;
+    color: #a8a8a8;
+    font-weight: $regular;
+    border-radius: $round;
+  }
+}
+
 .left-bar {
   margin-left: 1rem;
   margin-top: 1rem;
@@ -118,6 +132,15 @@
       .connected__name {
         font-size: $fontSm;
       }
+    }
+  }
+}
+
+@media (max-width: 700px) {
+  .lounge-body {
+    .lounge-left {
+      width: 100%;
+      margin-left: 2rem;
     }
   }
 }

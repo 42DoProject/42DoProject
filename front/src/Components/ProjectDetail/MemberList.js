@@ -21,7 +21,7 @@ export default function MemberList({
     else {
       axios({
         method: "POST",
-        url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/project/apply/${data.id}/${elm}`,
+        url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/project/apply/${data.id}/${elm}`,
         headers: {
           Authorization: `Bearer ${loginState.accessToken}`,
         },
@@ -63,7 +63,8 @@ export default function MemberList({
                 onClick={(e) => {
                   history.push(`/project/edit/${data.id}`);
                   e.preventDefault();
-                }}>
+                }}
+              >
                 수정
               </div>
             </div>

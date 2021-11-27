@@ -18,7 +18,7 @@ export default function ChatCard({ chatInfo, imgFlag }) {
         const {
           data: { profileImage, username },
         } = await axios.get(
-          `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/user/profile/${userId}`,
+          `https://${process.env.REACT_APP_BACKEND_DOMAIN}/user/profile/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${loginState?.accessToken}`,

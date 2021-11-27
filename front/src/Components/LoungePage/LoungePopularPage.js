@@ -21,11 +21,13 @@ export default function LoungePoPularPage() {
         refreshFlag={refreshFlag}
         setRefreshFlag={setRefreshFlag}
       />
-      <LoungePaginate
-        status="popular"
-        setLoungeData={setLoungeData}
-        refreshFlag={refreshFlag}
-      />
+      <div style={{ opacity: loungeData && loungeData?.length ? 1 : 0 }}>
+        <LoungePaginate
+          status="popular"
+          setLoungeData={setLoungeData}
+          refreshFlag={refreshFlag}
+        />
+      </div>
     </div>
   );
 }

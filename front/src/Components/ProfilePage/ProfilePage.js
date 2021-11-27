@@ -23,7 +23,7 @@ export default function ProfilePage() {
     try {
       if (userId) {
         const { data } = await axios.get(
-          `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/user/profile/${userId}`,
+          `https://${process.env.REACT_APP_BACKEND_DOMAIN}/user/profile/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${loginState?.accessToken}`,
@@ -42,7 +42,7 @@ export default function ProfilePage() {
   const getMyFollowings = async () => {
     try {
       const { data: myData } = await axios.get(
-        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/user/me`,
+        `https://${process.env.REACT_APP_BACKEND_DOMAIN}/user/me`,
         {
           headers: {
             Authorization: `Bearer ${loginState.accessToken}`,
@@ -58,7 +58,7 @@ export default function ProfilePage() {
   const getMyData = async () => {
     try {
       const { data } = await axios.get(
-        `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/user/me`,
+        `https://${process.env.REACT_APP_BACKEND_DOMAIN}/user/me`,
         {
           headers: {
             Authorization: `Bearer ${loginState.accessToken}`,
@@ -89,9 +89,11 @@ export default function ProfilePage() {
         {openModal && (
           <Modal
             body="존재하지 않는 유저입니다"
-            buttons="cancel-only"
-            setOpenFlag={setOpenModal}
-            history={history}
+            buttons={["확인"]}
+            confirmFunc={() => {
+              setOpenModal(false);
+              history.goBack();
+            }}
           />
         )}
         <ReactLoading type="spin" color="#a7bc5b" />

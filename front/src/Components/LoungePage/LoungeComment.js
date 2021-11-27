@@ -1,10 +1,9 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "../../SCSS/LoungePage/LoungeComment.scss";
 import { useSelector } from "react-redux";
 import { Icon } from "@iconify/react";
 import Pagination from "react-js-pagination";
-
 import Modal from "../ProjectEditPage/Modal";
 import CommentElement from "./CommentElement";
 
@@ -22,6 +21,7 @@ export default function LoungeComment({
   );
   const [totalPage, setTotalPage] = useState(1);
   const [modalFlag, setModalFlag] = useState(false);
+  const inputRef = useRef();
 
   const handlePageChange = (page) => {
     setPage(page);
@@ -31,13 +31,13 @@ export default function LoungeComment({
     try {
       await axios({
         method: "POST",
-        url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/lounge/reply/${loungeData.id}`,
+        url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/lounge/reply/${loungeData.id}`,
         headers: {
           Authorization: `Bearer ${loginState?.accessToken}`,
         },
-        data: { comment: document.querySelector(".comment__input").value },
+        data: { comment: inputRef.current.value },
       });
-      document.querySelector(".comment__input").value = "";
+      inputRef.current.value = "";
       setPage(Math.ceil((loungeData.replyCount + 1) / itemPerPage));
       refreshFlag ? setRefreshFlag(0) : setRefreshFlag(1);
       replyRefresh ? setReplyRefresh(0) : setReplyRefresh(1);
@@ -53,7 +53,9 @@ export default function LoungeComment({
           data: { count, rows },
         } = await axios({
           method: "GET",
-          url: `http://${process.env.REACT_APP_DOMAIN_NAME}:5000/lounge/reply/${loungeData.id}?page=${page}&pageSize=${itemPerPage}
+          url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/lounge/reply/${
+            loungeData.id
+          }?page=${page ? page : 1}&pageSize=${itemPerPage}
         `,
           headers: {
             Authorization: `Bearer ${loginState?.accessToken}`,
@@ -68,18 +70,18 @@ export default function LoungeComment({
     getReply();
   }, [replyRefresh, page]);
 
-  // console.log("replies", replies);
+  // console.log("page", page);
 
   return (
     <div className="comment-wrap">
-      {modalFlag && (
+      {modalFlag === true && (
         <Modal
           body="로그인해 주세요"
-          buttons="cancel-only"
-          setOpenFlag={setModalFlag}
+          buttons={["확인"]}
+          confirmFunc={() => setModalFlag(false)}
         />
       )}
-      {replies?.map((e, i) => {
+      {replies?.map((e) => {
         return (
           <CommentElement
             e={e}
@@ -123,19 +125,29 @@ export default function LoungeComment({
       )}
       <div className="comment__write">
         <input
+          ref={inputRef}
           className="comment__input"
           spellCheck="false"
           placeholder="댓글을 작성해 주세요"
-          maxLength="300"></input>
+          maxLength="300"
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              if (!loginState) {
+                setModalFlag(true);
+              } else {
+                inputRef.current.value !== "" && postReply();
+              }
+            }
+          }}></input>
         <Icon
           icon="fluent:send-20-filled"
           className="comment-send"
           onClick={() => {
             if (!loginState) {
               setModalFlag(true);
+            } else {
+              inputRef.current.value !== "" && postReply();
             }
-            document.querySelector(".comment__input").value !== "" &&
-              postReply();
           }}
         />
       </div>

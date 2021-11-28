@@ -21,7 +21,7 @@ export default function MemberList({
     else {
       axios({
         method: "POST",
-        url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/project/apply/${data.id}/${elm}`,
+        url: `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/project/apply/${data.id}/${elm}`,
         headers: {
           Authorization: `Bearer ${loginState.accessToken}`,
         },

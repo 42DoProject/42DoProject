@@ -26,7 +26,7 @@ export default function UnfollowAlert(props) {
         onClick={async (e) => {
           try {
             await axios.get(
-              `https://${process.env.REACT_APP_BACKEND_DOMAIN}/user/unfollow/${props.userId}`,
+              `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/user/unfollow/${props.userId}`,
               {
                 headers: {
                   Authorization: `Bearer ${loginState.accessToken}`,
@@ -41,7 +41,8 @@ export default function UnfollowAlert(props) {
           } catch (err) {
             console.log(err);
           }
-        }}>
+        }}
+      >
         팔로우 취소
       </div>
       <hr />
@@ -49,7 +50,8 @@ export default function UnfollowAlert(props) {
         className="unfollow__cancel"
         onClick={() => {
           props.setUnfollowAlert(0);
-        }}>
+        }}
+      >
         취소
       </div>
     </div>

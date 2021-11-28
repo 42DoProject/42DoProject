@@ -23,7 +23,7 @@ export default function Conv({
   const searchUser = async (name) => {
     try {
       const { data } = await axios.get(
-        `https://${process.env.REACT_APP_BACKEND_DOMAIN}/search/user/${name}`,
+        `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/search/user/${name}`,
         {
           headers: {
             Authorization: `Bearer ${loginState?.accessToken}`,
@@ -41,7 +41,7 @@ export default function Conv({
   const inviteUser = async (userId) => {
     await axios({
       method: "POST",
-      url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/chat`,
+      url: `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/chat`,
       headers: {
         Authorization: `Bearer ${loginState.accessToken}`,
       },

@@ -10,7 +10,7 @@ export default function NotiCard({ date, type, args }) {
   const searchUser = async (userId) => {
     try {
       const { data } = await axios.get(
-        `https://${process.env.REACT_APP_BACKEND_DOMAIN}/user/profile/${userId}`
+        `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/user/profile/${userId}`
       );
       setUserName(data.username);
     } catch (err) {

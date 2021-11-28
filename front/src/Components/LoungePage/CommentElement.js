@@ -27,7 +27,7 @@ export default function CommentElement({
     try {
       await axios({
         method: "PUT",
-        url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/lounge/reply/${replyid}`,
+        url: `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/lounge/reply/${replyid}`,
         headers: {
           Authorization: `Bearer ${loginState?.accessToken}`,
         },
@@ -45,7 +45,7 @@ export default function CommentElement({
     try {
       await axios({
         method: "DELETE",
-        url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/lounge/reply/${replyid}`,
+        url: `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/lounge/reply/${replyid}`,
         headers: {
           Authorization: `Bearer ${loginState?.accessToken}`,
         },

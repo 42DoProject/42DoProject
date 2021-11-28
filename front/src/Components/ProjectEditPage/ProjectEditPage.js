@@ -101,8 +101,8 @@ export default function ProjectEditPage() {
         method: `${projectId ? "put" : "post"}`,
         url: `${
           projectId
-            ? `https://${process.env.REACT_APP_BACKEND_DOMAIN}/project?projectId=${projectId}`
-            : `https://${process.env.REACT_APP_BACKEND_DOMAIN}/project`
+            ? `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/project?projectId=${projectId}`
+            : `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/project`
         }`,
         headers: {
           "Content-Type": "multipart/form-data",
@@ -134,7 +134,7 @@ export default function ProjectEditPage() {
   const getMyData = async () => {
     try {
       const { data } = await axios.get(
-        `https://${process.env.REACT_APP_BACKEND_DOMAIN}/user/me`,
+        `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/user/me`,
         {
           headers: {
             Authorization: `Bearer ${loginState.accessToken}`,
@@ -151,7 +151,7 @@ export default function ProjectEditPage() {
     try {
       const res = await axios({
         method: "delete",
-        url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/project?projectId=${projectId}`,
+        url: `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/project?projectId=${projectId}`,
         headers: {
           Authorization: `Bearer ${loginState.accessToken}`,
         },
@@ -172,7 +172,7 @@ export default function ProjectEditPage() {
       const {
         data: { content: projectContent },
       } = await axios.get(
-        `https://${process.env.REACT_APP_BACKEND_DOMAIN}/project/content?projectId=${projectId}`
+        `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/project/content?projectId=${projectId}`
       );
       setProjectData(projectContent);
       if (projectContent?.thumbnailImage) setImgLoadFlag(1);
@@ -241,7 +241,7 @@ export default function ProjectEditPage() {
 
             const res = await axios({
               method: "post",
-              url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/project/content/image`,
+              url: `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/project/content/image`,
               headers: {
                 "Content-Type": "multipart/form-data",
                 Authorization: `Bearer ${loginState.accessToken}`,

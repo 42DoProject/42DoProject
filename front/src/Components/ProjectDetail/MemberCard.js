@@ -38,7 +38,7 @@ export default function MemberCard({
   const onChangeLeader = (e, elm) => {
     axios({
       method: "PUT",
-      url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/project/leader/${data.id}/${elm.profile.id}`,
+      url: `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/project/leader/${data.id}/${elm.profile.id}`,
       headers: {
         Authorization: `Bearer ${loginState.accessToken}`,
       },
@@ -54,7 +54,7 @@ export default function MemberCard({
   const onDeleteMember = (e, elm) => {
     axios({
       method: "DELETE",
-      url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/project/accept/${data.id}/${elm.profile.id}`,
+      url: `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/project/accept/${data.id}/${elm.profile.id}`,
       headers: {
         Authorization: `Bearer ${loginState.accessToken}`,
       },

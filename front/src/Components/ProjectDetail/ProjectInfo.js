@@ -35,7 +35,7 @@ export default function ProjectInfo({
   const applyCancel = (e) => {
     axios({
       method: "DELETE",
-      url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/project/apply/${info.id}/${loginState.id}`,
+      url: `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/project/apply/${info.id}/${loginState.id}`,
       headers: {
         Authorization: `Bearer ${loginState.accessToken}`,
       },
@@ -51,7 +51,7 @@ export default function ProjectInfo({
   const deleteMember = (e) => {
     axios({
       method: "DELETE",
-      url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/project/accept/${info.id}/${loginState.id}`,
+      url: `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/project/accept/${info.id}/${loginState.id}`,
       headers: {
         Authorization: `Bearer ${loginState.accessToken}`,
       },
@@ -69,7 +69,7 @@ export default function ProjectInfo({
       const {
         data: { message: likeStatus },
       } = await axios.get(
-        `https://${process.env.REACT_APP_BACKEND_DOMAIN}/project/interest/${info.id}`,
+        `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/project/interest/${info.id}`,
         {
           headers: {
             Authorization: `Bearer ${loginState.accessToken}`,
@@ -88,7 +88,7 @@ export default function ProjectInfo({
       setClickFlag(1);
       axios({
         method: "POST",
-        url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/project/like/${info.id}`,
+        url: `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/project/like/${info.id}`,
         headers: {
           Authorization: `Bearer ${loginState.accessToken}`,
         },
@@ -109,7 +109,7 @@ export default function ProjectInfo({
     setClickFlag(0);
     axios({
       method: "DELETE",
-      url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/project/like/${info.id}`,
+      url: `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/project/like/${info.id}`,
       headers: {
         Authorization: `Bearer ${loginState.accessToken}`,
       },

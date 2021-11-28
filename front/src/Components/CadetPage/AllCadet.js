@@ -19,7 +19,7 @@ export default function AllCadet() {
       const {
         data: { count, list },
       } = await axios.get(
-        `https://${process.env.REACT_APP_BACKEND_DOMAIN}/search/user?page=${page}`,
+        `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/search/user?page=${page}`,
         {
           headers: {
             Authorization: `Bearer ${loginState?.accessToken}`,

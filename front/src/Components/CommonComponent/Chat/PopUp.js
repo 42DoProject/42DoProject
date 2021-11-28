@@ -62,7 +62,7 @@ const leaveChat = async (
 ) => {
   try {
     const data = await axios.delete(
-      `https://${process.env.REACT_APP_BACKEND_DOMAIN}/chat/${uuid}`,
+      `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/chat/${uuid}`,
       {
         headers: {
           Authorization: `Bearer ${loginState.accessToken}`,
@@ -78,7 +78,7 @@ const leaveChat = async (
 const inviteUser = async (uuid, userIdList, loginState) => {
   await axios({
     method: "POST",
-    url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/chat${uuid}`,
+    url: `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/chat${uuid}`,
     headers: {
       Authorization: `Bearer ${loginState.accessToken}`,
     },

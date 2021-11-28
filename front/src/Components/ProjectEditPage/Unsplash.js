@@ -32,10 +32,12 @@ export default function Unsplash({
           overlay={
             <Tooltip
               id={`tooltip-top`}
-              wrapperStyle={{ backgroundColor: "#4A4A4A" }}>
+              wrapperStyle={{ backgroundColor: "#4A4A4A" }}
+            >
               준비중
             </Tooltip>
-          }>
+          }
+        >
           <div className="tab__presets">
             <Icon icon="bx:bx-bookmark" className="presets-icon" />
             프리셋
@@ -46,10 +48,12 @@ export default function Unsplash({
           overlay={
             <Tooltip
               id={`tooltip-top`}
-              wrapperStyle={{ backgroundColor: "#4A4A4A" }}>
+              wrapperStyle={{ backgroundColor: "#4A4A4A" }}
+            >
               준비중
             </Tooltip>
-          }>
+          }
+        >
           <div className="tab__search">
             <Icon icon="fe:search" className="search-icon" />
             검색
@@ -93,7 +97,8 @@ export default function Unsplash({
               };
               setImgLoadFlag(1);
               setUnsplashFlag(0);
-            }}>
+            }}
+          >
             이미지 선택
           </button>
         ) : (

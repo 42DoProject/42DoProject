@@ -30,7 +30,7 @@ export default function ProfileHeader(props) {
     try {
       await axios({
         method: "POST",
-        url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/chat`,
+        url: `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/chat`,
         headers: {
           Authorization: `Bearer ${loginState.accessToken}`,
         },
@@ -88,7 +88,7 @@ export default function ProfileHeader(props) {
                     className="row1__follow"
                     onClick={async () => {
                       await axios.get(
-                        `https://${process.env.REACT_APP_BACKEND_DOMAIN}/user/follow/${props.userId}`,
+                        `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/user/follow/${props.userId}`,
                         {
                           headers: {
                             Authorization: `Bearer ${loginState.accessToken}`,

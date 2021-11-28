@@ -13,7 +13,7 @@ export default function Cadet() {
   const getData = async () => {
     try {
       const { data } = await axios.get(
-        `https://${process.env.REACT_APP_BACKEND_DOMAIN}/user/cadet`,
+        `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/user/cadet`,
         {
           headers: {
             Authorization: `Bearer ${loginState?.accessToken}`,

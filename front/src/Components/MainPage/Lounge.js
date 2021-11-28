@@ -16,7 +16,7 @@ export default function Lounge() {
         const {
           data: { rows },
         } = await axios.get(
-          `https://${process.env.REACT_APP_BACKEND_DOMAIN}/lounge?page=1&pageSize=3`,
+          `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/lounge?page=1&pageSize=3`,
           {
             headers: {
               Authorization: `Bearer ${loginState?.accessToken}`,

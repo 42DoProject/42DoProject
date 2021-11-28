@@ -28,7 +28,7 @@ function App(props) {
       try {
         if (loginState) {
           const { data } = await axios.get(
-            `https://${process.env.REACT_APP_BACKEND_DOMAIN}/auth/signin?refresh_token=${loginState.refreshToken}`
+            `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/auth/signin?refresh_token=${loginState.refreshToken}`
           );
           socket.emit("authorization", {
             token: data.accessToken,

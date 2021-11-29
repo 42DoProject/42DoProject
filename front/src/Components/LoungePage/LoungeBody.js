@@ -22,7 +22,7 @@ export default function LoungeBody({
   const getConcurrent = async () => {
     try {
       const { data } = await axios.get(
-        `https://${process.env.REACT_APP_BACKEND_DOMAIN}/user/concurrent`
+        `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/user/concurrent`
       );
       setConcurrents(data);
     } catch (err) {

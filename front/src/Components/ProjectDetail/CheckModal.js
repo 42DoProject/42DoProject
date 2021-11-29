@@ -17,7 +17,7 @@ export default function CheckModal({
     const selected_position = document.querySelector(".job__content").value;
     axios({
       method: "PUT",
-      url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/project/position/${data.id}/${loginState.id}/${selected_position}`,
+      url: `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/project/position/${data.id}/${loginState.id}/${selected_position}`,
       headers: {
         Authorization: `Bearer ${loginState.accessToken}`,
       },

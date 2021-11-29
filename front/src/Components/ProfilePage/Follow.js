@@ -25,9 +25,9 @@ export default function Follow(props) {
   const getFollow = async (subj) => {
     try {
       const { data } = await axios.get(
-        `https://${process.env.REACT_APP_BACKEND_DOMAIN}/user/${subj}/${
-          props.userId || loginState.id
-        }?page=1`
+        `${process.env.REACT_APP_HTTP_ENV}://${
+          process.env.REACT_APP_BACKEND_DOMAIN
+        }/user/${subj}/${props.userId || loginState.id}?page=1`
       );
       setFollowerList(data);
     } catch (err) {
@@ -85,7 +85,7 @@ export default function Follow(props) {
                     onClick={async () => {
                       try {
                         await axios.get(
-                          `https://${process.env.REACT_APP_BACKEND_DOMAIN}/user/follow/${v.userId}`,
+                          `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/user/follow/${v.userId}`,
                           {
                             headers: {
                               Authorization: `Bearer ${loginState.accessToken}`,

@@ -53,11 +53,14 @@ function Pop() {
 
 function logOut(accessToken) {
   try {
-    axios.get(`https://${process.env.REACT_APP_BACKEND_DOMAIN}/auth/signout`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    axios.get(
+      `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/auth/signout`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
     const timerId = localStorage.getItem("timerId");
     clearInterval(timerId);
   } catch (err) {

@@ -15,7 +15,7 @@ export default function Notifiaction() {
     const getData = async () => {
       try {
         const { data } = await axios.get(
-          `https://${process.env.REACT_APP_BACKEND_DOMAIN}/user/feed`,
+          `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/user/feed`,
           {
             headers: {
               Authorization: `Bearer ${loginState.accessToken}`,
@@ -55,7 +55,7 @@ export default function Notifiaction() {
     const getDataBefore = async (date) => {
       try {
         const { data } = await axios.get(
-          `https://${process.env.REACT_APP_BACKEND_DOMAIN}/user/feed?date=${date}`,
+          `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/user/feed?date=${date}`,
           {
             headers: {
               Authorization: `Bearer ${loginState.accessToken}`,

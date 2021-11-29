@@ -23,7 +23,7 @@ export default function LoungePost({
     try {
       await axios({
         method: "POST",
-        url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/lounge/like/${loungeData.id}`,
+        url: `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/lounge/like/${loungeData.id}`,
         headers: {
           Authorization: `Bearer ${loginState?.accessToken}`,
         },
@@ -37,7 +37,7 @@ export default function LoungePost({
     try {
       await axios({
         method: "DELETE",
-        url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/lounge/unlike/${loungeData.id}`,
+        url: `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/lounge/unlike/${loungeData.id}`,
         headers: {
           Authorization: `Bearer ${loginState?.accessToken}`,
         },
@@ -54,7 +54,7 @@ export default function LoungePost({
     try {
       await axios({
         method: "PUT",
-        url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/lounge/${loungeData.id}`,
+        url: `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/lounge/${loungeData.id}`,
         headers: {
           Authorization: `Bearer ${loginState?.accessToken}`,
         },
@@ -72,7 +72,7 @@ export default function LoungePost({
     try {
       await axios({
         method: "DELETE",
-        url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/lounge/${loungeData.id}`,
+        url: `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/lounge/${loungeData.id}`,
         headers: {
           Authorization: `Bearer ${loginState?.accessToken}`,
         },

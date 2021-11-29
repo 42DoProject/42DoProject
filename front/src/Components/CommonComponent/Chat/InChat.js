@@ -25,7 +25,7 @@ function InChat({
   const getChat = async (uuid) => {
     try {
       const { data } = await axios.get(
-        `https://${process.env.REACT_APP_BACKEND_DOMAIN}/chat/${uuid}`,
+        `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/chat/${uuid}`,
         {
           headers: {
             Authorization: `Bearer ${loginState?.accessToken}`,
@@ -43,7 +43,7 @@ function InChat({
   const getChatMore = async (uuid) => {
     try {
       const { data } = await axios.get(
-        `https://${process.env.REACT_APP_BACKEND_DOMAIN}/chat/${uuid}`,
+        `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/chat/${uuid}`,
         {
           headers: {
             Authorization: `Bearer ${loginState?.accessToken}`,
@@ -61,7 +61,7 @@ function InChat({
   const getChatBeforeMore = async (uuid, date, chatLog) => {
     try {
       const { data } = await axios.get(
-        `https://${process.env.REACT_APP_BACKEND_DOMAIN}/chat/${uuid}?date=${date}`,
+        `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/chat/${uuid}?date=${date}`,
         {
           headers: {
             Authorization: `Bearer ${loginState?.accessToken}`,
@@ -76,7 +76,7 @@ function InChat({
   const getChatBefore = async (uuid, date) => {
     try {
       const { data } = await axios.get(
-        `https://${process.env.REACT_APP_BACKEND_DOMAIN}/chat/${uuid}?date=${date}`,
+        `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/chat/${uuid}?date=${date}`,
         {
           headers: {
             Authorization: `Bearer ${loginState.accessToken}`,

@@ -30,7 +30,7 @@ export default function WaitList({
       const {
         data: { applyerList: list },
       } = await axios.get(
-        `https://${process.env.REACT_APP_BACKEND_DOMAIN}/project/apply/${data.id}`,
+        `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/project/apply/${data.id}`,
         {
           headers: {
             Authorization: `Bearer ${loginState.accessToken}`,
@@ -49,7 +49,7 @@ export default function WaitList({
   const applyCancel = (e, id) => {
     axios({
       method: "DELETE",
-      url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/project/apply/${data.id}/${id}`,
+      url: `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/project/apply/${data.id}/${id}`,
       headers: {
         Authorization: `Bearer ${loginState.accessToken}`,
       },
@@ -66,7 +66,7 @@ export default function WaitList({
   const onAddMember = (e, id) => {
     axios({
       method: "POST",
-      url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/project/accept/${data.id}/${id}`,
+      url: `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/project/accept/${data.id}/${id}`,
       headers: {
         Authorization: `Bearer ${loginState.accessToken}`,
       },

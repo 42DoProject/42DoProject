@@ -15,7 +15,7 @@ export default function ProfileEditPage() {
   const getData = async () => {
     try {
       const { data } = await axios.get(
-        `https://${process.env.REACT_APP_BACKEND_DOMAIN}/user/me`,
+        `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/user/me`,
         {
           headers: {
             Authorization: `Bearer ${loginState.accessToken}`,
@@ -45,7 +45,7 @@ export default function ProfileEditPage() {
 
     axios({
       method: "POST",
-      url: `https://${process.env.REACT_APP_BACKEND_DOMAIN}/user/me`,
+      url: `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/user/me`,
       headers: {
         Authorization: `Bearer ${loginState.accessToken}`,
       },

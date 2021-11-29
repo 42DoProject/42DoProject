@@ -15,7 +15,7 @@ function RecruitList(props) {
           project: { count, rows: recruitingData },
         },
       } = await axios.get(
-        `https://${process.env.REACT_APP_BACKEND_DOMAIN}/project?state=recruiting&pageSize=20&page=1`
+        `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/project?state=recruiting&pageSize=20&page=1`
       );
       props.setProgressPr(count);
       setRecruitingProject(recruitingData);

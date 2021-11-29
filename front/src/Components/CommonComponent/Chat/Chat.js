@@ -38,7 +38,7 @@ export default function Chat() {
     } catch (err) {
       console.log(err);
     }
-  }, [loginState.accessToken]);
+  }, [loginState]);
   useEffect(() => {
     socket.on("chat:newRoom", () => {
       getChatRoom();

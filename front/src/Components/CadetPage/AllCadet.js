@@ -13,48 +13,53 @@ export default function AllCadet() {
   const loginState = useSelector((state) => state.loginReducer);
   const [page, setPage] = useState(1);
   const [totCount, setTotCount] = useState(0);
+  const [filterOption, setFilterOption] = useState({});
 
   const getData = async () => {
+    console.log(filterOption);
     try {
       const {
         data: { count, list },
-      } = await axios.get(
-        `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/search/user?page=${page}`,
-        {
-          headers: {
-            Authorization: `Bearer ${loginState?.accessToken}`,
-          },
-        }
-      );
-      setCadets(list);
+      } = await axios({
+        method: "post",
+        url: `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/search/user?page=${page}`,
+        headers: {
+          Authorization: `Bearer ${loginState?.accessToken}`,
+        },
+        data: {
+          ...filterOption,
+        },
+      });
       setTotCount(count);
+      setCadets(list);
     } catch (err) {
       console.log(err);
     }
   };
+
   const handlePageChange = (page) => {
     setPage(page);
   };
 
   useEffect(() => {
     getData();
-  }, [page]);
+  }, [page, filterOption]);
 
   return cadets === null ? (
     <div className="recruitCadet-wrap">
-      <CadetTypeBar state="all" />
+      <CadetTypeBar state="all" setFilterOption={setFilterOption} />
       <ReactLoading type="spin" color="#a7bc5b" />
     </div>
   ) : (
     <>
       {cadets.length === 0 ? (
         <div className="recruitCadet-wrap">
-          <CadetTypeBar state="all" />
+          <CadetTypeBar state="all" setFilterOption={setFilterOption} />
           <div className="noCadet">카뎃이 없어요</div>
         </div>
       ) : (
         <div className="recruitCadet-wrap">
-          <CadetTypeBar state="all" />
+          <CadetTypeBar state="all" setFilterOption={setFilterOption} />
           <div className="recruitCadet-grid">
             {cadets?.map((v, i) => {
               return <CadetCards cadetData={v} key={v.id} />;

@@ -23,6 +23,20 @@
   .skill_filter {
     display: flex;
     flex-direction: column;
+    .project-edit__skill {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      .add-skill__icon {
+        color: $lightGrey;
+        margin-left: 0.5rem;
+        font-size: 1.8rem;
+        cursor: pointer;
+        &:hover {
+          color: $mainColor;
+        }
+      }
+    }
     .skill__tags {
       margin: 0.5rem;
       display: flex;

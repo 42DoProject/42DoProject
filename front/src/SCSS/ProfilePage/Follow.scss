@@ -51,6 +51,22 @@
 .follow__list {
   padding: 0.5rem;
   height: 100%;
+  .loading-wrap {
+    height: 100%;
+  }
+  .follow__list-loader {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $lightGrey;
+    font-weight: $normal;
+    cursor: pointer;
+    .follow__list-more {
+      display: flex;
+      gap: 0.2rem;
+    }
+  }
 }
 .follow__follower {
   display: flex;

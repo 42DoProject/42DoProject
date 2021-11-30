@@ -7,7 +7,7 @@ import { useHistory } from "react-router";
 import { status } from "../../userData";
 import { Icon } from "@iconify/react";
 import UnfollowAlert from "./UnfollowAlert";
-// import { Link } from "react-router-dom";
+import defaultImg from "../../default_intra.png";
 import axios from "axios";
 
 export default function ProfileHeader(props) {
@@ -49,7 +49,7 @@ export default function ProfileHeader(props) {
         <img
           className="profileImage"
           alt={props.user.username}
-          src={props.user.profileImage}
+          src={props.user.profileImage || defaultImg}
         />
         {props.user.statusMessage ? (
           <div className="profile__bubble">{props.user.statusMessage}</div>
@@ -79,8 +79,7 @@ export default function ProfileHeader(props) {
                     let chatLogEl = document.querySelector(".chatLog");
                     chatEl.style.visibility = "hidden";
                     chatLogEl.style.visibility = "visible";
-                  }}
-                >
+                  }}>
                   메시지 보내기
                 </button>
                 {followButton === "follow" ? (
@@ -98,8 +97,7 @@ export default function ProfileHeader(props) {
                       props.setGetDataFlag(1);
                       setFollowButton("unfollow");
                       setRefreshFlag(1);
-                    }}
-                  >
+                    }}>
                     팔로우
                   </button>
                 ) : (
@@ -110,8 +108,7 @@ export default function ProfileHeader(props) {
                         unfollowAlert === 0
                           ? setUnfollowAlert(1)
                           : setUnfollowAlert(0);
-                      }}
-                    >
+                      }}>
                       <Icon
                         className="unfollow__icon"
                         icon="bx:bxs-user-check"
@@ -136,8 +133,7 @@ export default function ProfileHeader(props) {
                 className="row1__edit-profile"
                 onClick={() => {
                   history.push("/profile/edit");
-                }}
-              >
+                }}>
                 프로필 수정
               </button>
             ))}
@@ -148,8 +144,7 @@ export default function ProfileHeader(props) {
           ) : (
             <div
               className="row2__status"
-              style={{ backgroundColor: "#C4C4C4" }}
-            >
+              style={{ backgroundColor: "#C4C4C4" }}>
               {status[props.user.status]}
             </div>
           )}
@@ -158,8 +153,7 @@ export default function ProfileHeader(props) {
               className="row2__follower"
               onClick={(e) => {
                 followerFlag === 0 ? setFollowerFlag(1) : setFollowerFlag(0);
-              }}
-            >
+              }}>
               {`팔로워 ${props.user.follower}명`}
             </div>
             {followerFlag === 1 ? (
@@ -180,8 +174,7 @@ export default function ProfileHeader(props) {
               className="row2__following"
               onClick={(e) => {
                 followingFlag === 0 ? setFollowingFlag(1) : setFollowingFlag(0);
-              }}
-            >
+              }}>
               {`팔로잉 ${props.user.following}명`}
             </div>
             {followingFlag === 1 ? (

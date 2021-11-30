@@ -21,7 +21,7 @@ export default function UserCard({ name, profile, id, setSearchRes }) {
         console.log(err);
       }
     };
-    resizedImage(profile, "100");
+    if (profile) resizedImage(profile, "100");
   }, []);
   return (
     <Link className="link-color" to={`/profile/${id}`}>
@@ -31,8 +31,7 @@ export default function UserCard({ name, profile, id, setSearchRes }) {
           const inputEl = document.querySelector(".Nav__input input");
           inputEl.value = "";
           setSearchRes([]);
-        }}
-      >
+        }}>
         <div className="profile">
           <img src={profileUrl || default_intra} alt={`profile${id}`}></img>
         </div>

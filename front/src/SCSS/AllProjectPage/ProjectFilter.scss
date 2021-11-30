@@ -1,0 +1,173 @@
+@import "../Base.scss";
+
+.filter {
+  z-index: 3;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  right: 0rem;
+  top: 3rem;
+  padding: 1rem;
+  width: 20rem;
+  background-color: white;
+  box-shadow: $shadow;
+  border-radius: $round;
+  .filter_header {
+    padding: 0.5rem;
+    font-size: $fontSm;
+    font-weight: $normal;
+    border-bottom: 1px solid $lightestGrey;
+    margin-bottom: 1rem;
+    margin-top: 0.5rem;
+  }
+  .skill_filter {
+    display: flex;
+    flex-direction: column;
+    .project-edit__skill {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      .add-skill__icon {
+        color: $lightGrey;
+        margin-left: 0.5rem;
+        font-size: 1.8rem;
+        cursor: pointer;
+        &:hover {
+          color: $mainColor;
+        }
+      }
+    }
+    .skill__tags {
+      margin: 0.5rem;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      .skill__wrap {
+        position: relative;
+        margin: 0.15rem 0.3rem;
+        .skill_x {
+          position: absolute;
+          background-color: white;
+          border-radius: 1rem;
+          right: -0.5rem;
+          top: -0.5rem;
+          color: $grey;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  .position_filter {
+    display: flex;
+    flex-direction: column;
+    .position__tags {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      position: relative;
+      margin: 0.5rem;
+      .position__tag {
+        padding: 0.3rem 0.7rem;
+        margin: 0.3rem;
+        background-color: $lightestGrey;
+        border-radius: 0.5rem;
+        font-size: $fontSs;
+      }
+      .tag_wrap {
+        position: relative;
+        .position_x {
+          position: absolute;
+          right: -0.2rem;
+          // bottom: 0;
+          // left: 3.6rem;
+          top: -0.2rem;
+          color: $grey;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  .filter_sort {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    .sort_box {
+      display: flex;
+      flex-direction: row;
+      margin-left: 0.5rem;
+      .sort_text {
+        font-size: $fontSm;
+      }
+      input {
+        margin-right: 0.3rem;
+      }
+    }
+  }
+  .filter_btn__wrap {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+  .filter_btn {
+    margin-top: 1rem;
+    background-color: white;
+    padding: 0.7rem 1.2rem;
+    border-radius: $round;
+    border: 1px solid $lightestGrey;
+    color: $darkGrey;
+  }
+  .project-edit__add-skill {
+    width: 100%;
+    padding: 0.3rem 0.7rem;
+  }
+}
+// .project-edit__left {
+//   width: 40%;
+//   // background-color: pink;
+//   position: relative;
+//   .project-edit__position-label {
+//     display: flex;
+//     flex-direction: row;
+//     align-items: baseline;
+//   }
+//   .project-edit__add-position {
+//     margin: 0 2rem;
+//     background-color: $bodyColor;
+//     color: $grey;
+//   }
+//   .project-edit__position {
+//     display: flex;
+//     flex-wrap: wrap;
+//   }
+
+//   .project-edit__skill-label {
+//     display: flex;
+//     align-items: center;
+//     .project-edit__add-skill {
+//       margin-left: 2rem;
+//       background-color: $bodyColor;
+//     }
+//   }
+
+//   .project-edit__skill {
+//     .project-edit__add-skill {
+//       width: 14rem;
+//       padding: 0.2rem 0.7rem;
+//     }
+//   }
+//   .project-eidt__selected-skill {
+//     display: flex;
+//     flex-wrap: wrap;
+//     .selected-el {
+//       margin: 0.1rem 0.5rem;
+//       position: relative;
+//       .selected-x {
+//         position: absolute;
+//         right: -0.8rem;
+//         bottom: 0;
+//         color: $grey;
+//       }
+//     }
+//   }
+// }

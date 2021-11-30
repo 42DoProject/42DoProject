@@ -3,9 +3,9 @@ import { useSelector } from "react-redux";
 import "../../SCSS/ProfilePage/ProfileHeader.scss";
 import { status } from "../../userData";
 import relativeTime from "../../relativeTime";
+import defaultImg from "../../default_intra.png";
 
 export default function ProfileEditHeader(props) {
-  // let userState = useSelector((state) => state.userReducer);
   const loginState = useSelector((state) => state.loginReducer);
   const [bubbleLength, setBubbleLength] = useState(0);
   const [introLength, setIntroLength] = useState(0);
@@ -27,7 +27,7 @@ export default function ProfileEditHeader(props) {
         <img
           className="profileImage"
           alt="profileImage"
-          src={loginState?.profileImage}
+          src={loginState?.profileImage || defaultImg}
         />
         <div className="bubble__wrapper">
           <textarea

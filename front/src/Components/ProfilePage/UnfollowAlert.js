@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import "../../SCSS/ProfilePage/UnfollowAlert.scss";
 import { useSelector } from "react-redux";
+import defaultImg from "../../default_intra.png";
 
 export default function UnfollowAlert(props) {
   const loginState = useSelector((state) => state.loginReducer);
@@ -11,7 +12,7 @@ export default function UnfollowAlert(props) {
       <div>
         <img
           className="unfollow__img"
-          src={props.user.profileImage}
+          src={props.user.profileImage || defaultImg}
           alt={props.user.username}
         />
         <div className="unfollow__desc">
@@ -41,8 +42,7 @@ export default function UnfollowAlert(props) {
           } catch (err) {
             console.log(err);
           }
-        }}
-      >
+        }}>
         팔로우 취소
       </div>
       <hr />
@@ -50,8 +50,7 @@ export default function UnfollowAlert(props) {
         className="unfollow__cancel"
         onClick={() => {
           props.setUnfollowAlert(0);
-        }}
-      >
+        }}>
         취소
       </div>
     </div>

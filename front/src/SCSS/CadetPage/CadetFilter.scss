@@ -23,6 +23,20 @@
   .skill_filter {
     display: flex;
     flex-direction: column;
+    .project-edit__skill {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      .add-skill__icon {
+        color: $lightGrey;
+        margin-left: 0.5rem;
+        font-size: 1.8rem;
+        cursor: pointer;
+        &:hover {
+          color: $mainColor;
+        }
+      }
+    }
     .skill__tags {
       margin: 0.5rem;
       display: flex;
@@ -30,7 +44,6 @@
       flex-wrap: wrap;
       .skill__wrap {
         position: relative;
-        margin: 0.15rem 0.3rem;
         .skill_x {
           position: absolute;
           background-color: white;
@@ -46,15 +59,18 @@
   .position_filter {
     display: flex;
     flex-direction: column;
+    #job_select {
+      margin-bottom: 1rem;
+    }
     .position__tags {
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
       position: relative;
-      margin: 0.5rem;
+      // margin-top: 0.2rem;
       .position__tag {
         padding: 0.3rem 0.7rem;
-        margin: 0.3rem;
+        margin: 0.5rem;
         background-color: $lightestGrey;
         border-radius: 0.5rem;
         font-size: $fontSs;
@@ -63,32 +79,23 @@
         position: relative;
         .position_x {
           position: absolute;
-          right: -0.2rem;
+          right: 0rem;
           // bottom: 0;
           // left: 3.6rem;
-          top: -0.2rem;
+          top: 0.2rem;
           color: $grey;
           cursor: pointer;
         }
       }
     }
   }
-  .filter_sort {
+  .level_filter {
     display: flex;
-    flex-direction: row;
-    gap: 1rem;
-    .sort_box {
-      display: flex;
-      flex-direction: row;
-      margin-left: 0.5rem;
-      .sort_text {
-        font-size: $fontSm;
-      }
-      input {
-        margin-right: 0.3rem;
-      }
-    }
+    flex-direction: column;
+    // align-items: center;
+    // justify-content: center;
   }
+
   .filter_btn__wrap {
     width: 100%;
     display: flex;

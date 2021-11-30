@@ -2,6 +2,7 @@ import react, { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import "../../../SCSS/Common/Chat/UserNameCard.scss";
 import axios from "axios";
+import defaultImg from "../../../default_intra.png";
 
 export default function UserNameCard({ idx, userInfo, userList, setUserList }) {
   const [profileUrl, setProfileUrl] = useState();
@@ -21,7 +22,7 @@ export default function UserNameCard({ idx, userInfo, userList, setUserList }) {
         console.log(err);
       }
     };
-    resizedImage(userInfo.profile, "100");
+    if (userInfo.profile) resizedImage(userInfo.profile, "100");
   }, []);
 
   const deleteUserList = (idx) => {
@@ -31,7 +32,7 @@ export default function UserNameCard({ idx, userInfo, userList, setUserList }) {
   return (
     <div className="userNameCard">
       <div className="userProfile">
-        <img src={profileUrl} />
+        <img src={profileUrl || defaultImg} />
         <Icon
           className="delete-icon"
           style={{ fontSize: "1rem", cursor: "pointer" }}

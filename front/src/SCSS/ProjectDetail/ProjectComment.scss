@@ -24,10 +24,11 @@
       }
       .comment-content {
         margin: 0 0.5rem;
-        padding: 0.7rem 1rem;
+        padding: 0.5rem 1rem;
         // border: 1px solid $lightestGrey;
         border-radius: 2rem;
-        box-shadow: $shadowLight;
+        // box-shadow: $shadowLight;
+        background-color: $slightGrey;
         text-align: left;
         word-break: break-all;
         line-height: 120%;
@@ -39,10 +40,10 @@
       }
 
       .comment-icons {
-        // align-items: center;
+        align-items: center;
         font-size: $fontSs;
         color: $lightGrey;
-        margin-top: 0.5rem;
+        margin-top: 0.2rem;
         display: flex;
         gap: 0.3rem;
         margin-left: 0.5rem;
@@ -50,6 +51,7 @@
           font-size: $fontSs;
           color: $lightGrey;
           margin-right: 0.5rem;
+          margin-left: 0.5rem;
         }
       }
     }

@@ -4,6 +4,7 @@ import { Icon } from "@iconify/react";
 import Pagination from "react-js-pagination";
 import "../../SCSS/ProjectDetail/ProjectComment.scss";
 import relativeTime from "../../relativeTime";
+import Modal from "../ProjectEditPage/Modal";
 
 export default function ProjectComment({
   projectId,
@@ -18,6 +19,7 @@ export default function ProjectComment({
   const [editComment, setEditComment] = useState("");
   const [isChange, setIsChange] = useState(0);
   const [editable, setEditable] = useState(-1);
+  const [openModal, setOpenModal] = useState(false);
   const itemPerPage = 10;
 
   useEffect(() => {
@@ -80,7 +82,7 @@ export default function ProjectComment({
   };
 
   const onSubmit = (e) => {
-    if (loginState === null) alert("로그인이 필요합니다.");
+    if (loginState === null) setOpenModal(true);
     else {
       axios({
         method: "POST",
@@ -106,7 +108,7 @@ export default function ProjectComment({
           setIsChange(1);
         })
         .catch((e) => console.log(e));
-      e.preventDefault();
+      // e.preventDefault();
     }
   };
 
@@ -141,8 +143,17 @@ export default function ProjectComment({
     setNewComment(e.target.value);
   }, []);
 
+  console.log("commentList", commentList);
+
   return (
     <div className="body-comment">
+      {openModal && (
+        <Modal
+          body="로그인해 주세요"
+          buttons={["확인"]}
+          confirmFunc={() => setOpenModal(false)}
+        />
+      )}
       <div className="comment-row">
         <Icon icon="bi:chat-left-text" color="#565656" fontSize="1.5rem" />
         <div className="comment_text">댓글</div>
@@ -176,15 +187,11 @@ export default function ProjectComment({
                       <>
                         <Icon
                           icon="clarity:edit-solid"
-                          color="#c4c4c4"
-                          fontSize="1rem"
                           onClick={(e) => onEdit(e, elm, key)}
                           style={{ cursor: "pointer" }}
                         />
                         <Icon
                           icon="icomoon-free:bin"
-                          color="#c4c4c4"
-                          fontSize="1rem"
                           onClick={(e) => onDelete(elm.id, e)}
                           style={{ cursor: "pointer" }}
                         />
@@ -225,7 +232,7 @@ export default function ProjectComment({
           </div>
         )}
       </div>
-      <form className="comment-input" onSubmit={onSubmit}>
+      <div className="comment-input">
         <textarea
           spellCheck="false"
           className="comment_input"
@@ -235,8 +242,14 @@ export default function ProjectComment({
           // onKeyPress={this.typeEnter}
           value={newComment}
         />
-        <button type="submit">댓글 등록</button>
-      </form>
+        <button
+          onClick={() => {
+            if (document.querySelector("textarea.comment_input").value !== "")
+              onSubmit();
+          }}>
+          댓글 등록
+        </button>
+      </div>
     </div>
   );
 }

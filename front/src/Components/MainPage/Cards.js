@@ -15,11 +15,10 @@ export default function Cards(props) {
   const isNew = (createdAt) => {
     let createdDay = new Date(createdAt);
     let today = new Date();
-    // const oneDay = 1000 * 60 * 60 * 24;
-    // let daysOver = (today - createdDay) / oneDay;
+    const oneDay = 1000 * 60 * 60 * 24;
+    let daysOver = (today - createdDay) / oneDay;
 
-    // 중간발표용 임시로 1시간으로 설정
-    if ((today - createdDay) / (1000 * 60 * 60) <= 1) return 1;
+    if (daysOver <= 7) return 1;
     else return 0;
   };
 
@@ -52,8 +51,7 @@ export default function Cards(props) {
         e.preventDefault();
         history.push(`/project/${props.projectData.id}`);
       }}
-      style={{ cursor: "pointer" }}
-    >
+      style={{ cursor: "pointer" }}>
       {isNew(props.projectData.createdAt) === 1 && (
         <div className="card__new-tag">NEW</div>
       )}
@@ -61,8 +59,7 @@ export default function Cards(props) {
         className="card__image"
         style={{
           backgroundColor: imgIsLoaded ? "#808080" : "transparent",
-        }}
-      >
+        }}>
         {/* <img
           className="card_img__small"
           src={

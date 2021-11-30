@@ -412,7 +412,7 @@ export const following = async (request: Request, response: Response) => {
   if (!profile) {
     response.status(400).json({ error: "invalid user id" });
     return;
-  }
+  } 
   const result = profile.following.slice((page - 1) * 20, (page - 1) * 20 + 20);
   const userList: IFollowUser[] = [];
   for (const u of result) {
@@ -420,7 +420,7 @@ export const following = async (request: Request, response: Response) => {
     userList.push({
       userId: u,
       username: user!.username,
-      profileImage: user!.profileImage,
+      profileImage: (request.user == null && user!.blurImage != "") ? user!.blurImage : user!.profileImage,
       position: user!.profile!.position,
     });
   }
@@ -448,7 +448,7 @@ export const follower = async (request: Request, response: Response) => {
     userList.push({
       userId: u,
       username: user!.username,
-      profileImage: user!.profileImage,
+      profileImage: (request.user == null && user!.blurImage != "") ? user!.blurImage : user!.profileImage,
       position: user!.profile!.position,
     });
   }

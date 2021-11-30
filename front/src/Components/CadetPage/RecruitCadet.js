@@ -13,8 +13,13 @@ export default function RecruitCadet() {
   const loginState = useSelector((state) => state.loginReducer);
   const [page, setPage] = useState(1);
   const [totCount, setTotCount] = useState(0);
+  const [filterOption, setFilterOption] = useState({
+    status: 1,
+  });
 
   const getData = async () => {
+    console.log(filterOption);
+
     try {
       const {
         data: { count, list },
@@ -25,7 +30,7 @@ export default function RecruitCadet() {
           Authorization: `Bearer ${loginState?.accessToken}`,
         },
         data: {
-          status: 1,
+          ...filterOption,
         },
       });
       setTotCount(count);
@@ -41,23 +46,23 @@ export default function RecruitCadet() {
 
   useEffect(() => {
     getData();
-  }, [page]);
+  }, [page, filterOption]);
 
   return cadets === null ? (
     <div className="recruitCadet-wrap">
-      <CadetTypeBar state="recruit" />
+      <CadetTypeBar state="recruit" setFilterOption={setFilterOption} />
       <ReactLoading type="spin" color="#a7bc5b" />
     </div>
   ) : (
     <>
       {cadets.length === 0 ? (
         <div className="recruitCadet-wrap">
-          <CadetTypeBar state="recruit" />
+          <CadetTypeBar state="recruit" setFilterOption={setFilterOption} />
           <div className="noCadet">프로젝트를 찾고 있는 카뎃이 없어요</div>
         </div>
       ) : (
         <div className="recruitCadet-wrap">
-          <CadetTypeBar state="recruit" />
+          <CadetTypeBar state="recruit" setFilterOption={setFilterOption} />
           <div className="recruitCadet-grid">
             {cadets?.map((v, i) => {
               return <CadetCards cadetData={v} key={v.id} />;

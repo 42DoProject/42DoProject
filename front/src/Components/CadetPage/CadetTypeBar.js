@@ -1,11 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { Icon } from "@iconify/react";
 import "../../SCSS/CadetPage/CadetTypeBar.scss";
 import { Link } from "react-router-dom";
-export default function CadetTypeBar(props) {
+import CadetFilter from "./CadetFilter";
+
+export default function CadetTypeBar({ state, setFilterOption }) {
+  const [filterFlag, setFilterFlag] = useState(0);
+  const [selectedSkill, setSelectedSkill] = useState([]);
+  const [selectedPos, setSelectedPos] = useState(); //[[사진, 포지션이름, x여부], [사진, 포지션이름, x여부]]
+  const [selectedPosIndex, setSelectedPosIndex] = useState();
+  const [cadetLevel, setCadetLevel] = useState(0);
+  const [defaultPosition, setDefaultPosition] = useState("default");
+
   let recruitColor = "a-color";
   let allColor = "a-color";
-  switch (props.state) {
+  switch (state) {
     case "recruit":
       recruitColor = "b-color";
       break;
@@ -15,8 +24,6 @@ export default function CadetTypeBar(props) {
   }
   return (
     <>
-      {/* 모집중인 프로젝트/ 홍보중인 프로젝트(완료) / 필터버튼 */}
-      {/* 각각 버튼으로 바꾸어 주어야함.*/}
       <div className="cadet-bar">
         <div className="cadet-bar-column1">
           <Link className={recruitColor} to="/cadet/recruit">
@@ -27,7 +34,30 @@ export default function CadetTypeBar(props) {
           </Link>
         </div>
         <div className="cadet-bar-column2">
-          <Icon icon="mi:filter" style={{ fontSize: "2rem" }} />
+          <Icon
+            icon="mi:filter"
+            style={{ fontSize: "2rem", cursor: "pointer" }}
+            onClick={(e) => {
+              if (filterFlag === 0) setFilterFlag(1);
+              else setFilterFlag(0);
+            }}
+          />
+          {filterFlag === 1 && (
+            <CadetFilter
+              setFilterOption={setFilterOption}
+              setFilterFlag={setFilterFlag}
+              selectedPos={selectedPos}
+              setSelectedPos={setSelectedPos}
+              selectedPosIndex={selectedPosIndex}
+              setSelectedPosIndex={setSelectedPosIndex}
+              selectedSkill={selectedSkill}
+              setSelectedSkill={setSelectedSkill}
+              cadetLevel={cadetLevel}
+              setCadetLevel={setCadetLevel}
+              setDefaultPosition={setDefaultPosition}
+              defaultPosition={defaultPosition}
+            />
+          )}
         </div>
       </div>
     </>

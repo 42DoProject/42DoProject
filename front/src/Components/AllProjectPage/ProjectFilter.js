@@ -1,24 +1,65 @@
-import React, { useState } from "react";
-import "../../SCSS/AllProjectPage/Filter.scss";
+import React, { useEffect, useRef } from "react";
+import "../../SCSS/AllProjectPage/ProjectFilter.scss";
 import skills from "../../skills.json";
 import { Icon } from "@iconify/react";
 import { positions } from "../../userData";
-// import PositionCard from "../ProjectEditPage/PositionCard.js";
 
-export default function Filter({ setFilterOption, setFilterFlag }) {
-  const [selectedSkill, setSelectedSkill] = useState([]);
-  const [selectedPos, setSelectedPos] = useState([]); //[[사진, 포지션이름, x여부], [사진, 포지션이름, x여부]]
-  const [selectedPosIndex, setSelectedPosIndex] = useState([]);
+export default function Filter({
+  setFilterOption,
+  setFilterFlag,
+  selectedSkill,
+  setSelectedSkill,
+  selectedPos,
+  setSelectedPos,
+  selectedPosIndex,
+  setSelectedPosIndex,
+  setSortCheck,
+  sortCheck,
+}) {
   var filterUrl = "";
-  var sortValue = "new";
+
+  const myRef = useRef();
+
+  const handleClickOutside = (event) => {
+    if (myRef.current && !myRef.current.contains(event.target))
+      setFilterFlag(0);
+  };
+
+  document.addEventListener("mousedown", handleClickOutside);
+
+  //checkbox의 default체크 및 state값 저장.
+  useEffect(() => {
+    const defaultCheckBox = document.getElementsByName("sortbox");
+    defaultCheckBox.forEach((cb) => {
+      if (cb.value === sortCheck) cb.checked = true;
+      else cb.checked = false;
+    });
+  }, []);
+
+  const addSkill = (input) => {
+    skills.skills.forEach((e, idx) => {
+      if (input.value === e[0]) {
+        // 선택한 값이 skills에 있으면
+        for (let elem of selectedSkill) {
+          if (elem[0] === input.value) {
+            //선택한 값이 이미 selected에 있으면
+            input.value = "";
+            return; // 추가안하고 지워준 후 종료
+          }
+        }
+        setSelectedSkill([...selectedSkill, [...e, idx + ""]]); // selectedSkill에 인덱스(el[2])와 함께 추가
+        input.value = "";
+      }
+    });
+  };
 
   const onCheckSort = (e) => {
     const checkboxes = document.getElementsByName("sortbox");
     checkboxes.forEach((cb) => {
       cb.checked = false;
     });
-    e.currentTarget.checked = true;
-    sortValue = e.currentTarget.value;
+    e.target.checked = true;
+    setSortCheck(e.target.value);
   };
 
   //프로젝트 리스트 쿼리를 적용하기 위한 문자열처리 부분
@@ -29,15 +70,15 @@ export default function Filter({ setFilterOption, setFilterFlag }) {
     for (var i in selectedSkill) {
       filterUrl = filterUrl + "&skill=" + selectedSkill[i][2];
     }
-    if (sortValue !== "new") filterUrl = filterUrl + "&order=" + sortValue;
+    if (sortCheck !== "new") filterUrl = filterUrl + "&order=" + sortCheck;
     setFilterOption(filterUrl);
     filterUrl = "";
-    sortValue = "new";
     setFilterFlag(0);
   };
+
   return (
     <>
-      <div className="filter">
+      <div ref={myRef} className="filter">
         <div className="skill_filter">
           <div className="filter_header">필요한 스킬로 필터링</div>
           <div className="project-edit__skill">
@@ -47,20 +88,10 @@ export default function Filter({ setFilterOption, setFilterFlag }) {
               list="tech-stacks"
               onKeyPress={(e) => {
                 if (e.key === "Enter") {
-                  skills.skills.forEach((el, idx) => {
-                    if (e.target.value === el[0]) {
-                      // 선택한 값이 skills에 있으면
-                      for (let elem of selectedSkill) {
-                        if (elem[0] === e.target.value) {
-                          //선택한 값이 이미 selected에 있으면
-                          e.target.value = "";
-                          return; // 추가안하고 지워준 후 종료
-                        }
-                      }
-                      setSelectedSkill([...selectedSkill, [...el, idx + ""]]);
-                      e.target.value = "";
-                    }
-                  });
+                  const inputEl = document.querySelector(
+                    "input.project-edit__add-skill"
+                  );
+                  addSkill(inputEl);
                 }
               }}
             />
@@ -69,6 +100,16 @@ export default function Filter({ setFilterOption, setFilterFlag }) {
                 return <option key={idx} value={v[0]} />;
               })}
             </datalist>
+            <Icon
+              icon="akar-icons:circle-plus-fill"
+              className="add-skill__icon"
+              onClick={() => {
+                const inputEl = document.querySelector(
+                  "input.project-edit__add-skill"
+                );
+                addSkill(inputEl);
+              }}
+            />
           </div>
           <div className="skill__tags">
             {selectedSkill.map((e, idx) => {
@@ -117,7 +158,8 @@ export default function Filter({ setFilterOption, setFilterFlag }) {
                 posSelectEl.selectedIndex - 1,
               ]);
               posSelectEl.selectedIndex = 0;
-            }}>
+            }}
+          >
             <option value="default" disabled>
               포지션 추가
             </option>

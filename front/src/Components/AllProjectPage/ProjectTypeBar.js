@@ -4,12 +4,16 @@ import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
 import { useSelector } from "react-redux";
 import Modal from "../ProjectEditPage/Modal";
-import Filter from "./Filter";
+import Filter from "./ProjectFilter";
 
 export default function ProjectTypeBar({ state, setFilterOption }) {
   const loginState = useSelector((state) => state.loginReducer);
   const [modalFlag, setModalFlag] = useState(0);
   const [filterFlag, setFilterFlag] = useState(0);
+  const [selectedSkill, setSelectedSkill] = useState([]);
+  const [selectedPos, setSelectedPos] = useState([]);
+  const [selectedPosIndex, setSelectedPosIndex] = useState([]);
+  const [sortCheck, setSortCheck] = useState("new");
 
   const history = useHistory();
   let recruitColor = "a-color";
@@ -65,7 +69,8 @@ export default function ProjectTypeBar({ state, setFilterOption }) {
               else {
                 setModalFlag(1);
               }
-            }}>
+            }}
+          >
             프로젝트 생성
           </div>
           <div className="filter_wrap">
@@ -81,6 +86,14 @@ export default function ProjectTypeBar({ state, setFilterOption }) {
               <Filter
                 setFilterOption={setFilterOption}
                 setFilterFlag={setFilterFlag}
+                selectedPos={selectedPos}
+                setSelectedPos={setSelectedPos}
+                selectedPosIndex={selectedPosIndex}
+                setSelectedPosIndex={setSelectedPosIndex}
+                selectedSkill={selectedSkill}
+                setSelectedSkill={setSelectedSkill}
+                setSortCheck={setSortCheck}
+                sortCheck={sortCheck}
               />
             )}
           </div>

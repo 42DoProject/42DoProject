@@ -67,7 +67,7 @@ export default function Follow({
         console.log(err);
       }
     }
-    if (page === maxPage) {
+    if (page === maxPage && loaderRef.current) {
       loaderRef.current.style.display = "none";
     }
   };

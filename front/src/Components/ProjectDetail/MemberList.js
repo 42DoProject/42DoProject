@@ -63,21 +63,20 @@ export default function MemberList({
                 onClick={(e) => {
                   history.push(`/project/edit/${data.id}`);
                   e.preventDefault();
-                }}
-              >
+                }}>
                 수정
               </div>
             </div>
           ) : null}
         </div>
         <div className="member_image_list">
-          {data?.projectprofile.map((elm, key) => (
+          {data?.projectprofile.map((elm) => (
             <>
               {data.leader === elm.profile.id ? (
                 <>
                   <MemberCard
                     elm={elm}
-                    key={key}
+                    key={elm.profile.id}
                     data={data}
                     loginState={loginState}
                     setApplyFlag={setApplyFlag}
@@ -86,13 +85,13 @@ export default function MemberList({
               ) : null}
             </>
           ))}
-          {data?.projectprofile.map((elm, key) => (
+          {data?.projectprofile.map((elm) => (
             <>
               {data.leader !== elm.profile.id ? (
                 <>
                   <MemberCard
                     elm={elm}
-                    key={key}
+                    key={elm.profile.id}
                     data={data}
                     loginState={loginState}
                     setApplyFlag={setApplyFlag}
@@ -128,7 +127,7 @@ export default function MemberList({
                         icon="ant-design:check-circle-filled"
                         color="#ffb648"
                         position={elm}
-                        key={key}
+                        // key={key}
                         style={{ fontSize: "1.7rem" }}
                       />
                     </div>

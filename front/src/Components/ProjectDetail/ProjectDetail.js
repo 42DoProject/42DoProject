@@ -9,7 +9,9 @@ import ProjectInfo from "./ProjectInfo";
 import { useParams } from "react-router-dom";
 import ProjectComment from "./ProjectComment";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router";
+import { useHistory, useLocation } from "react-router";
+import Modal from "../ProjectEditPage/Modal";
+import Loading from "../CommonComponent/Loading";
 
 export default function ProjectDetail(props) {
   const [project, setProject] = useState();
@@ -17,8 +19,9 @@ export default function ProjectDetail(props) {
   const [applyFlag, setApplyFlag] = useState(0);
   const [cancleFlag, setCancleFlag] = useState(0);
   const [commentCount, setCommentCount] = useState();
+  const [openModal, setOpenModal] = useState(false);
   const projectId = useParams()["id"];
-
+  const history = useHistory();
   const loginState = useSelector((state) => state.loginReducer);
   const location = useLocation();
   useEffect(() => {
@@ -37,9 +40,10 @@ export default function ProjectDetail(props) {
       );
       setProject(projectContent);
       setCommentCount(projectContent.commentCount);
-      console.log(project);
+      // console.log(project);
     } catch (err) {
       console.log(err);
+      setOpenModal(true);
     }
   };
 
@@ -62,7 +66,14 @@ export default function ProjectDetail(props) {
   return (
     <>
       <div className="ProjectDetail__wrap">
-        {project && (
+        {openModal === true && (
+          <Modal
+            body="존재하지 않는 프로젝트입니다"
+            buttons={["확인"]}
+            confirmFunc={() => history.goBack()}
+          />
+        )}
+        {project ? (
           <>
             <ProjectDetailHeader
               title={project.title}
@@ -109,6 +120,8 @@ export default function ProjectDetail(props) {
               </div>
             </div>
           </>
+        ) : (
+          <Loading />
         )}
       </div>
     </>

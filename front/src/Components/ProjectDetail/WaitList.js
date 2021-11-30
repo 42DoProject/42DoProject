@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Icon } from "@iconify/react";
 import "../../SCSS/ProjectDetail/WaitList.scss";
 import axios from "axios";
@@ -13,6 +13,7 @@ export default function WaitList({
   const [waitList, setWaitList] = useState([]);
   const [waitCount, setWaitCount] = useState(0);
   const [isChange, setIsChange] = useState(0);
+  const listRef = useRef();
 
   useEffect(() => {
     getWaitList();
@@ -22,6 +23,11 @@ export default function WaitList({
     if (toggle === false) {
       setToggle(true);
     } else setToggle(false);
+  };
+
+  const handleClickOutside = (event) => {
+    if (listRef.current && !listRef.current.contains(event.target))
+      setToggle(false);
   };
 
   const getWaitList = async () => {
@@ -80,9 +86,12 @@ export default function WaitList({
     e.preventDefault();
   };
 
+  if (toggle === true)
+    document.addEventListener("mousedown", handleClickOutside);
+
   return (
     <>
-      <div className="wait__list">
+      <div ref={listRef} className="wait__list">
         <div className="waitlist">
           <div className="waitlist__btn" onClick={onToggle}>
             신청 리스트

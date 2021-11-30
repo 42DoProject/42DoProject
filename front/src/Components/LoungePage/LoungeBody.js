@@ -44,7 +44,7 @@ export default function LoungeBody({
     };
   }, []);
 
-  console.log("loungeData", loungeData);
+  // console.log("loungeData", loungeData);
 
   return (
     <div className="lounge-body">
@@ -107,13 +107,11 @@ export default function LoungeBody({
                       key={i}
                       onClick={() => {
                         history.push(`/profile/${v.userId}`);
-                      }}
-                    >
+                      }}>
                       <img
                         className="connected__img"
                         src={v.profileImage || defaultImg}
-                        alt="connected__img"
-                      ></img>
+                        alt="connected__img"></img>
                       <div className="connected__name">{v.username}</div>
                     </div>
                   );

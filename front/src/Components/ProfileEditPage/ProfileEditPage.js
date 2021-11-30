@@ -65,8 +65,11 @@ export default function ProfileEditPage() {
       .catch((e) => console.log(e));
   };
 
+  console.log("loginState", loginState);
+
   return (
     <>
+      {loginState.i}
       <div className="profileEditPage-wrap">
         <ProfileEditHeader user={userData} submit={submit} />
         <hr />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "../../SCSS/ProjectDetail/ProjectStatusChange.scss";
 import { Icon } from "@iconify/react";
@@ -9,6 +9,7 @@ export default function ProjectStatusChange({
   loginState,
 }) {
   const [toggle, setToggle] = useState(false);
+  const toggleRef = useRef();
 
   const onToggle = (e) => {
     if (toggle === false) {
@@ -34,6 +35,14 @@ export default function ProjectStatusChange({
     console.log(status);
   };
 
+  const handleClickOutside = (event) => {
+    if (toggleRef.current && !toggleRef.current.contains(event.target))
+      setToggle(false);
+  };
+
+  if (toggle === true)
+    document.addEventListener("mousedown", handleClickOutside);
+
   return (
     <>
       <div className="change__btn">
@@ -42,7 +51,7 @@ export default function ProjectStatusChange({
         </div>
 
         {toggle && (
-          <div className="change_toggle">
+          <div ref={toggleRef} className="change_toggle">
             <div className="toggle_header">프로젝트 상태 변경</div>
             <div className="toggle_body">
               <select className="change_select" id="change_status">

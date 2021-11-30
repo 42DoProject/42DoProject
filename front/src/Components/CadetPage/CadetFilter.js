@@ -57,7 +57,7 @@ export default function CadetFilter({
     <>
       <div ref={myRef} className="filter">
         <div className="skill_filter">
-          <div className="filter_header">해당 스킬을 보유한 카뎃</div>
+          <div className="filter_header">보유 스킬로 필터링</div>
           <div className="project-edit__skill">
             <input
               className="project-edit__add-skill"
@@ -114,7 +114,7 @@ export default function CadetFilter({
           </div>
         </div>
         <div className="position_filter">
-          <div className="filter_header">카뎃의 포지션</div>
+          <div className="filter_header">포지션으로 필터링</div>
           <select
             id="job_select"
             className="project-edit__add-position"
@@ -125,8 +125,7 @@ export default function CadetFilter({
               setSelectedPosIndex(posSelectEl.selectedIndex - 1);
               setDefaultPosition(posSelectEl.value);
               // posSelectEl.selectedIndex = 0;
-            }}
-          >
+            }}>
             <option value="default" disabled>
               포지션 선택
             </option>
@@ -142,7 +141,7 @@ export default function CadetFilter({
           </select>
         </div>
         <div className="level_filter">
-          <div className="filter_header">희망 카뎃 레벨</div>
+          <div className="filter_header">42 레벨로 필터링</div>
           {/* <div className="input_wrap"> */}
           <input
             type="number"
@@ -154,8 +153,7 @@ export default function CadetFilter({
             step="0.01"
             onChange={(e) => {
               setCadetLevel(e.target.value);
-            }}
-          ></input>
+            }}></input>
           <input
             type="range"
             name="cadet_level_range"
@@ -166,8 +164,7 @@ export default function CadetFilter({
             step="0.01"
             onChange={(e) => {
               setCadetLevel(e.target.value);
-            }}
-          ></input>
+            }}></input>
           {/* </div> */}
         </div>
         <div className="filter_btn__wrap">

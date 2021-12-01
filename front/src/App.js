@@ -39,7 +39,7 @@ function App(props) {
       console.log("App.js2", loginState);
     };
     socket.emit("authorization", {
-      token: data.accessToken,
+      token: loginState?.accessToken,
     });
     clearInterval(localStorage.getItem("timerId"));
     const timerId = setInterval(getToken, 1000 * 60 * 25);

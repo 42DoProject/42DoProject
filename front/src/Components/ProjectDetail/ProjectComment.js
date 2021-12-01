@@ -143,8 +143,6 @@ export default function ProjectComment({
     setNewComment(e.target.value);
   }, []);
 
-  console.log("commentList", commentList);
-
   return (
     <div className="body-comment">
       {openModal && (
@@ -197,6 +195,9 @@ export default function ProjectComment({
                         />
                       </>
                     )}
+                    {elm.createdAt !== elm.updatedAt && (
+                      <div className="check_edited">(edited)</div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -246,7 +247,8 @@ export default function ProjectComment({
           onClick={() => {
             if (document.querySelector("textarea.comment_input").value !== "")
               onSubmit();
-          }}>
+          }}
+        >
           댓글 등록
         </button>
       </div>

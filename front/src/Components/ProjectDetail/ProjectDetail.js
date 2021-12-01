@@ -24,11 +24,12 @@ export default function ProjectDetail(props) {
   const history = useHistory();
   const loginState = useSelector((state) => state.loginReducer);
   const location = useLocation();
+
   useEffect(() => {
     if (loginState !== null) getUserStatus();
-    getData();
     setApplyFlag(0);
     setCancleFlag(0);
+    getData();
   }, [applyFlag, location, cancleFlag, loginState]);
 
   const getData = async () => {
@@ -40,7 +41,6 @@ export default function ProjectDetail(props) {
       );
       setProject(projectContent);
       setCommentCount(projectContent.commentCount);
-      // console.log(project);
     } catch (err) {
       console.log(err);
       setOpenModal(true);
@@ -58,6 +58,7 @@ export default function ProjectDetail(props) {
         }
       );
       setUserStatus(statusData);
+      console.log(statusData);
     } catch (err) {
       console.log(err);
     }
@@ -70,6 +71,7 @@ export default function ProjectDetail(props) {
           <Modal
             body="존재하지 않는 프로젝트입니다"
             buttons={["확인"]}
+            confirmFunc={() => setOpenModal(false)}
             confirmFunc={() => history.goBack()}
           />
         )}

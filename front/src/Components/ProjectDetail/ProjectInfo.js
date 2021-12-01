@@ -41,7 +41,7 @@ export default function ProjectInfo({
       },
     })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setCancleFlag(1);
       })
       .catch((e) => console.log(e));
@@ -58,7 +58,7 @@ export default function ProjectInfo({
     })
       .then((res) => {
         setApplyFlag(1);
-        console.log(res);
+        // console.log(res);
       })
       .catch((e) => console.log(e));
     // e.preventDefault();
@@ -101,9 +101,6 @@ export default function ProjectInfo({
       e.preventDefault();
     }
   };
-
-  console.log("info", info);
-  console.log("loginState", loginState);
 
   const onClickUnlike = (e) => {
     setClickFlag(0);

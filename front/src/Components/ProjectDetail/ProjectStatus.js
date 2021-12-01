@@ -53,7 +53,8 @@ export default function ProjectStatus({ userStatus, project }) {
     <>
       <div
         className="status_box"
-        style={{ backgroundColor: statusValue.color }}>
+        style={{ backgroundColor: statusValue.color }}
+      >
         <div className="status_title">{statusValue.title}</div>
         <Icon
           icon={statusValue.icon}

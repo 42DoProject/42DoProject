@@ -100,7 +100,7 @@ export default function WaitList({
         <Modal
           body="존재하지 않는 포지션입니다"
           buttons={["확인"]}
-          confirmFunc={() => setOpenModal(false)}
+          cancelFunc={() => setOpenModal(false)}
         />
       )}
       <div ref={listRef} className="wait__list">

@@ -71,8 +71,7 @@ export default function ProjectDetail(props) {
           <Modal
             body="존재하지 않는 프로젝트입니다"
             buttons={["확인"]}
-            confirmFunc={() => setOpenModal(false)}
-            confirmFunc={() => history.goBack()}
+            cancelFunc={() => history.goBack()}
           />
         )}
         {project ? (

@@ -80,7 +80,7 @@ export default function LoungeComment({
         <Modal
           body="로그인해 주세요"
           buttons={["확인"]}
-          confirmFunc={() => setModalFlag(false)}
+          cancelFunc={() => setModalFlag(false)}
         />
       )}
       {replies?.map((e) => {
@@ -140,8 +140,7 @@ export default function LoungeComment({
                 inputRef.current.value !== "" && postReply();
               }
             }
-          }}
-        ></input>
+          }}></input>
         <Icon
           icon="fluent:send-20-filled"
           className="comment-send"

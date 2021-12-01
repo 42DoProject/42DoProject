@@ -71,8 +71,7 @@ export default function Chat() {
           let chatLogEl = document.querySelector(".chatLog");
           chatEl.style.visibility = "hidden";
           chatLogEl.style.visibility = "visible";
-        }}
-      >
+        }}>
         <Icon
           className="chat__icon"
           icon="ion:chatbox-ellipses"
@@ -106,7 +105,7 @@ export default function Chat() {
                     onClick={() => {
                       let chatLogEl = document.querySelector(".chatLog");
                       chatLogEl.style.width = "80vw";
-                      chatLogEl.style.height = "90vh";
+                      chatLogEl.style.height = "80vh";
                       setClickFlag(1);
                     }}
                   />
@@ -145,8 +144,7 @@ export default function Chat() {
                     chatEl.style.visibility = "visible";
                     chatLogEl.style.visibility = "hidden";
                     setConvFlag(0);
-                  }}
-                >
+                  }}>
                   <Icon icon="bx:bx-x" height="2rem" />
                 </div>
               </div>

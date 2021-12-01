@@ -30,9 +30,6 @@ function App(props) {
           const { data } = await axios.get(
             `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/auth/signin?refresh_token=${loginState.refreshToken}`
           );
-          socket.emit("authorization", {
-            token: data.accessToken,
-          });
           dispatch({ type: "TOKEN_UPDATE", payload: data });
         }
       } catch (err) {
@@ -41,6 +38,9 @@ function App(props) {
       }
       console.log("App.js2", loginState);
     };
+    socket.emit("authorization", {
+      token: data.accessToken,
+    });
     clearInterval(localStorage.getItem("timerId"));
     const timerId = setInterval(getToken, 1000 * 60 * 25);
     localStorage.setItem("timerId", timerId);

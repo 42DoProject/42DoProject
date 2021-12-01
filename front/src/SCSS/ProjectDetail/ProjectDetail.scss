@@ -98,3 +98,20 @@
     color: $lightGrey;
   }
 }
+
+@media (max-width: 700px) {
+  .projectdetail-body {
+    // margin: 1px 10px 10px 10px;
+    display: flex;
+    border-radius: $round;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .projectdetail-body__row1 {
+    width: 100%;
+    margin-right: 0rem;
+  }
+  .projectdetail-body_row2 {
+    width: 100%;
+  }
+}

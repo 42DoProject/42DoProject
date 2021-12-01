@@ -151,7 +151,7 @@ export default function ProjectComment({
         <Modal
           body="로그인해 주세요"
           buttons={["확인"]}
-          confirmFunc={() => setOpenModal(false)}
+          cancelFunc={() => setOpenModal(false)}
         />
       )}
       <div className="comment-row">

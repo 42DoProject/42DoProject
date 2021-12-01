@@ -41,13 +41,13 @@ function App(props) {
       }
       console.log("App.js2", loginState);
     };
+    clearInterval(localStorage.getItem("timerId"));
+    const timerId = setInterval(getToken, 1000 * 60 * 25);
+    localStorage.setItem("timerId", timerId);
     if (loginState?.refreshTime < Date.now()) {
       console.log("loginState", loginState.refreshTime);
       console.log("date", Date.now());
       getToken();
-      clearInterval(localStorage.getItem("timerId"));
-      const timerId = setInterval(getToken, 1000 * 60 * 25);
-      localStorage.setItem("timerId", timerId);
     }
   }, [loginState]);
 

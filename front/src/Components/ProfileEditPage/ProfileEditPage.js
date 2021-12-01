@@ -3,7 +3,7 @@ import ProfileEditHeader from "./ProfileEditHeader";
 import ProfileEditBody from "./ProfileEditBody";
 import "../../SCSS/ProfileEditPage/ProfileEditPage.scss";
 import { useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
+// import { Redirect } from "react-router-dom";
 import axios from "axios";
 import { useHistory } from "react-router";
 
@@ -69,7 +69,6 @@ export default function ProfileEditPage() {
 
   return (
     <>
-      {loginState.i}
       <div className="profileEditPage-wrap">
         <ProfileEditHeader user={userData} submit={submit} />
         <hr />

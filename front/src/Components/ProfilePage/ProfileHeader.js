@@ -11,7 +11,6 @@ import defaultImg from "../../default_intra.png";
 import axios from "axios";
 
 export default function ProfileHeader(props) {
-  // let userState = useSelector((state) => state.userReducer);
   const loginState = useSelector((state) => state.loginReducer);
   const [followerFlag, setFollowerFlag] = useState(0);
   const [followingFlag, setFollowingFlag] = useState(0);
@@ -44,9 +43,6 @@ export default function ProfileHeader(props) {
     }
   };
 
-  console.log("lastAccess parsed", Date.parse(props.user.lastAccess));
-  console.log("lastAccess", props.user.lastAccess);
-
   return (
     <div className="profileHeader">
       <div className="header__left">
@@ -64,7 +60,9 @@ export default function ProfileHeader(props) {
           {props.user.lastAccess === "online" ? (
             <span className="profile__online">접속중</span>
           ) : (
-            `마지막 접속: ${relativeTime(Date.parse(props.user.lastAccess))}`
+            `마지막 접속: ${relativeTime(
+              Date.parse(props.user.lastAccess.replace(" ", "T"))
+            )}`
           )}
         </div>
       </div>

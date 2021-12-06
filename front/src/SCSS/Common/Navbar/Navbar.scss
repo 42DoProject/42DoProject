@@ -395,16 +395,16 @@
   display: none;
 }
 
-@media (max-width: 78rem) {
-  .Nav {
-    display: flex;
-  }
-  // .Nav__input {
-  //   display: none;
-  // }
-}
+// @media (max-width: 78rem) {
+//   .Nav {
+//     display: flex;
+//   }
+//   // .Nav__input {
+//   //   display: none;
+//   // }
+// }
 
-@media (max-width: 63rem) {
+@media (max-width: 900px) {
   .Nav__project,
   .Nav__cadet,
   .Nav__lounge,
@@ -425,7 +425,7 @@
     }
   }
 }
-@media (max-width: 48rem) {
+@media (max-width: 500px) {
   .Nav__notification,
   .Nav__user .image,
   .Nav__input {

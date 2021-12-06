@@ -49,7 +49,7 @@ export default function ProfileEditHeader(props) {
             <span className="profile__online">접속중</span>
           ) : (
             `마지막 접속: ${relativeTime(
-              Date.parse(props.user.lastAccess.replace(" ", "T"))
+              Date.parse(props.user.lastAccess?.replace(" ", "T"))
             )}`
           )}
         </div>

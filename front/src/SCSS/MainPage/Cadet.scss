@@ -37,16 +37,19 @@
   }
 }
 
-@media (max-width: 63rem) {
+@media (max-width: 1000px) {
   .cadet {
     width: 100%;
+    margin-bottom: 2rem;
+    .cadet__list {
+      grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    }
   }
 }
 
-@media (max-width: 38rem) {
+@media (max-width: 450px) {
   .cadet {
     .cadet__list {
-      display: grid;
       grid-template-columns: repeat(2, 1fr);
     }
   }

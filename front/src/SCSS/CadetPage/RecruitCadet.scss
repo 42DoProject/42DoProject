@@ -5,7 +5,8 @@
   max-width: 1440px;
   .recruitCadet-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    // grid-template-columns: repeat(auto-fill, minmax(200px, max-content));
     align-content: start;
   }
   .noCadet {
@@ -17,5 +18,11 @@
     border-radius: $round;
     background-color: $lightestGrey;
     margin: 2rem;
+  }
+}
+
+@media (min-width: 1000px) {
+  .recruitCadet-wrap .recruitCadet-grid {
+    grid-template-columns: repeat(5, 1fr);
   }
 }

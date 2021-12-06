@@ -43,6 +43,10 @@ export default function ProfileHeader(props) {
       console.log(e);
     }
   };
+
+  console.log("lastAccess parsed", Date.parse(props.user.lastAccess));
+  console.log("lastAccess", props.user.lastAccess);
+
   return (
     <div className="profileHeader">
       <div className="header__left">

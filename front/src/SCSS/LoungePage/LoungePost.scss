@@ -44,7 +44,7 @@
 .lounge-post__space {
   // background-color: beige;
   min-height: 2rem;
-  line-height: 120%;
+  line-height: 140%;
   margin: 2rem 4rem;
   word-break: break-all;
   white-space: pre-wrap; /* Since CSS 2.1 */
@@ -56,11 +56,12 @@
 }
 
 .lounge-post__edit-space {
-  height: 8rem;
-  line-height: 120%;
+  min-height: 8rem;
+  line-height: 140%;
   padding: 1rem;
   margin: 1rem 4rem;
-  resize: none;
+  // resize: none;
+  max-height: 40rem;
 }
 
 .lounge-post__bottom {

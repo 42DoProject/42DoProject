@@ -31,7 +31,7 @@
         background-color: $slightGrey;
         text-align: left;
         word-break: break-all;
-        line-height: 120%;
+        line-height: 140%;
         white-space: pre-wrap; /* Since CSS 2.1 */
         white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
         white-space: -pre-wrap; /* Opera 4-6 */
@@ -83,7 +83,7 @@
       width: 100%;
       padding: 0.7rem 1rem;
       min-height: max-content;
-      line-height: 120%;
+      line-height: 140%;
       // width: max-content;
       // height: max-content;
       resize: none;
@@ -105,7 +105,7 @@
     border-radius: $round;
     padding: 1rem;
     textarea {
-      line-height: 120%;
+      line-height: 140%;
       padding: 0;
       width: 92%;
       border: none;

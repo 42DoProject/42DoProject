@@ -16,7 +16,7 @@ export default function Chat() {
   const [inFlag, setInFlag] = useState(-1);
   const [chatOutFlag, setChatOutFlag] = useState(0);
   const [unreadCnt, setUnreadCnt] = useState(0);
-  let dispatch = useDispatch();
+
   const getUnreadCnt = (chatRoom) => {
     let cnt = 0;
     chatRoom?.forEach((e) => (cnt += e.unread));
@@ -39,14 +39,17 @@ export default function Chat() {
       console.log(err);
     }
   }, [loginState]);
+
   useEffect(() => {
     socket.on("chat:newRoom", () => {
+      console.log("newRoom");
       getChatRoom();
     });
     socket.on("chat:leave", () => {
       getChatRoom();
     });
     socket.on("chat:receive", () => {
+      console.log("receive");
       getChatRoom();
     });
     return () => {
@@ -56,7 +59,7 @@ export default function Chat() {
         socket.off("chat:receive");
       }
     };
-  }, [loginState, chatRoom, inFlag, chatOutFlag]);
+  }, [chatRoom, inFlag, chatOutFlag]);
 
   useEffect(() => {
     getChatRoom();

@@ -12,6 +12,7 @@ export default function CheckModal({
   setToggleNum,
   loginState,
   modalFlag,
+  setIconStyle,
 }) {
   const ChangePosition = (e, elm) => {
     const selected_position = document.querySelector(".job__content").value;
@@ -26,6 +27,7 @@ export default function CheckModal({
         console.log(res);
         setApplyFlag(1);
         setToggleNum(0);
+        setIconStyle("bi:caret-down-fill");
       })
       .catch((e) => console.log(e));
     e.preventDefault();

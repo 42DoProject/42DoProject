@@ -588,6 +588,16 @@ export default function ProjectEditPage() {
         />
       )}
       <div className="project-edit__buttons">
+        <button
+          className="project-edit__save"
+          onClick={(e) => {
+            if (testValid() === 1) {
+              setIsLoading(1);
+              saveProject();
+            }
+          }}>
+          {projectId ? "프로젝트 저장" : "프로젝트 생성"}
+        </button>
         {projectId && (
           <button
             className="project-edit__delete"
@@ -598,16 +608,6 @@ export default function ProjectEditPage() {
             프로젝트 삭제
           </button>
         )}
-        <button
-          className="project-edit__save"
-          onClick={(e) => {
-            if (testValid() === 1) {
-              setIsLoading(1);
-              saveProject();
-            }
-          }}>
-          {projectId ? "저장" : "프로젝트 생성"}
-        </button>
       </div>
     </div>
   );

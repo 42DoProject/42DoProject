@@ -27,7 +27,7 @@ export default function AuthMain() {
         });
         // loginReducer state 변경
         dispatch({ type: "LOGIN", payload: data });
-        history.push("/");
+        history.goBack();
       } catch (err) {
         console.log(err);
       }

@@ -143,15 +143,13 @@ export default function ProjectComment({
     setNewComment(e.target.value);
   }, []);
 
-  console.log("commentList", commentList);
-
   return (
     <div className="body-comment">
       {openModal && (
         <Modal
           body="로그인해 주세요"
           buttons={["확인"]}
-          confirmFunc={() => setOpenModal(false)}
+          cancelFunc={() => setOpenModal(false)}
         />
       )}
       <div className="comment-row">
@@ -196,6 +194,9 @@ export default function ProjectComment({
                           style={{ cursor: "pointer" }}
                         />
                       </>
+                    )}
+                    {elm.createdAt !== elm.updatedAt && (
+                      <div className="check_edited">(edited)</div>
                     )}
                   </div>
                 </div>
@@ -246,7 +247,8 @@ export default function ProjectComment({
           onClick={() => {
             if (document.querySelector("textarea.comment_input").value !== "")
               onSubmit();
-          }}>
+          }}
+        >
           댓글 등록
         </button>
       </div>

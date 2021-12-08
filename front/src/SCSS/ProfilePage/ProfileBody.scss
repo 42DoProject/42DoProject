@@ -185,11 +185,12 @@ input.github-span {
   display: flex;
 }
 
-@media (max-width: 1000px) {
-  .profileBody__col1,
+@media (max-width: 800px) {
   .profileBody__col2 {
-    // flex-direction: row !important;
-    // align-items: flex-start !important;
     width: 80%;
+  }
+  .profileBody .profileBody__col1 {
+    width: 80%;
+    margin-right: 2rem;
   }
 }

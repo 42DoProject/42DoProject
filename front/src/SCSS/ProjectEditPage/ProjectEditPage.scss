@@ -102,10 +102,12 @@
       color: white;
       border: none;
       margin: 0 0.5rem;
-      font-weight: $regular;
+      // font-weight: $regular;
     }
     .project-edit__delete {
-      background-color: $pointRed;
+      // background-color: $pointRed;
+      border: 1px solid $lightestGrey;
+      color: $darkGrey;
     }
     .project-edit__save {
       background-color: $mainColor;

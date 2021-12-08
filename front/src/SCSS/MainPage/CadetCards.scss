@@ -1,7 +1,7 @@
 @import "../Base.scss";
 .cadet-card {
   margin: 0 1rem;
-  height: 16.5rem;
+  min-height: 17rem;
   background-color: white;
   box-shadow: $shadow;
   border-radius: $round;
@@ -12,6 +12,7 @@
   align-items: center;
   margin-bottom: 1.5rem;
   cursor: pointer;
+  max-width: 16rem;
   .cadet__image {
     border-radius: 50%;
     width: 5rem;

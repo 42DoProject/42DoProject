@@ -11,7 +11,6 @@ import defaultImg from "../../default_intra.png";
 import axios from "axios";
 
 export default function ProfileHeader(props) {
-  // let userState = useSelector((state) => state.userReducer);
   const loginState = useSelector((state) => state.loginReducer);
   const [followerFlag, setFollowerFlag] = useState(0);
   const [followingFlag, setFollowingFlag] = useState(0);
@@ -35,7 +34,7 @@ export default function ProfileHeader(props) {
           Authorization: `Bearer ${loginState.accessToken}`,
         },
         data: {
-          users: userId,
+          users: [userId],
         },
       });
       dispatch({ type: "DM", payload: userId });
@@ -43,6 +42,7 @@ export default function ProfileHeader(props) {
       console.log(e);
     }
   };
+
   return (
     <div className="profileHeader">
       <div className="header__left">
@@ -60,7 +60,9 @@ export default function ProfileHeader(props) {
           {props.user.lastAccess === "online" ? (
             <span className="profile__online">접속중</span>
           ) : (
-            `마지막 접속: ${relativeTime(Date.parse(props.user.lastAccess))}`
+            `마지막 접속: ${relativeTime(
+              Date.parse(props.user.lastAccess?.replace(" ", "T"))
+            )}`
           )}
         </div>
       </div>
@@ -79,7 +81,8 @@ export default function ProfileHeader(props) {
                     let chatLogEl = document.querySelector(".chatLog");
                     chatEl.style.visibility = "hidden";
                     chatLogEl.style.visibility = "visible";
-                  }}>
+                  }}
+                >
                   메시지 보내기
                 </button>
                 {followButton === "follow" ? (
@@ -97,7 +100,8 @@ export default function ProfileHeader(props) {
                       props.setGetDataFlag(1);
                       setFollowButton("unfollow");
                       setRefreshFlag(1);
-                    }}>
+                    }}
+                  >
                     팔로우
                   </button>
                 ) : (
@@ -108,7 +112,8 @@ export default function ProfileHeader(props) {
                         unfollowAlert === 0
                           ? setUnfollowAlert(1)
                           : setUnfollowAlert(0);
-                      }}>
+                      }}
+                    >
                       <Icon
                         className="unfollow__icon"
                         icon="bx:bxs-user-check"
@@ -133,7 +138,8 @@ export default function ProfileHeader(props) {
                 className="row1__edit-profile"
                 onClick={() => {
                   history.push("/profile/edit");
-                }}>
+                }}
+              >
                 프로필 수정
               </button>
             ))}
@@ -144,7 +150,8 @@ export default function ProfileHeader(props) {
           ) : (
             <div
               className="row2__status"
-              style={{ backgroundColor: "#C4C4C4" }}>
+              style={{ backgroundColor: "#C4C4C4" }}
+            >
               {status[props.user.status]}
             </div>
           )}
@@ -153,7 +160,8 @@ export default function ProfileHeader(props) {
               className="row2__follower"
               onClick={(e) => {
                 followerFlag === 0 ? setFollowerFlag(1) : setFollowerFlag(0);
-              }}>
+              }}
+            >
               {`팔로워 ${props.user.follower}명`}
             </div>
             {followerFlag === 1 ? (
@@ -174,7 +182,8 @@ export default function ProfileHeader(props) {
               className="row2__following"
               onClick={(e) => {
                 followingFlag === 0 ? setFollowingFlag(1) : setFollowingFlag(0);
-              }}>
+              }}
+            >
               {`팔로잉 ${props.user.following}명`}
             </div>
             {followingFlag === 1 ? (

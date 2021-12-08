@@ -225,12 +225,14 @@
     font-weight: $semiBold;
   }
 }
-@media (max-width: 55rem) {
+
+//16px = 1rem
+@media (max-width: 880px) {
   .row2 .row2__box3 {
     display: none;
   }
 }
-@media (max-width: 38rem) {
+@media (max-width: 608px) {
   .row2 .row2__box1 {
     // flex-grow: 1;
     .box1__column1 {
@@ -251,7 +253,7 @@
 }
 
 // 화면이 뭉게지기 시작한 시점
-@media (max-width: 28rem) {
+@media (max-width: 448px) {
   .dashboard {
     min-width: 28rem;
   }

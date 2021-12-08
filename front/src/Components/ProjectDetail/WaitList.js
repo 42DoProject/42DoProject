@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Icon } from "@iconify/react";
 import "../../SCSS/ProjectDetail/WaitList.scss";
 import axios from "axios";
+import Modal from "../ProjectEditPage/Modal";
 
 export default function WaitList({
   data,
@@ -13,6 +14,7 @@ export default function WaitList({
   const [waitList, setWaitList] = useState([]);
   const [waitCount, setWaitCount] = useState(0);
   const [isChange, setIsChange] = useState(0);
+  const [openModal, setOpenModal] = useState(false);
   const listRef = useRef();
 
   useEffect(() => {
@@ -31,7 +33,6 @@ export default function WaitList({
   };
 
   const getWaitList = async () => {
-    console.log(loginState);
     try {
       const {
         data: { applyerList: list },
@@ -44,7 +45,6 @@ export default function WaitList({
         }
       );
       setWaitCount(list.count);
-      console.log(waitCount);
       setWaitList(list.rows);
       setIsChange(0);
     } catch (err) {
@@ -69,7 +69,12 @@ export default function WaitList({
     e.preventDefault();
   };
 
-  const onAddMember = (e, id) => {
+  const onAddMember = (e, id, position) => {
+    if (data.position.includes(position) === false) {
+      setOpenModal(true);
+
+      return;
+    }
     axios({
       method: "POST",
       url: `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/project/accept/${data.id}/${id}`,
@@ -91,6 +96,13 @@ export default function WaitList({
 
   return (
     <>
+      {openModal === true && (
+        <Modal
+          body="존재하지 않는 포지션입니다"
+          buttons={["확인"]}
+          cancelFunc={() => setOpenModal(false)}
+        />
+      )}
       <div ref={listRef} className="wait__list">
         <div className="waitlist">
           <div className="waitlist__btn" onClick={onToggle}>
@@ -133,7 +145,7 @@ export default function WaitList({
                               color="#a7bc5b"
                               fontSize="1.5rem"
                               onClick={(e) =>
-                                onAddMember(e, elm.profile.userId)
+                                onAddMember(e, elm.profile.userId, elm.position)
                               }
                               style={{ cursor: "pointer" }}
                             />

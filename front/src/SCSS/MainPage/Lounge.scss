@@ -29,6 +29,7 @@
     .lounge__card {
       background-color: white;
       padding: 2rem;
+      width: 100%;
       box-shadow: $shadow;
       border-radius: $round;
       margin-bottom: 2rem;
@@ -89,14 +90,9 @@
     }
   }
 }
-@media (max-width: 63rem) {
+@media (max-width: 1000px) {
   .lounge {
     // margin-top: 4rem;
     width: 100%;
-  }
-  .lounge__list {
-    position: relative;
-    left: -1.1rem;
-    width: 104%;
   }
 }

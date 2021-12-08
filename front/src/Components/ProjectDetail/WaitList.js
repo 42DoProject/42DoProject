@@ -2,7 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import { Icon } from "@iconify/react";
 import "../../SCSS/ProjectDetail/WaitList.scss";
 import axios from "axios";
+import socket from "../../socket";
 import Modal from "../ProjectEditPage/Modal";
+
 
 export default function WaitList({
   data,
@@ -19,6 +21,12 @@ export default function WaitList({
 
   useEffect(() => {
     getWaitList();
+    socket.on("feed:notification", () => {
+      getWaitList();
+    });
+    return () => {
+      socket.off("feed:notification");
+    };
   }, [toggle, isChange, loginState]);
 
   const onToggle = (e) => {

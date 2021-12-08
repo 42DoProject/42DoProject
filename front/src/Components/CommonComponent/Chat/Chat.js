@@ -59,7 +59,7 @@ export default function Chat() {
         socket.off("chat:receive");
       }
     };
-  }, [chatRoom, inFlag, chatOutFlag]);
+  }, [loginState, chatRoom, inFlag, chatOutFlag]);
 
   useEffect(() => {
     getChatRoom();

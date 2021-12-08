@@ -65,7 +65,7 @@ export default function ProfileEditPage() {
       .catch((e) => console.log(e));
   };
 
-  console.log("loginState", loginState);
+  // console.log("loginState", loginState);
 
   return (
     <>

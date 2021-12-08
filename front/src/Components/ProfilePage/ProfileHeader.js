@@ -34,7 +34,7 @@ export default function ProfileHeader(props) {
           Authorization: `Bearer ${loginState.accessToken}`,
         },
         data: {
-          users: +userId,
+          users: [userId],
         },
       });
       dispatch({ type: "DM", payload: userId });

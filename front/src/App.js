@@ -26,10 +26,12 @@ function App(props) {
   useEffect(() => {
     const getToken = async () => {
       try {
-        const { data } = await axios.get(
-          `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/auth/signin?refresh_token=${loginState.refreshToken}`
-        );
-        dispatch({ type: "TOKEN_UPDATE", payload: data });
+        if (loginState) {
+          const { data } = await axios.get(
+            `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/auth/signin?refresh_token=${loginState.refreshToken}`
+          );
+          dispatch({ type: "TOKEN_UPDATE", payload: data });
+        }
       } catch (err) {
         dispatch({ type: "LOGOUT" });
         console.log(err);

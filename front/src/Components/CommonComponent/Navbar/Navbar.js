@@ -44,8 +44,7 @@ export default function Navbar(props) {
           onClick={() => {
             if (location.pathname === "/") window.location.reload(false);
             else history.push("/");
-          }}
-        >
+          }}>
           <Icon className="title-icon" icon="simple-icons:42" />
           <div className="title-text">DoProject</div>
         </div>
@@ -55,33 +54,36 @@ export default function Navbar(props) {
           <input
             placeholder="카뎃 닉네임, 프로젝트명 등을 검색해 보세요"
             spellCheck="false"
-            onChange={(e) => search(e.target.value)}
-          ></input>
+            onChange={(e) => search(e.target.value)}></input>
           {searchRes.length !== 0 && (
             <div className="input__res">
               <div className="res__user">
                 <div className="res__title1">카뎃</div>
-                {searchRes.user.map((e) => (
-                  <UserCard
-                    key={e.id}
-                    name={e.username}
-                    profile={e.profileImage}
-                    id={e.id}
-                    setSearchRes={setSearchRes}
-                  />
-                ))}
+                <div className="res__userlist">
+                  {searchRes.user.map((e) => (
+                    <UserCard
+                      key={e.id}
+                      name={e.username}
+                      profile={e.profileImage}
+                      id={e.id}
+                      setSearchRes={setSearchRes}
+                    />
+                  ))}
+                </div>
               </div>
               <div className="res__project">
                 <div className="res__title2">프로젝트</div>
-                {searchRes.project.map((e) => (
-                  <ProjectCard
-                    key={e.id}
-                    title={e.title}
-                    image={e.image}
-                    id={e.id}
-                    setSearchRes={setSearchRes}
-                  />
-                ))}
+                <div className="res__projectlist">
+                  {searchRes.project.map((e) => (
+                    <ProjectCard
+                      key={e.id}
+                      title={e.title}
+                      image={e.image}
+                      id={e.id}
+                      setSearchRes={setSearchRes}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
           )}
@@ -108,8 +110,7 @@ export default function Navbar(props) {
           <button className="Nav__user__login">
             <a
               className="login__link"
-              href={`${process.env.REACT_APP_HTTP_ENV}://api.intra.42.fr/oauth/authorize?client_id=${process.env.REACT_APP_API_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_API_REDIRECT_URI}&response_type=code`}
-            >
+              href={`${process.env.REACT_APP_HTTP_ENV}://api.intra.42.fr/oauth/authorize?client_id=${process.env.REACT_APP_API_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_API_REDIRECT_URI}&response_type=code`}>
               SIGN IN
             </a>
           </button>

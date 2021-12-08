@@ -83,15 +83,14 @@
     height: 100%;
     display: flex;
     flex-grow: 1;
-    overflow-y: scroll;
+    overflow-y: auto;
     &::-webkit-scrollbar {
-      background: transparent;
+      background-color: transparent;
       -ms-overflow-style: none;
-      scrollbar-width: 0;
-      display: none;
+      // scrollbar-width: 0;
     }
     &::-webkit-scrollbar-thumb {
-      background: transparent;
+      background-color: transparent;
     }
 
     .box1__column1 {
@@ -223,6 +222,13 @@
 
   .reportbox__report {
     font-weight: $semiBold;
+  }
+}
+
+.row2 .row2__box1:hover {
+  &::-webkit-scrollbar-thumb {
+    background-color: $grey;
+    border-radius: $round;
   }
 }
 

@@ -11,7 +11,6 @@ import defaultImg from "../../default_intra.png";
 import axios from "axios";
 
 export default function ProfileHeader(props) {
-  // let userState = useSelector((state) => state.userReducer);
   const loginState = useSelector((state) => state.loginReducer);
   const [followerFlag, setFollowerFlag] = useState(0);
   const [followingFlag, setFollowingFlag] = useState(0);
@@ -35,7 +34,7 @@ export default function ProfileHeader(props) {
           Authorization: `Bearer ${loginState.accessToken}`,
         },
         data: {
-          users: userId,
+          users: +userId,
         },
       });
       dispatch({ type: "DM", payload: userId });

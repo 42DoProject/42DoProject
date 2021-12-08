@@ -92,18 +92,18 @@ export default function LoungePost({
     }
   };
 
+  console.log("loungeData", loungeData);
+
   return (
     <div className="lounge-post">
       <div className="lounge-post__row1">
         <div
           className="lounge-post__profile"
-          onClick={() => history.push(`/profile/${loungeData.userid}`)}
-        >
+          onClick={() => history.push(`/profile/${loungeData.userid}`)}>
           <img
             className="profile__img"
             src={loungeData.image || defaultImg}
-            alt="profile__img"
-          ></img>
+            alt="profile__img"></img>
           <div className="profile__name">{loungeData.username || "user"}</div>
         </div>
         <div className="lounge-post__time">
@@ -111,20 +111,23 @@ export default function LoungePost({
         </div>
       </div>
       {editFlag === false ? (
-        <pre className="lounge-post__space">{loungeData.comment}</pre>
+        <pre className="lounge-post__space">
+          {loungeData.comment}{" "}
+          {loungeData.createdAt !== loungeData.updatedAt && (
+            <span className="post__edited">(edited)</span>
+          )}
+        </pre>
       ) : (
         <textarea
           className="lounge-post__edit-space"
           spellCheck="false"
           defaultValue={loungeData.comment}
-          maxLength="800"
-        ></textarea>
+          maxLength="800"></textarea>
       )}
       <div className="lounge-post__bottom">
         <button
           className="bottom__open-comments"
-          onClick={() => toggleComment()}
-        >
+          onClick={() => toggleComment()}>
           {`댓글 ${loungeData.replyCount}개`}
           <Icon className="bottom__comment-icon" icon={commentIcon} />
         </button>

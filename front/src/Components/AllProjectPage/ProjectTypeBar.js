@@ -41,7 +41,7 @@ export default function ProjectTypeBar({ state, setFilterOption }) {
           <Modal
             body="로그인해 주세요"
             buttons={["확인"]}
-            confirmFunc={() => setModalFlag(false)}
+            cancelFunc={() => setModalFlag(false)}
           />
         )}
         <div className="project-bar-column1">
@@ -69,8 +69,7 @@ export default function ProjectTypeBar({ state, setFilterOption }) {
               else {
                 setModalFlag(1);
               }
-            }}
-          >
+            }}>
             프로젝트 생성
           </div>
           <div className="filter_wrap">

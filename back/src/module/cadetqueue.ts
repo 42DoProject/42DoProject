@@ -70,6 +70,7 @@ export async function statusChanged(userId: number) {
   var user: Profile | boolean | null = true;
   var offset = 0;
   pop(userId);
+  if (queue.length >= 6) return;
   while (user !== null) {
     user = await Profile.findOne({
       where: { status: status },

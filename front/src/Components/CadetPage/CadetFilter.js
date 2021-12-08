@@ -125,7 +125,8 @@ export default function CadetFilter({
               setSelectedPosIndex(posSelectEl.selectedIndex - 1);
               setDefaultPosition(posSelectEl.value);
               // posSelectEl.selectedIndex = 0;
-            }}>
+            }}
+          >
             <option value="default" disabled>
               포지션 선택
             </option>
@@ -150,10 +151,11 @@ export default function CadetFilter({
             name="cadet_level_number"
             min="0"
             max="10"
-            step="0.01"
+            step="1"
             onChange={(e) => {
               setCadetLevel(e.target.value);
-            }}></input>
+            }}
+          ></input>
           <input
             type="range"
             name="cadet_level_range"
@@ -161,10 +163,11 @@ export default function CadetFilter({
             value={cadetLevel}
             min="0"
             max="10"
-            step="0.01"
+            step="1"
             onChange={(e) => {
               setCadetLevel(e.target.value);
-            }}></input>
+            }}
+          ></input>
           {/* </div> */}
         </div>
         <div className="filter_btn__wrap">

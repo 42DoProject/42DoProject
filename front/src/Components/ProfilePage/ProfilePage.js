@@ -90,7 +90,7 @@ export default function ProfilePage() {
           <Modal
             body="존재하지 않는 유저입니다"
             buttons={["확인"]}
-            confirmFunc={() => {
+            cancelFunc={() => {
               setOpenModal(false);
               history.goBack();
             }}

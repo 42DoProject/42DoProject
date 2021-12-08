@@ -1,4 +1,4 @@
-# 42DoProject
+# DoProject
 
 *docker와 docker compose가 설치되어 있어야 합니다.*
 

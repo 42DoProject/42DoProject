@@ -42,6 +42,7 @@ export default function ProfileHeader(props) {
       console.log(e);
     }
   };
+
   return (
     <div className="profileHeader">
       <div className="header__left">
@@ -59,7 +60,9 @@ export default function ProfileHeader(props) {
           {props.user.lastAccess === "online" ? (
             <span className="profile__online">접속중</span>
           ) : (
-            `마지막 접속: ${relativeTime(Date.parse(props.user.lastAccess))}`
+            `마지막 접속: ${relativeTime(
+              Date.parse(props.user.lastAccess?.replace(" ", "T"))
+            )}`
           )}
         </div>
       </div>

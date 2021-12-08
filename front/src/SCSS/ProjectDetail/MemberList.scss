@@ -173,3 +173,9 @@
     }
   }
 }
+
+@media (max-width: 700px) {
+  .list_row1 {
+    flex-wrap: wrap;
+  }
+}

@@ -146,13 +146,14 @@ export default function MemberCard({
                     <CheckModal
                       data={data}
                       positions={positions}
-                      position={elm.position}
+                      preposition={elm.position}
                       setModalFlag={setModalFlag}
                       setApplyFlag={setApplyFlag}
                       loginState={loginState}
                       userId={elm.profile.id}
                       modalFlag={modalFlag}
                       setToggleNum={setToggleNum}
+                      setIconStyle={setIconStyle}
                     />
                   )}
                 </div>

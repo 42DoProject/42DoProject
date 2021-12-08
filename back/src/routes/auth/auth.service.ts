@@ -10,16 +10,16 @@ import { getIsoString } from "../../module/time";
 import { accessToken, issueJwt, jwtToObject, tokenToUser } from "./oauth";
 import * as search from "../../module/search";
 import * as awsS3 from "../../module/aws/s3";
-import * as cadet from "../../module/cadetqueue";
 
 const userModelCheck = async (user: any): Promise<number> => {
   var temp;
+  var u = user.cursus_users.filter((x: any) => x.cursus_id == 21)[0];
   if ((temp = await User.findOne({ where: { intraId: user.id } }))) {
     await Profile.update(
-      { level: user.cursus_users[1].level },
+      { level: u.level },
       { where: { userId: temp.id } }
     );
-    search.updateUser({ level: user.cursus_users[1].level }, { id: temp.id });
+    search.updateUser({ level: u.level }, { id: temp.id });
     return temp.id;
   }
   const row = await User.create({
@@ -45,7 +45,7 @@ const userModelCheck = async (user: any): Promise<number> => {
     userId: row.id,
   });
   await Profile.create({
-    level: user.cursus_users[1].level,
+    level: u.level,
     lastAccess: getIsoString(),
     status: 0,
     position: 0,
@@ -66,7 +66,7 @@ const userModelCheck = async (user: any): Promise<number> => {
     status: 0,
     position: 0,
     skill: [],
-    level: user.cursus_users[1].level,
+    level: u.level,
     statusMessage: "",
   });
   await awsS3.profileToS3(row.id, user.image_url);

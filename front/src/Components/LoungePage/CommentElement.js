@@ -61,6 +61,8 @@ export default function CommentElement({
     }
   };
 
+  // console.log("e", e);
+
   return (
     <div className="comment-element" key={e.id}>
       <img
@@ -82,8 +84,7 @@ export default function CommentElement({
             ref={editRef}
             className="comment-content"
             defaultValue={e.comment}
-            spellCheck="false"
-          ></input>
+            spellCheck="false"></input>
         ) : (
           <div className="comment-content">{e.comment}</div>
         )}
@@ -97,14 +98,12 @@ export default function CommentElement({
                 <div className="comment__on-edit">
                   <div
                     onClick={() => editComment(e.id)}
-                    style={{ cursor: "pointer" }}
-                  >
+                    style={{ cursor: "pointer" }}>
                     완료
                   </div>
                   <div
                     onClick={() => setOnEdit(false)}
-                    style={{ cursor: "pointer" }}
-                  >
+                    style={{ cursor: "pointer" }}>
                     취소
                   </div>
                 </div>
@@ -121,6 +120,9 @@ export default function CommentElement({
                 onClick={() => deleteComment(e.id)}
               />
             </>
+          )}
+          {e.createdAt !== e.updatedAt && (
+            <span className="comment__edited">(edited)</span>
           )}
         </div>
       </div>

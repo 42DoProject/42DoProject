@@ -19,9 +19,12 @@ import { useDispatch, useSelector } from "react-redux";
 import socket from "./socket";
 import ProjectDetail from "./Components/ProjectDetail/ProjectDetail";
 import NotPage from "./Components/MainPage/NotPage";
+import { useLocation } from "react-router";
+
 function App(props) {
   let loginState = useSelector((state) => state.loginReducer);
   let dispatch = useDispatch();
+  // const location = useLocation();
   // 새로운 Token 발급
   useEffect(() => {
     const getToken = async () => {
@@ -41,22 +44,23 @@ function App(props) {
     socket.emit("authorization", {
       token: loginState?.accessToken,
     });
-    // const refreshLogin = () => {
-    //   if (loginState?.refreshTime < Date.now()) {
-    //     console.log("loginState", loginState.refreshTime);
-    //     console.log("date", Date.now());
-    //     getToken();
-    //   }
-    // };
+    const refreshLogin = () => {
+      if (loginState?.refreshTime < Date.now()) {
+        console.log("loginState", loginState.refreshTime);
+        console.log("date", Date.now());
+        getToken();
+      }
+    };
     clearInterval(localStorage.getItem("timerId"));
-    const timerId = setInterval(getToken, 1000 * 60 * 25);
-    // const timerId = setInterval(refreshLogin, 1000 * 60 * 4);
+    // const timerId = setInterval(getToken, 1000 * 60 * 25);
+    const timerId = setInterval(refreshLogin, 1000 * 60 * 4);
     localStorage.setItem("timerId", timerId);
     if (loginState?.refreshTime < Date.now()) {
       console.log("loginState", loginState.refreshTime);
       console.log("date", Date.now());
       getToken();
     }
+    // console.log("location changed, accessToken update");
   }, [loginState]);
 
   console.log(loginState?.accessToken);

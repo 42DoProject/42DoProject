@@ -2,29 +2,34 @@
 
 .project-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  // grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 20rem));
   row-gap: 1rem;
-  justify-content: center;
+  column-gap: 2rem;
+  // justify-content: center;
   align-items: center;
   padding-left: 2rem;
+  // margin: 0 auto;
+  // align-content: center;
 }
 
 //미디어쿼리로 크기에 따라 반응형으로 만들어주기
 
-@media (max-width: 1000px) {
-  .project-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
+// @media (max-width: 1000px) {
+//   .project-grid {
+//     grid-template-columns: repeat(3, 1fr);
+//   }
+// }
 
-@media (max-width: 700px) {
-  .project-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
+// @media (max-width: 770px) {
+//   .project-grid {
+//     grid-template-columns: repeat(2, 1fr);
+//   }
+// }
 
-@media (max-width: $iphone5Width) {
+@media (max-width: 550px) {
   .project-grid {
-    grid-template-columns: repeat(1, 1fr);
+    column-gap: 1rem;
+    // grid-template-columns: repeat(2, 1fr);
   }
 }

@@ -291,7 +291,8 @@
 }
 .Nav__user__login {
   position: relative;
-  left: -2rem;
+  margin-right: 2rem;
+  min-width: max-content;
   bottom: -0.2rem;
   background-color: $mainColor;
   border-radius: 0.7rem;
@@ -420,11 +421,13 @@
   .Nav__input {
     display: none;
   }
+  .Nav__user__login {
+    margin-right: 0;
+  }
   .Nav__menu {
     display: flex;
     .btn {
       box-shadow: none;
-      padding-left: 0;
       .Nav__menu-icon {
         font-size: $fontLg;
         &:hover {

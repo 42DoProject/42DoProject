@@ -18,7 +18,7 @@ export default function RecruitCadet() {
   });
 
   const getData = async () => {
-    console.log(filterOption);
+    // console.log(filterOption);
 
     try {
       const {

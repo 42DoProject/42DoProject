@@ -1,29 +1,35 @@
 import "../../SCSS/ProfilePage/ProfileProjects.scss";
 // import "../../SCSS/MainPage/List.scss";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Icon } from "@iconify/react";
 import DashCards from "../MainPage/DashCards";
 
 export default function ProfileProjects({ projectData }) {
   const [slideFlag, setSlideFlag] = useState(0);
+  const cardsRef = useRef();
 
   function nextUtil(slideFlag, setSlideFlag, prCnt) {
-    const $cardsrow = document.querySelector(
-      ".profile-project__wrap .cards-row"
-    );
-    $cardsrow.style.transition = "transform .7s ease-out";
+    // const $cardsrow = document.querySelector(
+    //   ".profile-project__wrap .cards-row"
+    // );
+    // $cardsrow.style.transition = "transform .7s ease-out";
+    cardsRef.current.style.transition = "transform .7s ease-out";
     if (slideFlag <= parseInt((prCnt - 3) / 2)) slideFlag++;
-    $cardsrow.style.transform = `translateX(${(-680 / 16) * slideFlag}rem)`;
+    cardsRef.current.style.transform = `translateX(${
+      (-680 / 16) * slideFlag
+    }rem)`;
     setSlideFlag(slideFlag);
   }
 
   function prevUtil(slideFlag, setSlideFlag) {
-    const $cardsrow = document.querySelector(
-      ".profile-project__wrap .cards-row"
-    );
-    $cardsrow.style.transition = "transform .7s ease-out";
+    // const $cardsrow = document.querySelector(
+    //   ".profile-project__wrap .cards-row"
+    // );
+    cardsRef.current.style.transition = "transform .7s ease-out";
     if (slideFlag !== 0) slideFlag--;
-    $cardsrow.style.transform = `translateX(${(-680 / 16) * slideFlag}rem)`;
+    cardsRef.current.style.transform = `translateX(${
+      (-680 / 16) * slideFlag
+    }rem)`;
     setSlideFlag(slideFlag);
   }
 
@@ -48,7 +54,7 @@ export default function ProfileProjects({ projectData }) {
         </button>
       )}
       <div className="profile-project__padding">
-        <div className="cards-row">
+        <div ref={cardsRef} className="cards-row">
           {/* {projectData.map((el, idx) => {
             return <Cards key={idx} projectData={el} />;
           })} */}

@@ -1,11 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../../SCSS/MainPage/CadetCards.scss";
-import defaultImg from "../../default_intra.png";
+// import defaultImg from "../../default_intra.png";
+import blankImg from "../../blankImg.png";
 import { positions } from "../../userData";
 import { Redirect, useHistory } from "react-router";
+import axios from "axios";
 
 export default function CadetCards({ cadetData }) {
   const history = useHistory();
+  const [profileUrl, setProfileUrl] = useState();
+
+  useEffect(() => {
+    const resizedImage = async (key, size) => {
+      // 정상적으로 가져와지면 resized url반환, 아니면 원본이미지 url반환
+      const url = key.split("/");
+      url[url.length - 3] = size;
+      const resized = url.join("/");
+      try {
+        await axios({
+          method: "head",
+          url: `${resized}?timestamp=${Date.now()}`,
+        });
+        setProfileUrl(resized);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    if (cadetData?.profileImage) resizedImage(cadetData.profileImage, "500");
+  }, [cadetData]);
 
   return (
     <div
@@ -15,7 +37,7 @@ export default function CadetCards({ cadetData }) {
       }}>
       <img
         className="cadet__image"
-        src={cadetData.profileImage || defaultImg}
+        src={profileUrl || blankImg}
         alt="cadet_image"
       />
       <div className="cadet__name">{cadetData.username}</div>

@@ -1,4 +1,5 @@
 import socket from "../../socket";
+
 export default function loginReducer(state, action) {
   console.log(`-------------state ${action.type}-------------`);
   console.log(state);
@@ -26,8 +27,12 @@ export default function loginReducer(state, action) {
     case "TOKEN_UPDATE":
       console.log("state-UPDATE");
       let updateState = {
-        ...state,
-        refreshTime: Date.now() + 60 * 25,
+        name: state.name,
+        email: state.email,
+        profileImage: state.profileImage,
+        location: state.location,
+        id: state.id,
+        refreshTime: Date.now() + 1000 * 60 * 25,
         accessToken: action.payload.accessToken,
         refreshToken: action.payload.refreshToken,
       };
@@ -35,7 +40,14 @@ export default function loginReducer(state, action) {
       return updateState;
     case "DM":
       let dmState = {
-        ...state,
+        name: state.name,
+        email: state.email,
+        profileImage: state.profileImage,
+        location: state.location,
+        id: state.id,
+        refreshTime: state.refreshTime,
+        accessToken: state.accessToken,
+        refreshToken: state.refreshToken,
         dmid: action.payload.userId,
       };
       return dmState;

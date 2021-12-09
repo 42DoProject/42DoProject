@@ -16,7 +16,7 @@ export default function AllCadet() {
   const [filterOption, setFilterOption] = useState({});
 
   const getData = async () => {
-    console.log(filterOption);
+    // console.log(filterOption);
     try {
       const {
         data: { count, list },

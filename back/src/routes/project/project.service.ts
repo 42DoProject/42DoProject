@@ -18,6 +18,35 @@ import * as search from "../../module/search";
 const app = express();
 app.set("query parser", "extended");
 
+const feedChangeStatus = async (likeList: Likeprojectprofile[], listMember: Projectprofile[],
+                                projectId: String, project: Project | null, state: String) => {
+  const operation = (array1: Likeprojectprofile[] | Projectprofile[], array2: Likeprojectprofile[] | Projectprofile[], isUnion = false) => {
+    return array1.filter( a => isUnion === array2.some( b => a.profileId === b.profileId ) );
+  }
+  const inBoth = (likeList: Likeprojectprofile[], listMember: Projectprofile[]) => operation(likeList, listMember, true)
+  const inFirstOnly = operation
+  const inSecondOnly = (likeList: Likeprojectprofile[], listMember: Projectprofile[]) => inFirstOnly(listMember, likeList)
+
+  const common = inBoth(likeList, listMember);
+  const feedFirst = inFirstOnly(likeList, listMember);
+  const feedSecond = inSecondOnly(likeList, listMember);
+  if (common !== null) {
+    common!.forEach((element) => {
+      feed.changeProjectStatus(element.profileId, Number(projectId), project!.title, String(state));
+    })
+  }
+  if (feedFirst !== null) {
+    feedFirst!.forEach((element) => {
+      feed.changeProjectStatus(element.profileId, Number(projectId), project!.title, String(state));
+    })
+  }
+  if (feedSecond !== null) {
+    feedSecond!.forEach((element) => {
+      feed.changeProjectStatus(element.profileId, Number(projectId), project!.title, String(state));
+    })
+  }
+}
+
 export const getList = async (request: Request, response: Response) => {
   const { state, skill, position, page, pageSize, order } = request.query;
   let inputSkill, inputPosition, inputOrder, limit, offset, where;
@@ -217,9 +246,7 @@ export const postList = async (request: Request, response: Response) => {
   // get thumbnail link and request.body
   const imageLink = await postThumbnail(request, response);
   if (imageLink === -1 || imageLink === undefined) return;
-
-  const { title, state, startDate, endDate, content, leaderPosition } =
-    request.body;
+  const { title, state, startDate, endDate, content, leaderPosition } = request.body;
   let { skill, position, reference } = request.body;
   if (skill !== undefined) skill = JSON.parse(skill);
   if (position !== undefined) position = JSON.parse(position);
@@ -239,7 +266,6 @@ export const postList = async (request: Request, response: Response) => {
     response.status(400).json({ errMessage: "invalid position query" });
     return;
   }
-
   // decide state
   const totalMember: number = position === undefined ? 1 : position.length + 1;
   let inputState: string = totalMember > 1 ? "recruiting" : "proceeding";
@@ -347,6 +373,8 @@ export const updateList = async (request: Request, response: Response) => {
         : position.length + project!.currentMember;
     let inputState: string =
       totalMember - project!.currentMember > 0 ? "recruiting" : "proceeding";
+    if (project!.state === "completed")
+      inputState = "completed";
     if (state !== undefined) inputState = state;
 
     // update project data
@@ -355,7 +383,7 @@ export const updateList = async (request: Request, response: Response) => {
         title: title,
         totalMember: totalMember,
         currentMember: project!.currentMember,
-        state: inputState,
+        state: inputState, 
         startDate: startDate,
         endDate: endDate,
         skill: skill,
@@ -391,16 +419,6 @@ export const updateList = async (request: Request, response: Response) => {
         attributes: ["profileId"],
         where: { projectId: Number(projectId) },
       });
-      if (likeList !== null) {
-        likeList!.forEach((element) => {
-          feed.changeProjectStatus(
-            element.profileId,
-            Number(projectId),
-            project!.title,
-            String(inputState)
-          );
-        });
-      }
       const listMember = await Projectprofile.findAll({
         attributes: ['profileId'],
         where: { projectId: Number(projectId) }
@@ -410,6 +428,7 @@ export const updateList = async (request: Request, response: Response) => {
           feed.changeProjectStatus(element.profileId, Number(projectId), project!.title, String(inputState));
         })
       }
+      feedChangeStatus(likeList, listMember, String(projectId), project, String(inputState));
     }
     response.status(200).json({ message: "updated successfully." });
   } catch (error) {
@@ -1004,8 +1023,10 @@ export const addMember = async (request: Request, response: Response) => {
     }
     curPosition.splice(curPosition.indexOf(applyprojectprofile!.position), 1);
     // decide state
-    const inputState: string =
+    let inputState: string =
       project!.totalMember - newMembers > 0 ? "recruiting" : "proceeding";
+    if (project!.state === "completed")
+      inputState = "completed";
 
     await Projectprofile.create({
       position: applyprojectprofile!.position,
@@ -1039,25 +1060,11 @@ export const addMember = async (request: Request, response: Response) => {
         attributes: ["profileId"],
         where: { projectId: Number(projectId) },
       });
-      if (likeList !== null) {
-        likeList!.forEach((element) => {
-          feed.changeProjectStatus(
-            element.profileId,
-            Number(projectId),
-            project!.title,
-            String(inputState)
-          );
-        });
-      }
       const listMember = await Projectprofile.findAll({
         attributes: ['profileId'],
         where: { projectId: Number(projectId) }
       })
-      if (listMember !== null) {
-        listMember!.forEach((element) => {
-          feed.changeProjectStatus(element.profileId, Number(projectId), project!.title, String(inputState));
-        })
-      }
+      feedChangeStatus(likeList, listMember, projectId, project, String(inputState));
     }
   } catch (error) {
     response.status(405).json({ errMessage: String(error) });
@@ -1301,9 +1308,11 @@ export const deletePosition = async (request: Request, response: Response) => {
       });
     }
     // renew state
-    const state: string = curPosition === null ? "proceeding" : "recruiting";
+    let state: string = curPosition === null ? "proceeding" : "recruiting";
     const totalMember: number =
       curPosition.length + Number(project!.currentMember);
+    if (project!.state === "completed")
+      state = "completed";
     await Project.update(
       {
         totalMember: totalMember,
@@ -1320,25 +1329,11 @@ export const deletePosition = async (request: Request, response: Response) => {
         attributes: ["profileId"],
         where: { projectId: Number(projectId) },
       });
-      if (likeList !== null) {
-        likeList!.forEach((element) => {
-          feed.changeProjectStatus(
-            element.profileId,
-            Number(projectId),
-            project!.title,
-            String(state)
-          );
-        });
-      }
       const listMember = await Projectprofile.findAll({
         attributes: ['profileId'],
         where: { projectId: Number(projectId) }
       })
-      if (listMember !== null) {
-        listMember!.forEach((element) => {
-          feed.changeProjectStatus(element.profileId, Number(projectId), project!.title, String(state));
-        })
-      }
+      feedChangeStatus(likeList, listMember, projectId, project, String(state));
     }
   } catch (error) {
     response.status(405).json({ errMessage: String(error) });
@@ -1384,13 +1379,18 @@ export const changeState = async (request: Request, response: Response) => {
 
     try {
         const project = await Project.findOne({
-            attributes: ['leader', 'title'],
+            attributes: ['leader', 'title', 'state'],
             where: { id: projectId }
         })
         // check authority
         if (request.user!.id !== project?.leader) {
             response.status(401).json({ errMessage: 'no authority' });
             return ;
+        }
+        // check before and after
+        if (project!.state === String(state)) {
+          response.status(400).json({ errMessage: 'before state === after state' });
+          return ;
         }
 
         await Project.update({
@@ -1403,20 +1403,11 @@ export const changeState = async (request: Request, response: Response) => {
             attributes: ['profileId'],
             where: { projectId: Number(projectId) }
         })
-        if (likeList !== null) {
-          likeList!.forEach((element) => {
-            feed.changeProjectStatus(element.profileId, Number(projectId), project!.title, String(state));
-          })
-        }
         const listMember = await Projectprofile.findAll({
           attributes: ['profileId'],
           where: { projectId: Number(projectId) }
         })
-        if (listMember !== null) {
-          listMember!.forEach((element) => {
-            feed.changeProjectStatus(element.profileId, Number(projectId), project!.title, String(state));
-          })
-        }
+        feedChangeStatus(likeList, listMember, projectId, project, String(state));
     } catch (error) {
         response.status(405).json({ errMessage: String(error) });
         return ;

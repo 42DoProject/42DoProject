@@ -74,6 +74,10 @@
         color: $grey;
         border-bottom: 1px solid $lightestGrey;
       }
+      .res__userlist {
+        max-height: 20rem;
+        overflow-y: auto;
+      }
       .res__userCard {
         display: flex;
         align-items: center;
@@ -98,12 +102,17 @@
       display: flex;
       flex-direction: column;
       padding: 0.3rem 0.3rem;
+      margin-top: 0.5rem;
       .res__title2 {
         font-size: $fontSs;
         font-weight: $regular;
         padding-bottom: 0.3rem;
         color: $grey;
         border-bottom: 1px solid $lightestGrey;
+      }
+      .res__projectlist {
+        max-height: 20rem;
+        overflow-y: auto;
       }
       .res__projectCard {
         display: flex;
@@ -282,7 +291,8 @@
 }
 .Nav__user__login {
   position: relative;
-  left: -2rem;
+  margin-right: 2rem;
+  min-width: max-content;
   bottom: -0.2rem;
   background-color: $mainColor;
   border-radius: 0.7rem;
@@ -411,11 +421,13 @@
   .Nav__input {
     display: none;
   }
+  .Nav__user__login {
+    margin-right: 0;
+  }
   .Nav__menu {
     display: flex;
     .btn {
       box-shadow: none;
-      padding-left: 0;
       .Nav__menu-icon {
         font-size: $fontLg;
         &:hover {

@@ -41,15 +41,16 @@ function App(props) {
     socket.emit("authorization", {
       token: loginState?.accessToken,
     });
-    const refreshLogin = () => {
-      if (loginState?.refreshTime < Date.now()) {
-        console.log("loginState", loginState.refreshTime);
-        console.log("date", Date.now());
-        getToken();
-      }
-    };
+    // const refreshLogin = () => {
+    //   if (loginState?.refreshTime < Date.now()) {
+    //     console.log("loginState", loginState.refreshTime);
+    //     console.log("date", Date.now());
+    //     getToken();
+    //   }
+    // };
     clearInterval(localStorage.getItem("timerId"));
-    const timerId = setInterval(refreshLogin, 1000 * 60 * 4);
+    const timerId = setInterval(getToken, 1000 * 60 * 25);
+    // const timerId = setInterval(refreshLogin, 1000 * 60 * 4);
     localStorage.setItem("timerId", timerId);
     if (loginState?.refreshTime < Date.now()) {
       console.log("loginState", loginState.refreshTime);

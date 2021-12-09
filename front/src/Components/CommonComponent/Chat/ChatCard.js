@@ -3,12 +3,15 @@ import { useSelector } from "react-redux";
 import "../../../SCSS/Common/Chat/ChatCard.scss";
 import axios from "axios";
 import relativeTime from "../../../relativeTime";
+import blankImg from "../../../blankImg.png";
 
 export default function ChatCard({ chatInfo, imgFlag }) {
   const loginState = useSelector((state) => state.loginReducer);
   const [profile, setProfile] = useState();
   const [userName, setUserName] = useState();
+  const [profileUrl, setProfileUrl] = useState();
   let chatType = "";
+
   loginState.id === chatInfo?.userId ? (chatType = "me") : (chatType = "other");
   if (chatInfo.userId === -1) chatType = "noti";
 
@@ -34,11 +37,30 @@ export default function ChatCard({ chatInfo, imgFlag }) {
     imgFlag && getProfile(chatInfo.userId);
   }, [imgFlag]);
 
+  useEffect(() => {
+    const resizedImage = async (key, size) => {
+      // 정상적으로 가져와지면 resized url반환, 아니면 원본이미지 url반환
+      const url = key.split("/");
+      url[url.length - 3] = size;
+      const resized = url.join("/");
+      try {
+        await axios({
+          method: "head",
+          url: `${resized}?timestamp=${Date.now()}`,
+        });
+        setProfileUrl(resized);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    if (profile) resizedImage(profile, "100");
+  }, [profile]);
+
   return (
     <div className={`chatCard-${chatType}`}>
       <div className="chatCard__column1">
         {imgFlag ? (
-          <img src={profile} alt="img"></img>
+          <img src={profileUrl || blankImg} alt="img"></img>
         ) : (
           <div className="empty"></div>
         )}

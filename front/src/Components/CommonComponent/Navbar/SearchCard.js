@@ -1,5 +1,6 @@
 import react, { useEffect, useState } from "react";
-import default_intra from "../../../default_intra.png";
+// import default_intra from "../../../default_intra.png";
+import blankImg from "../../../blankImg.png";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
@@ -34,7 +35,7 @@ export default function UserCard({ name, profile, id, setSearchRes }) {
           setSearchRes([]);
         }}>
         <div className="profile">
-          <img src={profileUrl || default_intra} alt={`profile${id}`}></img>
+          <img src={profileUrl || blankImg} alt={`profile${id}`}></img>
         </div>
         <div className="name">{name}</div>
       </div>

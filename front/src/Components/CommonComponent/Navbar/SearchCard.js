@@ -23,6 +23,7 @@ export default function UserCard({ name, profile, id, setSearchRes }) {
     };
     if (profile) resizedImage(profile, "100");
   }, []);
+
   return (
     <Link className="link-color" to={`/profile/${id}`}>
       <div

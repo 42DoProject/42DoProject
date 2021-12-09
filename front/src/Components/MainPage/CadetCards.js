@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../../SCSS/MainPage/CadetCards.scss";
-import defaultImg from "../../default_intra.png";
+// import defaultImg from "../../default_intra.png";
+import blankImg from "../../blankImg.png";
 import { positions } from "../../userData";
 import { Redirect, useHistory } from "react-router";
 import axios from "axios";
@@ -36,7 +37,7 @@ export default function CadetCards({ cadetData }) {
       }}>
       <img
         className="cadet__image"
-        src={profileUrl || defaultImg}
+        src={profileUrl || blankImg}
         alt="cadet_image"
       />
       <div className="cadet__name">{cadetData.username}</div>

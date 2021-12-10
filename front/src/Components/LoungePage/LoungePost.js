@@ -113,9 +113,9 @@ export default function LoungePost({
       {editFlag === false ? (
         <pre className="lounge-post__space">
           {loungeData.comment}{" "}
-          {loungeData.createdAt !== loungeData.updatedAt && (
+          {/* {loungeData.createdAt !== loungeData.updatedAt && (
             <span className="post__edited">(edited)</span>
-          )}
+          )} */}
         </pre>
       ) : (
         <textarea

@@ -3,11 +3,11 @@ import "../../SCSS/ProjectEditPage/Modal.scss";
 
 export default function Modal({ body, buttons, confirmFunc, cancelFunc }) {
   return (
-    <div className="validate__wrap">
-      <div className="validate__header"></div>
-      <div className="validate__body">{body}</div>
+    <div className="modal__wrap">
+      <div className="modal__header"></div>
+      <div className="modal__body">{body}</div>
       <hr />
-      <div className="validate__button">
+      <div className="modal__button">
         {buttons.length === 1 && ( // ["확인"]: 기능은 cancel(모달창닫기 등)하는 기능에 해당
           <div onClick={() => cancelFunc()}>{buttons[0]}</div>
         )}

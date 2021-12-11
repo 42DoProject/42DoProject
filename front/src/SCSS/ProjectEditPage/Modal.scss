@@ -1,11 +1,11 @@
 @import "../Base.scss";
 
-.validate__wrap {
+.modal__wrap {
   width: 25rem;
   min-height: 10rem;
   background-color: white;
   border-radius: $round;
-  z-index: 5;
+  z-index: 30;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -18,7 +18,7 @@
   line-height: normal;
   box-shadow: $shadowAll;
   // font-weight: $regular;
-  .validate__body {
+  .modal__body {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -31,7 +31,7 @@
     color: $lightGrey;
     opacity: 0.25;
   }
-  .validate__button {
+  .modal__button {
     display: flex;
     justify-content: center;
     align-items: center;

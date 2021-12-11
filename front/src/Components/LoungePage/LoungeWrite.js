@@ -56,10 +56,7 @@ export default function LoungeWrite({ refreshFlag, setRefreshFlag }) {
           className="lounge-write__box"
           placeholder="새로운 글을 작성해 보세요"
           spellCheck="false"
-          maxLength="800"
-          onClick={(e) => {
-            e.target.value = "";
-          }}></textarea>
+          maxLength="800"></textarea>
         <button
           type="submit"
           className="lounge-write__submit"

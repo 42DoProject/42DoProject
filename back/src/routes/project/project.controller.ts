@@ -27,6 +27,11 @@ router.get("/status", jwtGuards, (request: Request, response: Response) => {
   projectService.getStatus(request, response);
 });
 
+// update project viewCount
+router.put("/view", (request: Request, response: Response) => {
+  projectService.updateViewCount(request, response);
+});
+
 // project content API
 router.get("/content", (request: Request, response: Response) => {
   projectService.getContent(request, response);

@@ -18,6 +18,7 @@ import * as search from "../../module/search";
 const app = express();
 app.set("query parser", "extended");
 
+// feed notification function when project status changed
 const feedChangeStatus = async (likeList: Likeprojectprofile[], listMember: Projectprofile[],
                                 projectId: String, project: Project | null, state: String) => {
   const operation = (array1: Likeprojectprofile[] | Projectprofile[], array2: Likeprojectprofile[] | Projectprofile[], isUnion = false) => {
@@ -537,7 +538,7 @@ export const getStatus = async (request: Request, response: Response) => {
   }
 };
 
-export const getContent = async (request: Request, response: Response) => {
+export const updateViewCount = async (request: Request, response: Response) => {
   const { projectId } = request.query;
   if (projectId === undefined) {
     response.status(400).json({ errMessage: "please input projectId query" });
@@ -562,6 +563,38 @@ export const getContent = async (request: Request, response: Response) => {
       },
       { where: { id: projectId } }
     );
+    response.status(200).json({ message: "updated successfully." });
+  } catch (error) {
+    response.status(405).json({ errMessage: String(error) });
+    return;
+  }
+}
+
+export const getContent = async (request: Request, response: Response) => {
+  const { projectId } = request.query;
+  if (projectId === undefined) {
+    response.status(400).json({ errMessage: "please input projectId query" });
+    return;
+  }
+
+  try {
+    // calculate viewcount
+    // const project = await Project.findOne({
+    //   attributes: ["viewCount"],
+    //   where: { id: projectId },
+    // });
+    // if (!project) {
+    //   response.status(400).json({ errMessage: "invalid projectId" });
+    //   return ;
+    // }
+    // const curViews = project?.viewCount;
+    // const newViews: number = Number(curViews) + 1;
+    // await Project.update(
+    //   {
+    //     viewCount: newViews,
+    //   },
+    //   { where: { id: projectId } }
+    // );
 
     // get data
     const content = await Project.findOne({

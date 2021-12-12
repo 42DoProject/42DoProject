@@ -7,18 +7,6 @@ import { useSelector } from "react-redux";
 export default function ProjectEditRight({ projectData, editorRef }) {
   const loginState = useSelector((state) => state.loginReducer);
 
-  //   useEffect(() => {
-  //   const EditorRef = React.forwardRef((props, ref) => (
-  //     <Editor
-  //       ref={editorRef}
-  //       height="40rem"
-  //       plugins={[colorSyntax]}
-  //       useCommandShortcut={true}
-  //       placeholder={`프로젝트에 대해 자유롭게 소개해 주세요.
-  // (ex. 초기 아이디어 및 프로젝트의 목적, 필요성, 출시 플랫폼, 타겟 유저 등)`}
-  //     />
-  //   ));
-
   useEffect(() => {
     if (projectData) {
       editorRef?.current

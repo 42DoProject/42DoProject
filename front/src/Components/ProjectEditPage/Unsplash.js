@@ -13,7 +13,6 @@ export default function Unsplash({
 }) {
   const [imgInput, setImgInput] = useState(); // unsplash 창에 이미지 파일 input 값
   const checkImage = () => {
-    console.log("imgInput", imgInput);
     if (
       imgInput.type !== "image/jpeg" &&
       imgInput.type !== "image/jpg" &&

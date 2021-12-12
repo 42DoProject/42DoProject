@@ -81,7 +81,7 @@ export default function ProjectEditLeft({
       setRefer(projectData.content.reference);
       setStartDate(projectData.startDate?.slice(0, 10));
       setEndDate(projectData.endDate?.slice(0, 10));
-      console.log("projectData", projectData);
+      //   console.log("projectData", projectData);
     }
   }, [projectData]);
 
@@ -111,12 +111,10 @@ export default function ProjectEditLeft({
       <div
         className="project-edit__thumbnail"
         onMouseOver={() => {
-          document.querySelector(".project-edit__img-hover").style.visibility =
-            "visible";
+          document.querySelector(".project-edit__img-hover").style.opacity = 1;
         }}
         onMouseLeave={() => {
-          document.querySelector(".project-edit__img-hover").style.visibility =
-            "hidden";
+          document.querySelector(".project-edit__img-hover").style.opacity = 0;
         }}>
         {imgLoadFlag === 0 ? (
           <div className="project-edit__img">

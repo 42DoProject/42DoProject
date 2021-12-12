@@ -16,6 +16,9 @@
     z-index: 2;
     left: -3rem;
     top: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     .prev__icon {
       font-size: 2rem;
       color: white;
@@ -43,6 +46,9 @@
     z-index: 2;
     top: 3rem;
     right: -3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     .next__icon {
       font-size: 2rem;
       color: white;

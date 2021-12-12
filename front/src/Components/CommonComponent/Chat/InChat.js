@@ -127,14 +127,14 @@ function InChat({
       <div className="inChat">
         <div className="inChat__header">
           <div className="back" onClick={() => setInFlag(-1)}>
-            <Icon icon="dashicons:arrow-left-alt2" height="2rem" />
+            <Icon icon="dashicons:arrow-left-alt2" fontSize="2rem" />
           </div>
           {clickFlag === 0 ? (
             <Icon
               className="nav__resize-up"
               icon="si-glyph:resize-out-frame"
               hFlip="true"
-              height="1.5rem"
+              fontSize="1.5rem"
               onClick={() => {
                 let chatLogEl = document.querySelector(".chatLog");
                 chatLogEl.style.width = "80vw";
@@ -146,7 +146,7 @@ function InChat({
             <Icon
               className="nav__resize-down"
               icon="si-glyph:resize-in-frame"
-              height="1.5rem"
+              fontSize="1.3rem"
               hFlip="true"
               onClick={() => {
                 let chatLogEl = document.querySelector(".chatLog");
@@ -188,9 +188,8 @@ function InChat({
               chatEl.style.visibility = "visible";
               chatLogEl.style.visibility = "hidden";
               setInFlag(-1);
-            }}
-          >
-            <Icon icon="bx:bx-x" height="2rem" />
+            }}>
+            <Icon icon="bx:bx-x" fontSize="2rem" />
           </div>
         </div>
         {inviteFlag === 1 && (
@@ -229,8 +228,7 @@ function InChat({
                     e.target.value = "";
                   }
                 }
-              }}
-            ></input>
+              }}></input>
             <div
               className="input__send"
               onClick={() => {
@@ -244,8 +242,7 @@ function InChat({
                   });
                   input.value = "";
                 }
-              }}
-            >
+              }}>
               보내기
             </div>
           </div>

@@ -16,19 +16,58 @@
   transition: transform 0.2s;
   // min-width: 22rem;
 
+  // .card__new-tag {
+  //   position: absolute;
+  //   right: 0.5rem;
+  //   top: 2rem;
+  //   background-color: $pointRed;
+  //   z-index: 1;
+  //   padding: 0.3rem 0.5rem;
+  //   color: white;
+  //   font-weight: $semiBold;
+  //   border-radius: 0.4rem;
+  //   font-size: $fontSs;
+  // }
   .card__new-tag {
     position: absolute;
-    right: 0.5rem;
-    top: 2rem;
-    background-color: $pointRed;
     z-index: 1;
-    padding: 0.3rem 0.5rem;
+    left: 0.9rem;
+    top: 2rem;
+    height: 1.5rem;
+    width: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: $pointRed;
     color: white;
-    font-weight: $semiBold;
-    border-radius: 0.4rem;
     font-size: $fontSs;
+    font-weight: $normal;
+    box-shadow: -1px 2px 5px rgba(0, 0, 0, 0.3);
+    // border-top-right-radius: 0.3125rem;
+    // border-bottom-right-radius: 0.3125rem;
   }
-
+  .card__new-tag:before,
+  .card__new-tag:after {
+    content: "";
+    position: absolute;
+    box-sizing: content-box !important;
+  }
+  .card__new-tag:before {
+    width: 0.45rem;
+    height: 100%;
+    top: 0;
+    left: -0.3rem;
+    padding: 0 0 0.45rem;
+    background: inherit;
+    border-radius: 0.3125rem 0 0 0.3125rem;
+  }
+  .card__new-tag:after {
+    top: 0;
+    right: -0.69rem;
+    border-top: 0.75rem solid $pointRed;
+    border-bottom: 0.75rem solid $pointRed;
+    border-right: 0.75rem solid transparent;
+  }
   .card__image {
     position: relative;
     border-radius: $round;

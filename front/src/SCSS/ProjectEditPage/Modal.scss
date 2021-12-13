@@ -1,5 +1,15 @@
 @import "../Base.scss";
 
+.modal__background {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.5);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 30;
+}
+
 .modal__wrap {
   width: 25rem;
   min-height: 10rem;
@@ -16,7 +26,7 @@
   align-items: center;
   text-align: center;
   line-height: normal;
-  box-shadow: $shadowAll;
+  // box-shadow: $shadowAll;
   // font-weight: $regular;
   .modal__body {
     display: flex;

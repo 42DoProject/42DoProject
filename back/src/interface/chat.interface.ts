@@ -22,6 +22,7 @@ export interface IChatRoom {
 export interface ILastChat {
   uuid: string;
   userId: number;
+  title: string;
   availableDate: number;
   date: number;
 }

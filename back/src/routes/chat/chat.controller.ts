@@ -12,12 +12,20 @@ router.post("/", jwtGuards, (request: Request, response: Response) => {
   chatService.makeChatRoom(request, response);
 });
 
+router.post("/inquire", jwtGuards, (request: Request, response: Response) => {
+  chatService.inquire(request, response);
+});
+
 router.get("/:uuid", jwtGuards, (request: Request, response: Response) => {
   chatService.getChats(request, response);
 });
 
 router.post("/:uuid", jwtGuards, (request: Request, response: Response) => {
   chatService.inviteUser(request, response);
+});
+
+router.patch("/:uuid", jwtGuards, (request: Request, response: Response) => {
+  chatService.rename(request, response);
 });
 
 router.delete("/:uuid", jwtGuards, (request: Request, response: Response) => {

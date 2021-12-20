@@ -45,19 +45,34 @@ export default function ProjectTypeBar({ state, setFilterOption }) {
           />
         )}
         <div className="project-bar-column1">
-          <div className="recruit-project">
+          <div className="project-btn">
             <Link className={recruitColor} to="/projectlist/recruit">
               모집중인 프로젝트
             </Link>
           </div>
-          <div className="proceed-project">
+          <div className="project-btn-mobile">
+            <Link className={recruitColor} to="/projectlist/recruit">
+              모집중
+            </Link>
+          </div>
+          <div className="project-btn">
             <Link className={proceedColor} to="/projectlist/proceed">
               진행중인 프로젝트
             </Link>
           </div>
-          <div className="public-project">
+          <div className="project-btn-mobile">
+            <Link className={proceedColor} to="/projectlist/proceed">
+              진행중
+            </Link>
+          </div>
+          <div className="project-btn">
             <Link className={completeColor} to="/projectlist/complete">
               완성된 프로젝트
+            </Link>
+          </div>
+          <div className="project-btn-mobile">
+            <Link className={completeColor} to="/projectlist/complete">
+              완성됨
             </Link>
           </div>
         </div>
@@ -69,7 +84,8 @@ export default function ProjectTypeBar({ state, setFilterOption }) {
               else {
                 setModalFlag(1);
               }
-            }}>
+            }}
+          >
             프로젝트 생성
           </div>
           <div className="filter_wrap">

@@ -10,13 +10,14 @@ export default function ProjectStatusChange({
 }) {
   const [toggle, setToggle] = useState(false);
   const toggleRef = useRef();
+  const status_selected = data?.state;
 
   const onToggle = (e) => {
     if (toggle === false) {
       setToggle(true);
     } else setToggle(false);
-    console.log("here");
   };
+
   const onStatusChange = () => {
     var status = document.getElementById("change_status").value;
     axios({
@@ -54,7 +55,11 @@ export default function ProjectStatusChange({
           <div ref={toggleRef} className="change_toggle">
             <div className="toggle_header">프로젝트 상태 변경</div>
             <div className="toggle_body">
-              <select className="change_select" id="change_status">
+              <select
+                className="change_select"
+                id="change_status"
+                defaultValue={status_selected}
+              >
                 <option value="recruiting">모집중</option>
                 <option value="proceeding">진행중</option>
                 <option value="completed">완성됨</option>

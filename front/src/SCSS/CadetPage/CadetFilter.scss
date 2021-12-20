@@ -115,52 +115,97 @@
     padding: 0.3rem 0.7rem;
   }
 }
-// .project-edit__left {
-//   width: 40%;
-//   // background-color: pink;
-//   position: relative;
-//   .project-edit__position-label {
-//     display: flex;
-//     flex-direction: row;
-//     align-items: baseline;
-//   }
-//   .project-edit__add-position {
-//     margin: 0 2rem;
-//     background-color: $bodyColor;
-//     color: $grey;
-//   }
-//   .project-edit__position {
-//     display: flex;
-//     flex-wrap: wrap;
-//   }
 
-//   .project-edit__skill-label {
-//     display: flex;
-//     align-items: center;
-//     .project-edit__add-skill {
-//       margin-left: 2rem;
-//       background-color: $bodyColor;
-//     }
-//   }
+input[type="range"] {
+  height: 38px;
+  -webkit-appearance: none;
+  margin: 10px 0;
+  width: 100%;
+}
+input[type="range"]:focus {
+  outline: none;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 12px;
+  cursor: pointer;
+  box-shadow: 1px 1px 1px #000000;
+  // background: #3071a9;
+  background: $lightestGrey;
+  border-radius: 5px;
+  border: 1px solid #000000;
+}
+input[type="range"]::-webkit-slider-thumb {
+  box-shadow: 1px 1px 1px #000000;
+  border: 1px solid #000000;
+  height: 30p;
+  width: 15px;
+  border-radius: 5px;
+  background: #ffffff;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -10px;
+}
+input[type="range"]:focus::-webkit-slider-runnable-track {
+  background: $lightestGrey;
+}
+input[type="range"]::-moz-range-track {
+  width: 100%;
+  height: 12px;
+  cursor: pointer;
+  box-shadow: 1px 1px 1px #000000;
+  background: $lightestGrey;
+  // background: #3071a9;
+  border-radius: 5px;
+  border: 1px solid #000000;
+}
+input[type="range"]::-moz-range-thumb {
+  box-shadow: 1px 1px 1px #000000;
+  border: 1px solid #000000;
+  height: 30px;
+  width: 15px;
+  border-radius: 5px;
+  background: $mainColor;
+  // background: #ffffff;
+  cursor: pointer;
+}
+input[type="range"]::-ms-track {
+  width: 100%;
+  height: 12px;
+  cursor: pointer;
+  background: transparent;
+  border-color: transparent;
+  // background: $lightestGrey;
 
-//   .project-edit__skill {
-//     .project-edit__add-skill {
-//       width: 14rem;
-//       padding: 0.2rem 0.7rem;
-//     }
-//   }
-//   .project-eidt__selected-skill {
-//     display: flex;
-//     flex-wrap: wrap;
-//     .selected-el {
-//       margin: 0.1rem 0.5rem;
-//       position: relative;
-//       .selected-x {
-//         position: absolute;
-//         right: -0.8rem;
-//         bottom: 0;
-//         color: $grey;
-//       }
-//     }
-//   }
-// }
+  // color: transparent;
+}
+input[type="range"]::-ms-fill-lower {
+  background: #3071a9;
+  border: 1px solid #000000;
+  border-radius: 10px;
+  box-shadow: 1px 1px 1px #000000;
+}
+input[type="range"]::-ms-fill-upper {
+  background: $lightestGrey;
+  // background: #3071a9;
+  border: 1px solid #000000;
+  border-radius: 10px;
+  box-shadow: 1px 1px 1px #000000;
+}
+input[type="range"]::-ms-thumb {
+  margin-top: 1px;
+  box-shadow: 1px 1px 1px #000000;
+  border: 1px solid #000000;
+  height: 30px;
+  width: 15px;
+  border-radius: 5px;
+  // background: #ffffff;
+  background: $mainColor;
+  cursor: pointer;
+}
+input[type="range"]:focus::-ms-fill-lower {
+  background: #3071a9;
+}
+input[type="range"]:focus::-ms-fill-upper {
+  background: $lightestGrey;
+}

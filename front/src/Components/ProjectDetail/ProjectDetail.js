@@ -20,17 +20,33 @@ export default function ProjectDetail(props) {
   const [cancleFlag, setCancleFlag] = useState(0);
   const [commentCount, setCommentCount] = useState();
   const [openModal, setOpenModal] = useState(false);
+  const [viewFlag, setViewFlag] = useState(false);
   const projectId = useParams()["id"];
   const history = useHistory();
   const loginState = useSelector((state) => state.loginReducer);
   const location = useLocation();
 
   useEffect(() => {
+    setViewCount();
+    setViewFlag(true);
+  }, []);
+
+  useEffect(() => {
     if (loginState !== null) getUserStatus();
     setApplyFlag(0);
     setCancleFlag(0);
     getData();
-  }, [applyFlag, location, cancleFlag, loginState]);
+  }, [applyFlag, location, cancleFlag, loginState, viewFlag]);
+
+  const setViewCount = async () => {
+    try {
+      await axios.put(
+        `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/project/view?projectId=${projectId}`
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const getData = async () => {
     try {
@@ -103,6 +119,7 @@ export default function ProjectDetail(props) {
                     loginState={loginState}
                     userStatus={userStatus}
                     setApplyFlag={setApplyFlag}
+                    setCancleFlag={setCancleFlag}
                   />
                 </div>
                 <hr />

@@ -51,6 +51,20 @@ export default function loginReducer(state, action) {
         dmid: action.payload.userId,
       };
       return dmState;
+    case "PROFILE_UPDATE":
+      let updateProfile = {
+        name: state.name,
+        email: state.email,
+        profileImage: action.payload.profileImage,
+        location: state.location,
+        id: state.id,
+        refreshTime: state.refreshTime,
+        accessToken: state.accessToken,
+        refreshToken: state.refreshToken,
+      };
+      // updateProfile.profileImage = action.payload.profileImage;
+      console.log("LOGINSTATE PROFILE", updateProfile);
+      return updateProfile;
     default:
       console.log("state-NULL");
       console.log(state);

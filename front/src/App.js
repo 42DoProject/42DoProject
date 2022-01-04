@@ -92,6 +92,8 @@ function App(props) {
     );
   }, [loginState]);
 
+  console.log("loginState", loginState);
+
   return (
     <Layout>
       <Switch>

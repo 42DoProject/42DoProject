@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import "../../SCSS/ProfilePage/ProfileHeader.scss";
 import { status } from "../../userData";
 import relativeTime from "../../relativeTime";
 import defaultImg from "../../default_intra.png";
+import { Icon } from "@iconify/react";
 
 export default function ProfileEditHeader(props) {
   const loginState = useSelector((state) => state.loginReducer);
@@ -11,6 +12,43 @@ export default function ProfileEditHeader(props) {
   const [introLength, setIntroLength] = useState(0);
   const [statusColor, setStatusColor] = useState("#ff6864");
   const statusEl = document.querySelector(".row2__status");
+  const imageRef = useRef();
+  const [profileImg, setProfileImg] = useState(loginState?.profileImage);
+  const [invalidMsg, setInvalidMsg] = useState(null);
+
+  const handleImageClick = () => {
+    if (imageRef) imageRef.current?.click();
+  };
+
+  const isValidImage = () => {
+    if (
+      imageRef.current.files[0]?.type !== "image/jpeg" &&
+      imageRef.current.files[0]?.type !== "image/png" &&
+      imageRef.current.files[0]?.type !== "image/gif" &&
+      imageRef.current.files[0]?.type !== "image/bmp"
+    ) {
+      setInvalidMsg("jpeg, jpg, png, gif, bmp 이미지만 업로드할 수 있어요");
+      return false;
+    } else if (imageRef.current.files[0]?.size >= 10000000) {
+      //10mb 이상이면 false
+      setInvalidMsg("10MB 이하의 이미지만 업로드할 수 있어요");
+      return false;
+    } else {
+      setInvalidMsg(null);
+      return true;
+    }
+  };
+
+  const handleImageChange = () => {
+    let reader = new FileReader();
+
+    reader.readAsDataURL(imageRef.current.files[0]);
+    reader.onloadend = () => {
+      const base64 = reader.result.toString();
+      setProfileImg(base64);
+      props.setProfile(imageRef.current.files[0]);
+    };
+  };
 
   useEffect(() => {
     if (props.user.status) setStatusColor("#5bbcb6");
@@ -24,11 +62,50 @@ export default function ProfileEditHeader(props) {
   return (
     <div className="profileHeader">
       <div className="header__left">
-        <img
-          className="profileImage"
-          alt="profileImage"
-          src={loginState?.profileImage || defaultImg}
-        />
+        <div
+          className="profile-edit__image"
+          onMouseOver={() => {
+            document.querySelector(
+              ".profile-edit__image-hover"
+            ).style.opacity = 1;
+          }}
+          onMouseLeave={() => {
+            document.querySelector(
+              ".profile-edit__image-hover"
+            ).style.opacity = 0;
+          }}>
+          <div
+            className="profile-edit__image-hover"
+            style={{ opacity: 0 }}
+            onClick={() => {
+              handleImageClick();
+            }}>
+            <input
+              ref={imageRef}
+              type="file"
+              style={{ display: "none" }}
+              accept="image/jpeg, image/png, image/gif, image/bmp"
+              onChange={() => {
+                if (isValidImage() === true) handleImageChange();
+              }}
+            />
+            <Icon
+              icon="ant-design:camera-filled"
+              style={{ fontSize: "2rem", color: "#e5e5e5" }}
+            />
+          </div>
+          <img
+            className="profileImage"
+            alt="profileImage"
+            src={profileImg || defaultImg}
+          />
+        </div>
+        {invalidMsg && (
+          <div className="profile__invalidMsg">
+            {/* <Icon icon="bx:bx-x" /> */}
+            {invalidMsg}
+          </div>
+        )}
         <div className="bubble__wrapper">
           <textarea
             spellCheck="false"

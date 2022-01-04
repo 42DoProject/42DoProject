@@ -52,6 +52,7 @@ export default function Dashboard(props) {
     getProceedingPr();
     if (loginState) getData();
   }, [loginState]);
+
   return (
     <div className="dashboard">
       <div className="dashboard__wrap">
@@ -138,7 +139,7 @@ export default function Dashboard(props) {
           <div className="row3">
             <div className="row3__reportbox">
               <div className="reportbox__report">
-                현재{" "}
+                {/* 현재{" "} */}
                 <Link
                   className="dashboard__project__link1"
                   to="/projectlist/recruit">

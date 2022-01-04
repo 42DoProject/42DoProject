@@ -15,7 +15,10 @@
 
   .profile__invalidMsg {
     color: $pointRed;
+    // font-weight: $normal;
     font-weight: $semiBold;
+    font-size: 0.95rem;
+    // font-size: $fontSs;
     margin-top: 1rem;
   }
 }

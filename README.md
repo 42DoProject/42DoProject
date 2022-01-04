@@ -5,6 +5,7 @@
 
 ![메인 배너](https://user-images.githubusercontent.com/65898861/148019898-19f61be4-c938-4bef-81ee-681ca99535c2.jpeg)
 
+https://42doproject.com
 
 *docker와 docker compose가 설치되어 있어야 합니다.*
 

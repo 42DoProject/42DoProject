@@ -102,7 +102,11 @@ export default function ProfileEditHeader(props) {
         </div>
         {invalidMsg && (
           <div className="profile__invalidMsg">
-            {/* <Icon icon="bx:bx-x" /> */}
+            <Icon
+              icon="clarity:exclamation-circle-solid"
+              fontSize="1.2rem"
+              style={{ marginRight: "0.3rem" }}
+            />
             {invalidMsg}
           </div>
         )}

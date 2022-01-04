@@ -1,4 +1,6 @@
-# DoProject
+# 42DoProject | 사이두 프로젝트
+
+42서울 카뎃들을 위한 사이드 프로젝트 플랫폼 
 
 
 *docker와 docker compose가 설치되어 있어야 합니다.*

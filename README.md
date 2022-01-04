@@ -3,6 +3,9 @@
 42서울 카뎃들을 위한 사이드 프로젝트 플랫폼 
 
 
+![메인 배너](https://user-images.githubusercontent.com/65898861/148019898-19f61be4-c938-4bef-81ee-681ca99535c2.jpeg)
+
+
 *docker와 docker compose가 설치되어 있어야 합니다.*
 
 ```
@@ -14,9 +17,6 @@ $> ./docker-compose-up.sh
 $> ./docker-compose-down.sh
 ```
 위 명령어로 컨테이너를 종료합니다.
-
-
-
 
 # 실제 서버에 배포 (front/back)
 

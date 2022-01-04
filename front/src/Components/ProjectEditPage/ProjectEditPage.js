@@ -102,10 +102,10 @@ export default function ProjectEditPage() {
         },
         data: formData,
       });
-      console.log("res", res);
-      for (var pair of formData.entries()) {
-        console.log(pair[0] + ", " + pair[1]);
-      }
+      // console.log("res", res);
+      // for (var pair of formData.entries()) {
+      //   console.log(pair[0] + ", " + pair[1]);
+      // }
       setIsLoading(false);
       projectId
         ? history.push(`/project/${projectId}`)

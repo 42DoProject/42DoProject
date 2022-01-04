@@ -153,7 +153,7 @@ export default function Dashboard(props) {
                 <Link
                   className="dashboard__project__link3"
                   to="/projectlist/proceed">
-                  {proceedingPrCnt}
+                  {proceedingPrCnt || "0"}
                 </Link>
                 개의{" "}
                 <Link

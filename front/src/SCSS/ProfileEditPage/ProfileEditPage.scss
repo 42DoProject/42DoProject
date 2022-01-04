@@ -12,4 +12,10 @@
     height: 2px;
     align-self: center;
   }
+
+  .profile__invalidMsg {
+    color: $pointRed;
+    font-weight: $semiBold;
+    margin-top: 1rem;
+  }
 }

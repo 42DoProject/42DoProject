@@ -264,3 +264,31 @@ textarea.introduction__textarea {
     text-align: center;
   }
 }
+
+.profile-edit__image {
+  border: 2px solid $mainColor;
+  border-radius: 100%;
+  width: 11rem;
+  height: 11rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  .profileImage {
+    box-shadow: none;
+  }
+  .profile-edit__image-hover {
+    z-index: 1;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.3);
+    width: 10rem;
+    height: 10rem;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.1s ease-in;
+    color: white;
+    cursor: pointer;
+  }
+}

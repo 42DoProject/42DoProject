@@ -116,7 +116,10 @@
     font-size: $fontLg;
     font-weight: 700;
     position: relative;
-    margin-right: 2rem;
+    // margin-right: 2rem;
+  }
+  .row1__buttons {
+    margin-left: 2rem;
   }
   .row1__finish-edit {
     background-color: $mainColor;
@@ -125,6 +128,7 @@
     padding: 0.7rem 1.2rem;
     color: white;
     font-weight: $normal;
+    margin-left: 2rem;
   }
   button {
     border: none;
@@ -149,6 +153,7 @@
     color: $black;
     border: 1px solid $lightestGrey;
     box-shadow: none;
+    margin-left: 2rem;
   }
 }
 
@@ -240,6 +245,19 @@ textarea.introduction__textarea {
     .right__row2 {
       display: flex;
       justify-content: center;
+    }
+    .right__row1 {
+      flex-direction: column;
+      align-items: center;
+      .row1__buttons {
+        margin-top: 1rem;
+      }
+      .row1__finish-edit,
+      .row1__edit-profile {
+        margin-top: 1rem;
+        margin-left: 0;
+        margin-right: 0;
+      }
     }
   }
   .right__introduction-none {

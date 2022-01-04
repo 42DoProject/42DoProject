@@ -7,6 +7,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import LoungeComment from "./LoungeComment";
 import { useHistory } from "react-router";
+import Modal from "../ProjectEditPage/Modal";
 
 export default function LoungePost({
   loungeData,
@@ -18,19 +19,24 @@ export default function LoungePost({
   const [editFlag, setEditFlag] = useState(false);
   const [openComment, setOpenComment] = useState(false);
   const [commentIcon, setCommentIcon] = useState("dashicons:arrow-down-alt2");
+  const [openModal, setOpenModal] = useState(false);
 
   const likeLounge = async () => {
-    try {
-      await axios({
-        method: "POST",
-        url: `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/lounge/like/${loungeData.id}`,
-        headers: {
-          Authorization: `Bearer ${loginState?.accessToken}`,
-        },
-      });
-      refreshFlag ? setRefreshFlag(0) : setRefreshFlag(1);
-    } catch (err) {
-      console.log(err);
+    if (loginState !== null) {
+      try {
+        await axios({
+          method: "POST",
+          url: `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/lounge/like/${loungeData.id}`,
+          headers: {
+            Authorization: `Bearer ${loginState?.accessToken}`,
+          },
+        });
+        refreshFlag ? setRefreshFlag(0) : setRefreshFlag(1);
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      setOpenModal(true);
     }
   };
   const unlikeLounge = async () => {
@@ -96,6 +102,13 @@ export default function LoungePost({
 
   return (
     <div className="lounge-post">
+      {openModal === true && (
+        <Modal
+          body="로그인해 주세요"
+          buttons={["확인"]}
+          cancelFunc={() => setOpenModal(false)}
+        />
+      )}
       <div className="lounge-post__row1">
         <div
           className="lounge-post__profile"

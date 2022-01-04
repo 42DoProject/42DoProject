@@ -150,6 +150,7 @@ export default function Dashboard(props) {
                   to="/projectlist/recruit">
                   모집중
                 </Link>{" "}
+                ∙{" "}
                 <Link
                   className="dashboard__project__link3"
                   to="/projectlist/proceed">
@@ -161,6 +162,7 @@ export default function Dashboard(props) {
                   to="/projectlist/proceed">
                   진행중
                 </Link>{" "}
+                ∙{" "}
                 <Link
                   className="dashboard__project__link5"
                   to="/projectlist/complete">

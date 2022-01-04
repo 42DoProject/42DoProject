@@ -7,7 +7,7 @@ import ProgressSlide from "./ProgressSlide";
 import FavoriteSlide from "./FavoriteSlide";
 import axios from "axios";
 import { positions } from "../../userData";
-import { skills } from "../../skills.json";
+import skills from "../../skills.json";
 import defaultImg from "../../default_intra.png";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 

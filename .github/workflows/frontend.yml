@@ -19,6 +19,7 @@ jobs:
     - name: build
       run: |
         cd front
+        npm install
         npm run build
   deploy:
     needs: build

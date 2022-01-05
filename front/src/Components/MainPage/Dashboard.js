@@ -7,7 +7,7 @@ import ProgressSlide from "./ProgressSlide";
 import FavoriteSlide from "./FavoriteSlide";
 import axios from "axios";
 import { positions } from "../../userData";
-import { skills } from "../../skills.json";
+import skills from "../../skills.json";
 import defaultImg from "../../default_intra.png";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
@@ -104,8 +104,8 @@ export default function Dashboard(props) {
                         return (
                           <img
                             key={idx}
-                            src={skills[e][1]}
-                            alt={skills[e][0]}
+                            src={skills.skills[e][1]}
+                            alt={skills.skills[e][0]}
                           />
                         );
                       })}

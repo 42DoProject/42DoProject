@@ -7,7 +7,7 @@ import ProgressSlide from "./ProgressSlide";
 import FavoriteSlide from "./FavoriteSlide";
 import axios from "axios";
 import { positions } from "../../userData";
-import skills from "../../skills.json";
+import { skills } from "../../skills.json";
 import defaultImg from "../../default_intra.png";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
@@ -76,7 +76,8 @@ export default function Dashboard(props) {
             {loginState && (
               <OverlayTrigger
                 placement="bottom"
-                overlay={<Tooltip id={`tooltip-bottom`}>프로필 수정</Tooltip>}>
+                overlay={<Tooltip id={`tooltip-bottom`}>프로필 수정</Tooltip>}
+              >
                 <div className="row1__button">
                   <Link className="icon__link" to="/profile/edit">
                     <Icon icon="akar-icons:edit" />
@@ -142,37 +143,43 @@ export default function Dashboard(props) {
                 {/* 현재{" "} */}
                 <Link
                   className="dashboard__project__link1"
-                  to="/projectlist/recruit">
+                  to="/projectlist/recruit"
+                >
                   {props.progressPr}
                 </Link>
                 개의{" "}
                 <Link
                   className="dashboard__project__link2"
-                  to="/projectlist/recruit">
+                  to="/projectlist/recruit"
+                >
                   모집중
                 </Link>{" "}
                 ∙{" "}
                 <Link
                   className="dashboard__project__link3"
-                  to="/projectlist/proceed">
+                  to="/projectlist/proceed"
+                >
                   {proceedingPrCnt || "0"}
                 </Link>
                 개의{" "}
                 <Link
                   className="dashboard__project__link4"
-                  to="/projectlist/proceed">
+                  to="/projectlist/proceed"
+                >
                   진행중
                 </Link>{" "}
                 ∙{" "}
                 <Link
                   className="dashboard__project__link5"
-                  to="/projectlist/complete">
+                  to="/projectlist/complete"
+                >
                   {props.finishPr}
                 </Link>
                 개의{" "}
                 <Link
                   className="dashboard__project__link6"
-                  to="/projectlist/complete">
+                  to="/projectlist/complete"
+                >
                   완성된{" "}
                 </Link>
                 프로젝트가 있어요

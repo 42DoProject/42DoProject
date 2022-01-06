@@ -31,6 +31,7 @@ jobs:
       run: |
         cd front
         echo "npm run build" > build.sh
+        chmod 777 build.sh
         ./build.sh 
         
   deploy:

@@ -1,4 +1,4 @@
-aimport { Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import Main from "./Components/MainPage/Main";
 import ProfilePage from "./Components/ProfilePage/ProfilePage";
 import RecruitProjects from "./Components/AllProjectPage/RecruitProjects";

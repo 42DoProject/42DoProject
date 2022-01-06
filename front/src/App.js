@@ -18,12 +18,14 @@ import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import socket from "./socket";
 import ProjectDetail from "./Components/ProjectDetail/ProjectDetail";
+import Unauthorized from "./Components/CommonComponent/Unauthorized";
 import NotPage from "./Components/MainPage/NotPage";
-import { useLocation } from "react-router";
+import { useHistory, useLocation } from "react-router";
 
 function App(props) {
   let loginState = useSelector((state) => state.loginReducer);
   let dispatch = useDispatch();
+  const history = useHistory();
   // const location = useLocation();
   // 새로운 Token 발급
   useEffect(() => {
@@ -61,9 +63,36 @@ function App(props) {
       getToken();
     }
     // console.log("location changed, accessToken update");
+
+    axios.interceptors.request.use(
+      function (config) {
+        // Do something before request is sent
+        return config;
+      },
+      function (error) {
+        // Do something with request error
+        console.log("request error");
+        return Promise.reject(error);
+      }
+    );
+
+    // Add a response interceptor
+    axios.interceptors.response.use(
+      function (response) {
+        // Do something with response data
+        return response;
+      },
+      function (error) {
+        // Do something with response error
+        if (error.response.status === 401) {
+          history.push("/unauthorized");
+        }
+        return Promise.reject(error);
+      }
+    );
   }, [loginState]);
 
-  console.log(loginState?.accessToken);
+  console.log("loginState", loginState);
 
   return (
     <Layout>
@@ -84,6 +113,7 @@ function App(props) {
         <Route exact path="/project/edit" component={ProjectEditPage} />
         <Route exact path="/project/edit/:id" component={ProjectEditPage} />
         <Route exact path="/project/:id" component={ProjectDetail} />
+        <Route exact path="/unauthorized" component={Unauthorized} />
         <Route path="/" component={NotPage} />
       </Switch>
     </Layout>

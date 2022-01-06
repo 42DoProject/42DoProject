@@ -125,6 +125,8 @@ export default function ProjectInfo({
     }
   }, []);
 
+  console.log("info", info);
+
   return (
     <>
       <div className="project_info">
@@ -139,6 +141,11 @@ export default function ProjectInfo({
             }}
           />
         </div>
+        <div className="info_createdAt">프로젝트 생성일</div>
+        <div className="createdAt">
+          {dayjs(info.content.createdAt).format("YY.MM.DD")}
+        </div>
+        <hr />
         <div className="info_date">프로젝트 기간</div>
         <div className="date">
           {info.startDate || info.endDate ? (

@@ -146,6 +146,26 @@
         border-radius: 50%;
         box-shadow: $shadow;
       }
+      .cancle_icon {
+        display: none;
+        position: absolute;
+        right: -0rem;
+        top: -0.5rem;
+        background-color: white;
+        border-radius: 50%;
+        box-shadow: $shadow;
+      }
+
+      .applyed_icon:hover {
+        .check_icon {
+          display: none;
+        }
+
+        .cancle_icon {
+          display: block;
+        }
+      }
+
       .chair_icon {
         .empty_chair-icon {
           border-radius: 50%;

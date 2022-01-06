@@ -24,6 +24,7 @@ export default function CadetCards({ cadetData }) {
         setProfileUrl(resized);
       } catch (err) {
         console.log(err);
+        setProfileUrl(key);
       }
     };
     if (cadetData?.profileImage) resizedImage(cadetData.profileImage, "500");

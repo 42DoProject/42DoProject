@@ -68,7 +68,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.1s ease-in;
+
       .img-hover__add {
         border: 2px solid $lightestGrey;
         width: max-content;
@@ -332,7 +334,7 @@
     justify-content: center;
     .project-edit__left,
     .project-edit__right {
-      width: 90%;
+      width: 95%;
     }
   }
 }

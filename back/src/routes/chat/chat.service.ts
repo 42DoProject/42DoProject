@@ -57,6 +57,7 @@ export const getAllChats = async (request: Request, response: Response) => {
       payload: {
         uuid: room.id,
         type: room.type,
+        name: lastChatDate?.title,
         unread: unreadCount,
         last: last ? last.message : "",
         date: last ? last.date : -1,
@@ -93,6 +94,48 @@ const isDMExist = async (
     }
   }
   return null;
+};
+
+export const inquire = async (request: Request, response: Response) => {
+  const { users } = request.body;
+  if (!users || users.length === 0) {
+    response.status(400).json({ error: "users length can't zero" });
+    return;
+  }
+  var dm;
+  if (
+    users.length === 1 &&
+    (dm = await isDMExist(request.user?.id, users[0]))
+  ) {
+    response.status(200).json({ uuid: dm });
+    return;
+  }
+  const userList = [];
+  var user;
+  user = await User.findOne({ where: { id: request.user!.id } });
+  userList.push({
+    id: user!.id,
+    username: user!.username,
+    profileImage: user!.profileImage,
+  });
+  for (var u of users) {
+    if (
+      u == request.user?.id ||
+      !(user = await User.findOne({ where: { id: u } }))
+    ) {
+      response.status(400).json({ error: "invalid user id included" });
+      return;
+    }
+    userList.push({
+      id: user.id,
+      username: user.username,
+      profileImage: user.profileImage,
+    });
+  }
+  response.status(200).json({
+    type: users.length === 1 ? 0 : 1,
+    users: userList,
+  });
 };
 
 export const makeChatRoom = async (request: Request, response: Response) => {
@@ -217,6 +260,7 @@ export const inviteUser = async (request: Request, response: Response) => {
   var chat;
   if (
     !uuid ||
+    !users ||
     !(await LastChat.findOne({
       uuid: uuid,
       userId: request.user?.id,
@@ -304,6 +348,27 @@ export const inviteUser = async (request: Request, response: Response) => {
   response.status(200).json({ message: "successfully invited" });
 };
 
+export const rename = async (request: Request, response: Response) => {
+  const { uuid } = request.params;
+  const { name } = request.body;
+  if (
+    !uuid ||
+    !name ||
+    !(await LastChat.findOne({
+      uuid: uuid,
+      userId: request.user?.id,
+    }).exec())
+  ) {
+    response.status(400).json({ error: "invalid request" });
+    return;
+  }
+  await LastChat.updateOne(
+    { uuid: uuid, userId: request.user!.id },
+    { title: name }
+  );
+  response.status(200).json({ message: "successfully changed" });
+};
+
 export const leave = async (request: Request, response: Response) => {
   const { uuid } = request.params;
   if (
@@ -317,20 +382,20 @@ export const leave = async (request: Request, response: Response) => {
     return;
   }
   await ProfileChat.destroy({
-    where: { chatId: uuid, profileId: request.user?.id },
+    where: { chatId: uuid, profileId: request.user!.id },
   });
   await LastChat.deleteOne({
     uuid: uuid,
-    userId: request.user?.id,
+    userId: request.user!.id,
   });
   await new ChatRow({
     uuid: uuid,
     date: Date.now(),
     userId: -1,
-    message: `${request.user?.username}님이 나갔습니다`,
+    message: `${request.user!.username}님이 나갔습니다`,
   }).save();
-  getUserSocket(request.user?.id)?.leave(uuid);
-  io.to(uuid).emit("chat:leave", { userId: request.user?.id });
+  getUserSocket(request.user!.id)?.leave(uuid);
+  io.to(uuid).emit("chat:leave", { userId: request.user!.id });
   if (
     (await LastChat.count({
       uuid: uuid,

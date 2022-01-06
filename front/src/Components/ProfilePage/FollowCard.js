@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { positions } from "../../userData";
 import { useSelector } from "react-redux";
-import defaultImg from "../../default_intra.png";
+// import defaultImg from "../../default_intra.png";
+import blankImg from "../../blankImg.png";
 import axios from "axios";
 import { Icon } from "@iconify/react";
 
@@ -13,6 +14,28 @@ export default function FollowCard({
   setFollowUser,
 }) {
   const loginState = useSelector((state) => state.loginReducer);
+  const [profileUrl, setProfileUrl] = useState();
+
+  useEffect(() => {
+    const resizedImage = async (key, size) => {
+      // 정상적으로 가져와지면 resized url반환, 아니면 원본이미지 url반환
+      const url = key.split("/");
+      url[url.length - 3] = size;
+      const resized = url.join("/");
+      try {
+        await axios({
+          method: "head",
+          url: `${resized}?timestamp=${Date.now()}`,
+        });
+        setProfileUrl(resized);
+      } catch (err) {
+        console.log(err);
+        setProfileUrl(key);
+      }
+    };
+    if (v?.profileImage) resizedImage(v.profileImage, "100");
+  }, [v]);
+
   const followUser = async () => {
     try {
       await axios.get(
@@ -40,10 +63,7 @@ export default function FollowCard({
           onClick={() => {
             window.location.href = `/profile/${v.userId}`;
           }}>
-          <img
-            className="follow__img"
-            src={`${v.profileImage || defaultImg}`}
-          />
+          <img className="follow__img" src={`${profileUrl || blankImg}`} />
           <div className="follow__info">
             <div className="follow__name">{v.username}</div>
             <div className="follow__position">{positions[v.position]}</div>

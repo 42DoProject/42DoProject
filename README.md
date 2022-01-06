@@ -1,4 +1,11 @@
-# DoProject
+# 42DoProject | 사이두 프로젝트
+
+42서울 카뎃들을 위한 사이드 프로젝트 플랫폼 
+
+
+![메인 배너](https://user-images.githubusercontent.com/65898861/148019898-19f61be4-c938-4bef-81ee-681ca99535c2.jpeg)
+
+https://42doproject.com
 
 *docker와 docker compose가 설치되어 있어야 합니다.*
 
@@ -11,9 +18,6 @@ $> ./docker-compose-up.sh
 $> ./docker-compose-down.sh
 ```
 위 명령어로 컨테이너를 종료합니다.
-
-
-
 
 # 실제 서버에 배포 (front/back)
 
@@ -42,4 +46,5 @@ deploy-* 이름을 가진 브랜치에 머지되면 자동적으로 배포를 �
 
 ![3](https://user-images.githubusercontent.com/12230655/139664842-c35d5d6d-8c8e-495f-a24c-c02dc576acee.PNG)
 배포 이후 이 알림은 무시해주시면 됩니다
+
 

@@ -32,7 +32,8 @@
     }
   }
 
-  .info_date {
+  .info_date,
+  .info_createdAt {
     font-weight: $semiBold;
     margin-bottom: 0.5rem;
     min-width: max-content;

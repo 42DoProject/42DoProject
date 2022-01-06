@@ -55,7 +55,12 @@ export default function Follow({
         const { data } = await axios.get(
           `${process.env.REACT_APP_HTTP_ENV}://${
             process.env.REACT_APP_BACKEND_DOMAIN
-          }/user/${subj}/${userId || loginState.id}?page=${page}`
+          }/user/${subj}/${userId || loginState.id}?page=${page}`,
+          {
+            headers: {
+              Authorization: `Bearer ${loginState?.accessToken}`,
+            },
+          }
         );
         if (followerList) {
           setFollowerList([...followerList, ...data]);

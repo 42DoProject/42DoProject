@@ -32,7 +32,7 @@ jobs:
         cd front
         echo "npm run build" > build.sh
         chmod 777 build.sh
-        ./build.sh 
+        source ./build.sh || true
         
   deploy:
     needs: build

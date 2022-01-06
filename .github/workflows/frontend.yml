@@ -31,6 +31,7 @@ jobs:
       run: |
         cd front
         npm run build
+        exit 0
 
   deploy:
     needs: build

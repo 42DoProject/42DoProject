@@ -30,9 +30,9 @@ jobs:
     - name: react build
       run: |
         cd front
-        npm run build
-        exit 0
-
+        echo "npm run build" > build.sh
+        ./build.sh 
+        
   deploy:
     needs: build
     name: Deploy

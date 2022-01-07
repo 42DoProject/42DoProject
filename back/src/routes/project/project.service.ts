@@ -578,24 +578,6 @@ export const getContent = async (request: Request, response: Response) => {
   }
 
   try {
-    // calculate viewcount
-    // const project = await Project.findOne({
-    //   attributes: ["viewCount"],
-    //   where: { id: projectId },
-    // });
-    // if (!project) {
-    //   response.status(400).json({ errMessage: "invalid projectId" });
-    //   return ;
-    // }
-    // const curViews = project?.viewCount;
-    // const newViews: number = Number(curViews) + 1;
-    // await Project.update(
-    //   {
-    //     viewCount: newViews,
-    //   },
-    //   { where: { id: projectId } }
-    // );
-
     // get data
     const content = await Project.findOne({
       attributes: [
@@ -1116,7 +1098,7 @@ export const deleteMember = async (request: Request, response: Response) => {
 
   try {
     const projectprofile = await Projectprofile.findOne({
-      attributes: ["id"],
+      attributes: ["id", "position"],
       include: {
         model: Project,
         attributes: ["leader"],
@@ -1124,7 +1106,7 @@ export const deleteMember = async (request: Request, response: Response) => {
       where: { projectId: projectId, profileId: profileId },
     });
     const project = await Project.findOne({
-      attributes: ["title", "totalMember", "currentMember", "state"],
+      attributes: ["title", "totalMember", "currentMember", "state", "position"],
       where: { id: projectId },
     });
     // check valid param
@@ -1142,20 +1124,23 @@ export const deleteMember = async (request: Request, response: Response) => {
       response.status(401).json({ errMessage: "no authority" });
       return;
     }
+    // renew project position
+    let inputPosition = project!.position;
+    inputPosition.push(projectprofile!.position);
     // renew number of members
     const curMembers = project?.currentMember;
-    const totalMembers = project?.totalMember;
     const newCurMembers: number = Number(curMembers) - 1;
-    const newTotalMembers: number = Number(totalMembers) - 1;
+    // renew project state
+    const inputState: string = (project!.state === "completed") ? "completed" : "recruiting";
 
     await Projectprofile.destroy({
       where: { projectId: projectId, profileId: profileId },
     });
     await Project.update(
       {
-        totalMember: newTotalMembers,
         currentMember: newCurMembers,
-        state: project!.state,
+        state: inputState,
+        position: inputPosition
       },
       { where: { id: projectId } }
     );

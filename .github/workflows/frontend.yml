@@ -2,7 +2,7 @@ name: CI
 
 on:
   pull_request:
-    branches: [ deploy-frontend-dont-use ]
+    branches: [ deploy-frontend ]
     types: [ closed ]
   workflow_dispatch:
 
@@ -16,11 +16,24 @@ jobs:
       uses: actions/checkout@v2
     - name: list of files
       run: cd front && ls
-    - name: build
+    - name: cache node modules
+      uses: actions/cache@v2
+      with:
+        path: front/node_modules
+        key: ${{ runner.OS }}-build-${{ hashFiles('front/**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.OS }}-build-
+    - name: install
       run: |
         cd front
         npm install
+    - name: react build
+      env:
+        CI: false
+      run: |
+        cd front
         npm run build
+        
   deploy:
     needs: build
     name: Deploy

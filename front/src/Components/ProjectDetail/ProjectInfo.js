@@ -5,6 +5,7 @@ import skills from "../../skills.json";
 import dayjs from "dayjs";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import Modal from "../ProjectEditPage/Modal";
 
 export default function ProjectInfo({
   info,
@@ -15,6 +16,8 @@ export default function ProjectInfo({
 }) {
   const [clickFlag, setClickFlag] = useState(0);
   const [likeCount, setLikeCount] = useState(info.like);
+  const [cancleModal, setCancleModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
   let loginState = useSelector((state) => state.loginReducer);
 
   let start = dayjs(info.startDate);
@@ -32,7 +35,7 @@ export default function ProjectInfo({
     },
   ];
 
-  const applyCancel = (e) => {
+  const applyCancel = () => {
     axios({
       method: "DELETE",
       url: `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/project/apply/${info.id}/${loginState.id}`,
@@ -41,14 +44,13 @@ export default function ProjectInfo({
       },
     })
       .then((res) => {
-        // console.log(res);
         setCancleFlag(1);
+        setCancleModal(false)
       })
       .catch((e) => console.log(e));
-    e.preventDefault();
   };
 
-  const deleteMember = (e) => {
+  const deleteMember = () => {
     axios({
       method: "DELETE",
       url: `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/project/accept/${info.id}/${loginState.id}`,
@@ -58,10 +60,9 @@ export default function ProjectInfo({
     })
       .then((res) => {
         setApplyFlag(1);
-        // console.log(res);
+        setDeleteModal(false);
       })
       .catch((e) => console.log(e));
-    // e.preventDefault();
   };
 
   const checkLike = async () => {
@@ -125,8 +126,6 @@ export default function ProjectInfo({
     }
   }, []);
 
-  console.log("info", info);
-
   return (
     <>
       <div className="project_info">
@@ -182,14 +181,30 @@ export default function ProjectInfo({
         </div>
       </div>
       {userStatus === "applying" && (
-        <div className="project-cancle_btn" onClick={(e) => applyCancel(e)}>
+        <div className="project-cancle_btn" onClick={() => setCancleModal(true)}>
           신청 취소하기
         </div>
       )}
+      {cancleModal === true && (
+        <Modal
+          body="프로젝트 신청을 취소하시겠습니까?"
+          buttons={["아니오", "네"]}
+          cancelFunc={() => setCancleModal(false)}
+          confirmFunc={() => applyCancel()}
+        />
+      )}
       {userStatus === "participating" && loginState?.id !== info.leader && (
-        <div className="project-cancle_btn" onClick={(e) => deleteMember(e)}>
+        <div className="project-cancle_btn" onClick={() => setDeleteModal(true)}>
           프로젝트에서 나가기
         </div>
+      )}
+      {deleteModal === true && (
+        <Modal
+          body="프로젝트에서 나가시겠습니까?"
+          buttons={["아니오", "네"]}
+          cancelFunc={() => setDeleteModal(false)}
+          confirmFunc={() => deleteMember()}
+        />
       )}
     </>
   );

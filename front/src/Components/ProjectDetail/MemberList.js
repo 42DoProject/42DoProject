@@ -16,8 +16,8 @@ export default function MemberList({
   setApplyFlag,
   setCancleFlag,
 }) {
-  const [applyModal, setApplyModal] = useState(false);
-  const [cancleModal, setCancleModal] = useState(false);
+  const [applyModal, setApplyModal] = useState(-1);
+  const [cancleModal, setCancleModal] = useState(-1);
 
   const history = useHistory();
 
@@ -37,7 +37,7 @@ export default function MemberList({
         })
         .catch((e) => console.log(e));
       // e.preventDefault();
-      setApplyModal(false);
+      setApplyModal(-1);
     }
   };
 
@@ -53,7 +53,7 @@ export default function MemberList({
         setCancleFlag(1);
       })
       .catch((e) => console.log(e));
-    setCancleModal(false);
+    setCancleModal(-1);
     // e.preventDefault();
   };
 
@@ -125,22 +125,8 @@ export default function MemberList({
           ))}
           {data?.position.map((elm, key) => (
             <div className="empty_member" key={key}>
-              {applyModal === true && (
-                <Modal
-                  body="프로젝트에 참여하겠습니까?"
-                  buttons={["아니오", "네"]}
-                  cancelFunc={() => setApplyModal(false)}
-                  confirmFunc={() => onApply(elm)}
-                />
-              )}
-              {cancleModal === true && (
-                <Modal
-                  body="프로젝트 신청을 취소하시겠습니까?"
-                  buttons={["아니오", "네"]}
-                  cancelFunc={() => setCancleModal(false)}
-                  confirmFunc={() => applyCancel()}
-                />
-              )}
+
+
               <div className="chair_icon">
                 <Icon
                   icon="bx:bx-chair"
@@ -150,23 +136,30 @@ export default function MemberList({
                 {userStatus?.status === "nothing" && (
                   <div
                     className="plus_icon"
-                    onClick={() => setApplyModal(true)}
+                    onClick={() => setApplyModal(elm)}
                   >
                     <Icon
                       icon="akar-icons:circle-plus-fill"
                       color="#5bbcb6"
                       position={elm}
                       key={key}
-                      onClick={(e) => onApply(e, elm)}
                       style={{ fontSize: "1.7rem", cursor: "pointer" }}
                     />
                   </div>
+                )}
+                {applyModal === elm && (
+                  <Modal
+                    body="프로젝트에 참여하겠습니까?"
+                    buttons={["아니오", "네"]}
+                    cancelFunc={() => setApplyModal(-1)}
+                    confirmFunc={() => onApply(elm)}
+                  />
                 )}
                 {userStatus?.status === "applying" &&
                   userStatus?.applyingPosition === elm && (
                     <div
                       className="applyed_icon"
-                      onClick={() => setCancleModal(true)}
+                      onClick={() => setCancleModal(elm)}
                     >
                       <div className="check_icon">
                         <Icon
@@ -188,6 +181,14 @@ export default function MemberList({
                       </div>
                     </div>
                   )}
+                {cancleModal === elm && (
+                  <Modal
+                    body="프로젝트 신청을 취소하시겠습니까?"
+                    buttons={["아니오", "네"]}
+                    cancelFunc={() => setCancleModal(-1)}
+                    confirmFunc={() => applyCancel()}
+                  />
+                )}
               </div>
               <div className="empty_position">{positions[elm]}</div>
             </div>

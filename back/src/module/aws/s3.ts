@@ -73,9 +73,19 @@ export async function profileToS3(userId: number, profileImage: string) {
 
 export function urlToBucket(bucket: string, url: string, key: string) {
   return new Promise((resolve, reject) => {
+    const j = request.jar();
+    const cookie: request.Cookie | undefined = request.cookie(
+      "_intra_42_session_production=c5925e698f64cd1fa4aa121d1b623bf8"
+    );
+    if (cookie === undefined) {
+      reject("cookie error");
+      return;
+    }
+    j.setCookie(cookie, url);
     request(
       {
         url: url,
+        jar: j,
         encoding: null,
       },
       async function (err, response, body) {

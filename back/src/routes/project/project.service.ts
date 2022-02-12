@@ -1133,8 +1133,6 @@ export const deleteMember = async (request: Request, response: Response) => {
     // renew project state
     const inputState: string = (project!.state === "completed") ? "completed" : "recruiting";
 
-    console.log(inputPosition);
-    console.log(inputState);
     await Projectprofile.destroy({
       where: { projectId: projectId, profileId: profileId },
     });

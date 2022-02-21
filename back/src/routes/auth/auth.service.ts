@@ -1,27 +1,24 @@
 import { Request, Response } from "express";
 import { JwtPayload } from "jsonwebtoken";
+
 import { IOToken } from "../../interface/token.interface";
-import { BlackList } from "../../models/user/blacklist.model";
-import { OToken } from "../../models/user/otoken.model";
-import { Profile } from "../../models/user/profile.model";
-import { Token } from "../../models/user/token.model";
+
 import { User } from "../../models/user/user.model";
+import { OToken } from "../../models/user/otoken.model";
+import { Token } from "../../models/user/token.model";
+import { Profile } from "../../models/user/profile.model";
+import { BlackList } from "../../models/user/blacklist.model";
+
 import { getIsoString } from "../../module/time";
-import { accessToken, issueJwt, jwtToObject, tokenToUser } from "./oauth";
 import * as search from "../../module/search";
 import * as awsS3 from "../../module/aws/s3";
 
-const userModelCheck = async (user: any): Promise<number> => {
-  var temp;
-  var u = user.cursus_users.filter((x: any) => x.cursus_id == 21)[0];
-  if ((temp = await User.findOne({ where: { intraId: user.id } }))) {
-    await Profile.update(
-      { level: u.level },
-      { where: { userId: temp.id } }
-    );
-    search.updateUser({ level: u.level }, { id: temp.id });
-    return temp.id;
-  }
+import { issueJwt, jwtToObject } from "./oauth";
+import { requestIntraAccessToken, requestIntraUser } from "./oauth/intra";
+import { requestGoogleAccessToken, requestGoogleUser } from "./oauth/google";
+
+export const makeNewAccount = async (user: any): Promise<number> => {
+  const course = user.cursus_users.filter((x: any) => x.cursus_id == 21)[0];
   const row = await User.create({
     intraId: user.id,
     username: user.login,
@@ -45,7 +42,7 @@ const userModelCheck = async (user: any): Promise<number> => {
     userId: row.id,
   });
   await Profile.create({
-    level: u.level,
+    level: course.level,
     lastAccess: getIsoString(),
     status: 0,
     position: 0,
@@ -66,135 +63,333 @@ const userModelCheck = async (user: any): Promise<number> => {
     status: 0,
     position: 0,
     skill: [],
-    level: u.level,
+    level: course.level,
     statusMessage: "",
   });
   await awsS3.profileToS3(row.id, user.image_url);
   return row.id;
 };
 
-export const signIn = async (request: Request, response: Response) => {
-  const { code, refresh_token } = request.query;
-  if (code) {
-    const token: boolean | IOToken = await accessToken(code.toString());
-    if (!token) {
-      response.status(401).json({ error: "invalid code" });
-      return;
-    }
-    const user = await tokenToUser((<IOToken>token).access_token);
-    if ((<any>user).cursus_users.length < 2) {
-      response.status(400).json({ error: "service can only used by cadets" });
-      return;
-    }
-    if (!user) {
-      response.status(400).json({ error: "42 intra is not working" });
-      return;
-    }
-    const idx = await userModelCheck(user);
-    await OToken.update(
-      {
-        accessToken: (<IOToken>token).access_token,
-        refreshToken: (<IOToken>token).refresh_token,
-        expiryDate: (<IOToken>token).created_at + (<IOToken>token).expires_in,
-      },
-      { where: { userId: idx } }
-    );
-    var expiringToken: Token | null;
-    if (
-      (expiringToken = await Token.findOne({ where: { userId: idx } }))
-        ?.accessToken !== null
-    ) {
-      await BlackList.create({
-        token: expiringToken?.accessToken,
-        expiryDate: expiringToken?.accessExpiry,
-      });
-      await BlackList.create({
-        token: expiringToken?.refreshToken,
-        expiryDate: expiringToken?.refreshExpiry,
-      });
-    }
-    const jwt = issueJwt(idx);
-    await Token.update(
-      {
-        accessToken: jwt.accessToken,
-        accessExpiry: jwt.accessExpiry,
-        refreshToken: jwt.refreshToken,
-        refreshExpiry: jwt.refreshExpiry,
-      },
-      { where: { userId: idx } }
-    );
-    const meta = await User.findOne({ where: { id: idx } });
-    response.status(200).json({
-      user: {
-        id: meta!.id,
-        username: meta!.username,
-        profileImage: meta!.profileImage,
-        location: meta!.location,
-        email: meta!.email,
-      },
-      token: jwt,
-    });
-    return;
-  }
-  if (refresh_token) {
-    var payload;
-    if (
-      (await BlackList.findOne({ where: { token: refresh_token } })) ||
-      !(payload = jwtToObject(refresh_token.toString(), { subject: "refresh" }))
-    ) {
-      response.status(401).json({ error: "invalid token" });
-      return;
-    }
-    const jwt = issueJwt((<JwtPayload>payload).uid);
-    const expiredToken = await Token.findOne({
-      where: { userId: (<JwtPayload>payload).uid },
-      include: {
-        model: User,
-        where: {
-          id: (<JwtPayload>payload).uid,
-        },
-      },
-    });
-    await BlackList.create({
-      token: expiredToken?.accessToken,
-      expiryDate: expiredToken?.accessExpiry,
-    });
-    await BlackList.create({
-      token: expiredToken?.refreshToken,
-      expiryDate: expiredToken?.refreshExpiry,
-    });
-    await Token.update(
-      {
-        accessToken: jwt.accessToken,
-        accessExpiry: jwt.accessExpiry,
-        refreshToken: jwt.refreshToken,
-        refreshExpiry: jwt.refreshExpiry,
-      },
-      { where: { userId: (<JwtPayload>payload).uid } }
-    );
-    response.status(200).json(jwt);
-    return;
-  }
-  response.status(400).json({ error: "query required do not exist" });
-};
+export const refreshToken = async (request: Request, response: Response) => {
+  const { token } = request.query;
+  var payload;
 
-export const signOut = async (request: Request, response: Response) => {
+  if (!token) {
+    response.status(400).json({
+      error: "parameter 'token' does not exist",
+    });
+    return;
+  }
+  if (
+    (await BlackList.findOne({ where: { token: token } })) ||
+    !(payload = jwtToObject(token.toString(), { subject: "refresh" }))
+  ) {
+    response.status(401).json({ error: "invalid token" });
+    return;
+  }
+  const jwt = issueJwt((<JwtPayload>payload).uid);
   const expiredToken = await Token.findOne({
-    where: { userId: request.user?.id },
+    where: { userId: (<JwtPayload>payload).uid },
     include: {
       model: User,
       where: {
-        id: request.user?.id,
+        id: (<JwtPayload>payload).uid,
       },
     },
   });
   await BlackList.create({
-    token: expiredToken?.accessToken,
-    expiryDate: expiredToken?.accessExpiry,
+    token: expiredToken!.accessToken,
+    expiryDate: expiredToken!.accessExpiry,
   });
   await BlackList.create({
-    token: expiredToken?.refreshToken,
-    expiryDate: expiredToken?.refreshExpiry,
+    token: expiredToken!.refreshToken,
+    expiryDate: expiredToken!.refreshExpiry,
+  });
+  await Token.update(
+    {
+      accessToken: jwt.accessToken,
+      accessExpiry: jwt.accessExpiry,
+      refreshToken: jwt.refreshToken,
+      refreshExpiry: jwt.refreshExpiry,
+    },
+    { where: { userId: (<JwtPayload>payload).uid } }
+  );
+  response.status(200).json(jwt);
+  return;
+};
+
+/* linking */
+
+export const linkingGoogle = async (request: Request, response: Response) => {
+  const { code } = request.query;
+  var token: Boolean | IOToken;
+  var guser: Boolean | object;
+
+  if (!code) {
+    response.status(400).json({
+      error: "parameter 'code' does not exist",
+    });
+    return;
+  }
+  token = await requestGoogleAccessToken(code.toString());
+  if (!token) {
+    response.status(401).json({
+      error: "invalid code",
+    });
+    return;
+  }
+  guser = await requestGoogleUser((<IOToken>token).access_token);
+  if (!guser) {
+    response.status(500).json({
+      error: "google internal server error",
+    });
+    return;
+  }
+  await User.update(
+    { googleId: (<any>guser).id, googleEmail: (<any>guser).email },
+    { where: { id: request.user!.id } }
+  );
+  response.status(200).json({
+    message: "successfully linked",
+    googleEmail: (<any>guser).email,
+  });
+};
+
+/* intra */
+
+export const signUpIntra = async (request: Request, response: Response) => {
+  const { code } = request.query;
+  var token: Boolean | IOToken;
+  var user: Boolean | object;
+  var userId: Number;
+
+  if (!code) {
+    response.status(400).json({
+      error: "parameter 'code' does not exist",
+    });
+    return;
+  }
+  token = await requestIntraAccessToken(code.toString());
+  if (!token) {
+    response.status(401).json({
+      error: "invalid code",
+    });
+    return;
+  }
+  user = await requestIntraUser((<IOToken>token).access_token);
+  if (!user) {
+    response.status(500).json({
+      error: "42 intra internal server error",
+    });
+    return;
+  }
+  if (
+    (<any>user).cursus_users.filter((x: any) => x.cursus_id == 21).length == 0
+  ) {
+    response.status(400).json({
+      error: "this service is for cadets only",
+    });
+    return;
+  }
+  if (await User.findOne({ where: { intraId: (<any>user).id } })) {
+    response.status(400).json({
+      error: "already registered user",
+    });
+    return;
+  }
+  userId = await makeNewAccount(user);
+  response.status(200).json({
+    id: userId,
+    message: "successfully signed up",
+  });
+};
+
+export const signInIntra = async (request: Request, response: Response) => {
+  const { code } = request.query;
+  var token: Boolean | IOToken;
+  var user: Boolean | object;
+  var userRow: User | null;
+
+  if (!code) {
+    response.status(400).json({
+      error: "parameter 'code' does not exist",
+    });
+    return;
+  }
+  token = await requestIntraAccessToken(code.toString());
+  if (!token) {
+    response.status(401).json({
+      error: "invalid code",
+    });
+    return;
+  }
+  user = await requestIntraUser((<IOToken>token).access_token);
+  if (!user) {
+    response.status(500).json({
+      error: "42 intra internal server error",
+    });
+    return;
+  }
+  userRow = await User.findOne({ where: { intraId: (<any>user).id } });
+  if (!userRow) {
+    response.status(400).json({
+      error: "account not found",
+    });
+    return;
+  }
+  /* login */
+  /* oauth token */
+  await OToken.update(
+    {
+      application: 0,
+      accessToken: (<IOToken>token).access_token,
+      refreshToken: (<IOToken>token).refresh_token,
+      expiryDate: (<IOToken>token).created_at + (<IOToken>token).expires_in,
+    },
+    { where: { userId: userRow.id } }
+  );
+  /* clean old token records */
+  var expiredToken: Token | null;
+  if (
+    (expiredToken = await Token.findOne({ where: { userId: userRow.id } }))!
+      .accessToken !== null
+  ) {
+    await BlackList.create({
+      token: expiredToken!.accessToken,
+      expiryDate: expiredToken!.accessExpiry,
+    });
+    await BlackList.create({
+      token: expiredToken!.refreshToken,
+      expiryDate: expiredToken!.refreshExpiry,
+    });
+  }
+  /* jwt */
+  const jwt = issueJwt(userRow.id);
+  await Token.update(
+    {
+      accessToken: jwt.accessToken,
+      accessExpiry: jwt.accessExpiry,
+      refreshToken: jwt.refreshToken,
+      refreshExpiry: jwt.refreshExpiry,
+    },
+    { where: { userId: userRow.id } }
+  );
+  response.status(200).json({
+    user: {
+      id: userRow.id,
+      username: userRow.username,
+      profileImage: userRow.profileImage,
+      location: userRow.location,
+      email: userRow.email,
+      googleEmail: userRow.googleEmail,
+    },
+    token: jwt,
+  });
+};
+
+/* google */
+export const signInGoogle = async (request: Request, response: Response) => {
+  const { code } = request.query;
+  var token: Boolean | IOToken;
+  var guser: Boolean | object;
+  var user: User | null;
+
+  if (!code) {
+    response.status(400).json({
+      error: "parameter 'code' does not exist",
+    });
+    return;
+  }
+  token = await requestGoogleAccessToken(code.toString());
+  if (!token) {
+    response.status(401).json({
+      error: "invalid code",
+    });
+    return;
+  }
+  guser = await requestGoogleUser((<IOToken>token).access_token);
+  if (!guser) {
+    response.status(500).json({
+      error: "google internal server error",
+    });
+    return;
+  }
+  user = await User.findOne({ where: { googleId: (<any>guser).id } });
+  if (!user) {
+    response.status(400).json({
+      error: "can't find linked account",
+    });
+    return;
+  }
+  /* login */
+  /* oauth token */
+  await OToken.update(
+    {
+      application: 1,
+      accessToken: (<IOToken>token).access_token,
+      refreshToken: null,
+      expiryDate: (<IOToken>token).created_at + (<IOToken>token).expires_in,
+    },
+    { where: { userId: user.id } }
+  );
+  /* clean old token records */
+  var expiredToken: Token | null;
+  if (
+    (expiredToken = await Token.findOne({ where: { userId: user.id } }))!
+      .accessToken !== null
+  ) {
+    await BlackList.create({
+      token: expiredToken!.accessToken,
+      expiryDate: expiredToken!.accessExpiry,
+    });
+    await BlackList.create({
+      token: expiredToken!.refreshToken,
+      expiryDate: expiredToken!.refreshExpiry,
+    });
+  }
+  /* jwt */
+  const jwt = issueJwt(user.id);
+  await Token.update(
+    {
+      accessToken: jwt.accessToken,
+      accessExpiry: jwt.accessExpiry,
+      refreshToken: jwt.refreshToken,
+      refreshExpiry: jwt.refreshExpiry,
+    },
+    { where: { userId: user.id } }
+  );
+  response.status(200).json({
+    user: {
+      id: user.id,
+      username: user.username,
+      profileImage: user.profileImage,
+      location: user.location,
+      email: user.email,
+      googleEmail: user.googleEmail,
+    },
+    token: jwt,
+  });
+};
+
+/* sign out */
+
+export const signOut = async (request: Request, response: Response) => {
+  const expiredToken = await Token.findOne({
+    where: { userId: request.user!.id },
+    include: {
+      model: User,
+      where: {
+        id: request.user!.id,
+      },
+    },
+  });
+  await BlackList.create({
+    token: expiredToken!.accessToken,
+    expiryDate: expiredToken!.accessExpiry,
+  });
+  await BlackList.create({
+    token: expiredToken!.refreshToken,
+    expiryDate: expiredToken!.refreshExpiry,
   });
   await Token.update(
     {
@@ -203,7 +398,7 @@ export const signOut = async (request: Request, response: Response) => {
       refreshToken: null,
       refreshExpiry: null,
     },
-    { where: { userId: request.user?.id } }
+    { where: { userId: request.user!.id } }
   );
   response.status(200).json({ message: "successfully signed out" });
 };

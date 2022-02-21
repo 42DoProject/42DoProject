@@ -5,6 +5,7 @@ export interface IOToken {
   refresh_token: string;
   scope: string;
   created_at: number;
+  id_token: string;
 }
 
 export interface IJwtSet {

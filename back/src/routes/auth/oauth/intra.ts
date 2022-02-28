@@ -2,7 +2,7 @@ import axios from "axios";
 import { IOToken } from "../../../interface/token.interface";
 
 export const requestIntraAccessToken = async (
-  code: string
+  code: string, redirect_uri: string
 ): Promise<boolean | IOToken> => {
   try {
     var res = await axios.post<IOToken>("https://api.intra.42.fr/oauth/token", {
@@ -10,7 +10,7 @@ export const requestIntraAccessToken = async (
       client_id: process.env.INTRA_CLIENT_ID,
       client_secret: process.env.INTRA_CLIENT_SECRET,
       code: code,
-      redirect_uri: process.env.INTRA_REDIRECT_URI,
+      redirect_uri: redirect_uri,
     });
     return res.data;
   } catch {

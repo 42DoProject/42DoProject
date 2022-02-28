@@ -169,7 +169,7 @@ export const signUpIntra = async (request: Request, response: Response) => {
     });
     return;
   }
-  token = await requestIntraAccessToken(code.toString());
+  token = await requestIntraAccessToken(code.toString(), process.env.INTRA_SIGNUP_REDIRECT_URI!.toString());
   if (!token) {
     response.status(401).json({
       error: "invalid code",
@@ -216,7 +216,7 @@ export const signInIntra = async (request: Request, response: Response) => {
     });
     return;
   }
-  token = await requestIntraAccessToken(code.toString());
+  token = await requestIntraAccessToken(code.toString(), process.env.INTRA_SIGNIN_REDIRECT_URI!.toString());
   if (!token) {
     response.status(401).json({
       error: "invalid code",

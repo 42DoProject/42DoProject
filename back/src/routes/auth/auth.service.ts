@@ -131,7 +131,7 @@ export const linkingGoogle = async (request: Request, response: Response) => {
     });
     return;
   }
-  token = await requestGoogleAccessToken(code.toString());
+  token = await requestGoogleAccessToken(code.toString(), process.env.GOOGLE_LINKING_REDIRECT_URI!.toString());
   if (!token) {
     response.status(401).json({
       error: "invalid code",
@@ -300,7 +300,7 @@ export const signInGoogle = async (request: Request, response: Response) => {
     });
     return;
   }
-  token = await requestGoogleAccessToken(code.toString());
+  token = await requestGoogleAccessToken(code.toString(), process.env.GOOGLE_SIGNIN_REDIRECT_URI!.toString());
   if (!token) {
     response.status(401).json({
       error: "invalid code",

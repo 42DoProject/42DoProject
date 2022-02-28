@@ -2,7 +2,7 @@ import axios from "axios";
 import { IOToken } from "../../../interface/token.interface";
 
 export const requestGoogleAccessToken = async (
-  code: string
+  code: string, redirect_uri: string
 ): Promise<boolean | IOToken> => {
   try {
     var res = await axios.post<IOToken>(
@@ -12,7 +12,7 @@ export const requestGoogleAccessToken = async (
         client_id: process.env.GOOGLE_CLIENT_ID,
         client_secret: process.env.GOOGLE_CLIENT_SECRET,
         code: code,
-        redirect_uri: process.env.GOOGLE_REDIRECT_URI,
+        redirect_uri: redirect_uri,
       }
     );
     res.data.created_at = Math.floor(Date.now() / 1000);

@@ -5,25 +5,23 @@ import { useDispatch, useSelector } from "react-redux";
 import ReactLoading from "../CommonComponent/Loading";
 import socket from "../../socket";
 
-export default function AuthMain() {
+export default function AuthGoogle() {
   const location = useLocation().search;
   const code = new URLSearchParams(location).get("code");
   let dispatch = useDispatch();
   let history = useHistory();
   let loginState = useSelector((state) => state.loginReducer);
+
   useEffect(() => {
     const getData = async () => {
       try {
         // 42API에서 User Data 받아오기.
 		console.log(code);
 		let tmp = decodeURI(code);
-
         const { data } = await axios.get(
-          `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/auth/signin/intra?code=${tmp}`
+          `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/auth/signin/google?code=${tmp}`
         );
-
 		console.log(data);
-
         const {
           token: { accessToken, refreshToken },
         } = data;

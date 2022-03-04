@@ -20,7 +20,12 @@ import socket from "./socket";
 import ProjectDetail from "./Components/ProjectDetail/ProjectDetail";
 import Unauthorized from "./Components/CommonComponent/Unauthorized";
 import NotPage from "./Components/MainPage/NotPage";
+import LoginPage from "./Components/LoginPage/LoginPage";
 import { useHistory, useLocation } from "react-router";
+import AuthGoogle from "./Components/AuthMain/AuthGoogle";
+import LinkGoogle from "./Components/AuthMain/LinkGoogle";
+import IntraSignin from "./Components/AuthMain/IntraSignin";
+import IntraSignup from "./Components/AuthMain/IntraSignup";
 
 function App(props) {
   let loginState = useSelector((state) => state.loginReducer);
@@ -98,7 +103,11 @@ function App(props) {
     <Layout>
       <Switch>
         <Route exact path="/" component={Main} />
-        <Route path="/auth" component={AuthMain} />
+        {/* <Route exact path="/auth/signin/intra" component={AuthMain} /> */}
+        <Route exact path="/auth/signin/intra" component={IntraSignin} />
+        <Route exact path="/auth/signup/intra" component={IntraSignup} />
+        <Route exact path="/auth/signin/google" component={AuthGoogle} />
+        <Route exact path="/auth/linking/google" component={LinkGoogle} />
         {/* <Route path="/auth" render={() => <AuthMain props={props} />} /> */}
         <Route exact path="/profile" component={ProfilePage} />
         <Route exact path="/profile/edit" component={ProfileEditPage} />
@@ -114,6 +123,7 @@ function App(props) {
         <Route exact path="/project/edit/:id" component={ProjectEditPage} />
         <Route exact path="/project/:id" component={ProjectDetail} />
         <Route exact path="/unauthorized" component={Unauthorized} />
+        <Route exact path="/login" component={LoginPage} />
         <Route path="/" component={NotPage} />
       </Switch>
     </Layout>

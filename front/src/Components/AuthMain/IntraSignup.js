@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ReactLoading from "../CommonComponent/Loading";
 import socket from "../../socket";
 
-export default function AuthMain() {
+export default function IntraSignup() {
   const location = useLocation().search;
   const code = new URLSearchParams(location).get("code");
   let dispatch = useDispatch();

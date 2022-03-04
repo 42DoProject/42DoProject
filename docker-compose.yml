@@ -5,6 +5,8 @@ services:
     build:
       context: ./front
       dockerfile: Dockerfile
+    volumes:
+      - ./front/src:/usr/src/app/src
     env_file:
       - ./front/.env
     ports:
@@ -25,7 +27,9 @@ services:
     restart: always
   db:
     container_name: mysql
-    image: mysql:latest
+    # image: mysql:latest
+    platform: linux/x86_64
+    image : library/mysql:latest
     env_file:
       - ./db/.env
     volumes:

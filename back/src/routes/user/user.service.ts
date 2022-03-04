@@ -102,6 +102,7 @@ export const getMe = async (request: Request, response: Response) => {
     profileImage: profile!.user.profileImage,
     location: profile!.user.location,
     email: profile!.user.email,
+    gmail: profile!.user.googleEmail,
     followings: profile!.following,
     following: profile!.following.length,
     follower: profile!.follower.length,
@@ -412,7 +413,7 @@ export const following = async (request: Request, response: Response) => {
   if (!profile) {
     response.status(400).json({ error: "invalid user id" });
     return;
-  } 
+  }
   const result = profile.following.slice((page - 1) * 20, (page - 1) * 20 + 20);
   const userList: IFollowUser[] = [];
   for (const u of result) {
@@ -420,7 +421,10 @@ export const following = async (request: Request, response: Response) => {
     userList.push({
       userId: u,
       username: user!.username,
-      profileImage: (request.user == null && user!.blurImage != "") ? user!.blurImage : user!.profileImage,
+      profileImage:
+        request.user == null && user!.blurImage != ""
+          ? user!.blurImage
+          : user!.profileImage,
       position: user!.profile!.position,
     });
   }
@@ -448,7 +452,10 @@ export const follower = async (request: Request, response: Response) => {
     userList.push({
       userId: u,
       username: user!.username,
-      profileImage: (request.user == null && user!.blurImage != "") ? user!.blurImage : user!.profileImage,
+      profileImage:
+        request.user == null && user!.blurImage != ""
+          ? user!.blurImage
+          : user!.profileImage,
       position: user!.profile!.position,
     });
   }

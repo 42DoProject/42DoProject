@@ -131,7 +131,10 @@ export const linkingGoogle = async (request: Request, response: Response) => {
     });
     return;
   }
-  token = await requestGoogleAccessToken(code.toString(), process.env.GOOGLE_LINKING_REDIRECT_URI!.toString());
+  token = await requestGoogleAccessToken(
+    code.toString(),
+    process.env.GOOGLE_LINKING_REDIRECT_URI!.toString()
+  );
   if (!token) {
     response.status(401).json({
       error: "invalid code",
@@ -157,10 +160,11 @@ export const linkingGoogle = async (request: Request, response: Response) => {
 
 /* intra */
 
-export const signUpIntra = async (request: Request, response: Response) => {
+export const signInIntra = async (request: Request, response: Response) => {
   const { code } = request.query;
   var token: Boolean | IOToken;
   var user: Boolean | object;
+  var userRow: User | null;
   var userId: Number;
 
   if (!code) {
@@ -169,54 +173,10 @@ export const signUpIntra = async (request: Request, response: Response) => {
     });
     return;
   }
-  token = await requestIntraAccessToken(code.toString(), process.env.INTRA_SIGNUP_REDIRECT_URI!.toString());
-  if (!token) {
-    response.status(401).json({
-      error: "invalid code",
-    });
-    return;
-  }
-  user = await requestIntraUser((<IOToken>token).access_token);
-  if (!user) {
-    response.status(500).json({
-      error: "42 intra internal server error",
-    });
-    return;
-  }
-  if (
-    (<any>user).cursus_users.filter((x: any) => x.cursus_id == 21).length == 0
-  ) {
-    response.status(400).json({
-      error: "this service is for cadets only",
-    });
-    return;
-  }
-  if (await User.findOne({ where: { intraId: (<any>user).id } })) {
-    response.status(400).json({
-      error: "already registered user",
-    });
-    return;
-  }
-  userId = await makeNewAccount(user);
-  response.status(200).json({
-    id: userId,
-    message: "successfully signed up",
-  });
-};
-
-export const signInIntra = async (request: Request, response: Response) => {
-  const { code } = request.query;
-  var token: Boolean | IOToken;
-  var user: Boolean | object;
-  var userRow: User | null;
-
-  if (!code) {
-    response.status(400).json({
-      error: "parameter 'code' does not exist",
-    });
-    return;
-  }
-  token = await requestIntraAccessToken(code.toString(), process.env.INTRA_SIGNIN_REDIRECT_URI!.toString());
+  token = await requestIntraAccessToken(
+    code.toString(),
+    process.env.INTRA_SIGNIN_REDIRECT_URI!.toString()
+  );
   if (!token) {
     response.status(401).json({
       error: "invalid code",
@@ -232,10 +192,22 @@ export const signInIntra = async (request: Request, response: Response) => {
   }
   userRow = await User.findOne({ where: { intraId: (<any>user).id } });
   if (!userRow) {
-    response.status(400).json({
-      error: "account not found",
-    });
-    return;
+    if (
+      (<any>user).cursus_users.filter((x: any) => x.cursus_id == 21).length == 0
+    ) {
+      response.status(400).json({
+        error: "this service is for cadets only",
+      });
+      return;
+    }
+    userId = await makeNewAccount(user);
+    userRow = await User.findOne({ where: { id: userId.toString() } });
+    if (!userRow) {
+      response.status(400).json({
+        error: "failed user creation",
+      });
+      return;
+    }
   }
   /* login */
   /* oauth token */
@@ -300,7 +272,10 @@ export const signInGoogle = async (request: Request, response: Response) => {
     });
     return;
   }
-  token = await requestGoogleAccessToken(code.toString(), process.env.GOOGLE_SIGNIN_REDIRECT_URI!.toString());
+  token = await requestGoogleAccessToken(
+    code.toString(),
+    process.env.GOOGLE_SIGNIN_REDIRECT_URI!.toString()
+  );
   if (!token) {
     response.status(401).json({
       error: "invalid code",

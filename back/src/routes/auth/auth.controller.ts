@@ -19,10 +19,6 @@ router.get(
 );
 
 /* intra */
-router.get("/signup/intra", (request: Request, response: Response) => {
-  authService.signUpIntra(request, response);
-});
-
 router.get("/signin/intra", (request: Request, response: Response) => {
   authService.signInIntra(request, response);
 });

@@ -2,7 +2,8 @@ import axios from "axios";
 import { IOToken } from "../../../interface/token.interface";
 
 export const requestGoogleAccessToken = async (
-  code: string, redirect_uri: string
+  code: string,
+  redirect_uri: string
 ): Promise<boolean | IOToken> => {
   try {
     var res = await axios.post<IOToken>(

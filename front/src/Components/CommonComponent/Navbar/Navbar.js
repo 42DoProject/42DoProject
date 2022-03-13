@@ -108,11 +108,9 @@ export default function Navbar(props) {
         {loginState && <Notifiaction />}
         {loginState === null ? (
           <button className="Nav__user__login">
-            <a
-              className="login__link"
-              href={`${process.env.REACT_APP_HTTP_ENV}://api.intra.42.fr/oauth/authorize?client_id=${process.env.REACT_APP_API_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_API_REDIRECT_URI}&response_type=code`}>
+			<Link className="login__link" to="/login">
               SIGN IN
-            </a>
+            </Link>
           </button>
         ) : (
           <div className="Nav__user">

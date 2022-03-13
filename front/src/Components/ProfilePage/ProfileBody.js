@@ -73,6 +73,20 @@ export default function ProfileBody(props) {
               </span>
             )}
           </div>
+		  {(props.location.pathname === "/profile") ? (
+		  <div className="card2__google">
+            <Icon icon="fa6-brands:google" fontSize="1.5rem" />
+			{props.user.gmail ?  (
+			<span>연동 완료</span>
+			) : (
+			<a
+				href={`https://accounts.google.com/o/oauth2/auth?client_id=${process.env.REACT_APP_GOOGLE_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_GOOGLE_CLIENT_LINK_REDIRECT_URI}&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email`}
+				className="github-span">
+				연동하기
+			</a>
+			)}
+		  </div>
+		  ) : null}
         </div>
       </div>
       <div className="profileBody__col2">

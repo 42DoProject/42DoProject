@@ -27,9 +27,7 @@ services:
     restart: always
   db:
     container_name: mysql
-    # image: mysql:latest
-    platform: linux/x86_64
-    image : library/mysql:latest
+    image: mysql:latest
     env_file:
       - ./db/.env
     volumes:

@@ -15,25 +15,12 @@ export default function LinkGoogle() {
   useEffect(() => {
     const getData = async () => {
       try {
-        // 42API에서 User Data 받아오기.
-		console.log(code);
 		let tmp = decodeURI(code);
         const { data } = await axios.get(
           `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/auth/linking/google?code=${tmp}`,
 		  {headers: {Authorization: `Bearer ${loginState.accessToken}`}}
         );
-
-		console.log(data);
-        // const {
-        //   token: { accessToken, refreshToken },
-        // } = data;
-        // socket 인증
-        // socket.emit("authorization", {
-        //   token: accessToken,
-        // });
-        // loginReducer state 변경
-        // dispatch({ type: "LOGIN", payload: data });
-        history.push("/");
+        history.push("/profile");
       } catch (err) {
         console.log(err);
       }

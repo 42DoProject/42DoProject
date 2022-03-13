@@ -7,7 +7,6 @@ import CompleteProjects from "./Components/AllProjectPage/CompleteProjects";
 import RecruitCadet from "./Components/CadetPage/RecruitCadet";
 import LoungePage from "./Components/LoungePage/LoungePage";
 import LoungePopularPage from "./Components/LoungePage/LoungePopularPage";
-import AuthMain from "./Components/AuthMain/AuthMain";
 import ProfileEditPage from "./Components/ProfileEditPage/ProfileEditPage";
 import Layout from "./Components/CommonComponent/Layout";
 import ProjectEditPage from "./Components/ProjectEditPage/ProjectEditPage";
@@ -25,7 +24,7 @@ import { useHistory, useLocation } from "react-router";
 import AuthGoogle from "./Components/AuthMain/AuthGoogle";
 import LinkGoogle from "./Components/AuthMain/LinkGoogle";
 import IntraSignin from "./Components/AuthMain/IntraSignin";
-import IntraSignup from "./Components/AuthMain/IntraSignup";
+import LoginErrorPage from "./Components/LoginPage/LoginErrorPage";
 
 function App(props) {
   let loginState = useSelector((state) => state.loginReducer);
@@ -97,18 +96,15 @@ function App(props) {
     );
   }, [loginState]);
 
-  console.log("loginState", loginState);
-
   return (
     <Layout>
       <Switch>
         <Route exact path="/" component={Main} />
-        {/* <Route exact path="/auth/signin/intra" component={AuthMain} /> */}
         <Route exact path="/auth/signin/intra" component={IntraSignin} />
-        <Route exact path="/auth/signup/intra" component={IntraSignup} />
         <Route exact path="/auth/signin/google" component={AuthGoogle} />
         <Route exact path="/auth/linking/google" component={LinkGoogle} />
-        {/* <Route path="/auth" render={() => <AuthMain props={props} />} /> */}
+		<Route exact path="/login" component={LoginPage} />
+        <Route exact path="/login/error" component={LoginErrorPage}/>
         <Route exact path="/profile" component={ProfilePage} />
         <Route exact path="/profile/edit" component={ProfileEditPage} />
         <Route exact path="/profile/:id" component={ProfilePage} />
@@ -123,7 +119,6 @@ function App(props) {
         <Route exact path="/project/edit/:id" component={ProjectEditPage} />
         <Route exact path="/project/:id" component={ProjectDetail} />
         <Route exact path="/unauthorized" component={Unauthorized} />
-        <Route exact path="/login" component={LoginPage} />
         <Route path="/" component={NotPage} />
       </Switch>
     </Layout>

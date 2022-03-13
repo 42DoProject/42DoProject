@@ -34,6 +34,7 @@ export default function AuthGoogle() {
         history.push("/");
       } catch (err) {
         console.log(err);
+        history.push("/login/error");
       }
     };
     getData();

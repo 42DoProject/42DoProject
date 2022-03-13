@@ -14,16 +14,10 @@ export default function IntraSignin() {
   useEffect(() => {
     const getData = async () => {
       try {
-        // 42API에서 User Data 받아오기.
-		console.log(code);
 		let tmp = decodeURI(code);
-
         const { data } = await axios.get(
           `${process.env.REACT_APP_HTTP_ENV}://${process.env.REACT_APP_BACKEND_DOMAIN}/auth/signin/intra?code=${tmp}`
         );
-
-		console.log(data);
-
         const {
           token: { accessToken, refreshToken },
         } = data;

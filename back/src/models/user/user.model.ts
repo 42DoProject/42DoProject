@@ -16,6 +16,9 @@ export class User extends Model {
   intraId!: number;
 
   @Column(DataType.STRING(30))
+  googleId!: string;
+
+  @Column(DataType.STRING(30))
   username!: string;
 
   @Column(DataType.STRING(50))
@@ -23,6 +26,9 @@ export class User extends Model {
 
   @Column(DataType.STRING(80))
   email!: string;
+
+  @Column(DataType.STRING(80))
+  googleEmail!: string;
 
   @Column(DataType.STRING(80))
   location!: string;

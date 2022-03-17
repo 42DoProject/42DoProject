@@ -21,6 +21,11 @@ import ProjectDetail from "./Components/ProjectDetail/ProjectDetail";
 import Unauthorized from "./Components/CommonComponent/Unauthorized";
 import NotPage from "./Components/MainPage/NotPage";
 import { useHistory, useLocation } from "react-router";
+import IntraSignin from "./Components/AuthMain/IntraSignin";
+import LoginErrorPage from "./Components/LoginPage/LoginErrorPage";
+import AuthGoogle from "./Components/AuthMain/AuthGoogle";
+import LinkGoogle from "./Components/AuthMain/LinkGoogle";
+import LoginPage from "./Components/LoginPage/LoginPage";
 
 function App(props) {
   let loginState = useSelector((state) => state.loginReducer);
@@ -92,14 +97,15 @@ function App(props) {
     );
   }, [loginState]);
 
-  console.log("loginState", loginState);
-
   return (
     <Layout>
       <Switch>
         <Route exact path="/" component={Main} />
-        <Route path="/auth" component={AuthMain} />
-        {/* <Route path="/auth" render={() => <AuthMain props={props} />} /> */}
+		<Route exact path="/auth/signin/intra" component={IntraSignin} />
+        <Route exact path="/auth/signin/google" component={AuthGoogle} />
+        <Route exact path="/auth/linking/google" component={LinkGoogle} />
+		<Route exact path="/login" component={LoginPage} />
+        <Route exact path="/login/error" component={LoginErrorPage}/>
         <Route exact path="/profile" component={ProfilePage} />
         <Route exact path="/profile/edit" component={ProfileEditPage} />
         <Route exact path="/profile/:id" component={ProfilePage} />

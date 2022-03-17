@@ -12,11 +12,15 @@ import { User } from "./user.model";
 @Table({ timestamps: false })
 export class OToken extends Model {
   @AllowNull
-  @Column(DataType.STRING(100))
+  @Column(DataType.INTEGER)
+  application!: number;
+
+  @AllowNull
+  @Column(DataType.STRING(300))
   accessToken!: string;
 
   @AllowNull
-  @Column(DataType.STRING(100))
+  @Column(DataType.STRING(300))
   refreshToken!: string;
 
   @AllowNull

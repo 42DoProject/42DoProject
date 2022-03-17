@@ -1,7 +1,7 @@
 {
     "family": "task-backend",
-    "taskRoleArn": "arn:aws:iam::655309345553:role/AWSECSRoleForENV",
-    "executionRoleArn": "arn:aws:iam::655309345553:role/AWSECSRoleForENV",
+    "taskRoleArn": "arn:aws:iam::930496050868:role/AWSECSRoleForENV",
+    "executionRoleArn": "arn:aws:iam::930496050868:role/AWSECSRoleForENV",
     "networkMode": null,
     "containerDefinitions": [
         {
@@ -12,7 +12,7 @@
             },
             "cpu": 0,
             "memory": null,
-            "memoryReservation": 1024,
+            "memoryReservation": 128,
             "links": null,
             "portMappings": [
                 {
@@ -27,7 +27,7 @@
             "environment": [],
             "environmentFiles": [
                 {
-                    "value": "arn:aws:s3:::42doproject-ecs/backend/.env",
+                    "value": "arn:aws:s3:::42doproject-ecs/.env",
                     "type": "s3"
                 }
             ],

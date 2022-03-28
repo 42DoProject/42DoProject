@@ -66,6 +66,41 @@ router.delete(
   }
 );
 
+// replyofcomment API
+router.get("/reply/:commentId", (request: Request, response: Response) => {
+  projectService.getReplyOfComment(request, response);
+});
+
+router.post("/reply/:commentId", jwtGuards, (request: Request, response: Response) => {
+  projectService.postReplyOfComment(request, response);
+});
+
+router.put("/reply/:replyId", jwtGuards, (request: Request, response: Response) => {
+  projectService.updateReplyOfComment(request, response);
+});
+
+router.delete("/reply/:replyId", jwtGuards, (request: Request, response: Response) => {
+  projectService.deleteReplyOfComment(request, response);
+});
+
+// likecomment API
+router.post("/like/:commentId", jwtGuards, (request: Request, response: Response) => {
+  projectService.likeComment(request, response);
+});
+
+router.delete("/unlike/:commentId", jwtGuards, (request: Request, response: Response) => {
+  projectService.unlikeComment(request, response);
+});
+
+// likereply API
+router.post("/reply/like/:replyId", jwtGuards, (request: Request, response: Response) => {
+  projectService.likeReply(request, response);
+});
+
+router.delete("/reply/unlike/:replyId", jwtGuards, (request: Request, response: Response) => {
+  projectService.unlikeReply(request, response);
+});
+
 // apply API
 router.get(
   "/apply/:projectId",

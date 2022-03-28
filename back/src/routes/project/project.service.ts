@@ -5,9 +5,12 @@ import express, { Request, Response } from "express";
 import { Applyprojectprofile } from "../../models/project/applyprojectprofile.model";
 import { Comments } from "../../models/project/comments.model";
 import { Content } from "../../models/project/content.model";
+import { Likecomment } from "../../models/project/likecomment.model";
 import { Likeprojectprofile } from "../../models/project/likeprojectprofile.model";
+import { Likereplyofcomment } from "../../models/project/likereplyofcomment.model";
 import { Project } from "../../models/project/project.model";
 import { Projectprofile } from "../../models/project/projectprofile.model";
+import { Replyofcomment } from "../../models/project/replyofcomment.model";
 import { Profile } from "../../models/user/profile.model";
 import { User } from "../../models/user/user.model";
 import { getIsoString } from "../../module/time";
@@ -656,7 +659,7 @@ export const contentImage = async (request: Request, response: Response) => {
 
 export const getComments = async (request: Request, response: Response) => {
   const { projectId, page, pageSize } = request.query;
-  let limit, offset;
+  let outputComment, limit, offset;
   if (projectId === undefined) {
     response.status(400).json({ errMessage: "please input projectId value" });
     return;
@@ -693,7 +696,7 @@ export const getComments = async (request: Request, response: Response) => {
           include: [
             {
               model: User,
-              attributes: ["username"],
+              attributes: ["id", "profileImage", "blurImage", "username"],
             },
           ],
         },
@@ -702,7 +705,43 @@ export const getComments = async (request: Request, response: Response) => {
       offset: offset,
       limit: limit,
     });
-    response.status(200).json({ comments });
+
+    // create outputReply array
+    outputComment = [];
+    for (const element of comments.rows) {
+        let inputImage;
+        let checkLike = false;
+        // blurImage or profileImage
+        if (request.user !== null) {
+            inputImage = "profileImage";
+            const interest = await Likecomment.findOne({
+                where: { profileId: request.user!.id, replyofcommentId: element.id }
+            })
+            if (interest)
+                checkLike = true;
+        }
+        else if (request.user === null) {
+            if (element.profile.user.blurImage === "")
+                inputImage = "profileImage";
+            else
+                inputImage = "blurImage";
+        }
+
+        // create object
+        const tmp = {
+            id: element.id,
+            comment: element.comment,
+            like: element.like,
+            checkLike: (checkLike === true) ? "true" : "false",
+            username: element.profile.user.username,
+            userid: element.profile.user.id,
+            image: (inputImage === "profileImage") ? element.profile.user.profileImage : element.profile.user.blurImage,
+            createdAt: element.createdAt,
+            updatedAt: element.updatedAt,
+        }
+        outputComment.push(tmp);
+    }
+    response.status(200).json({ count: comments.count, rows: outputComment });
   } catch (error) {
     response.status(405).json({ errMessage: String(error) });
     return;
@@ -734,6 +773,7 @@ export const postComments = async (request: Request, response: Response) => {
 
     await Comments.create({
       comment: comment,
+      like: 0,
       contentId: contentId,
       profileId: request.user!.id,
       createdAt: getIsoString(),
@@ -823,6 +863,312 @@ export const deleteComments = async (request: Request, response: Response) => {
     return;
   }
 };
+
+export const getReplyOfComment = async (request: Request, response: Response) => {
+  const { page, pageSize } = request.query;
+  const { commentId } = request.params;
+  let outputReply, limit, offset;
+  if (commentId === undefined) {
+      response.status(400).json({ errMessage: 'please input commentId query' });
+      return ;
+  }
+
+  // pagination
+  if ((page !== undefined && pageSize === undefined) ||
+      (page === undefined && pageSize !== undefined)) {
+      response.status(400).json({ errMessage: "missing page or pageSize query" });
+      return ;
+  }
+  else {
+      limit = (page !== undefined && pageSize !== undefined) ? Number(pageSize) : undefined;
+      offset = (limit !== undefined) ? (Number(page) - 1) * limit : undefined;
+  }
+
+  try {
+      const reply = await Replyofcomment.findAndCountAll({
+          attributes: [
+              'id',
+              'commentId',
+              'comment',
+              'like',
+              'createdAt',
+              'updatedAt'
+          ],
+          include: {
+              model: Profile,
+              attributes: ['id'],
+              include: [{
+                  model: User,
+                  attributes: ['id', 'profileImage', 'blurImage', 'username']
+              }]
+          },
+          order: ['createdAt'],
+          where: { commentId: commentId },
+          offset: offset,
+          limit: limit
+      })
+
+      // create outputReply array
+      outputReply = [];
+      for (const element of reply.rows) {
+          let inputImage;
+          let checkLike = false;
+          // blurImage or profileImage
+          if (request.user !== null) {
+              inputImage = "profileImage";
+              const interest = await Likereplyofcomment.findOne({
+                  where: { profileId: request.user!.id, replyofcommentId: element.id }
+              })
+              if (interest)
+                  checkLike = true;
+          }
+          else if (request.user === null) {
+              if (element.profile.user.blurImage === "")
+                  inputImage = "profileImage";
+              else
+                  inputImage = "blurImage";
+          }
+
+          // create object
+          const tmp = {
+              id: element.id,
+              comment: element.comment,
+              like: element.like,
+              checkLike: (checkLike === true) ? "true" : "false",
+              username: element.profile.user.username,
+              userid: element.profile.user.id,
+              image: (inputImage === "profileImage") ? element.profile.user.profileImage : element.profile.user.blurImage,
+              createdAt: element.createdAt,
+              updatedAt: element.updatedAt,
+          }
+          outputReply.push(tmp);
+      }
+      response.status(200).json({ count: reply.count, rows: outputReply });
+  } catch (error) {
+      response.status(405).json({ errMessage: String(error) });
+      return ;
+  }
+}
+
+export const postReplyOfComment = async (request: Request, response: Response) => {
+  const { commentId } = request.params;
+  const { newComment } = request.body;
+  if (commentId === undefined) {
+      response.status(400).json({ errMessage: 'please input commentId query' });
+      return ;
+  }
+
+  try {
+      const comment = await Comments.findOne({
+          attributes: ['comment', 'replyCount', 'profileId'],
+          where: { id: commentId }
+      })
+      // renew replyCount
+      await Comments.update({
+          replyCount: (comment!.replyCount + 1)
+      }, { where: { id: commentId } })
+      const feedComment = (comment!.comment.length > 10) ? `${comment!.comment.substr(0, 10)}...` : comment!.comment;
+      await Replyofcomment.create({
+          comment: newComment,
+          like: 0,
+          profileId: request.user!.id,
+          commentId: commentId,
+          createdAt: getIsoString(),
+          updatedAt: getIsoString()
+      });
+      response.status(200).json({ message: 'added successfully.' });
+
+      // feed notification
+      if (comment!.profileId !== request.user!.id)
+          feed.replyoflounge(comment!.profileId, request.user!.id, request.user!.username, Number(commentId), feedComment);
+  } catch (error) {
+      response.status(405).json({ errMessage: String(error) });
+      return ;
+  }
+}
+
+export const updateReplyOfComment = async (request: Request, response: Response) => {
+  const { replyId } = request.params;
+  const { comment } = request.body;
+  if (replyId === undefined) {
+      response.status(400).json({ errMessage: 'please input replyId query' });
+      return ;
+  }
+
+  try {
+      const reply = await Replyofcomment.findOne({
+          attributes: ['profileId'],
+          where: { id: replyId }
+      })
+      // check authority
+      if (reply!.profileId !== request.user!.id) {
+          response.status(401).json({ errMessage: 'no authority' });
+          return ;
+      }
+
+      await Replyofcomment.update({
+          comment: comment,
+          updatedAt: getIsoString()
+      }, { where: { id: replyId } });
+      response.status(200).json({ message: 'updated successfully.' });
+  } catch (error) {
+      response.status(405).json({ errMessage: String(error) });
+      return ;
+  }
+}
+
+export const deleteReplyOfComment = async (request: Request, response: Response) => {
+  const { replyId } = request.params;
+  if (replyId === undefined) {
+      response.status(400).json({ errMessage: 'please input replyId query' });
+      return ;
+  }
+
+  try {
+      const reply = await Replyofcomment.findOne({
+          attributes: ['profileId', 'commentId'],
+          include: {
+              model: Comments,
+              attributes: ['replyCount']
+          },
+          where: { id: replyId }
+      })
+      // check authority
+      if (reply!.profileId !== request.user!.id) {
+          response.status(401).json({ errMessage: 'no authority' });
+          return ;
+      }
+      // renew replyCount
+      await Comments.update({
+          replyCount: (reply!.comments.replyCount - 1)
+      }, { where: { id: reply!.commentId } })
+
+      await Likereplyofcomment.destroy({
+          where: { replyofcommentId: replyId }
+      });
+      await Replyofcomment.destroy({
+          where: { id: replyId }
+      });
+      response.status(200).json({ message: 'deleted successfully.' });
+  } catch (error) {
+      response.status(405).json({ errMessage: String(error) });
+      return ;
+  }
+}
+
+export const likeComment = async (request: Request, response: Response) => {
+  const { commentId } = request.params;
+  if (commentId === undefined) {
+      response.status(400).json({ errMessage: 'please input commentId query' });
+      return ;
+  }
+
+  try {
+      const comment = await Comments.findOne({
+          attributes: ['like'],
+          where: { id: commentId }
+      })
+      // renew like
+      await Comments.update({
+          like: (comment!.like + 1)
+      }, { where: { id: commentId } })
+
+      await Likecomment.create({
+          commentId: commentId,
+          profileId: request.user!.id,
+          createdAt: getIsoString(),
+          updatedAt: getIsoString()
+      });
+      response.status(200).json({ message: 'liked successfully.' });
+  } catch (error) {
+      response.status(405).json({ errMessage: String(error) });
+      return ;
+  }
+}
+
+export const unlikeComment = async (request: Request, response: Response) => {
+  const { commentId } = request.params;
+  if (commentId === undefined) {
+      response.status(400).json({ errMessage: 'please input commentId query' });
+      return ;
+  }
+
+  try {
+      const comment = await Comments.findOne({
+          attributes: ['like'],
+          where: { id: commentId }
+      })
+      // renew like
+      await Comments.update({
+          like: (comment!.like - 1)
+      }, { where: { id: commentId } })
+
+      await Likecomment.destroy({
+          where: { commentId: commentId, profileId: request.user!.id }
+      });
+      response.status(200).json({ message: 'unliked successfully.' });
+  } catch (error) {
+      response.status(405).json({ errMessage: String(error) });
+      return ;
+  }
+}
+
+export const likeReply = async (request: Request, response: Response) => {
+  const { replyId } = request.params;
+  if (replyId === undefined) {
+      response.status(400).json({ errMessage: 'please input replyId query' });
+      return ;
+  }
+
+  try {
+      const reply = await Replyofcomment.findOne({
+          attributes: ['like'],
+          where: { id: replyId }
+      })
+      // renew like
+      await Replyofcomment.update({
+          like: (reply!.like + 1)
+      }, { where: { id: replyId } })
+
+      await Likereplyofcomment.create({
+          replyofcommentId: replyId,
+          profileId: request.user!.id,
+          createdAt: getIsoString(),
+          updatedAt: getIsoString()
+      });
+      response.status(200).json({ message: 'liked successfully.' });
+  } catch (error) {
+      response.status(405).json({ errMessage: String(error) });
+      return ;
+  }
+}
+
+export const unlikeReply = async (request: Request, response: Response) => {
+  const { replyId } = request.params;
+  if (replyId === undefined) {
+      response.status(400).json({ errMessage: 'please input replyId query' });
+      return ;
+  }
+
+  try {
+      const reply = await Replyofcomment.findOne({
+          attributes: ['like'],
+          where: { id: replyId }
+      })
+      // renew like
+      await Replyofcomment.update({
+          like: (reply!.like - 1)
+      }, { where: { id: replyId } })
+
+      await Likereplyofcomment.destroy({
+          where: { replyofcommentId: replyId, profileId: request.user!.id }
+      });
+      response.status(200).json({ message: 'unliked successfully.' });
+  } catch (error) {
+      response.status(405).json({ errMessage: String(error) });
+      return ;
+  }
+}
 
 export const getApplyerList = async (request: Request, response: Response) => {
   const { projectId } = request.params;

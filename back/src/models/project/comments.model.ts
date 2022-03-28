@@ -7,6 +7,12 @@ export class Comments extends Model {
     @Column(DataType.TEXT)
     comment!: string;
 
+    @Column(DataType.INTEGER)
+    like!: number;
+
+    @Column(DataType.INTEGER)
+    replyCount!: number;
+
     @ForeignKey(() => Content)
     @Column
     contentId!: number;

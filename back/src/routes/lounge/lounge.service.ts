@@ -306,7 +306,8 @@ export const postReplyOfLounge = async (request: Request, response: Response) =>
         response.status(200).json({ message: 'added successfully.' });
 
         // feed notification
-        feed.replyoflounge(lounge!.profileId, request.user!.id, request.user!.username, Number(loungeId), feedComment);
+        if (lounge!.profileId !== request.user!.id)
+            feed.replyoflounge(lounge!.profileId, request.user!.id, request.user!.username, Number(loungeId), feedComment);
     } catch (error) {
         response.status(405).json({ errMessage: String(error) });
         return ;
